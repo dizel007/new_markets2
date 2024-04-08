@@ -1,0 +1,60 @@
+
+
+body{
+    font-family: Helvetica;
+    -webkit-font-smoothing: antialiased;
+    background: rgb(201, 213, 226);
+}
+
+/* Table Styles */
+
+.table-wrapper{
+    margin: 20px 70px 30px;
+    /* box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ); */
+	
+}
+
+.fl-table {
+	margin: 0 auto;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 60%;
+    max-width: 90%;
+    white-space: nowrap;
+    background-color: white;
+	box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
+}
+
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 5px;
+
+}
+label {
+   display: block;
+   padding: 5px;
+}
+.fl-table td {
+    margin:0 auto;
+    border-right: 1px solid #f8f8f8;
+    font-size: 14px;
+	font-weight: 500;
+
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #41554f;
+}
+
+
+
+
+.fl-table tr:nth-child(even) {
+    background: #d8cece;
+}
+

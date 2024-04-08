@@ -1,0 +1,66 @@
+.prod_table {
+	width: 100%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+}
+
+.prod_table td{
+	border: 1px solid #000000;
+	padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	text-align: center;
+}
+
+.prod_table tr:nth-child(odd){
+	background: #fff;
+}
+.prod_table tr:nth-child(even){
+	background: #ebdddd;
+}
+
+/* Таблица для 1С закза*/
+.prod_table_2 {
+	width: 80%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+}
+.prod_table_2 td{
+	border: 1px solid #000000;
+	padding: 2px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+	text-align: center;
+}
+
+.prod_table_2 tr:nth-child(odd){
+	background: #e9e8c5;
+}
+.prod_table_2 tr:nth-child(even){
+	background: #9dee9d;
+}
+
+
+.prod_table_small {
+	width: 50%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+}
+
+.prod_table_small td{
+	border: 1px solid #000000;
+	padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	text-align: center;
+}
+
+.prod_table_small tr:nth-child(odd){
+	background: #fff;
+}
+.prod_table_small tr:nth-child(even){
+	background: #ebdddd;
+}
