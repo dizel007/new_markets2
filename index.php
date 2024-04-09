@@ -52,11 +52,14 @@ switch ($transition) {
 
 
 echo <<<HTML
-<table>
-<tr>
 
-<td><a href = "?transition=50"><img src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div>        </a> </td>
+<link rel="stylesheet" href="pics/css/styles.css">
+
+<table class="main_screen">
+<tr>
 <td></td>
+<td><a href = "?transition=50"><img src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div>        </a> </td>
+<td><img src="pics/main_screen/all_sells.jpg" ><div>ВСЕ ПРОДАЖИ</div>     </td>
 <td></td>
 <td></td>
 <td></td>
@@ -64,7 +67,7 @@ echo <<<HTML
 </tr>
 
 <tr>
-<td><img src="pics/main_screen/razbor.jpg" alt="альтернативный текст"> </td>
+<td><img src="pics/main_screen/razbor.jpg" alt="Разбор Заказов"> </td>
 <td><a href = "?transition=10"><img src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
 <td><a href = "?transition=11"><img src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
 <td><a href = "?transition=20"><img src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
@@ -74,30 +77,43 @@ echo <<<HTML
 
 <tr>
 
-<td> </td>
-<td> </td>
-<td> </td>
-<td><img src="pics/main_screen/razbor_wb_ip.jpg" alt="альтернативный текст"> </td>
+<td><img src="pics/main_screen/skidka_ozon.jpg" > </td>
 
-<td><img src="pics/main_screen/autosklad.jpg" alt="альтернативный текст"> </td>
-<td><img src="pics/main_screen/autosklad.jpg" alt="альтернативный текст"> </td>
+<td> </td>
+<td> </td>
+<td><a href = "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks"><img src="pics/main_screen/ikon_skidka_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
+<td><a href = "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_ip_zel"><img src="pics/main_screen/ikon_skidka_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
 
 </tr>
 
 <tr>
 
 <td> </td>
-<td><img src="pics/main_screen/razbor_wb_ip.jpg" alt="альтернативный текст"> </td>
+<td><a href = "wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks"><img src="pics/main_screen/otziv_wb.jpg" ><div>WB Анмакс</div>        </a></td>
+<td><a href = "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel"><img src="pics/main_screen/otziv_wb_ip.jpg" ><div>WB ИП Зел</div>        </a></td>
+<td> </td>
 
-<td><img src="pics/main_screen/autosklad.jpg" alt="альтернативный текст"> </td>
-<td><img src="pics/main_screen/autosklad.jpg" alt="альтернативный текст"> </td>
 
 </tr>
+
+<tr>
+
+<td> </td>
+<td><img src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
+<td><img src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
+<td><img src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
+
+
+</tr>
+
+
+
 
 </table>
 
 HTML;
-
+echo "<br><br>";
+echo "<br><br>";
         echo "<a href = \"?transition=50\">Автосклад </a>";
         echo "<br><br>";
         echo "<br>*********************** РАЗБОР ТОВАРА  ******************************<br>";

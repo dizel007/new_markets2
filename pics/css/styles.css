@@ -1,0 +1,10 @@
+.main_screen {
+    margin: auto; /* Выравниваем таблицу по центру окна  */
+    text-align: center;
+    border: 1px solid black;
+
+}
+.table td {
+	border: 1px solid #462525;
+	padding: 5px;
+}
