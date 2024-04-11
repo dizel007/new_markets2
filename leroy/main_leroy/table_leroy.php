@@ -10,7 +10,7 @@ require_once "functions/excel_style.php";
 
 
 echo <<<HTML
-<a href="lerua_get_token_(work).php">GET NEW TOKEN</a>
+<a href="lerua_get_token_WORK.php">GET NEW TOKEN</a>
 <br>
 
 <table>
