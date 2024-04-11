@@ -16,7 +16,11 @@ echo "<tr>";
     echo "<th>Сумма<br>продаж<br>(руб)</th>";
     echo "<th>Комиссия<br>Озон<br>(руб)</th>";
     echo "<th>Логистика<br>(руб)</th>";
+    echo "<th>Обр.Логистика<br>(включена в лог)</th>";
     echo "<th>Сборка<br>(руб)</th>";
+    echo "<th>Обр.Сборка<br>(руб)</th>";
+    echo "<th>Обр.Обработка<br>(руб)</th>";
+
     echo "<th>Посл.миля<br>(руб)</th>";
     echo "<th>Хранение<br>утилизация<br>(руб)</th>";
     echo "<th>Удерж<br>за недовл<br>(руб)</th>";
@@ -71,8 +75,19 @@ foreach ($arr_article as $key=>$item) {
         if (isset($item['amount'])){echo "<td>".$amount_bez_equaring."<br>".$one_shtuka."</td>";}else{echo "<td>"."</td>";}
        
         if (isset($item['sale_commission'])){echo "<td>".$item['sale_commission']."</td>";}else{echo "<td>"."</td>";}
+// Логистика
         if (isset($item['logistika'])){echo "<td>".$item['logistika']."</td>";}else{echo "<td>"."</td>";}
+// обратная логистика 
+        if (isset($item['back_logistika'])){echo "<td>".$item['back_logistika']."</td>";}else{echo "<td>"."</td>";}
+// Сборка
         if (isset($item['sborka'])){echo "<td>".$item['sborka']."</td>";}else{echo "<td>"."</td>";}
+// ОБратна сборка
+        if (isset($item['back_sborka'])){echo "<td>".$item['back_sborka']."</td>";}else{echo "<td>"."</td>";}
+
+// ОБратная обработка
+        if (isset($item['return_obrabotka'])){echo "<td>".$item['return_obrabotka']."</td>";}else{echo "<td>"."</td>";}
+
+// Последняя Миля
         if (isset($item['lastMile'])){echo "<td>".$item['lastMile']."</td>";}else{echo "<td>"."</td>";}
 
         if (isset($item['amount_hranenie'])){echo "<td>".$item['amount_hranenie']."</td>";}else{echo "<td>"."</td>";}
@@ -94,8 +109,20 @@ echo "<tr>";
     echo "<td>$accruals_for_sale</td>"; // общая сумма
     echo "<td>$amount</td>"; // общая сумма
     if (isset($sale_commission)){echo "<td>".$sale_commission."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+
+
     if (isset($logistika)){echo "<td>".$logistika."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
-    if (isset($sborka)){echo "<td>".$sborka."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+    if (isset($summa_obratnoy_logistik)){echo "<td>".$summa_obratnoy_logistik."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+    
+ // сумма Сборки   
+    if (isset($sborka)){echo "<td>".$sborka."</td>";}else{echo "<td>"."</td>";} 
+// сумма обратной Сборки
+    if (isset($back_sborka)){echo "<td>".$back_sborka."</td>";}else{echo "<td>"."</td>";} 
+// сумма обратной обработки
+if (isset($return_obrabotka)){echo "<td>".$return_obrabotka."</td>";}else{echo "<td>"."</td>";} 
+
+    
+
     if (isset($lastMile)){echo "<td>".$lastMile."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
 
 

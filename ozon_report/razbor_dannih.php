@@ -67,14 +67,15 @@ require_once "parts/zakazi.php";
  **************************************  ВОЗВРАТЫ
  *************************************************************************************************************/
 
-if (isset($arr_returns)) { require_once "parts/vozvrati.php";}
+if (isset($arr_returns)) { 
+    require_once "parts/vozvrati.php";
+}
 
 /**************************************************************************************************************
  **************************************  Эквайринг 
  *************************************************************************************************************/
 
  require_once "parts/ecvairing.php";
-
 
 /**************************************************************************************************************
  ************************************** Удержание за недовложение товара
@@ -85,22 +86,6 @@ require_once "parts/uderzhania.php";
  *************************************************************************************************************/
 
 require_once "parts/servici.php";
-
-
-
-
-
-
-
-
-// (
-//        [MarketplaceMarketingActionCostOperation] => Услуги продвижения товаров
-//        [OperationMarketplaceReturnStorageServiceAtThePickupPointFbs] => Начисление за хранение/утилизацию возвратов
-//        [MarketplaceSaleReviewsOperation] => Приобретение отзывов на платформе
-//        [OperationMarketplaceReturnDisposalServiceFbs] => Начисление за хранение/утилизацию возвратов
-//        [OperationMarketplaceDefectRate] => Услуга по изменению условий отгрузки
-// )
-
 
 // ВЫВОД ОСНОВНОЙ ТАБЛИЦЫ ////////////////////////////////////////////////////
 
@@ -113,38 +98,54 @@ echo "<br>";
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 echo "<br>";
 
-// echo "ВЫПЛАТА С СЕВРИСНЫМИ СБОРАМ : $amount<br>";
-// echo "СТОИМОСТЬ ХРАНЕНИЯ          : $amount_hranenie<br>";
-// echo "СТОИМОСТЬ ЭКВАЙРИНГА        : $amount_ecvairing<br>";
-// echo "СТОИМОСТЬ ВОЗВРАТОВ         : $amount_vozrat<br>";
-// echo "КОММИССИЯ                   : $sale_commission<br>";
-// echo "Логистика                   : $logistika<br>";
-// echo "Сборка                      : $sborka<br>";
-// echo "Посл.миля                   : $lastMile<br>";
 
-// $summa_NACHILS = $amount - $logistika - $sborka - $lastMile;
+// print_R($arr_article);
+// echo "<br>************************************************************";
+
+
 echo "<br>";
 // if (isset($summa_NACHILS)){echo "НАЧИСЛЕННО                  : $summa_NACHILS<br>";}
 if (isset($all_summa_tovarov_)){echo "Подсчитанная сумма товаров (цена для покупателя) : $all_summa_tovarov_<br>";}
 echo "<br>";
 
 
-if (isset($Summa_uslugi_prodvizhenia_tovara)){echo "Услуги продвижения товаров : $Summa_uslugi_prodvizhenia_tovara<br>";}
-if (isset($Summa_buy_otzivi)){echo "Приобретение отзывов на платформе : $Summa_buy_otzivi<br>";}
-if (isset($Summa_zakrepleneie_otzivi)){echo "Закрепление отзыва      : $Summa_zakrepleneie_otzivi<br>";}
-if (isset($Summa_oshibok_prodavca)){echo "Услуга за обработку операционных ошибок продавца: просроченная отгрузка : $Summa_oshibok_prodavca<br>";}
-if (isset($Summa_obrabotka_gruzomestFBO)){echo "Обработка товара в составе грузоместа на FBO : $Summa_obrabotka_gruzomestFBO<br>";}
-if (isset($Summa_generacia_videooblozhki)){echo "Генерация видеообложки : $Summa_generacia_videooblozhki<br>";}
-if (isset($Summa_premiaum_podpiska)){echo "Premium-подписка : $Summa_premiaum_podpiska<br>";}
 
-if (isset($Summa_hranenia_FBO)){echo "Услуга размещения товаров на складе : $Summa_hranenia_FBO<br>";}
+$dop_uslugi = 0;
+if (isset($Summa_uslugi_prodvizhenia_tovara)){echo "Услуги продвижения товаров : $Summa_uslugi_prodvizhenia_tovara<br>";$dop_uslugi+=$Summa_uslugi_prodvizhenia_tovara;}
+if (isset($Summa_buy_otzivi)){echo "Приобретение отзывов на платформе : $Summa_buy_otzivi<br>";$dop_uslugi+=$Summa_buy_otzivi;}
+if (isset($Summa_zakrepleneie_otzivi)){echo "Закрепление отзыва      : $Summa_zakrepleneie_otzivi<br>";$dop_uslugi+=$Summa_zakrepleneie_otzivi;}
+if (isset($Summa_oshibok_prodavca)){echo "Услуга за обработку операционных ошибок продавца: просроченная отгрузка : $Summa_oshibok_prodavca<br>";$dop_uslugi+=$Summa_oshibok_prodavca;}
+if (isset($Summa_obrabotka_gruzomestFBO)){echo "Обработка товара в составе грузоместа на FBO : $Summa_obrabotka_gruzomestFBO<br>";$dop_uslugi+=$Summa_obrabotka_gruzomestFBO;}
+if (isset($Summa_generacia_videooblozhki)){echo "Генерация видеообложки : $Summa_generacia_videooblozhki<br>";$dop_uslugi+=$Summa_generacia_videooblozhki;}
+if (isset($Summa_premiaum_podpiska)){echo "Premium-подписка : $Summa_premiaum_podpiska<br>";$dop_uslugi+=$Summa_premiaum_podpiska;}
+
+if (isset($Summa_hranenia_FBO)){echo "Услуга размещения товаров на складе : $Summa_hranenia_FBO<br>";$dop_uslugi+=$Summa_hranenia_FBO;}
 if (isset($Summa_utilizacii_tovara)){echo "Утилизация : $Summa_utilizacii_tovara<br>";}
 
 if (isset($Summa_neizvestnogo)){echo "СЕРВИСЫ (НЕРАЗОБРАННЫЕ)      : $Summa_neizvestnogo<br>";}
 if (isset($Summa_izmen_uslovi_otgruzki)){echo "Услуга по изменению условий отгрузки : $Summa_izmen_uslovi_otgruzki<br>";}
 if (isset($Summa_pretensii)){echo "сумма начислений по претензиям : $Summa_pretensii<br>";}
 
+$dop_uslugi+=$amount_hranenie;
+
+if (isset($dop_uslugi)){echo "<b>ИТОГО ДОП.УСЛУГИ : $dop_uslugi</b><br>";}
+
+
+if (isset($summa_obratnoy_logistik)){echo "<b>ДОП ОБРАТНАЯ ЛОГИСТКИ  : $summa_obratnoy_logistik</b><br>";}
+
+
 echo "Кол-во обработанных итэмс : $i<br>";
+
+// Если вдруг появились новые данные, которые не учитываются в разборе
+if (isset($arr_index_job)){
+    $temp = count($arr_index_job);
+    echo "<br> <b>Кол-во неразобранных товаров (ОЗОН Добавил новые данные в отчет </b>: $temp<br>"; 
+}
+if (isset($arr_nerazjbrannoe_222)){
+    $temp = count($arr_nerazjbrannoe_222);
+    echo "<br> <b>Кол-во неразобранных товаров (ОЗОН Добавил новые данные в отчет </b>: $temp<br>"; 
+}
+
 
 
 // print_r($arr_orders);

@@ -69,7 +69,7 @@ elseif ($items['operation_type'] == 'OperationMarketplaceServiceStockDisposal')
 
 else {
     $Summa_neizvestnogo =  @$Summa_neizvestnogo  + $items['amount']; 
-    $arr_xz_service[] = $items; 
+    $arr_nerazjbrannoe[] = $items; 
 }
     
 }

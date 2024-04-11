@@ -34,6 +34,6 @@ $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parce
 $rrrr = light_query_without_data_with_post ($jwt_token, $link, 'Запрос на подтверждение Заказа');
 // echo $link."<br>";
 }
-
+echo __DIR__;
 header('Location: ../index.php');
 exit();

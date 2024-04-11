@@ -24,9 +24,12 @@ if ($items['operation_type'] == 'MarketplaceRedistributionOfAcquiringOperation')
             }
     }
 // СУмма претензий (ОНа не привязана к артикулу) /Начисления по претензиям
-if ($items['operation_type'] == 'OperationClaim') 
-    {
-        $Summa_pretensii = @$Summa_pretensii  + $items['amount']; // сумма начислений по претензиям
+    elseif ($items['operation_type'] == 'OperationClaim') 
+        {
+            $Summa_pretensii = @$Summa_pretensii  + $items['amount']; // сумма начислений по претензиям
+        }
+    else {
+        $arr_nerazjbrannoe[]=$items;
     }
     
 }

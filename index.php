@@ -101,6 +101,8 @@ echo <<<HTML
 <tr>
 
 <td> </td>
+<td><a href = "wb_make_xml/take_data_wb.php"><img width="$width_pics" src="pics/main_screen/xml.jpg" ><div>XML</div>        </a></td>
+
 <td><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
 <td><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
 <td><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
