@@ -143,7 +143,7 @@ $ozon_catalog    = get_db_procent_magazina ($ozon_catalog, $sklads, $ozon_anmaks
 $ozon_ip_catalog = get_db_procent_magazina ($ozon_ip_catalog, $sklads, $ozon_ip, $arr_new_ostatoki_MP);
 
 
-// print_r ($ozon_ip_catalog);
+// print_r ($wb_catalog);
 // die();
 //*****************************  Формируем массив из всех каталогов  *****************************
 
@@ -180,24 +180,23 @@ echo "<tr>";
 
 //  ******************* j,ofz byajhvfwbz
 echo "<td>";
-echo "<table>";
-echo "<tr>";
+    echo "<table>";
+        echo "<tr  class=\"rovnay_table_shapka\">";
+            echo "<td>Артикул<br> 1С</td>";
+            echo "<td>Кол-во 1с</td>";
+            echo "<td>SELL</td>";
+        echo "</tr>";
 
-echo "<td>Артикул<br> 1С</td>";
-echo "<td>Кол-во 1с</td>";
-echo "<td>SELL</td>";
-echo "</tr>";
- foreach ($arr_all_nomenklatura as $item) {
-    echo "<tr>";
-    echo "<td>".$item['main_article_1c']."</td>";
-    echo "<td>".$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
-    echo "<td>".@$arr_sell_tovari[mb_strtolower($item['main_article_1c'])]."</td>";
-
-// echo "<td><input  type=\"checkbox\" name=\"\" readonly> </td>"; 
-}
-echo "</tr>";
+    foreach ($arr_all_nomenklatura as $item) {
+        echo "<tr  class=\"rovnay_table\">";
+            echo "<td>".$item['main_article_1c']."</td>";
+            echo "<td>".$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
+            echo "<td>".@$arr_sell_tovari[mb_strtolower($item['main_article_1c'])]."</td>";
+        echo "</tr>";
+     }
+    
 echo "</table>";
-    echo "</td>";
+echo "</td>";   
 
 // ******************************************* WB OOO **************************************
 echo "<td>";
@@ -255,9 +254,12 @@ die('Закончили разбор');
 
 function show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $mp_catalog, $mp_name) {
 
-
+echo <<<HTML
+ <link rel="stylesheet" href="pics/css/styles.css">
+HTML;
+    
     echo "<table >";
-    echo "<tr>";
+    echo "<tr  class=\"rovnay_table_shapka\">";
    
     echo "<td>Артикул МП</td>";
     echo "<td>Кол-во МП<br>факт</td>";
@@ -265,7 +267,7 @@ function show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $mp
     echo "<td>Upd</td>";
 
      foreach ($arr_all_nomenklatura as $item) {
-        echo "<tr>";
+        echo "<tr class=\"rovnay_table\">";
         echo "<td>".$item['main_article_1c']."</td>";
     
     // ******************************************* WB OOO **************************************
@@ -273,17 +275,18 @@ function show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $mp
         foreach ($mp_catalog as $temp_item) {
             if (mb_strtolower($temp_item['main_article']) == mb_strtolower($item['main_article_1c'])) {
                 $temp_sku =$temp_item['sku'];
-                echo "<td>".$temp_item['mp_article']."</td>";
-                echo "<td>".$temp_item['quantity']."</td>";
+                // echo "<td>".$temp_item['mp_article']."</td>";
+                echo "<td>".$temp_item['quantity']."<br>f=".@$temp_item['fake_count']."</td>";
 
                 $temp_barcode = $temp_item['barcode'];
                 $name_for_barcode = "_".$mp_name."_mp_BarCode_".$temp_sku;
                 $name_for_value = "_".$mp_name."_mp_value_".$temp_sku;
-                $kolvo_tovarov_dlya_magazina = $temp_item['kolvo_tovarov_dlya_magazina'];
+                $kolvo_tovarov_dlya_magazina = $temp_item['update_kolvo_tovarov_dlya_magazina'];
 
                 
  echo <<<HTML
         <input hidden type="text" name="$name_for_barcode" value=$temp_barcode>
+     
         <td><input class="text-field__input future_ostatok" type="number" name="$name_for_value" value=$kolvo_tovarov_dlya_magazina></td>
 HTML;
 

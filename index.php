@@ -50,16 +50,15 @@ switch ($transition) {
     case 0: // основная таблица со всеми КП
         //         $arr_temp = get_catalog_wb();
 
-
+$width_pics = 100;
 echo <<<HTML
 
-<link rel="stylesheet" href="pics/css/styles.css">
 
 <table class="main_screen">
 <tr>
 <td></td>
-<td><a href = "?transition=50"><img src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div>        </a> </td>
-<td><img src="pics/main_screen/all_sells.jpg" ><div>ВСЕ ПРОДАЖИ</div>     </td>
+<td><a href = "?transition=50"><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div>        </a> </td>
+<td><img width="$width_pics" src="pics/main_screen/all_sells.jpg" ><div>ВСЕ ПРОДАЖИ</div>     </td>
 <td></td>
 <td></td>
 <td></td>
@@ -67,41 +66,44 @@ echo <<<HTML
 </tr>
 
 <tr>
-<td><img src="pics/main_screen/razbor.jpg" alt="Разбор Заказов"> </td>
-<td><a href = "?transition=10"><img src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
-<td><a href = "?transition=11"><img src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
-<td><a href = "?transition=20"><img src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
-<td><a href = "?transition=21"><img src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
-<td><a href = "?transition=31"><img src="pics/main_screen/razbor_yandex.jpg"><div>Yandex Анмакс</div> </a></td>
-</tr>
-
-<tr>
-
-<td><img src="pics/main_screen/skidka_ozon.jpg" > </td>
-
-<td> </td>
-<td> </td>
-<td><a href = "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks"><img src="pics/main_screen/ikon_skidka_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
-<td><a href = "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_ip_zel"><img src="pics/main_screen/ikon_skidka_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
+<td><img width="$width_pics" src="pics/main_screen/razbor.jpg" alt="Разбор Заказов"> </td>
+<td ><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
+<td><a href = "?transition=11"><img width="$width_pics" src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
+<td><a href = "?transition=20"><img width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
+<td><a href = "?transition=21"><img width="$width_pics" src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
+<td><a href = "?transition=31"><img width="$width_pics" src="pics/main_screen/razbor_yandex.jpg"><div>Yandex Анмакс</div> </a></td>
+<td><a href = "leroy/"><img width="$width_pics" src="pics/main_screen/razbor_leroy.jpg"><div>LEROY Анмакс</div> </a></td>
+<td><a href = "vse_instrumenti/start.php"><img width="$width_pics" src="pics/main_screen/vse_instrumrnti.jpg"><div>Все ИНСТР</div> </a></td>
 
 </tr>
 
 <tr>
 
-<td> </td>
-<td><a href = "wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks"><img src="pics/main_screen/otziv_wb.jpg" ><div>WB Анмакс</div>        </a></td>
-<td><a href = "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel"><img src="pics/main_screen/otziv_wb_ip.jpg" ><div>WB ИП Зел</div>        </a></td>
-<td> </td>
+<td><img width="$width_pics" src="pics/main_screen/skidka_ozon.jpg" > </td>
 
+<td> </td>
+<td> </td>
+<td><a href = "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks"><img width="$width_pics" src="pics/main_screen/ikon_skidka_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
+<td><a href = "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_ip_zel"><img width="$width_pics" src="pics/main_screen/ikon_skidka_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
 
 </tr>
 
 <tr>
 
 <td> </td>
-<td><img src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
-<td><img src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
-<td><img src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
+<td><a href = "wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks"><img width="$width_pics" src="pics/main_screen/otziv_wb.jpg" ><div>WB Анмакс</div>        </a></td>
+<td><a href = "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel"><img width="$width_pics" src="pics/main_screen/otziv_wb_ip.jpg" ><div>WB ИП Зел</div>        </a></td>
+<td> </td>
+
+
+</tr>
+
+<tr>
+
+<td> </td>
+<td><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
+<td><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
+<td><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>ОТЧЕТЫ</div>  </td>
 
 
 </tr>
@@ -114,28 +116,6 @@ echo <<<HTML
 HTML;
 echo "<br><br>";
 echo "<br><br>";
-        echo "<a href = \"?transition=50\">Автосклад </a>";
-        echo "<br><br>";
-        echo "<br>*********************** РАЗБОР ТОВАРА  ******************************<br>";
-
-
-        echo "<a href = \"?transition=10\">Разбор ВБ Анмакс</a>";
-        echo "<br><br>";
-        echo "<a href = \"?transition=11\">Разбор ВБ ИП</a>";
-        echo "<br><br>";
-        echo "<a href = \"?transition=20\">Разбор ОЗОН Анмакс</a>";
-        echo "<br><br>";
-        echo "<a href = \"?transition=21\">Разбор ОЗОН ИП Зел</a>";
-        echo "<br><br>";
-        echo "<a href = \"?transition=31\">Разбор ЯндексМаркет ООО ТД Анмакс</a>";
-        echo "<br><br>";
-        echo "<br><br>";
-        echo "<br>*********************** СОГЛСАСОВАНИЕ СКИДКИ ******************************<br>";  
-        
-        echo "<a href= \"ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks\"> ОЗОН АНМАКС СКИДКА</a>";
-        echo "<br><br>";
-        echo "<a href= \"ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_ip_zel\"> ОЗОН ИП Зел СКИДКА</a>";
-
 
         
         echo "<br><br>";
@@ -151,11 +131,6 @@ echo "<br><br>";
         echo "<a href= \"wb_reports/wb_report_index.php?wb_shop=wb_anmaks\">ОТЧЕТЫ WB АНМАКС</a>";
         echo "<br><br>";
         echo "<br><br>";
-        echo "<br>*********************** ОТЗЫВЫ  WB ******************************<br>";
-        echo "<a href= \"wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks\">ОТЗЫВЫ WB АНМАКС</a>";
-        echo "<br><br>";
-        echo "<a href= \"wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel\">ОТЗЫВЫ WB ИП</a>";
-
         echo "<br><br>";
 
 

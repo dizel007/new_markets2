@@ -50,15 +50,17 @@ function add_all_info_in_catalog ($mp_catalog, $all_catalogs, $arr_sell_tovari) 
             $kolvo_tovarov_dlya_magazina = floor(($ostatki_s_prodannim/100) * $mag_proc_from_all_tovar * $article['fbs'] /100)-1;
             $kolvo_tovarov_dlya_magazina <0 ? $kolvo_tovarov_dlya_magazina=0 : $z=1;
             $article['kolvo_tovarov_dlya_magazina'] = $kolvo_tovarov_dlya_magazina;  
+            $fake_kolvo_tovarov_dlya_magazina = $kolvo_tovarov_dlya_magazina + $article['fake_count'];
+            $article['update_kolvo_tovarov_dlya_magazina'] = $kolvo_tovarov_dlya_magazina + $article['fake_count'];
                         
-            $temp_article = $article['main_article'];
-            $temp_sku = $article['sku'];
-            $temp_barcode = $article['barcode'];
+            // $temp_article = $article['main_article'];
+            // $temp_sku = $article['sku'];
+            // $temp_barcode = $article['barcode'];
             
           
-    ($kolvo_tovarov_dlya_magazina == $article['quantity'])?  $check_update = 0:  $z=1;
-    ($kolvo_tovarov_dlya_magazina > $article['quantity'])?  $check_update = 1:  $z=1;
-    ($kolvo_tovarov_dlya_magazina < $article['quantity'])?  $check_update = 1:  $z=1;
+    ($fake_kolvo_tovarov_dlya_magazina == $article['quantity'])?  $check_update = 0:  $z=1;
+    ($fake_kolvo_tovarov_dlya_magazina > $article['quantity'])?  $check_update = 1:  $z=1;
+    ($fake_kolvo_tovarov_dlya_magazina < $article['quantity'])?  $check_update = 1:  $z=1;
     ($article['fbo_only'] == 1) ? $check_update = 0:  $z=1; // если поставки только по ФБО то снимаем значем
 
     $article['nead_update'] = $check_update;  

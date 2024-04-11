@@ -1,0 +1,20 @@
+
+.prod_table {
+	width: 90%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+}
+
+.prod_table td{
+	border: 1px solid #000000;
+	padding: 5px;
+	text-align: center;
+}
+
+.prod_table tr:nth-child(odd){
+	background: #fff;
+}
+.prod_table tr:nth-child(even){
+	background: #ebdddd;
+}

@@ -28,7 +28,8 @@ $ozon_ip = 'ozon_ip_zel';
     $warehouseId =  946290;
     update_ostatki_WB($arr_tokens, $warehouseId , $wb_ip) ;
 // **************************   МАссив ОЗОН ООО  *********************************** */
-    // Озон АНмакс 
+    
+// Озон АНмакс 
     update_ostatki_OZON($arr_tokens,$pdo, $ozon_anmaks) ;
 
    
@@ -36,9 +37,7 @@ $ozon_ip = 'ozon_ip_zel';
 //     // озон ИП зел
     update_ostatki_OZON($arr_tokens,$pdo, $ozon_ip) ;
 
-
-
-/* *************** возвращаемся к таблице*/
+ /* *************** возвращаемся к таблице*/
    
     header('Location: get_all_ostatki_skladov_new_ALL.php?return=777', true, 301);
 
@@ -50,17 +49,16 @@ $ozon_ip = 'ozon_ip_zel';
     $token_wb = $arr_tokens[$shop_name]['token'];
     $wb_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
 
+
     if ($wb_update_items_quantity <> "no_data") {
         foreach ($wb_update_items_quantity as $wb_item) {
             $data_wb["stocks"][] = $wb_item;
         }
-    
-        }
+   
+        $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/stocks/'.$warehouseId; 
+        $res = wb_put_query_with_data($token_wb, $link_wb, $data_wb);
+     }
 
-    $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/stocks/'.$warehouseId;
-
-    $res = wb_put_query_with_data($token_wb, $link_wb, $data_wb);
-    print_r( $res);
 }
 
 function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
@@ -70,8 +68,6 @@ function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
    
    $ozon_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
    $arr_catalog =  get_catalog_tovarov_v_mp($shop_name, $pdo);
-   
-//    echo ("<pre>");
    
    if ($ozon_update_items_quantity <> "no_data") {
    

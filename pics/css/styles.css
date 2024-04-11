@@ -4,7 +4,14 @@
     border: 1px solid black;
 
 }
-.table td {
-	border: 1px solid #462525;
+
+
+td  {
+	border: 1px solid #2f97c7;
+    padding: 20px;
 	padding: 5px;
+}
+.start_windows {
+    position: sticky;
+    top: 0;
 }
