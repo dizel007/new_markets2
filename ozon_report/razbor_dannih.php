@@ -131,8 +131,19 @@ $dop_uslugi+=$amount_hranenie;
 if (isset($dop_uslugi)){echo "<b>ИТОГО ДОП.УСЛУГИ : $dop_uslugi</b><br>";}
 
 
-if (isset($summa_obratnoy_logistik)){echo "<b>ДОП ОБРАТНАЯ ЛОГИСТКИ  : $summa_obratnoy_logistik</b><br>";}
 
+
+
+
+$viplata_na_konec = $accruals_for_sale + $sale_commission + $logistika + $sborka + $lastMile + $dop_uslugi + 
+                     $summa_obratnoy_logistik +$return_obrabotka + $amount_ecvairing;
+
+
+
+
+
+
+if (isset($viplata_na_konec)){echo "<br><b>К ВЫПЛАТЕ : $viplata_na_konec</b><br>";}
 
 echo "Кол-во обработанных итэмс : $i<br>";
 

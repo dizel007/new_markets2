@@ -11,27 +11,39 @@ require_once "functions/functions.php";
     // print_r($ya_token_info);
 
 
-echo <<<HTML
-<form action="#" method= "get">
-    <input required type="date" name="select_date" value="">
-    <input hidden type="text" name="transition" value="31">
-    <input type="submit" value="Показать заказы на эту дату">
-</form>
+    if (isset($_GET['select_date'])) {
+        $need_date_temp = $_GET['select_date'];
+        $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
+    
+    }else {
+        // $date_query_ozon =''; 
+        $need_date_temp = date('Y-m-d'); 
+        $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
+    }
+    
+    echo $need_date."<br>"; 
+    echo <<<HTML
+    <form action="#" method= "get">
+        <input required type="date" name="select_date" value="$need_date_temp">
+        <input hidden type="text" name="transition" value="31">
+        <input type="submit" value="Показать заказы на эту дату">
+    </form>
+    
+    
+    HTML;
 
 
-HTML;
 
-
-if  (isset($_GET['select_date'])) {
 
 $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
 echo "<pre>";
 // print_r($arr_all_new_orders);
 
 
-$need_date_temp = $_GET['select_date'];
-$need_date = date('d-m-Y' , strtotime($need_date_temp)); 
-echo $need_date."<br>"; 
+if  (isset($arr_all_new_orders)) {
+
+
+
 
  
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
@@ -51,15 +63,17 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
 
 }
 
-$date_orders = $_GET['select_date'];
+
 if (isset($arr_all_items)) {
     print_table_with_orders ($arr_all_items, $need_date_temp);
     /// переход на разбивку заказа
     echo <<<HTML
-    <a href="yandex_razbor/razbiavaem_po_gruzomestam.php?select_date=$date_orders">разбить товары по грузоместам</a>
+    <a href="yandex_razbor/razbiavaem_po_gruzomestam.php?select_date=$need_date_temp">разбить товары по грузоместам</a>
     
     HTML;  
 }
 
+} else {
+    echo "Нет данных для вывода";
 }
 
