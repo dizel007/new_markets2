@@ -63,7 +63,7 @@ if (isset ($arr_name)) {  // проверяем есть ли массив пр�
 			//    print_r($temp_items);
            $arr_article_count[$key] = count($arr_name[$key]);
 		   foreach ($temp_items as $perebor_prodazh){
-		   	$arr_sum_article_sell[$key] = @$arr_sum_article_sell[$key] + $perebor_prodazh['price'];
+		   	$arr_sum_article_sell[$key] = @$arr_sum_article_sell[$key] + $perebor_prodazh['convertedPrice'];
 		   }
 
        }

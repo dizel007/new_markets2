@@ -103,7 +103,7 @@ function get_new_zakazi_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
             foreach ($items['products'] as $product) {
                 
                 $arr_products[$product['offer_id']] = @$arr_products[$product['offer_id']] + $product['quantity'];
-                $arr_summa_sell_products[$product['offer_id']] = @$arr_summa_sell_products[$product['offer_id']] + $product['price'];
+                $arr_summa_sell_products[$product['offer_id']] = @$arr_summa_sell_products[$product['offer_id']] + $product['price']*$product['quantity'];
                 
 
             }
@@ -111,7 +111,7 @@ function get_new_zakazi_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
         }
 
     //  print_r ($arr_summa_sell_products);   
-    
+
 // добавляем в каталог данные о количестве проданного товара
         foreach ($arr_products as $key=>$prods) {
             foreach ($ozon_catalog as &$items_ozon) {

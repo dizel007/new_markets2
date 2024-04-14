@@ -62,21 +62,14 @@ $ozon_ip_catalog = get_ostatki_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_i
 //   Достаем фактически заказанные товары OZON *****************************
 $ozon_ip_catalog = get_new_zakazi_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_ip_catalog); // цепляем продажи
 
-
-// print_r ($wb_catalog);
-// die();
-//*****************************  Формируем массив из всех каталогов  *****************************
-
-// $all_catalogs[]= $wb_catalog;
-// $all_catalogs[]= $wbip_catalog;
-// $all_catalogs[]= $ozon_catalog;
-// $all_catalogs[]= $ozon_ip_catalog;
-
 //*****************************  получаем массив (артикул - кол-во проданного товара  *****************************
 
 
 print_info_sell_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog);
 // print_r($ozon_catalog);
+/**************************************************************************************
+ ********************************** THE END
+ *****************************************************************************************/
 die('');
 
 function print_info_sell_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog) {
@@ -90,18 +83,16 @@ echo <<<HTML
     <thead>
     <tr>
         <th>арт</th>
-        <th>продано<br>на ВБ</th>
-        <th>сумма<br>на ВБ</th>
-        <th>продано<br>на ВБ ИП</th>
-        <th>сумма<br>на ВБ ИП</th>
-        <th>продано<br>на озон</th>
-        
-        <th>сумма<br>на ОЗОН</th>
-
-        <th>продано<br>на озон ИП</th>
-        <th>сумма<br>на ОЗОН ИП</th>
-        <th>продано<br>ВЕЗДЕ</th>
-        <th>Сумма<br>ВЕЗДЕ</th>
+        <th>продано<br>на ВБ(шт)</th>
+        <th>сумма<br>на ВБ(руб)</th>
+        <th>продано<br>на ВБ ИП(шт)</th>
+        <th>сумма<br>на ВБ ИП(руб)</th>
+        <th>продано<br>на озон(шт)</th>
+        <th>сумма<br>на ОЗОН(руб)</th>
+        <th>продано<br>на озон ИП(шт)</th>
+        <th>сумма<br>на ОЗОН ИП(руб)</th>
+        <th>продано<br>ВЕЗДЕ(шт)</th>
+        <th>Сумма<br>ВЕЗДЕ(руб)</th>
         
     
     </tr>
