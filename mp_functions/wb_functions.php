@@ -51,7 +51,7 @@ function get_new_zakazi_wb ($token_wb, $wb_catalog) {
     $result = light_query_without_data($token_wb, $link_wb);
     
      // формируем массив ключ - артикул ; значение - количество элементов этого артикула
-    
+
     foreach ($result['orders'] as $items_wb) {
         $arr_name[$items_wb['article']][]= $items_wb;
     // $sum = @$sum + $itemss['convertedPrice']/100;
@@ -60,14 +60,26 @@ function get_new_zakazi_wb ($token_wb, $wb_catalog) {
 
 if (isset ($arr_name)) {  // проверяем есть ли массив проданных товаров
        foreach ($arr_name as $key => $temp_items) {
+			//    print_r($temp_items);
            $arr_article_count[$key] = count($arr_name[$key]);
+		   foreach ($temp_items as $perebor_prodazh){
+		   	$arr_sum_article_sell[$key] = @$arr_sum_article_sell[$key] + $perebor_prodazh['price'];
+		   }
+
        }
-    
+
+	   
+	//    print_r($arr_name);
+	//    die();
+
+
        foreach ($arr_article_count as $key=>$prods)  {
            foreach ($wb_catalog as &$items_wb) {
                // echo "<br>key=$key<br>";
                if ($key == $items_wb['mp_article']) {
                 $items_wb['sell_count'] = $prods;
+				$items_wb['sell_summa'] = $arr_sum_article_sell[$key];
+
                } 
            }
     

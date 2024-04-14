@@ -28,7 +28,7 @@ HTML;
 
 $new_array_create_sends = get_create_spisok_from_lerua($jwt_token, $art_catalog, 'created');
 
-echo "NEN ";
+// echo "NEN ";
 
 // echo "<pre>";
 // print_r($new_array_create_sends);

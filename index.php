@@ -57,8 +57,8 @@ echo <<<HTML
 <table class="main_screen">
 <tr>
 <td></td>
-<td><a href = "?transition=50"><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div>        </a> </td>
-<td><img width="$width_pics" src="pics/main_screen/all_sells.jpg" ><div>ВСЕ ПРОДАЖИ</div>     </td>
+<td><a href = "?transition=50"><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div></a></td>
+<td><a href = "all_sell/all_sell_index.php"><img width="$width_pics" src="pics/main_screen/all_sells.jpg" ><div>ВСЕ ПРОДАЖИ</div></a></td>
 <td></td>
 <td></td>
 <td></td>

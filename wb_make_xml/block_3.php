@@ -17,20 +17,32 @@ $StrNumber = 0;
 
 $Summa = 0;
 foreach ($xml_data as $item) {
+
+
+// print_r($item);
+
+
     $StrNumber++;
 
 $NDS = round($item['FullPrice'] * 20 / 120, 2);
 $price_bez_NDS = $item['FullPrice'] - $NDS;
 
+
+
+
+
 // **** Подставляем наименование и артикул *******************
 foreach ($arr_name_cat as $name) {
     if ($item['key'] == $name['mp_article'] ) {
     $real_name = $name['main_article'].' '.$name['mp_name'];
+    $real_name = str_replace("\"", "", $real_name);
     break;
     } else {
         $real_name = "NO DATA";
     }
 }
+
+// echo $real_name;
 
 $ttt = '<СведТов НомСтр="'.$StrNumber.'" НаимТов="'.$real_name.'" ОКЕИ_Тов="796" КолТов="'.$item['count'].'" СтТовБезНДС="'.$price_bez_NDS.
 '" НалСт="20%" СтТовУчНал="'.$item['FullPrice'].'">
@@ -38,7 +50,7 @@ $ttt = '<СведТов НомСтр="'.$StrNumber.'" НаимТов="'.$real_na
 <БезАкциз>без акциза</БезАкциз>
 </Акциз>
 <СумНал>
-<СумНал>'.$NDS.'</СумНал>
+<СумНал>'.'1'.'</СумНал>
 </СумНал>
 <ДопСведТов КодТов="'.$item['barcode'].'" НаимЕдИзм="шт"/>
 </СведТов>';
@@ -48,6 +60,8 @@ file_put_contents('test.xml',$ttt, FILE_APPEND);
 // Считаем сумму и НДС
 $Summa = $Summa + $item['FullPrice'];
 $Summa_NDS = @$Summa_NDS + $NDS;
+
+// if ($StrNumber ==7) {break;}
 }
 
 // $Summa_NDS = round($Summa * 20 / 120, 2);
