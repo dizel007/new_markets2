@@ -31,3 +31,21 @@ function get_article_by_sku_fbs($ozon_sebest, $sku) {
     
     return $article;
     }
+
+/**********************************************************************************************************************
+ ********************   Функия возвращает Артикул из 1С по СКУ ФБС **********************************************************
+ **********************************************************************************************************************/
+
+ function get_main_article_by_sku_fbs($ozon_sebest, $sku) {
+    foreach ($ozon_sebest as $item_cat) {
+        // echo "<br>+".$sku."__88__".$item_cat['sku']."__<br>";
+        if (($sku == $item_cat['sku']) OR (($sku == $item_cat['skuFBO']))) {
+            $article = $item_cat['main_article'];
+            break;
+        } else {$article  = 'SKU = '.$sku;}
+
+    }
+    
+    return $article;
+    }
+

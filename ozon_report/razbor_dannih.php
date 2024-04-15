@@ -11,9 +11,9 @@ $ozon_sebest = get_catalog_tovarov_v_mp($ozon_shop, $pdo);
 
 
 
-echo "<pre>";
+// echo "<pre>";
 
-
+// print_r($ozon_sebest);
 
 
 // die();
@@ -158,6 +158,16 @@ if (isset($arr_nerazjbrannoe_222)){
 }
 
 
+
+
+echo "<br><br><br>";
+
+
+// ВЫВОД ОСНОВНОЙ ТАБЛИЦЫ ////////////////////////////////////////////////////
+
+require_once "print/real_money.php";
+
+echo "<br><br><br>";
 
 // print_r($arr_orders);
 // ВЫВОД  ТАБЛИЦЫ FBO FBS////////////////////////////////////////////////////
