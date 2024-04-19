@@ -16,6 +16,7 @@ $wb_anmaks = 'wb_anmaks';
 $wb_ip = 'wb_ip_zel';
 $ozon_anmaks = 'ozon_anmaks';
 $ozon_ip = 'ozon_ip_zel';
+$yandex_anmaks_fbs = 'ya_anmaks_fbs';
 
 // НАзвание магазина, который обновляем
 // echo "<pre>";

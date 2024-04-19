@@ -28,7 +28,7 @@ foreach ($arr_all_nomenklatura as $item_99) {
     echo "<tr>";
         echo "<td>".""."</td>";
         echo "<td>".$article."</td>";
-        echo "<td>".$arr_new_ostatoki_MP[$article]."</td>";
+        echo "<td>".@$arr_new_ostatoki_MP[$article]."</td>";
         echo "<td>".@$arr_sell_tovari[$article]."</td>";
         echo "<td>".$item_99['min_ostatok']."</td>";    
         @$need_tovarov = $item_99['min_ostatok'] - (@$arr_new_ostatoki_MP[$article] - @$arr_sell_tovari[$article]);

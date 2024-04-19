@@ -170,7 +170,7 @@ $all_catalogs[] = $ya_fbs_catalog;
 //*****************************  получаем массив (артикул - кол-во проданного товара  *****************************
 $arr_sell_tovari = make_array_all_sell_tovarov($all_catalogs);
 
-// print_r($$wb_catalog);
+// print_r($arr_sell_tovari);
 // die();
 // // выводим шапку таблицы ВБ
 
@@ -238,7 +238,7 @@ echo "<td>";
 show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ozon_ip_catalog,$ozon_ip);
 echo "</td>";
 
-//******************************************* * WB IP ************************ 
+//******************************************* * YANDEX ************************ 
 echo "<td>";
 show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ya_fbs_catalog,$yandex_anmaks_fbs);
 echo "</td>";
@@ -269,7 +269,10 @@ if (isset($arr_need_tovari)){
 
 
 
-print_info_about_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog);
+// print_r($ya_fbs_catalog);
+// die();
+
+print_info_about_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog, $ya_fbs_catalog);
 
 die('Закончили разбор');
 
