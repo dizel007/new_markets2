@@ -15,13 +15,13 @@
 <table class="prods_table">
 
 <tr>
-    <td>пп<td>
-    <td>арт<td>
-    <td>продано на ВБ<td>
-    <td>продано на ВБ ИП<td>
-    <td>продано на озон<td>
-    <td>продано на озон ИП<td>
-    <td>продано ВЕЗДЕ<td>
+    <td>пп</td>
+    <td>арт</td>
+    <td>продано на ВБ</td>
+    <td>продано на ВБ ИП</td>
+    <td>продано на озон</td>
+    <td>продано на озон ИП</td>
+    <td>продано ВЕЗДЕ</td>
     
 
 </tr>
@@ -32,23 +32,23 @@ HTML;
         $article = mb_strtolower($item_99['main_article_1c']);
     
     echo "<tr>";
-        echo "<td>".""."<td>";
-        echo "<td>".$article."<td>";
+        echo "<td>".""."</td>";
+        echo "<td>".$article."</td>";
 
         $count_wb_item = find_sell_items ($wb_catalog , $article );
-        echo "<td>".$count_wb_item."<td>";
+        echo "<td>".$count_wb_item."</td>";
 
         $count_wb_ip_item = find_sell_items ($wbip_catalog , $article );
-        echo "<td>".$count_wb_ip_item."<td>";
+        echo "<td>".$count_wb_ip_item."</td>";
 
         $count_ozon_item = find_sell_items ($ozon_catalog , $article );
-        echo "<td>".$count_ozon_item."<td>";
+        echo "<td>".$count_ozon_item."</td>";
 
         $count_ozon_ip_item = find_sell_items ($ozon_ip_catalog , $article );
-        echo "<td>".$count_ozon_ip_item."<td>";
+        echo "<td>".$count_ozon_ip_item."</td>";
 
         $summa_all_mp = $count_wb_item + $count_wb_ip_item + $count_ozon_item + $count_ozon_ip_item;
-        echo "<td>".$summa_all_mp."<td>";
+        echo "<td>".$summa_all_mp."</td>";
    
     echo "</tr>";
  }

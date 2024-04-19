@@ -62,7 +62,7 @@ die ('Нужно выбрать даты');
 $dop_link = "?dateFrom=".$dateFrom."&dateTo=".$dateTo;
 // $link_wb = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod".$dop_link;
 // $link_wb = 'https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod'.$dop_link;
-  $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
+//   $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
   $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
 
 
@@ -138,6 +138,7 @@ $prodazh=0;
 $stornoprodazh=0;
 $correctProdazh=0;
 $guts_summa_sell=0;
+$summa_izderzhik_po_perevozke = 0;
 
 echo "<pre>";
 
@@ -150,7 +151,7 @@ require_once "wb_data_razbor.php";
 if (isset($array_neuchet)){
     echo "<pre>";
     echo "<br>*************************************  НЕУЧТЕННЫЕ НАЧАЛО *********************<br>";
-    // print_r($array_neuchet);
+    print_r($array_neuchet);
    echo "Количество необработанных строк = ".count($array_neuchet);
     echo "<br>*************************************  НЕУЧТЕННЫЕ КОНЕЦ *********************<br>";
 } else {
@@ -180,7 +181,7 @@ echo "<br>СТОРНО продаж: $stornoprodazh";
 echo "<br>Коррек Продажа: $correctProdazh";
 echo "<br>";
 echo "<br>Стоимость Хранения (нет артикула):<b> [$sum_storage] </b>{вычитается из Итого к оплате}";
-echo "<br>Стоимость Корректировка хранения (нет артикула): <b>[$sum_storage_correctirovka]</b>";
+echo "<br>Стоимость Корректировка хранения (нет артикула): <b>[$sum_storage_correctirovka]{вычитается из Итого к оплате}</b>";
 echo "<br>Стоимость Удержания (нет артикула): <b>[$sum_uderzhania]</b> {вычитается из Итого к оплате} ";
 echo "<br>Стоимость Штрафы и доплаты (нет артикула):<b> [$sum_shtafi_i_doplati]</b> {вычитается из Итого к оплате}";
 echo "<br>Стоимость Частичная компенсация брака (нет артикула):<b> [$sum_brak]</b> {добавляется к перечислению за товар}{добавляется из Итого к оплате} ";
@@ -254,10 +255,14 @@ echo "<td class=\"plus\">".number_format(@$arr_sum_avance[$key],2, ',', ' ')."</
 echo "<td class=\"minus\">".number_format(@$arr_sum_vozvratov[$key],2, ',', ' ')."</td>";
 
 ///     Сумма ЛОгистики 
+if (isset($arr_count[$key])){
 $logistika_za_shtuku = @$arr_sum_logistik[$key]/@$arr_count[$key];
  echo "<td class=\"minus\">".number_format(@$arr_sum_logistik[$key],2, ',', ' ').
                             "<br>".number_format(@$logistika_za_shtuku,2, ',', ' ')."</td>";
-
+} else {
+    echo "<td class=\"minus\">".number_format(@$arr_sum_logistik[$key],2, ',', ' ').
+                            "<br>"."-"."</td>";
+}
 
 ///     Сумма Комиссии ВБ
 echo "<td class=\"minus\">".number_format(@$arr_sum_voznagrazhdenie_wb[$key],2, ',', ' ')."</td>";
@@ -325,7 +330,7 @@ echo"<td> <-- </td>";
 echo"<td></td>";
 echo"<td></td>";
 // Сумма итого у оплате За вычетов штрафов / Хранение / Удержания /
-$summa_itogo_k_oplate = $sum_nasha_viplata - $sum_storage - $sum_uderzhania - $sum_shtafi_i_doplati + $sum_brak;
+$summa_itogo_k_oplate = $sum_nasha_viplata - $sum_storage - $sum_uderzhania - $sum_shtafi_i_doplati + $sum_brak - $sum_storage_correctirovka;
 echo"<td class=\"plus\"><b>".number_format($summa_itogo_k_oplate,2, ',', ' ')."</b></td>";
 
 echo "</tr>";
@@ -335,7 +340,12 @@ echo "</tr>";
 
 echo "</table>";
 
-die('РАСЧЕТ ОКОНЧЕН');
+
+
+print_r($arr_type);
+
+echo "<br> Сумма издержек по перевозке = ".$summa_izderzhik_po_perevozke;
+die('<br>РАСЧЕТ ОКОНЧЕН');
 
 
 

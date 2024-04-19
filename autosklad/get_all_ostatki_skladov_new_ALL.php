@@ -2,10 +2,14 @@
 require_once '../connect_db.php';
 require_once '../pdo_functions/pdo_functions.php';
 
+
 require_once "../mp_functions/ozon_api_functions.php";
 require_once "../mp_functions/ozon_functions.php";
 require_once "../mp_functions/wb_api_functions.php";
 require_once "../mp_functions/wb_functions.php";
+require_once "../mp_functions/yandex_api_functions.php";
+require_once "../mp_functions/yandex_functions.php";
+
 
 require_once "../autosklad/functions/parce_excel_sklad_json.php";
 require_once "../autosklad/functions/function_autosklad.php";
@@ -90,14 +94,15 @@ $arr_need_ostatok = get_min_ostatok_tovarov($pdo); // массив с утвер
 // Вся продаваемая номенклатура
 $arr_all_nomenklatura = select_all_nomenklaturu($pdo);
 
-// print_r($arr_all_nomenklatura);
-
+// print_r($sklads);
+// die();
 
 // Названия магазинов
 $wb_anmaks = 'wb_anmaks';
 $wb_ip = 'wb_ip_zel';
 $ozon_anmaks = 'ozon_anmaks';
 $ozon_ip = 'ozon_ip_zel';
+$yandex_anmaks_fbs = 'ya_anmaks_fbs';
 
 // Формируем каталоги товаров
 $wb_catalog      = get_catalog_tovarov_v_mp($wb_anmaks , $pdo);
@@ -105,14 +110,13 @@ $wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip, $pdo); // фомируем �
 $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks, $pdo); // получаем озон каталог
 $ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip, $pdo); // получаем озон каталог
 
-
+$ya_fbs_catalog = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo); // получаем yandex каталог
 // Формируем массив в номенклатурой, с учетом того, что один товар можнт продаваться под разным артикулом на Маркете
 
 /* *****************************      Получаем Фактические остатки с ВБ *****************************/
 $wb_catalog = get_ostatki_wb ($token_wb, $wb_catalog, $sklads[$wb_anmaks ]['warehouseId']);
 //*****************************      Достаем фактически заказанные товары  *****************************
 $wb_catalog = get_new_zakazi_wb ($token_wb, $wb_catalog);
-
 
 /* *****************************      Получаем Фактические остатки с ВБ ИП *****************************/
 $wbip_catalog = get_ostatki_wb ($token_wb_ip, $wbip_catalog, $sklads[$wb_ip]['warehouseId']); // цепляем остатки 
@@ -131,6 +135,17 @@ $ozon_ip_catalog = get_new_zakazi_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozo
 
 // var_dump($ozon_ip_catalog);
 
+//***************************** Получаем Фактические остатки с ЯНДЕКС *****************************
+$ya_fbs_catalog = get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепояем остатки
+//*****************************  Достаем фактически заказанные товары YANDEX *****************************
+$ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепляем продажи
+
+
+
+
+
+// print_r($ya_fbs_catalog);
+// die();
 // print_r ($ozon_ip_catalog);
 // die();
 
@@ -141,17 +156,17 @@ $wb_catalog      = get_db_procent_magazina ($wb_catalog, $sklads, $wb_anmaks , $
 $wbip_catalog    = get_db_procent_magazina ($wbip_catalog, $sklads, $wb_ip, $arr_new_ostatoki_MP);
 $ozon_catalog    = get_db_procent_magazina ($ozon_catalog, $sklads, $ozon_anmaks, $arr_new_ostatoki_MP);
 $ozon_ip_catalog = get_db_procent_magazina ($ozon_ip_catalog, $sklads, $ozon_ip, $arr_new_ostatoki_MP);
+$ya_fbs_catalog  = get_db_procent_magazina ($ya_fbs_catalog, $sklads, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
 
-
-// print_r ($wb_catalog);
+// print_r ($ya_fbs_catalog);
 // die();
 //*****************************  Формируем массив из всех каталогов  *****************************
 
-$all_catalogs[]= $wb_catalog;
-$all_catalogs[]= $wbip_catalog;
-$all_catalogs[]= $ozon_catalog;
-$all_catalogs[]= $ozon_ip_catalog;
-
+$all_catalogs[] = $wb_catalog;
+$all_catalogs[] = $wbip_catalog;
+$all_catalogs[] = $ozon_catalog;
+$all_catalogs[] = $ozon_ip_catalog;
+$all_catalogs[] = $ya_fbs_catalog;
 //*****************************  получаем массив (артикул - кол-во проданного товара  *****************************
 $arr_sell_tovari = make_array_all_sell_tovarov($all_catalogs);
 
@@ -162,15 +177,15 @@ $arr_sell_tovari = make_array_all_sell_tovarov($all_catalogs);
 // write_table_Sum_information($arr_new_ostatoki_MP, $arr_sell_tovari, $arr_need_ostatok);
 
 
-$wb_catalog = add_all_info_in_catalog ($wb_catalog, $all_catalogs, $arr_sell_tovari) ;
-$wbip_catalog = add_all_info_in_catalog ($wbip_catalog, $all_catalogs, $arr_sell_tovari) ;
-$ozon_catalog = add_all_info_in_catalog ($ozon_catalog, $all_catalogs, $arr_sell_tovari) ;
+$wb_catalog      = add_all_info_in_catalog ($wb_catalog, $all_catalogs, $arr_sell_tovari) ;
+$wbip_catalog    = add_all_info_in_catalog ($wbip_catalog, $all_catalogs, $arr_sell_tovari) ;
+$ozon_catalog    = add_all_info_in_catalog ($ozon_catalog, $all_catalogs, $arr_sell_tovari) ;
 $ozon_ip_catalog = add_all_info_in_catalog ($ozon_ip_catalog, $all_catalogs, $arr_sell_tovari) ;
-
+$ya_fbs_catalog  = add_all_info_in_catalog ($ya_fbs_catalog, $all_catalogs, $arr_sell_tovari) ;
 // $arr_all_nomenklatura;  // - перечень номенклатуры 
 // print_r($arr_all_nomenklatura);
 // die();
-// print_r($wb_catalog[0]);
+// print_r($ya_fbs_catalog);
 
 
 $link_all_update = "update_all_markets_ALL.php";
@@ -182,6 +197,10 @@ echo "<tr>";
 echo "<td>";
     echo "<table>";
         echo "<tr  class=\"rovnay_table_shapka\">";
+            echo "<td colspan=\"3\" >ОБщие данные</td>";
+        echo "</tr>";
+        
+        echo "<tr  class=\"rovnay_table_shapka\">";
             echo "<td>Артикул<br> 1С</td>";
             echo "<td>Кол-во 1с</td>";
             echo "<td>SELL</td>";
@@ -190,7 +209,7 @@ echo "<td>";
     foreach ($arr_all_nomenklatura as $item) {
         echo "<tr  class=\"rovnay_table\">";
             echo "<td>".$item['main_article_1c']."</td>";
-            echo "<td>".$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
+            echo "<td>".@$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
             echo "<td>".@$arr_sell_tovari[mb_strtolower($item['main_article_1c'])]."</td>";
         echo "</tr>";
      }
@@ -219,6 +238,10 @@ echo "<td>";
 show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ozon_ip_catalog,$ozon_ip);
 echo "</td>";
 
+//******************************************* * WB IP ************************ 
+echo "<td>";
+show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ya_fbs_catalog,$yandex_anmaks_fbs);
+echo "</td>";
 
 
 
@@ -259,6 +282,14 @@ echo <<<HTML
 HTML;
     
     echo "<table >";
+
+
+    echo "<tr  class=\"rovnay_table_shapka\">";
+    echo "<td colspan=\"7\" >$mp_name</td>";
+    echo "</tr>";
+
+
+
     echo "<tr  class=\"rovnay_table_shapka\">";
    
     echo "<td>Артикул МП</td>";

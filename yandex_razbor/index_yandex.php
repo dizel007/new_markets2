@@ -2,6 +2,12 @@
 
 require_once "pdo_functions/pdo_functions.php";
 
+require_once "mp_functions/yandex_api_functions.php";
+require_once "mp_functions/yandex_functions.php";
+
+
+
+
 require_once "functions/functions_yandex.php";
 require_once "functions/functions.php";
 

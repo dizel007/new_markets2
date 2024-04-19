@@ -57,10 +57,13 @@ function add_all_info_in_catalog ($mp_catalog, $all_catalogs, $arr_sell_tovari) 
             // $temp_sku = $article['sku'];
             // $temp_barcode = $article['barcode'];
             
-          
-    ($fake_kolvo_tovarov_dlya_magazina == $article['quantity'])?  $check_update = 0:  $z=1;
-    ($fake_kolvo_tovarov_dlya_magazina > $article['quantity'])?  $check_update = 1:  $z=1;
-    ($fake_kolvo_tovarov_dlya_magazina < $article['quantity'])?  $check_update = 1:  $z=1;
+    if (isset($article['quantity']))  {     
+        ($fake_kolvo_tovarov_dlya_magazina == $article['quantity'])?  $check_update = 0:  $z=1;
+        ($fake_kolvo_tovarov_dlya_magazina > $article['quantity'])?  $check_update = 1:  $z=1;
+        ($fake_kolvo_tovarov_dlya_magazina < $article['quantity'])?  $check_update = 1:  $z=1;
+        } else {
+            $check_update = 0; 
+        }
     ($article['fbo_only'] == 1) ? $check_update = 0:  $z=1; // если поставки только по ФБО то снимаем значем
 
     $article['nead_update'] = $check_update;  

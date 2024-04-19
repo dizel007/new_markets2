@@ -10,12 +10,12 @@ echo <<<HTML
 <table class="prods_table">
 
 <tr>
-    <td>пп<td>
-    <td>арт<td>
-    <td>кол-во из 1С<td>
-    <td>кол-во продано<td>
-    <td>мин остаток<td>
-    <td>требуется<td>
+    <td>пп</td>
+    <td>арт</td>
+    <td>кол-во из 1С</td>
+    <td>кол-во продано</td>
+    <td>мин остаток</td>
+    <td>требуется</td>
 
 
 </tr>
@@ -26,11 +26,11 @@ HTML;
 foreach ($arr_all_nomenklatura as $item_99) {
    $article = mb_strtolower($item_99['main_article_1c']);
     echo "<tr>";
-        echo "<td>".""."<td>";
-        echo "<td>".$article."<td>";
-        echo "<td>".$arr_new_ostatoki_MP[$article]."<td>";
-        echo "<td>".@$arr_sell_tovari[$article]."<td>";
-        echo "<td>".$item_99['min_ostatok']."<td>";    
+        echo "<td>".""."</td>";
+        echo "<td>".$article."</td>";
+        echo "<td>".$arr_new_ostatoki_MP[$article]."</td>";
+        echo "<td>".@$arr_sell_tovari[$article]."</td>";
+        echo "<td>".$item_99['min_ostatok']."</td>";    
         @$need_tovarov = $item_99['min_ostatok'] - (@$arr_new_ostatoki_MP[$article] - @$arr_sell_tovari[$article]);
         if ($need_tovarov <=0) {
             $need_tovarov=0;}
@@ -38,7 +38,7 @@ foreach ($arr_all_nomenklatura as $item_99) {
             $arr_need_tovari[$article] = $need_tovarov;
 
         }
-        echo "<td>".@$need_tovarov."<td>";    
+        echo "<td>".@$need_tovarov."</td>";    
     echo "</tr>";
 
     

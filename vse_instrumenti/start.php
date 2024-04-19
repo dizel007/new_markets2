@@ -220,6 +220,8 @@ if ($article == '301А' ) {
 // решетки водоотводные
     } elseif ($article == 'ANM.503' ) {
         $new_article = '503А';
+    } elseif ($article == 'ANM.501' ) {
+        $new_article = '501';
 
     } elseif ($article == 'ANM.508К.10' ) {
         $new_article = '508АК-10';
