@@ -120,7 +120,7 @@ function update_ostatki_Yandex_fbs($arr_tokens,$pdo, $shop_name) {
 $time = time() - 3 * 60 * 60; // уменьшаем время на 3 часа
 $date_now = date('Y-m-d\TH:i:s\Z', $time);
 
-
+if ($yandex_update_items_quantity <> "no_data") {
 // Формируем массив для обновления количества всех товаров
 foreach( $yandex_update_items_quantity as $key => $yandex_items) {
 
@@ -148,5 +148,5 @@ $res = yandex_put_query_with_data($ya_token, $ya_link, $ya_data);
 // print_r($res);
 // die();
 
-
+}
 }
