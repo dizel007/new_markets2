@@ -14,7 +14,7 @@ require_once "functions/functions.php";
  $ya_token =  get_token_yam($pdo);
  $campaignId =  get_id_company_yam($pdo);
 
-    // print_r($ya_token_info);
+    // print_r($campaignId);
 
 
     if (isset($_GET['select_date'])) {
@@ -42,7 +42,7 @@ require_once "functions/functions.php";
 
 
 $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
-echo "<pre>";
+// echo "<pre>";
 // print_r($arr_all_new_orders);
 
 
