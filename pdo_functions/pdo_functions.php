@@ -30,6 +30,19 @@
    return $new_arr_sklads;
 }
 
+/**************************************************************************************
+* Функция возвращаем процент, товара для данного магазина, если товар тут продается
+**************************************************************************************/
+
+function get_procent_tovarov_marketa($pdo) {
+   // $stmt = $pdo->prepare("SELECT * FROM `ostatki_po_skladam` WHERE `active_tovar` = 1");
+   $stmt = $pdo->prepare("SELECT * FROM `ostatki_po_skladam`");
+   
+   $stmt->execute();
+   $arr_raspredelenie = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   return $arr_raspredelenie;
+}
+
  /*************************************************
  * Делаем выборку все товаров в маркетплэйсе 
  ****************************************************/

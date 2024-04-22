@@ -6,7 +6,7 @@ function print_sum_information ($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ar
 echo <<<HTML
 
 <hr>
-<h1>Сводная таблица по 4-м магазинам</h1>
+<h1>Сводная таблица по 5 магазинам</h1>
 <table class="prods_table">
 
 <tr>

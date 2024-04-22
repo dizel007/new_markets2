@@ -1,5 +1,6 @@
 <?php
 
+
 /**************************************************************************************
 * Функция возвращаем процент, товара для данного магазина, если товар тут продается
 **************************************************************************************/
@@ -36,6 +37,32 @@ foreach ($mp_catalog as &$mp_item) {
 return $mp_catalog;
 }
 
+/**************************************************************************************
+* Функция возвращаем процент товара, который определен в базе данных этому складу,
+**************************************************************************************/
+function get_db_procent_tovara_v_magazine ($mp_catalog, $raspredelenie_ostatkov, $name_sklad, $arr_new_ostatoki_MP) {
+// print_R($mp_catalog);
+// die();
+    foreach ($mp_catalog as &$mp_item) {
+        $string_main_article = mb_strtolower((string)$mp_item['main_article']);
+
+            foreach ($arr_new_ostatoki_MP as $key=>$ostatok) {
+                if ($key == $string_main_article) {
+                    $mp_item['real_ostatok'] = $ostatok;
+                }
+               
+            foreach ($raspredelenie_ostatkov as $procent_tovara) {
+                if (mb_strtolower((string)$procent_tovara['main_article_1c']) == $string_main_article) {
+                    $mp_item['procent_raspredelenia'] = $procent_tovara[$name_sklad];
+                }
+               
+            }
+ 
+    }
+      
+    }
+    return $mp_catalog;
+}
 /**************************************************************************************
 * Функция возвращаем массив всех купленных товаров,
 **************************************************************************************/

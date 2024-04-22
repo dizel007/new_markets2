@@ -6,7 +6,8 @@ require_once "../mp_functions/ozon_api_functions.php";
 require_once "../mp_functions/ozon_functions.php";
 require_once "../mp_functions/wb_api_functions.php";
 require_once "../mp_functions/wb_functions.php";
-
+require_once "../mp_functions/yandex_api_functions.php";
+require_once "../mp_functions/yandex_functions.php";
 
 // Получаем все токены
 $arr_tokens = get_tokens($pdo);
@@ -21,25 +22,28 @@ $yandex_anmaks_fbs = 'ya_anmaks_fbs';
 // НАзвание магазина, который обновляем
 // echo "<pre>";
 
-/* **************************   МАссив для обновления ВБ *********************************** */
+// /* **************************  Запуск Обновления остатков ЯНДЕКС ФБС  *********************************** */
+update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
+
+// /* **************************  Запуск Обновления остатков для обновления ВБ *********************************** */
     $warehouseId = 34790;
      update_ostatki_WB($arr_tokens, $warehouseId , $wb_anmaks) ;
-/* **************************   МАссив WB IP oбновления *********************************** */
+// /* **************************  Запуск Обновления остатков WB IP oбновления *********************************** */
 //     // ВБ Зел
     $warehouseId =  946290;
     update_ostatki_WB($arr_tokens, $warehouseId , $wb_ip) ;
-// **************************   МАссив ОЗОН ООО  *********************************** */
+// /* **************************  Запуск Обновления остатков ОЗОН ООО  *********************************** */
     
 // Озон АНмакс 
     update_ostatki_OZON($arr_tokens,$pdo, $ozon_anmaks) ;
 
-   
-// /* **************************   МАссив ОЗОН ИП ЗЕЛ  *********************************** */
+// /* **************************  Запуск Обновления остатков ОЗОН ИП ЗЕЛ  *********************************** */
 //     // озон ИП зел
     update_ostatki_OZON($arr_tokens,$pdo, $ozon_ip) ;
 
- /* *************** возвращаемся к таблице*/
-   
+
+
+/* *************** возвращаемся к таблице*/
     header('Location: get_all_ostatki_skladov_new_ALL.php?return=777', true, 301);
 
 
@@ -102,3 +106,47 @@ function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
 
 }
 
+function update_ostatki_Yandex_fbs($arr_tokens,$pdo, $shop_name) {
+    $ya_token = $arr_tokens[$shop_name]['token'];
+    $campaignId = $arr_tokens[$shop_name]['id_market'];
+    $yandex_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
+
+// echo "<pre>";
+// print_r($yandex_update_items_quantity);
+
+// die();
+
+// "updatedAt"=> "2024-04-17T12:05:01Z" 
+$time = time() - 3 * 60 * 60; // уменьшаем время на 3 часа
+$date_now = date('Y-m-d\TH:i:s\Z', $time);
+
+
+// Формируем массив для обновления количества всех товаров
+foreach( $yandex_update_items_quantity as $key => $yandex_items) {
+
+//костыль для обновления количества решеток 
+($key == 'ANM_39-59')?$key = "ANM.39-59": $key = $key;
+
+// массив товаров для обновлния 
+    $sku_update_array[] = array(
+        "sku" =>  "$key",
+        "items" => array(array(
+                "count" => (int)$yandex_items['amount'],
+                "updatedAt"=> "$date_now"
+        ),
+                        )
+    );
+    // $sku_update_array[] = $temp_update_array;
+}
+
+
+$ya_data = array("skus" => ($sku_update_array));
+    
+
+$ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/offers/stocks';
+$res = yandex_put_query_with_data($ya_token, $ya_link, $ya_data);
+// print_r($res);
+// die();
+
+
+}

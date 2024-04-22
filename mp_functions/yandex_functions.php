@@ -78,13 +78,15 @@ function get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog){
 
 }
 
+
+// print_r($arr_all_items);
 // перебираем массив и добавляем проданные товары в каталог яндекса
 
 foreach ($ya_fbs_catalog as &$items) {
     foreach ($arr_all_items as $orders) {
         if ($orders['offerId'] == $items['sku']) {
             $items['sell_count'] = @$items['sell_count'] + $orders['count'];
-
+            $items['sell_summa'] = @$items['sell_summa'] + $orders['buyerPrice']*$orders['count'];
         }
     }
 

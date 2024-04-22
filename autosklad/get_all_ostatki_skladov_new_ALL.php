@@ -93,8 +93,10 @@ $arr_need_ostatok = get_min_ostatok_tovarov($pdo); // массив с утвер
 
 // Вся продаваемая номенклатура
 $arr_all_nomenklatura = select_all_nomenklaturu($pdo);
+// Получаем поартикульное распределние товаров на каждом складе 
+$raspredelenie_ostatkov = get_procent_tovarov_marketa($pdo);
 
-// print_r($sklads);
+// print_r($raspredelenie_ostatkov);
 // die();
 
 // Названия магазинов
@@ -146,19 +148,28 @@ $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_ca
 
 // print_r($ya_fbs_catalog);
 // die();
-// print_r ($ozon_ip_catalog);
+// print_r ($raspredelenie_ostatkov);
 // die();
 
 //*****************************  *************
 
 // Добавляем в каталог процент распрделения и остаток из 1С для магазина Озон ООО 
-$wb_catalog      = get_db_procent_magazina ($wb_catalog, $sklads, $wb_anmaks , $arr_new_ostatoki_MP);
-$wbip_catalog    = get_db_procent_magazina ($wbip_catalog, $sklads, $wb_ip, $arr_new_ostatoki_MP);
-$ozon_catalog    = get_db_procent_magazina ($ozon_catalog, $sklads, $ozon_anmaks, $arr_new_ostatoki_MP);
-$ozon_ip_catalog = get_db_procent_magazina ($ozon_ip_catalog, $sklads, $ozon_ip, $arr_new_ostatoki_MP);
-$ya_fbs_catalog  = get_db_procent_magazina ($ya_fbs_catalog, $sklads, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
+// $wb_catalog      = get_db_procent_magazina ($wb_catalog, $sklads, $wb_anmaks , $arr_new_ostatoki_MP);
+// $wbip_catalog    = get_db_procent_magazina ($wbip_catalog, $sklads, $wb_ip, $arr_new_ostatoki_MP);
+// $ozon_catalog    = get_db_procent_magazina ($ozon_catalog, $sklads, $ozon_anmaks, $arr_new_ostatoki_MP);
+// $ozon_ip_catalog = get_db_procent_magazina ($ozon_ip_catalog, $sklads, $ozon_ip, $arr_new_ostatoki_MP);
+// $ya_fbs_catalog  = get_db_procent_magazina ($ya_fbs_catalog, $sklads, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
 
-// print_r ($ya_fbs_catalog);
+
+
+$wb_catalog      = get_db_procent_tovara_v_magazine ($wb_catalog, $raspredelenie_ostatkov, $$wb_anmaks, $arr_new_ostatoki_MP);
+$wbip_catalog    = get_db_procent_tovara_v_magazine ($wbip_catalog, $raspredelenie_ostatkov, $wb_ip, $arr_new_ostatoki_MP);
+$ozon_catalog    = get_db_procent_tovara_v_magazine ($ozon_catalog, $raspredelenie_ostatkov, $ozon_anmaks, $arr_new_ostatoki_MP);
+$ozon_ip_catalog = get_db_procent_tovara_v_magazine ($ozon_ip_catalog, $raspredelenie_ostatkov, $ozon_ip, $arr_new_ostatoki_MP);
+$ya_fbs_catalog  = get_db_procent_tovara_v_magazine ($ya_fbs_catalog, $raspredelenie_ostatkov, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
+
+
+// print_r ($wb_catalog);
 // die();
 //*****************************  Формируем массив из всех каталогов  *****************************
 
@@ -183,7 +194,7 @@ $ozon_catalog    = add_all_info_in_catalog ($ozon_catalog, $all_catalogs, $arr_s
 $ozon_ip_catalog = add_all_info_in_catalog ($ozon_ip_catalog, $all_catalogs, $arr_sell_tovari) ;
 $ya_fbs_catalog  = add_all_info_in_catalog ($ya_fbs_catalog, $all_catalogs, $arr_sell_tovari) ;
 // $arr_all_nomenklatura;  // - перечень номенклатуры 
-// print_r($arr_all_nomenklatura);
+// print_r($wb_catalog);
 // die();
 // print_r($ya_fbs_catalog);
 
@@ -307,15 +318,28 @@ HTML;
     // ******************************************* WB OOO **************************************
 
         foreach ($mp_catalog as $temp_item) {
+            
             if (mb_strtolower($temp_item['main_article']) == mb_strtolower($item['main_article_1c'])) {
                 $temp_sku =$temp_item['sku'];
                 // echo "<td>".$temp_item['mp_article']."</td>";
-                echo "<td>".$temp_item['quantity']."<br>f=".@$temp_item['fake_count']."</td>";
+
+
 
                 $temp_barcode = $temp_item['barcode'];
                 $name_for_barcode = "_".$mp_name."_mp_BarCode_".$temp_sku;
                 $name_for_value = "_".$mp_name."_mp_value_".$temp_sku;
                 $kolvo_tovarov_dlya_magazina = $temp_item['update_kolvo_tovarov_dlya_magazina'];
+
+// Определяем цвет ячейки в зависимости от количества товара
+    $count_cell_color = ''; // изменяем цвет ячейки в зависимости от количества товара
+($temp_item['quantity'] == $kolvo_tovarov_dlya_magazina)?$count_cell_color = 'green_color': $z= '';
+($temp_item['quantity'] <> $kolvo_tovarov_dlya_magazina)?$count_cell_color = 'yellow_color': $z= '';
+($temp_item['quantity'] < 10)?$count_cell_color = 'orange_color': $z= '';
+($temp_item['quantity'] == 0)?$count_cell_color = 'zero_alarm_color': $z= '';
+
+
+echo "<td class=\"$count_cell_color\" >".$temp_item['quantity']."<br>f=".@$temp_item['fake_count']."</td>";
+
 
                 
  echo <<<HTML

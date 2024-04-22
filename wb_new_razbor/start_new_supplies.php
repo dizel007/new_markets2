@@ -115,7 +115,7 @@ $arr_new_zakaz = get_all_new_zakaz ($token_wb);
 
 //  foreach ($raw_arr_orders_t['orders'] as $order) {
 
-//     if (substr($order['createdAt'],0,10) == '2024-04-18') {
+//     if (substr($order['createdAt'],0,10) == '2024-04-21') {
 //         $arr_new_zakaz['orders'][] = $order;
 //     }
   
