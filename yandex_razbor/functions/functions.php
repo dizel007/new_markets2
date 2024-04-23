@@ -162,16 +162,18 @@ function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, 
  ******************* Выводим таблицу с заказами  ***********************************
  *************************************************************************************************/
 function print_table_with_orders ($array_orders, $date_orders) {
+  
     echo <<<HTML
     <link rel="stylesheet" href="yandex_razbor/css/style.css">
     <link rel="stylesheet" href="css/style.css">
+    <h1>Все товары на $date_orders</h2>
     <table class="">
     <tr>
         <th>пп</th>
         <th>артикул</th>
         <th>Наименование</th>
-         <th>Цена</th>
         <th>Кол-во</th>
+        <th>Цена</th>
     </tr>
     HTML;
     $i=1;
@@ -184,8 +186,9 @@ function print_table_with_orders ($array_orders, $date_orders) {
         $new_article = change_sku_for_1c_article($items['offerId']);
         echo "<td>".$new_article."</td>";
         echo "<td>".$items['offerName']."</td>";
-        echo "<td>".$items['buyerPrice']."</td>";
         echo "<td>".$items['count']."</td>";
+        echo "<td>".$items['buyerPrice']."</td>";
+
     
     echo "</tr>";
     
@@ -239,3 +242,72 @@ function print_table_with_orders ($array_orders, $date_orders) {
 
 return $article;
  }
+
+
+ /********************************************************************************************
+ ******************* Выводим таблицу заказам  ***********************************
+ *************************************************************************************************/
+function print_table_with_ALL_orders ($array_mass_orders, $date_orders) {
+//     echo "<pre>";
+// print_r($array_mass_orders);
+
+
+    echo <<<HTML
+    <link rel="stylesheet" href="yandex_razbor/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <h1>Все заказы $date_orders</h2>
+    <table class="">
+    <tr>
+        <th>пп</th>
+        <th>номер <br> заказа</th>
+        <th>Дата <br> отгрузки</th>
+        <th>артикул</th>
+        <th>Название товара</th>
+        <th>Кол-во</th>
+        <th>Цена</th>
+    </tr>
+    HTML;
+    $i=1;
+    $summa_tovarov = 0;
+    $kolichestvo_tovarov = 0;
+    
+
+    $i=1;
+    foreach ($array_mass_orders as $key=>$items) {
+    //  print_r($item);
+    $count_td = count($items['data']);
+    $j1=0;
+    echo "<tr>";
+    echo "<td rowspan=\"$count_td\">$i</td>
+    <td rowspan=\"$count_td\">".$key."</td>
+    <td rowspan=\"$count_td\">".$items['date_delivery']."</td>";
+  
+
+    // echo "<td>";
+    // echo "<table>";
+    foreach ($items['data'] as $prods) {
+
+        $j1++;
+        if ($j1 > 1) {
+           echo "<tr>"; 
+        }
+        echo "<td>".$prods['offerId']."</td>";
+        echo "<td>".$prods['offerName']."</td>";
+        echo "<td>".$prods['count']."</td>";
+        echo "<td>".number_format($prods['buyerPrice'],2)."</td>";
+        if ($j1 >1) {
+            echo "</tr>"; 
+         }
+        
+    }
+    
+    // echo "</table>";
+    // echo "</td>";
+    echo "</tr>";
+    $i++;
+    }
+    
+    echo "</table>";
+
+}
+    

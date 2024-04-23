@@ -45,21 +45,30 @@ $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
 // echo "<pre>";
 // print_r($arr_all_new_orders);
 
-
+// die();
 if  (isset($arr_all_new_orders)) {
-
-
-
-
  
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
     
+// формируем массиов товаров по заказам 
+$arr_mass_orders[$order['id']]['data'] = $order['items'];
+$arr_mass_orders[$order['id']]['date_delivery'] = $order['delivery']['shipments'][0]['shipmentDate'];
+
+
+// формируем массиов товаров общим переченем
+
     $orderId = $order['id']; // ID  выбранного заказа
     $item_number = 0; // порядквый номер товаров, если их несколько
     $need_ship_date = $order['delivery']['shipments'][$item_number]['shipmentDate'];
     $id_shipment = $order['delivery']['shipments'][$item_number]['id'];
   
         if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
+
+// формируем массиов товаров по заказам 
+$arr_mass_one_date_orders[$order['id']]['data'] = $order['items'];
+$arr_mass_one_date_orders[$order['id']]['date_delivery'] = $order['delivery']['shipments'][0]['shipmentDate'];
+
+
           
             foreach ($order['items'] as $items) { // перебираем все товары из выбранного заказа
                unset ($items['subsidies']);
@@ -70,6 +79,15 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
 }
 
 
+/// Выводим все заказы на все даты 
+print_table_with_ALL_orders ($arr_mass_orders, '');
+
+
+/// Выводим все заказы на все даты 
+print_table_with_ALL_orders ($arr_mass_one_date_orders, $need_date);
+
+
+/// Выводим все заказы на выбранные даты
 if (isset($arr_all_items)) {
     print_table_with_orders ($arr_all_items, $need_date_temp);
     /// переход на разбивку заказа
