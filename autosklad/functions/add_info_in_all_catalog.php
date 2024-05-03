@@ -3,7 +3,7 @@
  * Добавляем все нужную информацию в каталог товаров
  ********************************************************/
 
-function add_all_info_in_catalog ($mp_catalog, $all_catalogs, $arr_sell_tovari) {
+function add_all_info_in_catalog ($mp_catalog, $arr_sell_tovari) {
 // print_r($mp_catalog);
 // die();
     foreach ($mp_catalog as &$article) {
@@ -17,6 +17,9 @@ function add_all_info_in_catalog ($mp_catalog, $all_catalogs, $arr_sell_tovari) 
             $article['all_sell'] = $arr_sell_tovari[mb_strtolower($article['main_article'])];
         }
 // Сколько товара с учетом проданных товаров во всех магазинах
+if (!isset($article['real_ostatok'])) {
+    print_r($article);
+}
        $ostatki_s_prodannim = $article['real_ostatok'] - @$arr_sell_tovari[mb_strtolower($article['main_article'])];
        $article['ostatok_s_prodazjami'] = $ostatki_s_prodannim;
             

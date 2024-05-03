@@ -92,7 +92,7 @@ $sklads = select_info_about_sklads($pdo); // ОБщая Информация п�
 $arr_need_ostatok = get_min_ostatok_tovarov($pdo); // массив с утвержденным неснижаемым остатком
 
 // Вся продаваемая номенклатура
-$arr_all_nomenklatura = select_all_nomenklaturu($pdo);
+$arr_all_nomenklatura = select_active_nomenklaturu($pdo);
 // Получаем поартикульное распределние товаров на каждом складе 
 $raspredelenie_ostatkov = get_procent_tovarov_marketa($pdo);
 
@@ -107,12 +107,11 @@ $ozon_ip = 'ozon_ip_zel';
 $yandex_anmaks_fbs = 'ya_anmaks_fbs';
 
 // Формируем каталоги товаров
-$wb_catalog      = get_catalog_tovarov_v_mp($wb_anmaks , $pdo);
-$wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip, $pdo); // фомируем каталог
-$ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks, $pdo); // получаем озон каталог
-$ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip, $pdo); // получаем озон каталог
-
-$ya_fbs_catalog = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo); // получаем yandex каталог
+$wb_catalog      = get_catalog_tovarov_v_mp($wb_anmaks ,       $pdo, 'active');
+$wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip,            $pdo, 'active'); // фомируем каталог
+$ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks,      $pdo, 'active'); // получаем озон каталог
+$ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip,          $pdo, 'active'); // получаем озон каталог
+$ya_fbs_catalog = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo, 'active'); // получаем yandex каталог
 // Формируем массив в номенклатурой, с учетом того, что один товар можнт продаваться под разным артикулом на Маркете
 
 /* *****************************      Получаем Фактические остатки с ВБ *****************************/
@@ -188,11 +187,11 @@ $arr_sell_tovari = make_array_all_sell_tovarov($all_catalogs);
 // write_table_Sum_information($arr_new_ostatoki_MP, $arr_sell_tovari, $arr_need_ostatok);
 
 
-$wb_catalog      = add_all_info_in_catalog ($wb_catalog, $all_catalogs, $arr_sell_tovari) ;
-$wbip_catalog    = add_all_info_in_catalog ($wbip_catalog, $all_catalogs, $arr_sell_tovari) ;
-$ozon_catalog    = add_all_info_in_catalog ($ozon_catalog, $all_catalogs, $arr_sell_tovari) ;
-$ozon_ip_catalog = add_all_info_in_catalog ($ozon_ip_catalog, $all_catalogs, $arr_sell_tovari) ;
-$ya_fbs_catalog  = add_all_info_in_catalog ($ya_fbs_catalog, $all_catalogs, $arr_sell_tovari) ;
+$wb_catalog      = add_all_info_in_catalog ($wb_catalog,      $arr_sell_tovari) ;
+$wbip_catalog    = add_all_info_in_catalog ($wbip_catalog,    $arr_sell_tovari) ;
+$ozon_catalog    = add_all_info_in_catalog ($ozon_catalog,    $arr_sell_tovari) ;
+$ozon_ip_catalog = add_all_info_in_catalog ($ozon_ip_catalog, $arr_sell_tovari) ;
+$ya_fbs_catalog  = add_all_info_in_catalog ($ya_fbs_catalog,  $arr_sell_tovari) ;
 // $arr_all_nomenklatura;  // - перечень номенклатуры 
 // print_r($wb_catalog);
 // die();

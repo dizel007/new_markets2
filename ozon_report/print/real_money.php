@@ -1,7 +1,8 @@
 <?php 
 $arr_all_nomenklatura = select_all_nomenklaturu($pdo);
-
+// echo "<pre>";
 // print_r($arr_all_nomenklatura);
+// echo "</pre>";
 // CSS цепляем
 echo "<link rel=\"stylesheet\" href=\"css/main_ozon_reports.css\">";
 
@@ -11,7 +12,6 @@ echo "<table class=\"real_money fl-table\">";
 
 // ШАПКА ТАблицы
 echo "<tr>";
-    // echo "<th style=\"width:10%\">Наименование</th>";
     echo "<th>Артикл</th>";
     echo "<th>Кол-во<br>продано<br>(шт)</th>";
     echo "<th>Цена<br>для пок-ля<br>(руб)</th>";
@@ -19,25 +19,17 @@ echo "<tr>";
     echo "<th>% от общей<br>суммы продаж<br>(руб)</th>";
     echo "<th>Затраты на<br>доп.услуги<br>(руб)</th>";
     echo "<th>Цена за вычетом <br>всего (руб)</th>";
+    echo "<th>Желаемая цена<br>(руб)</th>";
     echo "<th>Себестоимость</th>";
     echo "<th>Дельта с одной штуки<br>(руб)</th>";
+
     echo "<th>Заработали<br>с артикула</th>";
-    // echo "<th>Обр.Обработка<br>(руб)</th>";
-
-    // echo "<th>Посл.миля<br>(руб)</th>";
-    // echo "<th>Хранение<br>утилизация<br>(руб)</th>";
-    // echo "<th>Удерж<br>за недовл<br>(руб)</th>";
-    // echo "<th>Эквайринг<br>(руб)</th>";
-    // echo "<th>Возвраты<br>(шт)</th>";
-    // echo "<th>Возвраты<br>(руб)</th>";
-
-
-
 echo "</tr>";
 
 
 foreach ($arr_article as $key=>$item) {
-   
+    $desired_price = 0; // Обнуляем желаемую цену
+    $need_up_price = 0; // ОБнуляем дельту между ценой за штуку и желаемой ценой
    
 
     $article = get_article_by_sku_fbs($ozon_sebest, $key); // получаем артикл по СКУ
@@ -101,23 +93,39 @@ if (isset($our_real_price_all_article)){echo "<td>".$our_real_price_all_article.
 $summa_k_perevodu = @$summa_k_perevodu + $our_real_price_all_article;
 
 
-/// Ищем себестоимость товара
+/// Ищем себестоимость и желаемую цену товара
 $priznak_min_price = 0;
 $min_price = 0;
 foreach ($arr_all_nomenklatura as $nomenclatura){
 
 if (mb_strtolower($nomenclatura['main_article_1c']) ==  mb_strtolower($article_1C)) {
     $min_price = $nomenclatura['min_price'];
-      echo "<td>". $min_price."</td>";
+    $desired_price = $nomenclatura['main_price']; // желаемая цена товара
+   
       $priznak_min_price = 1;
       
 break;
-    }      
+    }     
 } 
 
+// Желаемая цена за товар
+if ($desired_price <= $our_real_price_all_article_one_shtuka) {
+    $color_desired_price = 'good_desired_price';
+    $need_up_price= round($our_real_price_all_article_one_shtuka - $desired_price,0);
+   }else {
+    $color_desired_price = 'bad_desired_price';
+    $need_up_price=round($desired_price - $our_real_price_all_article_one_shtuka,0);
+   }
+
+if (isset($desired_price)){echo "<td class=\"$color_desired_price\">".$desired_price."<br>".$need_up_price."</td>";}else{echo "<td>"."</td>";}
+
+
+// Если не нашли себестоимость товара , то Себестоимость делаем равной цене продажи
 if ($priznak_min_price <> 1) {
-    $min_price = 0;
-     echo "<td>нд</td>";
+    $min_price = $our_real_price_all_article_one_shtuka;
+     echo "<td>**нет СБС**</td>";
+} else {
+    echo "<td>". $min_price."</td>";
 }
 
 // // Дельта за одну штуку
@@ -126,10 +134,8 @@ if (isset($item['count']))  {
 }else {
     $delta_for_one_temp = 0;
 }
-
-
-
 if (isset($delta_for_one_temp)){echo "<td>".$delta_for_one_temp."</td>";}else{echo "<td>"."</td>";}
+
 
 
 // Заработали на одном артикуле
@@ -144,22 +150,6 @@ $sum_zarabotali = @$sum_zarabotali + $money_for_one_article;
 
 
 
-// // Сборка
-//         if (isset($item['sborka'])){echo "<td>".$item['sborka']."</td>";}else{echo "<td>"."</td>";}
-// // ОБратна сборка
-//         if (isset($item['back_sborka'])){echo "<td>".$item['back_sborka']."</td>";}else{echo "<td>"."</td>";}
-
-// // ОБратная обработка
-//         if (isset($item['return_obrabotka'])){echo "<td>".$item['return_obrabotka']."</td>";}else{echo "<td>"."</td>";}
-
-// // Последняя Миля
-//         if (isset($item['lastMile'])){echo "<td>".$item['lastMile']."</td>";}else{echo "<td>"."</td>";}
-
-//         if (isset($item['amount_hranenie'])){echo "<td>".$item['amount_hranenie']."</td>";}else{echo "<td>"."</td>";}
-//         if (isset($item['compensation'])){echo "<td>".$item['compensation']."</td>";}else{echo "<td>"."</td>";}
-//         if (isset($item['amount_ecvairing'])){echo "<td>".$item['amount_ecvairing']."</td>";}else{echo "<td>"."</td>";}
-//         if (isset($item['count_vozvrat'])){echo "<td>".$item['count_vozvrat']."</td>";}else{echo "<td>"."</td>";}
-//         if (isset($item['amount_vozrat'])){echo "<td>".$item['amount_vozrat']."</td>";}else{echo "<td>"."</td>";}
 
 
     echo "</tr>";
@@ -179,29 +169,11 @@ echo "<tr>";
     if (isset($summa_dop_uslug_temp)){echo "<td>".$summa_dop_uslug_temp."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
 
     echo "<td>$summa_k_perevodu</td>"; // Наименование
-    echo "<td></td>"; // Наименование
-    echo "<td></td>"; // Наименование
+    echo "<td></td>";
+    echo "<td></td>"; 
+    echo "<td></td>"; 
     echo "<td>$sum_zarabotali</td>"; // общая сумма
     
-//     if (isset($summa_obratnoy_logistik)){echo "<td>".$summa_obratnoy_logistik."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
-    
-//  // сумма Сборки   
-//     if (isset($sborka)){echo "<td>".$sborka."</td>";}else{echo "<td>"."</td>";} 
-// // сумма обратной Сборки
-//     if (isset($back_sborka)){echo "<td>".$back_sborka."</td>";}else{echo "<td>"."</td>";} 
-// // сумма обратной обработки
-// if (isset($return_obrabotka)){echo "<td>".$return_obrabotka."</td>";}else{echo "<td>"."</td>";} 
-
-    
-
-//     if (isset($lastMile)){echo "<td>".$lastMile."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
-
-
-//     if (isset($amount_hranenie)){echo "<td>".$amount_hranenie."</td>";}else{echo "<td>"."</td>";} // сумма хранения
-//     if (isset($compensation)){echo "<td>".$compensation."</td>";}else{echo "<td>"."</td>";} // сумма эквайринга
-//     if (isset($amount_ecvairing)){echo "<td>".$amount_ecvairing."</td>";}else{echo "<td>"."</td>";} // сумма эквайринга
-//     echo "<td></td>";
-//     if (isset($amount_vozrat)){echo "<td>".$amount_vozrat."</td>";}else{echo "<td>"."</td>";} // сумма возвратов
 
 
 

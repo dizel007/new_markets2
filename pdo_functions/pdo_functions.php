@@ -10,6 +10,17 @@
     return $arr_nomenclatura;
  }
 
+  /*************************************************
+ * Делаем выборка активных товаров из номенклатуры 
+ ****************************************************/
+ function select_active_nomenklaturu($pdo) {
+   $stmt = $pdo->prepare("SELECT * FROM `nomenklatura`  WHERE `active_tovar` = 1 ORDER BY `number_in_spisok`");
+   $stmt->execute();
+   $arr_nomenclatura = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   return $arr_nomenclatura;
+}
+
+
 
  /*************************************************
  * Делаем выбовод со складов в процентам распределения между всеми
@@ -47,8 +58,13 @@ function get_procent_tovarov_marketa($pdo) {
  * Делаем выборку все товаров в маркетплэйсе 
  ****************************************************/
 
-function get_catalog_tovarov_v_mp($market_name, $pdo) {
+function get_catalog_tovarov_v_mp($market_name, $pdo, $type) {
+if ($type == 'active') {
+   $stmt = $pdo->prepare("SELECT * FROM $market_name WHERE `active_tovar` = 1");
+} else {
    $stmt = $pdo->prepare("SELECT * FROM $market_name");
+}
+   
    $stmt->execute();
    $arr_catalog = $stmt->fetchAll(PDO::FETCH_ASSOC);
    foreach ($arr_catalog as $catalog) {
@@ -76,7 +92,7 @@ return $super_new_arr;
  ****************************************************/
 
 function get_min_ostatok_tovarov($pdo) {
-   $arr = select_all_nomenklaturu($pdo);
+   $arr = select_active_nomenklaturu($pdo);
    foreach ($arr as $item) {
       $new_arr[$item['main_article_1c']] =  $item['min_ostatok'];
    }

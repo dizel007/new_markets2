@@ -49,7 +49,10 @@ update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
 
  die('ОБновили все остатки, но не перенаправились на начальную страницу');
 
- /// Обновление остаток на ВБ из POST  запроса
+ /***************************************************************
+ ******** Обновление остаток на ВБ из POST  запроса
+**************************************************************** */
+
  function update_ostatki_WB($arr_tokens, $warehouseId , $shop_name) {
     $token_wb = $arr_tokens[$shop_name]['token'];
     $wb_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
@@ -66,13 +69,18 @@ update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
 
 }
 
+
+ /***************************************************************
+ ******** Обновление остаток на OZON из POST  запроса
+**************************************************************** */
+
 function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
    // ОЗОН АНМКАС
    $client_id_ozon = $arr_tokens[$shop_name]['id_market'];
    $token_ozon = $arr_tokens[$shop_name]['token'];
    
    $ozon_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
-   $arr_catalog =  get_catalog_tovarov_v_mp($shop_name, $pdo);
+   $arr_catalog =  get_catalog_tovarov_v_mp($shop_name, $pdo, 'active');
    
    if ($ozon_update_items_quantity <> "no_data") {
    
@@ -105,6 +113,10 @@ function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
        }
 
 }
+
+ /***************************************************************
+ ******** Обновление остаток на YANDEX из POST  запроса
+**************************************************************** */
 
 function update_ostatki_Yandex_fbs($arr_tokens,$pdo, $shop_name) {
     $ya_token = $arr_tokens[$shop_name]['token'];

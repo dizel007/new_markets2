@@ -21,7 +21,7 @@ $raw_arr_orders = get_all_new_zakaz($token_wb_orders); // получили ма�
 
 // foreach ($raw_arr_orders_t['orders'] as $order) {
 
-//   if (substr($order['createdAt'],0,10) == '2024-04-21') {
+//   if (substr($order['createdAt'],0,10) == '2024-05-01') {
 //       $raw_arr_orders['orders'][] = $order;
 //   }
 

@@ -65,3 +65,13 @@
     background: #dd9c39;
    
 }
+
+.good_desired_price {
+    color:#55917f;
+    font-weight: 700;
+}
+
+.bad_desired_price {
+    color:#ff1919;
+    font-weight: 700;
+}
