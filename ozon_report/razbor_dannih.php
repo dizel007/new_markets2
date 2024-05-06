@@ -6,7 +6,7 @@ require_once "libs_ozon/sku_fbo_na_fbs.php"; // массив с себестои
 // $ozon_catalog = get_catalog_ozon ();
 $ozon_sebest = get_sebestiomost_ozon_with_sku_FBO ();
 
-$ozon_sebest = get_catalog_tovarov_v_mp($ozon_shop, $pdo);
+$ozon_sebest = get_catalog_tovarov_v_mp($ozon_shop, $pdo,'all');
 
 
 

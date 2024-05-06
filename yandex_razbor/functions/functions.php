@@ -166,7 +166,7 @@ function print_table_with_orders ($array_orders, $date_orders) {
     echo <<<HTML
     <link rel="stylesheet" href="yandex_razbor/css/style.css">
     <link rel="stylesheet" href="css/style.css">
-    <h1>Все товары на $date_orders</h2>
+    <h1>Все товары на дату: $date_orders</h2>
     <table class="">
     <tr>
         <th>пп</th>

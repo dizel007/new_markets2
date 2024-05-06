@@ -84,7 +84,7 @@ print_table_with_ALL_orders ($arr_mass_orders, '');
 
 
 /// Выводим все заказы на все даты 
-print_table_with_ALL_orders ($arr_mass_one_date_orders, 'для отгрузк'.$need_date);
+print_table_with_ALL_orders ($arr_mass_one_date_orders, 'для отгрузки на дату: '.$need_date);
 
 
 /// Выводим все заказы на выбранные даты

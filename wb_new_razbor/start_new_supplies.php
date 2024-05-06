@@ -11,12 +11,7 @@ require_once "functions/recover_func.php"; // функции для восста
 require_once "functions/make_1c_func.php"; // создания файла для 1С
 require_once "functions/make_zip_func.php";
 
-
-// require_once '../libs/PHPExcel-1.8/Classes/PHPExcel.php';
-// require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
-// require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
-
-// require_once "../loading/loading.php"; // функция вывода картинки с загрузкой
+require_once "get_zakaz_by_check_date.php"; // функция выбора заказов по дате
 
 
 // die('Ostanovili rabotu / Dieknilu tut ');
@@ -101,7 +96,7 @@ write_info_filelog ($file_Log_name,'Получаем все новые зака�
 //****************************************************************************************
 
 
-$arr_new_zakaz = get_all_new_zakaz ($token_wb);
+// $arr_new_zakaz = get_all_new_zakaz ($token_wb);
 
 // **** ВАЖНО !!!!!!!! (нужно закоментить основной массив для основного сбора /////\\\\||||)
 
@@ -115,16 +110,20 @@ $arr_new_zakaz = get_all_new_zakaz ($token_wb);
 
 //  foreach ($raw_arr_orders_t['orders'] as $order) {
 
-//     if (substr($order['createdAt'],0,10) == '2024-05-01') {
+//     if (substr($order['createdAt'],0,10) == '2024-05-03') {
 //         $arr_new_zakaz['orders'][] = $order;
 //     }
   
 //   }
   
 
+$date_orders_select = ''; // дата на которую нуэно собрать заказы (ПОКА ВРУЧНУЮ ИЗМЕНЯЕТСЯ В ФУНКЦИИ)
+$raw_arr_orders = select_order_by_check_date($token_wb, $date_orders_select) ;
 
+// echo "<pre>";
+// print_r($raw_arr_orders );
 
-
+// die('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
 
 
 

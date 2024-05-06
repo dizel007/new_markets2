@@ -14,7 +14,11 @@ autosklad/temp/
 
 yandex_razbor/reports/
 
-wb_otchet_agenta/reports/
+
+
+wb_reports/temp/
+wb_reports/reports/
+
 
 leroy/EXCEL/
 leroy/reports/

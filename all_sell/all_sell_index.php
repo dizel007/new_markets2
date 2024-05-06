@@ -38,10 +38,10 @@ $yandex_anmaks_fbs = 'ya_anmaks_fbs';
 
 // Формируем каталоги товаров
 $wb_catalog      = get_catalog_tovarov_v_mp($wb_anmaks ,        $pdo, 'all');
-$wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip,             $pdo,'all'); // фомируем каталог
+$wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip,             $pdo, 'all'); // фомируем каталог
 $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks,       $pdo ,'all'); // получаем озон каталог
-$ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip,           $pdo,'all'); // получаем озон каталог
-$ya_fbs_catalog  = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo,'all'); // получаем yandex каталог
+$ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip,           $pdo, 'all'); // получаем озон каталог
+$ya_fbs_catalog  = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo, 'all'); // получаем yandex каталог
 
 // Формируем массив в номенклатурой, с учетом того, что один товар можнт продаваться под разным артикулом на Маркете
 
