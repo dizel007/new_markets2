@@ -1,0 +1,25 @@
+.main_table_screen {
+    width:70%;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.main_table_screen td {
+    padding: 5px;
+    
+}
+
+.zoom13 {
+
+    transition: transform .2s; /* Animation */
+  }
+  
+  .zoom13:hover {
+    transform: scale(1.3); /* (150% зум - Примечание: если масштаб слишком велик, он будет выходить за пределы видового экрана) */
+  }
+  .big_text {
+    background-color:rgb(195, 152, 236);
+    width: 300px;
+    font-size: 25px;
+    font-weight: 900;
+  }
