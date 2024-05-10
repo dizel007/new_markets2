@@ -34,10 +34,15 @@ $array_for_table[$key]['sum_avance'] =@$arr_sum_avance[$key];
  ///     Сумма выплат с возвратов 
  $array_for_table[$key]['sum_vozvratov'] =@$arr_sum_vozvratov[$key];
 
+
+
  ///     Сумма ЛОгистики 
+
+
+ $array_for_table[$key]['sum_logistik'] =@$arr_sum_logistik[$key];
+
  if (isset($arr_count[$key])  && ($arr_count[$key] > 0 )){
-    $logistika_za_shtuku = @$arr_sum_logistik[$key]/@$arr_count[$key];
-    $array_for_table[$key]['sum_logistik'] =@$arr_sum_logistik[$key];
+   $logistika_za_shtuku = @$arr_sum_logistik[$key]/@$arr_count[$key];
     $array_for_table[$key]['logistika_za_shtuku'] = round($logistika_za_shtuku,2);
  } else {
     $array_for_table[$key]['logistika_za_shtuku'] = '--';
@@ -121,7 +126,7 @@ $sum_voznagrazhdenie_wb_po_wb = 0;
  *******************  Делаем рассчеты с учетом штрафов  ********************
  *******************************************************************************************************************/
 $summa_shrafa = - (-$sum_storage - $sum_uderzhania - $sum_shtafi_i_doplati + $sum_brak - $sum_storage_correctirovka);
-echo "<br> SHTFA=".$summa_shrafa."<br>";
+// echo "<br> SHTFA=".$summa_shrafa."<br>";
 $procent_ot_viplati = $sum_nasha_viplata_po_wb/100;
 $procent_all = 0;
 $summa_shtrafa_raschet = 0;

@@ -132,6 +132,7 @@ echo "<br><br>";
         echo "<br>*********************** ОТЧЕТЫ WB ******************************<br>";
         echo "<a href= \"wb_reports/wb_report_index.php?wb_shop=wb_anmaks\">ОТЧЕТЫ WB АНМАКС</a>";
         echo "<br><br>";
+        echo "<a href= \"wb_reports/wb_report_index.php?wb_shop=wb_ip_zel\">ОТЧЕТЫ WB ИП Зел</a>";
         echo "<br><br>";
         echo "<br><br>";
 

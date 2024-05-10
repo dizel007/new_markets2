@@ -61,14 +61,15 @@ die ('Нужно выбрать даты');
 
 $dop_link = "?dateFrom=".$dateFrom."&dateTo=".$dateTo;
 // $link_wb = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod".$dop_link;
-// $link_wb = 'https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod'.$dop_link;
-//   $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
-//   $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
+// $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
+// $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
   $link_wb =  'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod'.$dop_link;// временный метод
 
 $arr_result = light_query_without_data($token_wb, $link_wb);
 
+// echo "<pre>";
 
+// print_r($arr_result);
 
 /*********************************************************
 Проверяем нет ли ошибки взаимодействия
@@ -126,7 +127,7 @@ $sum_k_pererchisleniu = 0;
 $sum_logistiki = 0;
 $sum_storage =0;
 $sum_storage_correctirovka = 0;
-$sum_shtraf = 0 ;
+$return_logistok =0;
 $sum_voznagrazhdenie_wb = 0;
 $sum_vozvratov = 0;
 $sum_avance = 0 ;
@@ -139,6 +140,7 @@ $stornoprodazh=0;
 $correctProdazh=0;
 $guts_summa_sell=0;
 $summa_izderzhik_po_perevozke = 0;
+$sum_korrectirovka_eqvairinga = 0;
 
 echo "<pre>";
 
@@ -204,6 +206,10 @@ require_once('wb_print_report_table_new.php');
 // print_r($arr_type);
 report_mp_make_excel_file_morzha($array_for_table);
 echo "<br> Сумма издержек по перевозке = ".$summa_izderzhik_po_perevozke;
+echo "<br> Возмещение издержек по перевозке/по складским операциям с товаром = ".$return_logistok;
+echo "<br> Штрафы / Платная приемка МП на СЦ = ".$sum_shtafi_i_doplati;
+echo "<br> Корректировка эквайринга = ".$sum_korrectirovka_eqvairinga;
+
 die('<br>РАСЧЕТ ОКОНЧЕН');
 
 

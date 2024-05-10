@@ -1,5 +1,5 @@
 <?php
-$pp=0;
+// $pp=0;
 foreach ($arr_result as $item) {
 // КОСТЫЛЬ, чтобы посмотреть только РОСИИИ ИЛИ ЗАГРАНКУ   
 // if ($item['report_type'] <> 1) {
@@ -66,7 +66,7 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
     // Сумма логистики ************************************************************************************************************
         $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['delivery_rub'];
         $sum_logistiki = $sum_logistiki  + $item['delivery_rub'];
-        $pp++;
+        // $pp++;
 } elseif ($item['supplier_oper_name'] == 'Возмещение издержек по перевозке') {
     // Сумма логистики ИПЕШНИКАМ ************************************************************************************************************
     // $summa_izderzhik_po_perevozke = $summa_izderzhik_po_perevozke + $item['rebill_logistic_cost'];
@@ -85,17 +85,25 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
     // Стоимость Корректировка ХРАНЕНИЯ  ****************************************************************************************************
     $sum_storage_correctirovka = $sum_storage_correctirovka  + $item['storage_fee'];
 
+
+} elseif ($item['supplier_oper_name'] == 'Корректировка эквайринга') {
+    // Стоимость Корректировка эквайринга  ****************************************************************************************************
+    $sum_korrectirovka_eqvairinga = $sum_korrectirovka_eqvairinga  + $item['acquiring_fee'];
+
+
+
 }  elseif ($item['supplier_oper_name'] == 'Удержания') {
  // Стоимость ПРОЧИЕЕ УДЕРЖАНИЯ ****************************************************************************************************
     $sum_uderzhania = $sum_uderzhania  + $item['deduction'];
 
-}  elseif ($item['supplier_oper_name'] == 'Штрафы и доплаты') {
+} elseif (($item['supplier_oper_name'] == 'Штрафы') || ($item['supplier_oper_name'] == 'Штраф') || ($item['supplier_oper_name'] == 'Штрафы и доплаты')){
  // Стоимость ШТРАФЫ И ДОПЛАТЫ  ****************************************************************************************************
     $sum_shtafi_i_doplati = $sum_shtafi_i_doplati  + $item['penalty'];
 
-} elseif ($item['supplier_oper_name'] == 'Штрафы') {
-// Сумма ШТРАФОв   ************************************************************************************************************
-    $sum_shtraf = $sum_shtraf  + $item['penalty'];
+// Возмещение издержек по перевозке/по складским операциям с товаром
+} elseif($item['supplier_oper_name'] == 'Возмещение издержек по перевозке/по складским операциям с товаром') {
+$return_logistok = @$return_logistok + $item['rebill_logistic_cost'];
+
 } else {
     $array_neuchet[] = $item;
 }
