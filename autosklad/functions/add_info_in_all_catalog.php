@@ -18,7 +18,8 @@ function add_all_info_in_catalog ($mp_catalog, $arr_sell_tovari) {
         }
 // Сколько товара с учетом проданных товаров во всех магазинах
 if (!isset($article['real_ostatok'])) {
-    print_r($article);
+    // print_r($article);
+    $article['real_ostatok'] = 0; // КОСТЫЛЬ, ЕСЛИ нет никакой 
 }
        $ostatki_s_prodannim = $article['real_ostatok'] - @$arr_sell_tovari[mb_strtolower($article['main_article'])];
        $article['ostatok_s_prodazjami'] = $ostatki_s_prodannim;

@@ -59,7 +59,7 @@ echo <<<HTML
 <td></td>
 <td><a href = "?transition=50"><img width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>Автосклад</div></a></td>
 <td><a href = "all_sell/all_sell_index.php"><img width="$width_pics" src="pics/main_screen/all_sells.jpg" ><div>ПРОДАЖИ</div></a></td>
-<td></td>
+<td><a href = "all_sell/all_sell_one_day_index.php"><img width="$width_pics" src="pics/main_screen/all_sells.jpg" ><div>НА ДАТУ</div></a></td>
 <td></td>
 <td></td>
 <td></td>
@@ -135,6 +135,13 @@ echo "<br><br>";
         echo "<br><br>";
         echo "<br><br>";
 
+
+        echo "<br>*********************** ЕСЛИ ОЗОН РАЗБИЛСЯ НО НЕ СОБРАЛМСЯ  ******************************<br>";
+        echo "<a href= \"ozon_razbor/index_ozon_ooo_dop.php\">ПОЛУЧИТЬ этикетки ОЗОН ООО ТД АНМАКС</a>";
+        echo "<br><br>";
+        echo "<br>*********************** ЕСЛИ ОЗОН РАЗБИЛСЯ НО НЕ СОБРАЛМСЯ  ******************************<br>";
+        echo "<a href= \"ozon_razbor/index_ozon_ip_dop.php\">ПОЛУЧИТЬ этикетки ОЗОН ИП Зел</a>";
+        echo "<br><br>";
 
         die();
 }

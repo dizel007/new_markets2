@@ -118,10 +118,10 @@ write_info_filelog ($file_Log_name,'Получаем все новые зака�
   
 
 $date_orders_select = ''; // дата на которую нуэно собрать заказы (ПОКА ВРУЧНУЮ ИЗМЕНЯЕТСЯ В ФУНКЦИИ)
-$raw_arr_orders = select_order_by_check_date($token_wb, $date_orders_select) ;
+$arr_new_zakaz = select_order_by_check_date($token_wb, $date_orders_select) ;
 
 // echo "<pre>";
-// print_r($raw_arr_orders );
+// print_r($arr_new_zakaz );
 
 // die('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
 

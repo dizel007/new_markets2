@@ -35,7 +35,8 @@ foreach ($array_for_table as $key => $item) {
     echo "<td>" . $key . "</td>";
     echo "<td>" . @$item['count_sell'] . "</td>";
     ///     Сумма выплат с ВБ до вычета 
-    echo "<td class=\"plus\">" . number_format(@$item['sum_k_pererchisleniu'], 2, ',', ' ') . "</td>";
+    $price_one_shtuka_na_site = round(@$item['sum_k_pererchisleniu']/@$item['count_sell'],2);
+    echo "<td class=\"plus\">" . number_format(@$item['sum_k_pererchisleniu'], 2, ',', ' ') ."<br>".$price_one_shtuka_na_site. "</td>";
     // Авансовая оплата за товар без движения
     echo "<td class=\"plus\">" . number_format(@$item['sum_avance'], 2, ',', ' ') . "</td>";
     ///     Сумма выплат с возвратов 

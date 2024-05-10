@@ -63,8 +63,8 @@ $dop_link = "?dateFrom=".$dateFrom."&dateTo=".$dateTo;
 // $link_wb = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod".$dop_link;
 // $link_wb = 'https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod'.$dop_link;
 //   $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
-  $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
-
+//   $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
+  $link_wb =  'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod'.$dop_link;// временный метод
 
 $arr_result = light_query_without_data($token_wb, $link_wb);
 
