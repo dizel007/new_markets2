@@ -204,11 +204,13 @@ require_once('wb_raschet_data_fpr_table.php');
 require_once('wb_print_report_table_new.php');
 
 // print_r($arr_type);
-report_mp_make_excel_file_morzha($array_for_table);
+$file_name_report_excel = report_mp_make_excel_file_morzha($array_for_table);
 echo "<br> Сумма издержек по перевозке = ".$summa_izderzhik_po_perevozke;
 echo "<br> Возмещение издержек по перевозке/по складским операциям с товаром = ".$return_logistok;
 echo "<br> Штрафы / Платная приемка МП на СЦ = ".$sum_shtafi_i_doplati;
 echo "<br> Корректировка эквайринга = ".$sum_korrectirovka_eqvairinga;
+echo "<br><br>";
+echo "<br><a href = \"$file_name_report_excel\"> Ссылка для скачивания Отчета</a><br>";
 
 die('<br>РАСЧЕТ ОКОНЧЕН');
 

@@ -63,9 +63,9 @@ $sheet->setCellValue("B".$i, 'Выплата с учетом штрафов');
 $sheet->setCellValue("C".$i, $sum_nasha_viplata_s_uchetom_strafov);
 
         $objWriter = new PHPExcel_Writer_Excel2007($xls);
-        $file_name_need_tovari =  "report_wb.xlsx";
-        $objWriter->save("temp/".$file_name_need_tovari);
-        return    $file_name_need_tovari;   
+        $file_name_report_excel =  "temp/report_wb.xlsx";
+        $objWriter->save($file_name_report_excel);
+        return    $file_name_report_excel;   
         
     
     }
