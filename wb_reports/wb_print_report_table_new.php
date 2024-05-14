@@ -36,7 +36,11 @@ foreach ($array_for_table as $key => $item) {
     echo "<td>" . @$item['count_sell'] . "</td>";
     ///     Сумма выплат с ВБ до вычета 
     if (isset($item['count_sell'])) {
-    $price_one_shtuka_na_site = round(@$item['sum_k_pererchisleniu']/@$item['count_sell'],2);
+      if ($item['count_sell'] > 0) {
+        $price_one_shtuka_na_site = round(@$item['sum_k_pererchisleniu']/@$item['count_sell'],2);
+      } else {
+        $price_one_shtuka_na_site = "-"; 
+      }
     } else {
       $price_one_shtuka_na_site = "-"; 
     }

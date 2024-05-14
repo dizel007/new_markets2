@@ -4,7 +4,7 @@
  ***************************************************************************************/
 function select_order_by_check_date($token_wb, $date_orders) {
 /// **********************ДАТА СБОРА ЗАКАЗОВ ****************************************************
-    // $date_orders = '2024-05-05';
+    // $date_orders = '2024-05-12';
  ///////////////////////////////////////////////////////////////////////////////////   
 
     if ($date_orders == '') {
@@ -22,7 +22,9 @@ function select_order_by_check_date($token_wb, $date_orders) {
         
         }
     }
-  return $arr_new_zakaz;
+    if (isset($arr_new_zakaz)) {
+        return $arr_new_zakaz;
+    }
 }
 
 
