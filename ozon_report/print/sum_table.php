@@ -36,7 +36,7 @@ echo "</tr>";
 foreach ($arr_article as $key=>$item) {
     
     $article = get_article_by_sku_fbs($ozon_sebest, $key); // получаем артикл по СКУ
-
+    
    /// ОБЩИЕ СУММЫ 
     @$count +=$item['count']; // количеств проданных товарв продажи 
     @$accruals_for_sale +=$item['accruals_for_sale']; // сумма продажи 
@@ -52,7 +52,7 @@ foreach ($arr_article as $key=>$item) {
 
 
 
-    @$sale_commission +=$item['sale_commission']; // Общая стоимость 
+    @$sale_commission +=$item['sale_commission']; // КОММИСИЯ ОЗОН
     @$logistika +=$item['logistika']; // Общая стоимость 
     @$sborka +=$item['sborka']; // Общая стоимость 
     @$lastMile +=$item['lastMile']; // Общая стоимость 
@@ -68,33 +68,133 @@ foreach ($arr_article as $key=>$item) {
     echo "<tr>";
 
         // if (isset($item['name'])){echo "<td>".$item['name']."</td>";}else{echo "<td>"."</td>";}
-        if (isset($article)){echo "<td><b>".$article."</b></td>";}else{echo "<td>"."</td>";}
-        if (isset($item['count'])){echo "<td>".$item['count']."</td>";}else{echo "<td>"."</td>";}
-        if (isset($item['amount'])){echo "<td>".$item['accruals_for_sale']."<br>".$one_shtuka_buyer."</td>";}else{echo "<td>"."</td>";} // ценя для покупателья
-       
-        if (isset($item['amount'])){echo "<td>".$amount_bez_equaring."<br>".$one_shtuka."</td>";}else{echo "<td>"."</td>";}
-       
-        if (isset($item['sale_commission'])){echo "<td>".$item['sale_commission']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($article)){
+            echo "<td><b>".$article."</b></td>";
+            } else {
+            echo "<td>"."</td>";
+        }
+        if (isset($item['count'])){
+            $arr_report_items[$article]['count_sell']  = $item['count']; //// массив всех данных 
+            echo "<td>".$item['count']."</td>";
+        } else { 
+            $arr_report_items[$article]['count_sell']  = ""; //// массив всех данных 
+            echo "<td>"."</td>"; 
+        }
+// ценя для покупателья
+        if (isset($item['amount'])){
+            $arr_report_items[$article]['buyer_price']  = $item['accruals_for_sale']; //// массив всех данных 
+            $arr_report_items[$article]['buyer_price_za_shtuku']  = $one_shtuka_buyer; //// массив всех данных 
+
+            echo "<td>".$item['accruals_for_sale']."<br>".$one_shtuka_buyer."</td>";
+         } else {
+            $arr_report_items[$article]['buyer_price']  = ""; //// массив всех данных 
+            $arr_report_items[$article]['buyer_price_za_shtuku']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        } 
+ // сумма продаж      
+        if (isset($item['amount'])){
+            $arr_report_items[$article]['amount_bez_equaring']  = $amount_bez_equaring; //// массив всех данных 
+            $arr_report_items[$article]['amount_bez_equaring_za_shtuku']  = $one_shtuka; //// массив всех данных 
+            echo "<td>".$amount_bez_equaring."<br>".$one_shtuka."</td>";
+        } else {
+            $arr_report_items[$article]['amount_bez_equaring']  = ""; //// массив всех данных 
+            $arr_report_items[$article]['amount_bez_equaring_za_shtuku']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
+//Комиссия Озон        
+        if (isset($item['sale_commission'])){
+            $arr_report_items[$article]['sale_commission']  = $item['sale_commission']; //// массив всех данных 
+            echo "<td>".$item['sale_commission']."</td>";
+        } else { 
+            $arr_report_items[$article]['sale_commission']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 // Логистика
-        if (isset($item['logistika'])){echo "<td>".$item['logistika']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['logistika'])){
+            $arr_report_items[$article]['logistika']  = $item['logistika']; //// массив всех данных 
+            echo "<td>".$item['logistika']."</td>";
+        } else {
+            $arr_report_items[$article]['logistika']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 // обратная логистика 
-        if (isset($item['back_logistika'])){echo "<td>".$item['back_logistika']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['back_logistika'])){
+            $arr_report_items[$article]['back_logistika']  = $item['back_logistika']; //// массив всех данных 
+            echo "<td>".$item['back_logistika']."</td>";
+        } else {
+            $arr_report_items[$article]['back_logistika']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 // Сборка
-        if (isset($item['sborka'])){echo "<td>".$item['sborka']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['sborka'])){
+            $arr_report_items[$article]['sborka']  = $item['sborka']; //// массив всех данных 
+            echo "<td>".$item['sborka']."</td>";
+        } else { 
+            $arr_report_items[$article]['sborka']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 // ОБратна сборка
-        if (isset($item['back_sborka'])){echo "<td>".$item['back_sborka']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['back_sborka'])){
+            $arr_report_items[$article]['back_sborka']  = $item['back_sborka']; //// массив всех данных 
+            echo "<td>".$item['back_sborka']."</td>";
+        } else {
+            $arr_report_items[$article]['back_sborka']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 
 // ОБратная обработка
-        if (isset($item['return_obrabotka'])){echo "<td>".$item['return_obrabotka']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['return_obrabotka'])){
+            $arr_report_items[$article]['return_obrabotka']  = $item['return_obrabotka']; //// массив всех данных 
+            echo "<td>".$item['return_obrabotka']."</td>";
+        } else {
+            $arr_report_items[$article]['return_obrabotka']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 
 // Последняя Миля
-        if (isset($item['lastMile'])){echo "<td>".$item['lastMile']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['lastMile'])){
+            $arr_report_items[$article]['lastMile']  = $item['lastMile']; //// массив всех данных 
+            echo "<td>".$item['lastMile']."</td>";
+        } else {
+            $arr_report_items[$article]['lastMile']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 
-        if (isset($item['amount_hranenie'])){echo "<td>".$item['amount_hranenie']."</td>";}else{echo "<td>"."</td>";}
-        if (isset($item['compensation'])){echo "<td>".$item['compensation']."</td>";}else{echo "<td>"."</td>";}
-        if (isset($item['amount_ecvairing'])){echo "<td>".$item['amount_ecvairing']."</td>";}else{echo "<td>"."</td>";}
-        if (isset($item['count_vozvrat'])){echo "<td>".$item['count_vozvrat']."</td>";}else{echo "<td>"."</td>";}
-        if (isset($item['amount_vozrat'])){echo "<td>".$item['amount_vozrat']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['amount_hranenie'])){
+            $arr_report_items[$article]['amount_hranenie']  = $item['amount_hranenie']; //// массив всех данных 
+            echo "<td>".$item['amount_hranenie']."</td>";
+        } else {
+            $arr_report_items[$article]['amount_hranenie']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
+        if (isset($item['compensation'])){
+            $arr_report_items[$article]['compensation']  = $item['compensation']; //// массив всех данных 
+            echo "<td>".$item['compensation']."</td>";
+        } else { 
+            $arr_report_items[$article]['compensation']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
+        if (isset($item['amount_ecvairing'])){
+            $arr_report_items[$article]['amount_ecvairing']  = $item['amount_ecvairing']; //// массив всех данных 
+            echo "<td>".$item['amount_ecvairing']."</td>";
+        } else { 
+            $arr_report_items[$article]['amount_ecvairing']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
+        if (isset($item['count_vozvrat'])){
+            $arr_report_items[$article]['count_vozvrat']  = $item['count_vozvrat']; //// массив всех данных 
+            echo "<td>".$item['count_vozvrat']."</td>";
+        } else {
+            $arr_report_items[$article]['count_vozvrat']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
+        if (isset($item['amount_vozrat'])){
+            $arr_report_items[$article]['amount_vozrat']  = $item['amount_vozrat']; //// массив всех данных 
+            echo "<td>".$item['amount_vozrat']."</td>";
+        } else {
+            $arr_report_items[$article]['amount_vozrat']  = ""; //// массив всех данных 
+            echo "<td>"."</td>";
+        }
 
 
     echo "</tr>";
@@ -137,3 +237,7 @@ if (isset($return_obrabotka)){echo "<td>".$return_obrabotka."</td>";}else{echo "
 echo "</tr>";
 
 echo "</table>";
+
+
+// echo "<pre>";
+// print_r($arr_report_items);

@@ -1,4 +1,11 @@
 <?php
+
+
+echo "<pre>";
+// print_r($arr_nerazjbrannoe);
+// echo "</pre>";
+
+
 if (isset ($arr_services)) {
 foreach ($arr_services as $items) {
     $i++;
@@ -25,15 +32,14 @@ foreach ($arr_services as $items) {
 if ($service_obrabotan == 1) {
     continue;
 }
+// print_r($items);
+
 // СУмма по сервисами
 if ($items['operation_type'] == 'MarketplaceMarketingActionCostOperation') 
     { // Услуги продвижения товаров
         $Summa_uslugi_prodvizhenia_tovara = @$Summa_uslugi_prodvizhenia_tovara  + $items['amount']; 
     } 
-elseif ($items['operation_type'] == 'MarketplaceSaleReviewsOperation')
-    {  //Приобретение отзывов на платформе
-        $Summa_buy_otzivi = @$Summa_buy_otzivi  + $items['amount']; 
-    }
+
 elseif ($items['operation_type'] == 'OperationMarketPlaceItemPinReview')
     {  // Закрепление отзыва
         $Summa_zakrepleneie_otzivi = @$Summa_zakrepleneie_otzivi  + $items['amount']; 
@@ -50,29 +56,60 @@ elseif ($items['operation_type'] == 'OperationMarketplaceSupplyAdditional')
     {  //Обработка товара в составе грузоместа на FBO
         $Summa_obrabotka_gruzomestFBO = @$Summa_obrabotka_gruzomestFBO  + $items['amount']; 
     }
-elseif ($items['operation_type'] == 'MarketplaceServiceItemVideoCover')
-    {  //Генерация видеообложки
-        $Summa_generacia_videooblozhki = @$Summa_generacia_videooblozhki  + $items['amount']; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceStorage')
+    {  //ФБО хранение
+        $Summa_hranenia_FBO = @$Summa_hranenia_FBO  + $items['amount']; 
     }
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceStockDisposal')
+    {  //Утилизацция
+        $Summa_utilizacii_tovara = @$Summa_utilizacii_tovara  + $items['amount']; 
+    }
+
 elseif ($items['operation_type'] == 'OperationMarketplacePremiumSubscribtion')
     {  //Premium-подписка
         $Summa_premiaum_podpiska = @$Summa_premiaum_podpiska  + $items['amount']; 
     }
-elseif ($items['operation_type'] == 'OperationMarketplaceServiceStorage')
-    {  //Premium-подписка
-        $Summa_hranenia_FBO = @$Summa_hranenia_FBO  + $items['amount']; 
+elseif ($items['operation_type'] == 'OperationElectronicServiceStencil')
+    {  //Реклама Трафареты
+             $Summa_reklami_trafareti = @$Summa_reklami_trafareti + $items['amount']; 
     }
-elseif ($items['operation_type'] == 'OperationMarketplaceServiceStockDisposal')
-    {  //Premium-подписка
-        $Summa_utilizacii_tovara = @$Summa_utilizacii_tovara  + $items['amount']; 
+elseif ($items['operation_type'] == 'MarketplaceSaleReviewsOperation')
+    {  //Приобретение отзывов на платформе
+        $Summa_buy_otzivi = @$Summa_buy_otzivi  + $items['amount']; 
     }
+elseif ($items['operation_type'] == 'MarketplaceServiceItemVideoCover')
+    {  //Генерация видеообложки
+        $Summa_generacia_videooblozhki = @$Summa_generacia_videooblozhki  + $items['amount']; 
+    }     
+elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearch'){
+       //Реклама Продвижение в поиске
+            $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
+        }
+          
+    
 
 else {
     $Summa_neizvestnogo =  @$Summa_neizvestnogo  + $items['amount']; 
     $arr_nerazjbrannoe[] = $items; 
+   
 }
     
 }
 
 }
-// print_r($arr_xz_service);
+// echo "<pre>";
+// print_r($arr_nerazjbrannoe);
+// echo "</pre>";

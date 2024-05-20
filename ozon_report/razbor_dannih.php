@@ -4,7 +4,7 @@ require_once "libs_ozon/function_ozon_reports.php"; // массив с себе�
 require_once "libs_ozon/sku_fbo_na_fbs.php"; // массив с себестоимостью товаров
 
 // $ozon_catalog = get_catalog_ozon ();
-$ozon_sebest = get_sebestiomost_ozon_with_sku_FBO ();
+// $ozon_sebest = get_sebestiomost_ozon_with_sku_FBO ();
 
 $ozon_sebest = get_catalog_tovarov_v_mp($ozon_shop, $pdo,'all');
 
@@ -104,23 +104,83 @@ echo "<br>";
 
 
 echo "<br>";
-// if (isset($summa_NACHILS)){echo "НАЧИСЛЕННО                  : $summa_NACHILS<br>";}
-if (isset($all_summa_tovarov_)){echo "Подсчитанная сумма товаров (цена для покупателя) : $all_summa_tovarov_<br>";}
+/// Выводим таблицу похожую на озоновскую
+if (isset($all_summa_tovarov_)){echo "<b>Подсчитанная сумма товаров (Выкуплено товаров) : $all_summa_tovarov_</b><br>";}
+if (isset($sale_commission)){echo "<b>Вознаграждение ОЗОН за продажу : $sale_commission</b><br>";}
+echo "<br>";
+
+$plata_za_obrabotku_dostavku = @$sborka  + @$logistika + @$lastMile;
+if (isset($plata_za_obrabotku_dostavku)){echo "<b>Плата за обработку и доставку : $plata_za_obrabotku_dostavku</b><br>";}
+if (isset($sborka)){echo "Обработка отправления «Drop-off» : $sborka<br>";}
+if (isset($logistika)){echo "Логистика : $logistika<br>";}
+if (isset($lastMile)){echo "Последняя миля : $lastMile<br>";}
+
+echo "<br>";
+
+$plata_za_vozvrati_i_otmeni = @$summa_obratnoy_logistik  + @$return_obrabotka ;
+$vozvrati_i_otmeni = $plata_za_vozvrati_i_otmeni +$amount_vozrat;
+if (isset($vozvrati_i_otmeni)){echo "<b>Возвраты и отмены : $vozvrati_i_otmeni</b><br>";}
+if (isset($amount_vozrat)){echo "<b>Получено возвратов с учётом вознаграждения : $amount_vozrat</b><br>";}
+
+if (isset($plata_za_vozvrati_i_otmeni)){echo "<b>Плата за возвраты и отмены : $plata_za_vozvrati_i_otmeni</b><br>";}
+if (isset($summa_obratnoy_logistik)){echo "Обратная логистика : $summa_obratnoy_logistik<br>";}
+if (isset($return_obrabotka)){echo "Обработка возвратов, отмен и невыкупов Партнёрами Ozon : $return_obrabotka<br>";}
+echo "<br>";
+
+if (isset($amount_ecvairing)){echo "<b>Оплата эквайринга : $amount_ecvairing</b><br>";}
 echo "<br>";
 
 
 
+// Формируем сумму Дополнительных Услуг Озона
 $dop_uslugi = 0;
-if (isset($Summa_uslugi_prodvizhenia_tovara)){echo "Услуги продвижения товаров : $Summa_uslugi_prodvizhenia_tovara<br>";$dop_uslugi+=$Summa_uslugi_prodvizhenia_tovara;}
-if (isset($Summa_buy_otzivi)){echo "Приобретение отзывов на платформе : $Summa_buy_otzivi<br>";$dop_uslugi+=$Summa_buy_otzivi;}
-if (isset($Summa_zakrepleneie_otzivi)){echo "Закрепление отзыва      : $Summa_zakrepleneie_otzivi<br>";$dop_uslugi+=$Summa_zakrepleneie_otzivi;}
-if (isset($Summa_oshibok_prodavca)){echo "Услуга за обработку операционных ошибок продавца: просроченная отгрузка : $Summa_oshibok_prodavca<br>";$dop_uslugi+=$Summa_oshibok_prodavca;}
-if (isset($Summa_obrabotka_gruzomestFBO)){echo "Обработка товара в составе грузоместа на FBO : $Summa_obrabotka_gruzomestFBO<br>";$dop_uslugi+=$Summa_obrabotka_gruzomestFBO;}
-if (isset($Summa_generacia_videooblozhki)){echo "Генерация видеообложки : $Summa_generacia_videooblozhki<br>";$dop_uslugi+=$Summa_generacia_videooblozhki;}
-if (isset($Summa_premiaum_podpiska)){echo "Premium-подписка : $Summa_premiaum_podpiska<br>";$dop_uslugi+=$Summa_premiaum_podpiska;}
+// Услуги продвижения товаров
+if (isset($Summa_uslugi_prodvizhenia_tovara)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_uslugi_prodvizhenia_tovara,"Услуги продвижения товаров");
+}
+// Приобретение отзывов на платформе
+if (isset($Summa_buy_otzivi)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_buy_otzivi,"Приобретение отзывов на платформе");
+}
+// Закрепление отзыва
+if (isset($Summa_zakrepleneie_otzivi)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_zakrepleneie_otzivi,"Закрепление отзыва");
+}
+// Услуга за обработку операционных ошибок продавца: просроченная отгрузка
+if (isset($Summa_oshibok_prodavca)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_oshibok_prodavca,"Услуга за обработку операционных ошибок продавца: просроченная отгрузка");
+}
+// Генерация видеообложки
+if (isset($Summa_generacia_videooblozhki)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_generacia_videooblozhki,"Генерация видеообложки");
+}
+// Premium-подписка
+if (isset($Summa_premiaum_podpiska)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_premiaum_podpiska,"Premium-подписка");
+}
+// Реклама трафареты
+if (isset($Summa_reklami_trafareti)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_reklami_trafareti,"Реклама трафареты");
+}
+//Реклама Поиск в продвижении
+if (isset($Summa_reklami_poisk)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_reklami_poisk,"Реклама Поиск в продвижении");
+}
+// Услуга размещения товаров на складе
+if (isset($Summa_hranenia_FBO)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_hranenia_FBO,"Услуга размещения товаров на складе");
+}
+// Обработка товара в составе грузоместа на FBO
+if (isset($Summa_obrabotka_gruzomestFBO)){
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_gruzomestFBO,"Обработка товара в составе грузоместа на FBO");
+}
 
-if (isset($Summa_hranenia_FBO)){echo "Услуга размещения товаров на складе : $Summa_hranenia_FBO<br>";$dop_uslugi+=$Summa_hranenia_FBO;}
+
 if (isset($Summa_utilizacii_tovara)){echo "Утилизация : $Summa_utilizacii_tovara<br>";}
+if (isset($Summa_dostav_i_obrabotyka_vozvratov)){echo "Доставка и обработка возврата, отмены, невыкупа : $Summa_dostav_i_obrabotyka_vozvratov<br>";}
+
+
+
 
 if (isset($Summa_neizvestnogo)){echo "СЕРВИСЫ (НЕРАЗОБРАННЫЕ)      : $Summa_neizvestnogo<br>";}
 if (isset($Summa_izmen_uslovi_otgruzki)){echo "Услуга по изменению условий отгрузки : $Summa_izmen_uslovi_otgruzki<br>";}

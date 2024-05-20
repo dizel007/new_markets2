@@ -331,14 +331,16 @@ HTML;
 
 // Определяем цвет ячейки в зависимости от количества товара
     $count_cell_color = ''; // изменяем цвет ячейки в зависимости от количества товара
-($temp_item['quantity'] == $kolvo_tovarov_dlya_magazina)?$count_cell_color = 'green_color': $z= '';
-($temp_item['quantity'] <> $kolvo_tovarov_dlya_magazina)?$count_cell_color = 'yellow_color': $z= '';
-($temp_item['quantity'] < 10)?$count_cell_color = 'orange_color': $z= '';
-($temp_item['quantity'] == 0)?$count_cell_color = 'zero_alarm_color': $z= '';
-
-
+    if (isset($temp_item['quantity'])) {
+        ($temp_item['quantity'] == $kolvo_tovarov_dlya_magazina)?$count_cell_color = 'green_color': $z= '';
+        ($temp_item['quantity'] <> $kolvo_tovarov_dlya_magazina)?$count_cell_color = 'yellow_color': $z= '';
+        ($temp_item['quantity'] < 10)?$count_cell_color = 'orange_color': $z= '';
+        ($temp_item['quantity'] == 0)?$count_cell_color = 'zero_alarm_color': $z= '';
+    
 echo "<td class=\"$count_cell_color\" >".$temp_item['quantity']."<br>f=".@$temp_item['fake_count']."</td>";
-
+    } else {
+        echo "<td class=\"$count_cell_color\" >"."НД"."<br>f=".@$temp_item['fake_count']."</td>";
+    }
 
                 
  echo <<<HTML

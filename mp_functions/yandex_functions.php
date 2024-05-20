@@ -14,7 +14,7 @@ function get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog) {
     $arr_all_stocks = yandex_post_query_with_data($yam_token, $ya_link, $ya_data);
     
 // Формируем массив с остатками товаров
-
+if (isset($arr_all_stocks['result']['warehouses'][0]['offers'])) {
     foreach ($arr_all_stocks['result']['warehouses'][0]['offers'] as $stocks) {
     
         // $arr_stocks_by_artickle[$stocks['offerId']] = $stocks['offerId'];
@@ -26,8 +26,10 @@ function get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog) {
         }
         
     }
+}
 
 // Цепляем остатки товаров к каталогу яндекс
+if (isset($arr_stocks_by_artickle)) {
 foreach ($ya_fbs_catalog as &$items) {
     foreach ($arr_stocks_by_artickle as $key=>$znachenia) 
 
@@ -39,7 +41,7 @@ foreach ($ya_fbs_catalog as &$items) {
     }
 
 }
-
+}
 
     return $ya_fbs_catalog;
     }

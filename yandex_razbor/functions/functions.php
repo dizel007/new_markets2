@@ -23,10 +23,25 @@ return $result;
 function get_new_orders($ya_token, $campaignId) {
 
 $substatus = 'substatus=STARTED';
-$ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus ;
+// $substatus = 'substatus=READY_TO_SHIP'; // Когда нужно обработатть товары которые уже готовы к отправке
+$page=1;
+$ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ;
 
-$result = get_query_without_data($ya_token, $ya_link);
+$orders = get_query_without_data($ya_token, $ya_link);
 
+// перебираем все страницы заказов
+for ($page=1; $page <= $orders['pager']['pagesCount']; $page++) {
+
+    $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ; 
+     
+    $orders2 = get_query_without_data($ya_token, $ya_link);  
+    foreach ($orders2['orders'] as $order ) {
+        $result['orders'][] = $order;
+    }
+
+}
+
+echo "КОЛИЧЕСТВО ПОЛУЧЕННЫХ ЗАКАЗОВ =".count($result['orders'])."<br><br>";
 return $result;
 }
 
