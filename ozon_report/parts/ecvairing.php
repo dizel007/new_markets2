@@ -1,4 +1,6 @@
 <?php 
+// echo "<pre>";
+// print_r($arr_other);
 
 foreach ($arr_other as $items) {
     $i++;
@@ -24,12 +26,17 @@ if ($items['operation_type'] == 'MarketplaceRedistributionOfAcquiringOperation')
             }
     }
 // СУмма претензий (ОНа не привязана к артикулу) /Начисления по претензиям
-    elseif ($items['operation_type'] == 'OperationClaim') 
+elseif ($items['operation_type'] == 'OperationClaim') 
         {
             $Summa_pretensii = @$Summa_pretensii  + $items['amount']; // сумма начислений по претензиям
+            $arr_article[$new_sku]['shraf_po_pretenziam'] = @$arr_article[$new_sku]['shraf_po_pretenziam'] + $items['amount'];
         }
-    else {
+else {
         $arr_nerazjbrannoe[]=$items;
     }
     
 }
+
+
+// echo "<pre>";
+// print_r($arr_nerazjbrannoe);

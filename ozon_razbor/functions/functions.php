@@ -19,7 +19,7 @@ function send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url ) 
 	
 	$res = json_decode($res, true);
         if (intdiv($http_code,100) <>2 ) {
-        echo     'Результат обмена : '.$http_code. "<br>";
+        echo     'Результат обмена ОЗОН: '.$http_code. "<br>";
         }
    
     return($res);	

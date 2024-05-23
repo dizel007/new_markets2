@@ -1,13 +1,7 @@
 <?php
 
 
-foreach ($arr_returns as $item222s) {
-        $gggg[$item222s['operation_type']] = $item222s['operation_type'];
-}
-
-echo "<pre>";
-print_r($gggg);
-print_r($arr_returns);
+// print_r($arr_returns);
 
 foreach ($arr_returns as $items) {
 
@@ -24,70 +18,111 @@ foreach ($arr_returns as $items) {
 
 
                 /// Разбиваем стоиомть возвратов на логистику и обработку ... может еще что то
-                if (($items['operation_type'] == 'OperationReturnGoodsFBSofRMS') || ($items['operation_type'] == 'OperationItemReturn')) //Доставка и обработка возврата, отмены, невыкупа
-                {
+                //Доставка и обработка возврата, отмены, невыкупа
+                if (($items['operation_type'] == 'OperationReturnGoodsFBSofRMS')  || ($items['operation_type'] == 'OperationItemReturn')) {
                         foreach ($items['services'] as $return_dop_obrabotka) {
-                                // Стоимость прямой логистики для возврата
+                                // логистика
                                 if ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDirectFlowLogistic') {
-                                        $arr_article[$new_sku]['logistika'] = @$arr_article[$new_sku]['logistika'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_sku]['logistika_vozvrat'] = @$arr_article[$new_sku]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_sku]['logistika_vozvrat_count'] = @$arr_article[$new_sku]['logistika_vozvrat_count'] + 1;
+                                        $logistika_vozvrat_count = @$logistika_vozvrat_count + 1;
                                 }
-                                // Стоимость обратной логистик для возвартов
+                                // обратная логистика
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowLogistic') {
 
-                                        $arr_article[$new_sku]['back_logistika'] = @$arr_article[$new_sku]['back_logistika'] + $return_dop_obrabotka['price'];
-                                        $summa_obratnoy_logistik = @$summa_obratnoy_logistik + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_sku]['back_logistika_vozvrat'] = @$arr_article[$new_sku]['back_logistika_vozvrat'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_sku]['back_logistika_count'] = @$arr_article[$new_sku]['back_logistika_count'] + 1;
+                                        $back_logistika_count = @$back_logistika_count + 1;
+                                }
+                                // обработка отправления.
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffSC') {
+                                        $arr_article[$new_sku]['obrabotka_otpravlenii_v_SC'] = @$arr_article[$new_sku]['obrabotka_otpravlenii_v_SC'] + $return_dop_obrabotka['price'];
+                                }
+                                // обработка отправления в ПВЗ.
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffPVZ') {
+                                        $arr_article[$new_sku]['obrabotka_otpravlenii_v_PVZ'] = @$arr_article[$new_sku]['obrabotka_otpravlenii_v_PVZ'] + $return_dop_obrabotka['price'];
+                                }
                                 
+                                /// сборка заказа
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemFulfillment') {
+                                        $arr_article[$new_sku]['sborka_zakaza'] = @$arr_article[$new_sku]['sborka_zakaza'] + $return_dop_obrabotka['price'];
                                 }
-                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffSC') {
-                                        $arr_article[$new_sku]['sborka'] = @$arr_article[$new_sku]['sborka'] + $return_dop_obrabotka['price'];
-                                        $arr_article[$new_sku]['back_sborka'] = @$arr_article[$new_sku]['back_sborka'] + $return_dop_obrabotka['price'];
-                                        $back_sborka = @$back_sborka + $return_dop_obrabotka['price'];
-                                }
-                                /// Обработка возвратов, отмен и невыкупов Партнёрами Ozon
+                                /// перевыставление возвратов на ПВЗ.
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemRedistributionReturnsPVZ') {
                                         $arr_article[$new_sku]['return_obrabotka'] = @$arr_article[$new_sku]['return_obrabotka'] + $return_dop_obrabotka['price'];
-                                        $return_obrabotka = @$return_obrabotka + $return_dop_obrabotka['price'];
+                                }
+
+                                /// Обработка отмен.
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnNotDelivToCustomer') {
+                                        $arr_article[$new_sku]['work_otmen'] = @$arr_article[$new_sku]['work_otmen'] + $return_dop_obrabotka['price'];
+                                }
+                                /// обработка возврата.
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnAfterDelivToCustomer') {
+                                        $arr_article[$new_sku]['work_vozvrata'] = @$arr_article[$new_sku]['work_vozvrata'] + $return_dop_obrabotka['price'];
+                                }
+
+                                /// магистраль
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDirectFlowTrans') {
+                                        $arr_article[$new_sku]['logistika_magistral'] = @$arr_article[$new_sku]['logistika_magistral'] + $return_dop_obrabotka['price'];
+                                        $logistika_magistral = @$logistika_magistral + $return_dop_obrabotka['price'];
+                                }
+                                /// обратная магистраль
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowTrans') {
+                                        $arr_article[$new_sku]['logistika_obrat_magistral'] = @$arr_article[$new_sku]['logistika_obrat_magistral'] + $return_dop_obrabotka['price'];
+                                }
+
+                                /// обработка невыкупа.
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnPartGoodsCustomer') {
+                                        $arr_article[$new_sku]['obtabotka_nevikupa'] = @$arr_article[$new_sku]['obtabotka_nevikupa'] + $return_dop_obrabotka['price'];
                                 } else {
+                                        print_R($items);
+                                        echo "<br>***************** " . $return_dop_obrabotka['name'] . " *************************<br>";
                                         $arr_ALARM_vozvrztov['СЕРВИСЫ_ВОЗВРАТОВ'][] = $items;
                                 }
                         }
                         //Доставка и обработка возврата, отмены, невыкупа
                         $Summa_dostav_i_obrabotyka_vozvratov = @$Summa_dostav_i_obrabotyka_vozvratov  + $items['amount'];
-                        $count_returns = @$count_returns + 1;
                         $arr_returns_article[$new_sku] = @$arr_returns_article[$new_sku] + 1;
-                }
-                if ($items['operation_type'] == 'ClientReturnAgentOperation')
-                // Разбираем Получение возврата, отмены, невыкупа от покупателя
-                {
-                        // количество товаров в заказе, которые вернули
-                        $arr_article[$new_sku]['count_vozvrat'] = @$arr_article[$new_sku]['count_vozvrat'] + 1;
-                        // Суммируем суммы операции, которые возвраты
-                        $arr_article[$new_sku]['amount_vozrat'] = @$arr_article[$new_sku]['amount_vozrat'] + $items['amount'] / count($our_item);
-                }
-                // else {
-                //         $arr_ALARM_vozvrztov['СЕРВИСЫ_ВОЗВРАТОВ'][]=$items;
-                // }
+                } // Получение возврата, отмены, невыкупа от покупателя
+                elseif ($items['operation_type'] == 'ClientReturnAgentOperation') {
 
+                        // количество товаров в заказе, которые вернули
+                        $arr_article[$new_sku]['get_vozvrat_count'] = @$arr_article[$new_sku]['get_vozvrat_count'] + 1;
+                        // Суммируем суммы операции, которые возвраты
+                        $arr_article[$new_sku]['get_vozvrat_amount'] = @$arr_article[$new_sku]['get_vozvrat_amount'] + $items['amount'];
+                }
+     
         }
 
-
-        if ($items['operation_type'] == 'ClientReturnAgentOperation')
         // Разбираем Получение возврата, отмены, невыкупа от покупателя
-        {
+        if (($items['operation_type'] == 'OperationReturnGoodsFBSofRMS')  || ($items['operation_type'] == 'OperationItemReturn')) {
+                // обработано выше (Где есть артикул товара)
+        } elseif ($items['operation_type'] == 'ClientReturnAgentOperation') {
+                // обработано выше (Где есть артикул товара)
+        } elseif ($items['operation_type'] == 'ClientReturnAgentOperation') {
                 $Summa_dostav_vozvratov = @$Summa_dostav_vozvratov  + $items['amount'];
         } elseif ($items['operation_type'] == 'OperationAgentStornoDeliveredToCustomer') { // какая то отмена при оплате последней мили
                 $Sum_dop_last_mile = @$Sum_dop_last_mile + $items['amount']; ////////////////******* DELETE */
         } else {
-                $arr_nerazjbrannoe[] = $items;
+                $arr_ALARM_vozvrztov[] = $items;
         }
 }
 
 
 
-echo "Summa_dostav_i_obrabotyka_vozvratov= $Summa_dostav_i_obrabotyka_vozvratov<br>";
-echo "Sum_dop_last_mile= $Sum_dop_last_mile<br>";
-echo "Summa_dostav_vozvratov= $Summa_dostav_vozvratov<br>";
-echo "count_returns= $count_returns<br>";
 
 
-print_R($arr_returns_article);
+
+
+
+
+if (isset($arr_ALARM_vozvrztov) ){
+echo "<br>******************************************< ARRAY ALARM VOZVRATOV ******************************************<br>";
+echo "<pre>";
+ print_R($arr_ALARM_vozvrztov);
+ echo "</pre>";
+ echo "<br>******************************************< END ARRAY ALARM VOZVRATOV ******************************************<br>";
+       
+} else {
+        // echo "НЕТ НЕОБРАБОТАННЫХ ВОЗВРАТОВ";
+}

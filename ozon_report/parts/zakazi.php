@@ -2,7 +2,7 @@
 foreach ($arr_orders as $items) {
     $i++;
     $our_item = $items['items'];
-    @$all_summa_tovarov_ += $items['accruals_for_sale'];
+    // @$all_summa_tovarov_ += $items['accruals_for_sale'];
 // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
     foreach ($our_item as $item) {
 ///// ТУТ мы меняет SKU ФБО на СКУ ФБС, чтобы в таблице вывести их в одной строке

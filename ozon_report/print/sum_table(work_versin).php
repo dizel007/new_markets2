@@ -33,7 +33,7 @@ echo "<tr>";
 echo "</tr>";
 
 
-foreach ($arr_article as $key=>$item) {
+foreach ($arr_article as $key=>&$item) {
     
     $article = get_article_by_sku_fbs($ozon_sebest, $key); // получаем артикл по СКУ
     
