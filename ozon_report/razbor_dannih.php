@@ -352,25 +352,82 @@ foreach ($arr_article as $key => $item) {
             // себестоиомсть
             $arr_article[$key]['min_price'] = $nomenclatura['min_price'];
             // дельта от себестоимости и реальной ценой продажи
-            $arr_article[$key]['min_price_delta']  = $arr_article[$key]['real_price_minus_all_one_shtuka'] - $arr_article[$key]['min_price']; // желаемая цена товара
+            if ($arr_article[$key]['min_price'] > 0) { // Если нет себестоимости, то ничего не добавляем к прибыли
+                $arr_article[$key]['min_price_delta']  = $arr_article[$key]['real_price_minus_all_one_shtuka'] - $arr_article[$key]['min_price']; // желаемая цена товара
+            } else {
+                $arr_article[$key]['min_price_delta'] = 0;
+            }
             // хорошая цена
             $arr_article[$key]['main_price']  = $nomenclatura['main_price']; // желаемая цена товара
             // дельта меду жор ценой и ценой продажи
-            $arr_article[$key]['main_price_delta']  = $arr_article[$key]['real_price_minus_all_one_shtuka'] - $arr_article[$key]['main_price']; // желаемая цена товара
-
-            break;
+             $arr_article[$key]['main_price_delta']  = $arr_article[$key]['real_price_minus_all_one_shtuka'] - $arr_article[$key]['main_price']; // желаемая цена товара
+                    
         }
     }
     /// Высчитывает сколько заработали на одном артикуле 
-    $arr_article[$key]['zarabotali_na_artikule'] =  $arr_article[$key]['min_price_delta'] * $arr_article[$key]['count'];
+    if (isset($arr_article[$key]['min_price_delta']) && (isset($arr_article[$key]['count']))) {
+        $arr_article[$key]['zarabotali_na_artikule'] =  $arr_article[$key]['min_price_delta'] * $arr_article[$key]['count'];
+    } else {
+        $arr_article[$key]['zarabotali_na_artikule'] = 0; 
+    }
 }
+// Костыль для дельты 
+foreach ($arr_article as $key => $item) {
+    if (!isset($arr_article[$key]['main_price_delta'])) {
+        $arr_article[$key]['main_price_delta'] = 0;
+    }  
+    if (!isset($arr_article[$key]['min_price_delta'])) {
+        $arr_article[$key]['min_price_delta'] = 0;
+    }  
+}
+
+// Приводим массив в нужный порядок
+$k=0;
+foreach ($arr_article as $key => $item) {
+    $article_1C =  get_main_article_by_sku_fbs($ozon_sebest, $key);
+    $priznak_nomenclaturi = 0;
+      foreach ($arr_all_nomenklatura as $nomenclatura) {
+         if (mb_strtolower($nomenclatura['main_article_1c']) ==  mb_strtolower($article_1C)) {
+             $arr_article[$key]['poriad_number']  = $nomenclatura['number_in_spisok']; // порядковый номер
+             $priznak_nomenclaturi = 1;
+            break;
+         }
+        if ($priznak_nomenclaturi <> 1) { // Если нет товара в номенклатуре, то убираем эи товары вниз
+            $arr_article[$key]['poriad_number']  = 1000000 + $k; // порядковый номер  
+            $k++;
+
+        }
+}
+}
+
+
+
+foreach ($arr_article as $poriadok) {
+    $arr_poriadok[] = $poriadok['poriad_number'];
+}
+sort($arr_poriadok);
+$arr_temp= $arr_article; // временный массив, чтобы снова создать этот с этим же названием
+unset($arr_article);
+
+foreach($arr_poriadok as $number) {
+    foreach ($arr_temp as $key=>$item) {
+        if ($number == $item['poriad_number']) {
+            $arr_article[$key] = $item;
+            
+        }
+    }
+    
+}
+
+
+
 // ***** формируем новый массив сумм с дополнительными данными
 unset($arr_sum_data);
 $arr_sum_data = make_array_sum($arr_article);
 
 // echo "<pre>";
-// print_r($arr_sum_data);
-
+// print_r($arr_poriadok);
+// print_r($arr_article);
 /************************************************************************************************************ */
 
 
@@ -387,7 +444,7 @@ echo "<br><br><br>";
 // print_r($arr_orders);
 // ВЫВОД  ТАБЛИЦЫ FBO FBS////////////////////////////////////////////////////
 
-// require_once "print/fbo_fbs_table.php";
+require_once "print/fbo_fbs_table.php";
 
 
 /***************** ФУНКЦИИ ПОШЛИ **********************************************************************************************

@@ -98,13 +98,22 @@ $send_data = array(
 $send_data = json_encode($send_data);
 
 $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_link );
+
+
+// если ошибка при обмене то выводим е
+if (isset($res['message'])) {
+
+    echo "<pre>";
+    print_r($res);
+    die('ОШИБКА ПРИ ЗАПРОСЕ');
+    
+}
+
+
 $page_count = $res['result']['page_count'];
 $row_count = $res['result']['row_count'];
 echo $page_count ." ". $row_count."<br>";
 
-// echo "<pre>";
-// print_r($res);
-// die('fffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
 for ($i=1; $i <=$page_count; $i ++) {
     $send_data = array(
