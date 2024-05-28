@@ -15,6 +15,12 @@ $kolvo_tovarov = 0;
             if ($artick_temp2 == '82401-чн') { // подмена артикула для второго черного 
                 $artick_temp2 = '82401-Ч';
             }
+            if ($artick_temp2 == 'ANM.39*59') { // подмена артикула для маленькой решетки
+                $artick_temp2 = '301';
+            }
+            if ($artick_temp2 == 'ANM.49*99') { // подмена артикула для большой решетки 
+                $artick_temp2 = '302';
+            }
            $array_art[$artick_temp2] = @$array_art[$artick_temp2] + $prods['quantity'];
            $kolvo_tovarov = $kolvo_tovarov + $prods['quantity'];
         //    echo $prods['price']."<br>";

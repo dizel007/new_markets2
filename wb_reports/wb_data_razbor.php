@@ -98,7 +98,7 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
 
 
 
-}  elseif ($item['supplier_oper_name'] == 'Удержания') {
+}  elseif (($item['supplier_oper_name'] == 'Удержания') || ($item['supplier_oper_name'] == 'Удержание')) {
  // Стоимость ПРОЧИЕЕ УДЕРЖАНИЯ ****************************************************************************************************
     $sum_uderzhania = $sum_uderzhania  + $item['deduction'];
 

@@ -144,3 +144,48 @@ $summa_posle_vicheta_shtrafa = 0;
 
 
  }
+
+
+/***************************************************************************************************
+ * // Приводим массив в нужный порядок
+ *************************************************************************************************/
+
+ 
+$k=0;
+foreach ($array_for_table as $key => $item) {
+    $priznak_nomenclaturi = 0;
+      foreach ($sebestoimos as $nomenclatura) {
+         if (mb_strtolower($nomenclatura['main_article_1c']) ==  mb_strtolower($key)) {
+             $array_for_table[$key]['poriad_number']  = $nomenclatura['number_in_spisok']; // порядковый номер
+             $priznak_nomenclaturi = 1;
+            break;
+         }
+        if ($priznak_nomenclaturi <> 1) { // Если нет товара в номенклатуре, то убираем эи товары вниз
+            $array_for_table[$key]['poriad_number']  = 1000000 + $k; // порядковый номер  
+            $k++;
+
+        }
+}
+}
+
+foreach ($array_for_table as $poriadok) {
+    $arr_poriadok[] = $poriadok['poriad_number'];
+}
+sort($arr_poriadok);
+$arr_temp= $array_for_table; // временный массив, чтобы снова создать этот с этим же названием
+unset($array_for_table);
+
+foreach($arr_poriadok as $number) {
+    foreach ($arr_temp as $key=>$item) {
+        if ($number == $item['poriad_number']) {
+            $array_for_table[$key] = $item;
+            
+        }
+    }
+    
+}
+
+
+
+//  echo "<pre>";
+//  print_r($array_for_table);

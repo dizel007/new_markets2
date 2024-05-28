@@ -96,7 +96,7 @@ $arr_all_nomenklatura = select_active_nomenklaturu($pdo);
 // Получаем поартикульное распределние товаров на каждом складе 
 $raspredelenie_ostatkov = get_procent_tovarov_marketa($pdo);
 
-// print_r($raspredelenie_ostatkov);
+// print_r($arr_all_nomenklatura);
 // die();
 
 // Названия магазинов

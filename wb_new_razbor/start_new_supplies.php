@@ -226,7 +226,7 @@ usleep(300000); // трата на создание Поставки на сай
         if ($result_insert_order_in_supply != 0) { // если заказа нет в поставке, то запускаем повтор добавления заказа в поставку
             write_info_filelog ($file_Log_name,"(СБОЙ)Признак $jjj обмена = $result_insert_order_in_supply ; Старт ПОВТОРА доб-я Заказа: $orderId в Поставку: ".$supplyId['id'] ); // Вывод коммент-я на экран
             make_sborku_one_article_one_zakaz ($token_wb, $supplyId['id'], $orderId);
-        usleep(10000); // трата на времени на добавление товара в поставку  
+        usleep(20000); // трата на времени на добавление товара в поставку  
             $result_insert_order_in_supply = test_find_order_in_supply ($token_wb, $orderId, $supplyId['id']); // Проверяем добав-ся заказ в поставку или нет
         } else {
             // если появился в поставке, то запишем его в файл восстновления 
@@ -255,7 +255,7 @@ usleep(300000); // трата на времени на добавление то
         // ecли этикеток нет, то снова делаем их запрос 
             for ($error_job = 0 ;$error_job < 12; $error_job++) {
                 write_info_filelog ($file_Log_name, "(ALARM) Нет Заказов в поставке:".$supplyId['id']." - цикл :$error_job"); // Вывод коммент-я на экран
-              usleep(100000); // 0,1 sec
+              usleep(300000); // 0,3 sec
                 $arr_real_orders_error = get_orders_from_supply($token_wb, $supplyId['id']); // список Заказов которые ТОЧНО полпали в Поставку
 
                 foreach ($arr_real_orders_error as $orders) {
@@ -284,7 +284,7 @@ if (count($new_real_arr_orders) < $count_order_art) {
             unset($arr_real_orders_error);
 
             write_info_filelog ($file_Log_name, "(ALARM) Не хватает Заказов в поставке ($real_temp_count), должно быть ($count_order_art)"); // Вывод коммент-я на экран
-         usleep(300000); // 0.3 sec тратим время перед следующим запросом
+         usleep(500000); // 0.5 sec тратим время перед следующим запросом
 
             $arr_real_orders_error = get_orders_from_supply($token_wb, $supplyId['id']); // список Заказов которые ТОЧНО полпали в Поставку
 

@@ -69,7 +69,17 @@ $arr_result = light_query_without_data($token_wb, $link_wb);
 
 // echo "<pre>";
 
-// print_r($arr_result);
+
+// foreach ($arr_result As $gg) {
+
+//     // $bb[$gg['sa_name']] = $gg['ppvz_for_pay'];
+//     if ($gg['sa_name'] =='' ) {
+//         $bb[$gg['supplier_oper_name']] = $gg;
+
+//     }
+// }
+
+// print_r($bb);
 
 /*********************************************************
 Проверяем нет ли ошибки взаимодействия
@@ -197,7 +207,7 @@ echo "<br>Стоимость Частичная компенсация брак�
 
 // print_r($arr_sum);
 // формируем массив для вывода н аэкран
-require_once('wb_raschet_data_fpr_table.php');
+require_once('wb_raschet_data_for_table.php');
 
 // print_r($array_for_table);
 // Выводим данные на экран
