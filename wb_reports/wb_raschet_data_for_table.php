@@ -15,19 +15,38 @@ $our_pribil =0;
          if ($right_atricle ==  $right_key) {
             $sebes_str_item = $sebes_item['min_price'] ;
             $good_price = $sebes_item['main_price'] ;
+            // габаритные размеры
+            $dlina = $sebes_item['dlina'] ;
+            $shirina = $sebes_item['shirina'] ;
+            $visota = $sebes_item['visota'] ;
 
 
             break;
          } else {
              $sebes_str_item = 0;
              $good_price = 0 ;
+             // габаритные размеры
+            $dlina = 0 ;
+            $shirina = 0 ;
+            $visota = 0 ;
          }
         }
+// Цепляем габаритные размеры товара к Арктиулу
+
+$array_for_table[$key]['gabariti'] = $dlina."x".$shirina."x".$visota;
 
 ///     Количество проданного наВБ до вычета         
 $array_for_table[$key]['count_sell'] = @$arr_count[$key];
 ///     Сумма выплат с ВБ до вычета 
 $array_for_table[$key]['sum_k_pererchisleniu'] =@$arr_sum_k_pererchisleniu[$key];
+
+///     Сумма выплат с ВБ до вычета 
+if (isset ($arr_count[$key])) {
+$array_for_table[$key]['sum_k_pererchisleniu_za_shtuku'] = round(@$arr_sum_k_pererchisleniu[$key]/@$arr_count[$key],2);
+} else {
+    $array_for_table[$key]['sum_k_pererchisleniu_za_shtuku'] = "-";
+}
+
  // Авансовая оплата за товар без движения
 $array_for_table[$key]['sum_avance'] =@$arr_sum_avance[$key];
       echo "<tr>";
@@ -134,9 +153,9 @@ $summa_posle_vicheta_shtrafa = 0;
 
  foreach ($array_for_table as &$t_item) {
 
-    $t_item['procent_ot_summi'] = $t_item['sum_nasha_viplata'] / $procent_ot_viplati;
+    $t_item['procent_ot_summi'] = abs($t_item['sum_nasha_viplata'] / $procent_ot_viplati);
     $procent_all +=$t_item['procent_ot_summi'];
-    $t_item['summa_strafa_article'] = round($summa_shrafa*$t_item['procent_ot_summi'] /100,2);
+    $t_item['summa_strafa_article'] = abs(round($summa_shrafa*$t_item['procent_ot_summi'] /100,2));
     $summa_shtrafa_raschet +=  $t_item['summa_strafa_article'];
 
     $t_item['pribil_posle_vicheta_strafa'] = $t_item['our_pribil'] - $t_item['summa_strafa_article'];

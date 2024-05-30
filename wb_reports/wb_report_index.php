@@ -11,10 +11,12 @@ require_once "../mp_functions/report_excel_file.php";
 $wb_shop = $_GET['wb_shop'];
 if ($_GET['wb_shop'] == 'wb_anmaks') {
     $token_wb = $arr_tokens['wb_anmaks']['token'];
+    $name_mp_shop = 'ВБ ООО АНМАКС';
    }
        
 elseif ($_GET['wb_shop'] == 'wb_ip_zel') {
     $token_wb = $arr_tokens['wb_ip_zel']['token'];
+    $name_mp_shop = 'ВБ ИП ЗЕЛ';
  } else {
        die ('МАГАЗИН НЕ ВЫБРАН');
  }
@@ -213,8 +215,8 @@ require_once('wb_raschet_data_for_table.php');
 // Выводим данные на экран
 require_once('wb_print_report_table_new.php');
 
-// print_r($arr_type);
-$file_name_report_excel = report_mp_make_excel_file_morzha($array_for_table);
+// print_r($array_for_table);
+$file_name_report_excel = report_mp_make_excel_file_morzha($array_for_table, $name_mp_shop, $dateFrom, $dateTo);
 echo "<br> Сумма издержек по перевозке = ".$summa_izderzhik_po_perevozke;
 echo "<br> Возмещение издержек по перевозке/по складским операциям с товаром = ".$return_logistok;
 echo "<br> Штрафы / Платная приемка МП на СЦ = ".$sum_shtafi_i_doplati;

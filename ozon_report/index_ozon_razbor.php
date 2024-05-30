@@ -14,12 +14,14 @@ require_once "../pdo_functions/pdo_functions.php";
  if ($_GET['ozon_shop'] == 'ozon_anmaks') {
         $token =  $token_ozon;
         $client_id =  $client_id_ozon;
+        $name_mp_shop = 'OZON ООО АНМАКС';
   
     }
         
  elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
         $token =  $token_ozon_ip;
         $client_id =  $client_id_ozon_ip;
+        $name_mp_shop = 'OZON ИП ЗЕЛ';
   } else {
         die ('МАГАЗИН НЕ ВЫБРАН');
   }

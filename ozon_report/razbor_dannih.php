@@ -1,7 +1,7 @@
 <?PHP
 require_once "libs_ozon/function_ozon_reports.php"; // массив с себестоимостью товаров
 require_once "libs_ozon/sku_fbo_na_fbs.php"; // массив с себестоимостью товаров
-
+require_once "../mp_functions/report_excel_file.php";
 
 $ozon_sebest = get_catalog_tovarov_v_mp($ozon_shop, $pdo, 'all');
 
@@ -94,8 +94,13 @@ foreach ($arr_article as $key => $item) {
     @$one_shtuka = round($amount_bez_equaring / $item['count'], 2); // цена за штуку нам в карман (минус эквайринг)
     $arr_article[$key]['one_shtuka'] = $one_shtuka;
     // Цена за штуку для покупателя
+    if (isset($item['count'])) {
     @$one_shtuka_buyer = round($item['accruals_for_sale'] / $item['count'], 2); // цена за штуку для покупателя
     $arr_article[$key]['one_shtuka_buyer'] = $one_shtuka_buyer;
+    } else {
+    @$one_shtuka_buyer = 0; // цена за штуку для покупателя
+    $arr_article[$key]['one_shtuka_buyer'] = $one_shtuka_buyer;
+    }
     // Формируем цену за вычетом всего КРОМЕ доп.услугж
 
     $arr_article[$key]['price_minus_all_krome_dop_uslug'] = @$arr_article[$key]['accruals_for_sale'] +
@@ -426,10 +431,67 @@ unset($arr_sum_data);
 $arr_sum_data = make_array_sum($arr_article);
 
 // echo "<pre>";
-// print_r($arr_poriadok);
 // print_r($arr_article);
 /************************************************************************************************************ */
+// Формируем  массив для вывода екселя
+/************************************************************************************************************ */
+$nomenclatura_2 = select_all_nomenklaturu($pdo);
+// echo "<pre>";
+// print_r($ozon_sebest);
+// echo "*******************************************************************";
+// print_r($nomenclatura_2);
+// echo "*******************************************************************";
+// print_r($arr_article);
 
+    foreach($arr_article as $item) {
+    
+    $key =  $item['article'];
+    if (isset( $item['count'])) {
+        $arr_excel[$key]['count_sell'] = $item['count'];
+    } else {
+        $arr_excel[$key]['count_sell'] = '';
+    }
+    $arr_excel[$key]['sum_nasha_viplata'] = $item['real_price_minus_all'];
+    $arr_excel[$key]['price_for_shtuka'] = $item['real_price_minus_all_one_shtuka'];
+    if (isset( $item['min_price'])) {
+    $arr_excel[$key]['sebes_str_item'] = $item['min_price'];
+    } else {
+        $arr_excel[$key]['sebes_str_item'] = 0;
+    }   
+    $arr_excel[$key]['delta_v_stoimosti'] = $item['min_price_delta'];
+    $arr_excel[$key]['our_pribil'] = $item['zarabotali_na_artikule'];
+    $arr_excel[$key]['gabariti'] = "---";
+    $arr_excel[$key]['sum_k_pererchisleniu_za_shtuku'] = $item['one_shtuka_buyer'];
+
+    $arr_excel[$key]['summa_strafa_article'] = 0;
+    $arr_excel[$key]['pribil_posle_vicheta_strafa'] = $item['zarabotali_na_artikule'];
+// подбираем габариты
+    foreach ($ozon_sebest as $sebest) {
+        if (mb_strtolower($sebest['mp_article']) == mb_strtolower($key)) {
+            $article_1c = mb_strtolower($sebest['main_article']);
+            break;
+        }
+    }
+foreach ($nomenclatura_2 as $sebes_item) {
+    if (mb_strtolower($sebes_item['main_article_1c']) ==  $article_1c) {
+        $dlina = $sebes_item['dlina'] ;
+        $shirina = $sebes_item['shirina'] ;
+        $visota = $sebes_item['visota'] ;
+        break;
+       
+    } else {
+        $dlina = 0 ;
+        $shirina = 0 ;
+        $visota = 0 ;
+    }
+}
+$arr_excel[$key]['gabariti'] = $dlina."x".$shirina."x".$visota;
+
+    }
+    $file_name_report_excel = report_mp_make_excel_file_morzha($arr_excel, $name_mp_shop, $date_from, $date_to);
+/************************************************************************************************************ */
+/// КОНЕЦ формирования массива для екселя
+/************************************************************************************************************ */
 
 
 // ВЫВОД Первой ТАБЛИЦЫ ////////////////////////////////////////////////////
@@ -438,7 +500,7 @@ $arr_sum_data = make_array_sum($arr_article);
 // ВЫВОД ОСНОВНОЙ ТАБЛИЦЫ ////////////////////////////////////////////////////
 
 require_once "print/real_money.php";
-
+echo "<br><a href = \"$file_name_report_excel\"> Ссылка для скачивания Отчета</a><br>";
 echo "<br><br><br>";
 
 // print_r($arr_orders);
