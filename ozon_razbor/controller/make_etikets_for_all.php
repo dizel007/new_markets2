@@ -77,7 +77,7 @@ foreach ($arr_article_tovar as $key=> $posts) {
   
   // $time_script = 300 + count($arr_article_tovar[$key]) * 50;
   // set_time_limit($time_script);
-  set_time_limit(0);
+  set_time_limit(0); // неограниченное время ожидание ответа от сервера
 
   $string_etiket = '';
   foreach ($posts as $post) {
@@ -100,7 +100,7 @@ $good_key = make_rigth_file_name($key); // убираем все запреще�
 
 $pdf_file_name = $number_order." (".$good_key.") ".count($posts)."шт";
 get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket, $pdf_file_name, $path_etiketki);
-$Arr_filenames_for_zip[] = $pdf_file_name.".pdf"; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
+$Arr_filenames_for_zip[$good_key] = $pdf_file_name.".pdf"; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 }
 
 
@@ -124,6 +124,18 @@ if (isset($file_name_list_podbora)){
   <br><br>
   <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
   <br><br>
+  <a href="../merge_ozon_etikets.php?filepath=$path_etiketki/">MERGE</a>
+  <br><br>
   HTML;
 
+
+
+  make_pdf_file($Arr_filenames_for_zip, $path_etiketki);
+file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip));
+
+
 die ('<br> Дошли до финиша');
+/***********************
+ * *
+ *****************************/
+

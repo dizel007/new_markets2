@@ -94,3 +94,37 @@ function make_rigth_file_name($temp_file_name) {
     $right_file_name=str_replace('"','_',$temp_file_name);
     return $right_file_name;
     }
+
+/****************************************************************************************************************
+********************Создает пдф файл с названием и содержанием АРТИКУЛА (Для цепляния к этикеткам)  **************
+****************************************************************************************************************/
+
+    function make_pdf_file($Arr_filenames_for_zip, $path_etiketki){
+
+        require_once '../../libs/fpdf/fpdf.php';
+        // подключаем шрифты
+        // define('FPDF_FONTPATH',"fpdf/font/");
+        
+        foreach ($Arr_filenames_for_zip as $good_key=>$filename) {
+        //create pdf object
+        $pdf = new FPDF('L','mm', [40, 58]);
+        //add new page
+        $pdf->AliasNbPages();
+        
+        $pdf->AddPage();
+        
+       
+        // добавляем шрифт ариал
+        $pdf->AddFont('TimesNRCyrMT','','timesnrcyrmt.php');// добавляем шрифт ариал
+        $pdf->AddFont('TimesNRCyrMT-Bold','','timesnrcyrmt_bold.php'); 
+        $pdf->SetFont('TimesNRCyrMT-Bold','',24);
+        $pdf->Cell(0 ,0, MakeUtf8Font($good_key),'',0,'C');
+        $pdf->Output("".$path_etiketki."/".$good_key.".pdf", 'F');
+        unset ($pdf);
+        }  
+        
+        }
+        function MakeUtf8Font($string) {
+          $string = iconv('utf-8', 'windows-1251', $string);
+          return $string;
+        }
