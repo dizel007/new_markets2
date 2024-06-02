@@ -99,13 +99,17 @@ function make_rigth_file_name($temp_file_name) {
 ********************Создает пдф файл с названием и содержанием АРТИКУЛА (Для цепляния к этикеткам)  **************
 ****************************************************************************************************************/
 
-    function make_pdf_file($Arr_filenames_for_zip, $path_etiketki){
+    function make_pdf_file($arr_for_merge_pdf , $path_etiketki, $order_number){
 
         require_once '../../libs/fpdf/fpdf.php';
         // подключаем шрифты
         // define('FPDF_FONTPATH',"fpdf/font/");
         
-        foreach ($Arr_filenames_for_zip as $good_key=>$filename) {
+        foreach ($arr_for_merge_pdf as $good_key=>$item) {
+
+            // $filename = $item['fileName'];
+            $value = $item['value'];
+
         //create pdf object
         $pdf = new FPDF('L','mm', [40, 58]);
         //add new page
@@ -117,8 +121,18 @@ function make_rigth_file_name($temp_file_name) {
         // добавляем шрифт ариал
         $pdf->AddFont('TimesNRCyrMT','','timesnrcyrmt.php');// добавляем шрифт ариал
         $pdf->AddFont('TimesNRCyrMT-Bold','','timesnrcyrmt_bold.php'); 
-        $pdf->SetFont('TimesNRCyrMT-Bold','',24);
-        $pdf->Cell(0 ,0, MakeUtf8Font($good_key),'',0,'C');
+        $pdf->SetFont('TimesNRCyrMT-Bold','',18);
+        // $pdf->Cell(0 ,0, MakeUtf8Font($filename),'',0,'C');
+
+        $pdf->SetFont('TimesNRCyrMT-Bold','',16);
+
+        $pdf->  SetXY(5, 6);
+        $pdf->Cell(0 ,0, MakeUtf8Font("Заказ № ".$order_number),0,0,'L');
+        $pdf->  SetXY(5, 12);
+        $pdf->Cell(0 ,0, MakeUtf8Font($good_key),0,0,'L');
+        $pdf->  SetXY(5, 19);
+        $pdf->Cell(0 ,0, MakeUtf8Font($value." шт" ),0,0,'L');
+
         $pdf->Output("".$path_etiketki."/".$good_key.".pdf", 'F');
         unset ($pdf);
         }  

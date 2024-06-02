@@ -1,48 +1,63 @@
 <?php
 
+require_once '../libs/PDFMerger/PDFMerger.php';
+
 error_reporting(E_ERROR | E_PARSE | E_NOTICE);
 
+// // Пусть у JSON файлу с массивов имен файлов этикеток
 if (isset($_GET['filepath']) ) {
 $filepath = $_GET['filepath'];
 } else {
     echo "Не получили ссылку на файл";
     die('');
 }
-
+// Костыли чтобы исправить адрес пути у фаилам
 $filepath = str_replace("//", "/", $filepath);
 $filepath = str_replace("../", "", $filepath);
-// Создаем новую директорую 
+
+$array_dop_files = json_decode(file_get_contents($filepath."array_dop_info.json"), true);
+
+echo  "<pre>";
+print_r($array_dop_files);
+
+
+$number_order = $array_dop_files['number_order'];
+$path_excel_docs = $array_dop_files['path_excel_docs'];
+
+$path_excel_docs = str_replace("//", "/", $path_excel_docs);
+$path_excel_docs = str_replace("../", "", $path_excel_docs);
+
+
+$file_name_1c_list = $array_dop_files['file_name_1c_list'];
+$file_name_list_podbora =  $array_dop_files['file_name_list_podbora'];
+
+
+// Создаем новую директорую  куда будем складывать соедененные файлы
 $new_dir = $filepath."merge_pdf";
 mkdir($new_dir, 0777);
 $arr_name_articles = json_decode(file_get_contents($filepath."art_etik.json"), true);
 
-echo  "<pre>";
-print_r($arr_name_articles);
+// echo  "<pre>";
+// print_r($arr_name_articles);
 
 
-require_once '../libs/PDFMerger/PDFMerger.php';
+
 
 
 use PDF_Merger\PDFMerger;
 
-
+// переделаем массив с именами файлов и соединяем их с файлом где написан артикул
 foreach ($arr_name_articles as $key=>$filename) {
-$pdf_yandex= new PDFMerger;
-$file_etiket = $filepath.$filename;
-$file_key = $filepath.$key.".pdf";
-// echo "<br>";
-// echo $file_etiket;
+    $pdf_yandex= new PDFMerger;
+    $file_etiket = $filepath.$filename;
+    $file_key = $filepath.$key.".pdf";
 
-// echo "<br>";
-// echo $file_key;
+    
+    $pdf_yandex->addPDF($file_etiket); // этикетки
+    $pdf_yandex->addPDF($file_key);    // допописание
 
-
-    $pdf_yandex->addPDF( $file_key);
-    $pdf_yandex->addPDF( $file_etiket);
     $link_merge_pdf_file  = __DIR__."/".$new_dir."/".$filename.'_MERGE.pdf' ;
     $pdf_yandex->merge('file',  $link_merge_pdf_file );
-
-
 unset ($pdf_yandex);
 }
 
@@ -50,17 +65,18 @@ unset ($pdf_yandex);
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
   $zip_new = new ZipArchive();
-  $zip_new->open($path_zip_archives."/"."etikets_№".$number_order." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
-  foreach ($Arr_filenames_for_zip as $zips) {
-  $zip_new->addFile($path_etiketki."/".$zips, "$zips"); // Добавляем пдф файлы
+  $zip_new->open($new_dir."/"."etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+  foreach ($arr_name_articles as $zips) {
+    // echo $new_dir."/".$zips.'_MERGE.pdf'."<br>";
+  $zip_new->addFile($new_dir."/".$zips.'_MERGE.pdf', "$zips"); // Добавляем пдф файлы
 }
-  $zip_new->addFile($path_excel_docs."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для НОВЫЙ 1С файл /// *****************
+$zip_new->addFile($path_excel_docs."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для НОВЫЙ 1С файл /// *****************
 if (isset($file_name_list_podbora)){ 
   $zip_new->addFile($path_excel_docs."/".$file_name_list_podbora, "$file_name_list_podbora"); // добавляем для НОВЫЙ 1С файл /// *****************
 }
   $zip_new->close();  
 
-  $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
+  $link_path_zip2 = $new_dir."/"."etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zip"; //  ссылка чтобы скачать архив
 
   echo <<<HTML
   <br><br>
