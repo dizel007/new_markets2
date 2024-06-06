@@ -48,17 +48,23 @@ use PDF_Merger\PDFMerger;
 
 // переделаем массив с именами файлов и соединяем их с файлом где написан артикул
 foreach ($arr_name_articles as $key=>$filename) {
+   echo "$filename<br>";
+
     $pdf_ozom_merge= new PDFMerger;
     $file_etiket = $filepath.$filename;
+
     $file_key = $filepath.$key.".pdf";
+
 
     
     $pdf_ozom_merge->addPDF($file_etiket); // этикетки
     $pdf_ozom_merge->addPDF($file_key);    // допописание
 
     $link_merge_pdf_file  = __DIR__."/".$new_dir."/".$filename.'_MERGE.pdf' ;
+
     $pdf_ozom_merge->merge('file',  $link_merge_pdf_file );
 unset ($pdf_ozom_merge);
+echo "$key 8<br>";
 }
 
 /*****************************************************************************************************************

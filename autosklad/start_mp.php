@@ -1,24 +1,32 @@
 <?php
 require_once "connect_db.php";
 
-echo <<<HTML
-<form action= "autosklad/get_all_ostatki_skladov_new_ALL.php" method="post" enctype="multipart/form-data"> 
 
+echo <<< HTML
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Обновление остаток МП</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <link rel="stylesheet" href="autosklad/css/input_forma.css"/>
+    
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="form-title">Обновление остатков МП</h1>
 
+      <form action= "autosklad/get_all_ostatki_skladov_new_ALL.php" method="post" enctype="multipart/form-data"> 
+	  
+	  <div class="file_input_form">   
+              <input  class="file_input_button" type="file" name="file_excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+			  </div>
+        <div class="form-submit-btn">
+			<input type="submit" value="ЗАПУСК">	
+        </div>
 
-
-<span>Выберите файл</span>
-	<!-- <input required type="file" name="file_excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">		 -->
-	<input  type="file" name="file_excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">		
-	
- 	
-        
-<hr>
-
- <input type="submit" value="ЗАПУСК">	
-
-</form>
-
-
+      </form>
+    </div>
+  </body>
+</html>
 
 HTML;

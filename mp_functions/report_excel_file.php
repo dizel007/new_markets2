@@ -65,7 +65,7 @@ function report_mp_make_excel_file_morzha($arr_tovari, $name_mp_shop, $date_star
 
 
         foreach ($arr_tovari as $key => $items) {
-                // print_r($items);	
+                // print_r($items);
                 $sheet->setCellValue("A" . $i, $i-$i_shapka);
                 $sheet->setCellValue("B" . $i, $key);
                 $sheet->setCellValue("C" . $i, $items['count_sell']);
