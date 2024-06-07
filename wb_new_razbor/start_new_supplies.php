@@ -91,39 +91,31 @@ create_marker_recover_file($new_path); // создается маркерный 
 write_info_filelog ($file_Log_name,'Получаем все новые заказы с сайта ВБ'); // Вывод коммент-я на экран
 
 
+
+
+
+//****************************************************************************************
+// дата на которую нуэно собрать заказы 
+//****************************************************************************************
+
+if (isset($_POST['date_sbora_zakaza'])) {
+    $date_orders_select = $_POST['date_sbora_zakaza'];
+  } else {
+    $date_orders_select = '';
+  }
+ 
 //****************************************************************************************
 // Получаем все новые заказы с сайта ВБ
 //****************************************************************************************
-
-
-// $arr_new_zakaz = get_all_new_zakaz ($token_wb);
-
-// **** ВАЖНО !!!!!!!! (нужно закоментить основной массив для основного сбора /////\\\\||||)
-
-
-/****************************************************************************************
- *  ЗАТЫЧКА ДЛЯ ОСОБЫХ РАЗБОРОВ
- ***************************************************************************************/
-// СБОРКА ЗАКАЗОВ ЗА ОПРЕДЕЛЕННУЮ ДАТУ
-
-// $raw_arr_orders_t = get_all_new_zakaz ($token_wb);
-
-//  foreach ($raw_arr_orders_t['orders'] as $order) {
-
-//     if (substr($order['createdAt'],0,10) == '2024-05-03') {
-//         $arr_new_zakaz['orders'][] = $order;
-//     }
-  
-//   }
-  
-
-$date_orders_select = ''; // дата на которую нуэно собрать заказы (ПОКА ВРУЧНУЮ ИЗМЕНЯЕТСЯ В ФУНКЦИИ)
 $arr_new_zakaz = select_order_by_check_date($token_wb, $date_orders_select) ;
 
-// echo "<pre>";
-// print_r($arr_new_zakaz );
 
-// die('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+
+echo "=====".$date_orders_select."=====";
+echo "<pre>";
+print_r($arr_new_zakaz );
+
+die('kkkkkkkkkkkkkkkkkkk DIE DIE DIE DIE DIE kkkkkkkkkkkkkkkkkkkkkkkkkkk');
 
 
 

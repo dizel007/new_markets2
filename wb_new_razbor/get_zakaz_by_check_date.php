@@ -16,7 +16,7 @@ function select_order_by_check_date($token_wb, $date_orders) {
 
         foreach ($raw_arr_orders_t['orders'] as $order) {
 
-            if (substr($order['createdAt'],0,10) == $date_orders) {
+            if (substr($order['createdAt'],0,10) == $date_orders) { // сортировка только по выбранной дате
                 $arr_new_zakaz['orders'][] = $order;
             }
         

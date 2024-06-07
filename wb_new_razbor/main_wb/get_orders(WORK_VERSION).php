@@ -1,53 +1,40 @@
 <?php
 // require_once "..\get_zakaz_by_check_date.php";
-
-// дата на которую нуэно собрать заказы (ПОКА ВРУЧНУЮ ИЗМЕНЯЕТСЯ В ФУНКЦИИ)
- if (isset($_GET['date_sbora_zakaza'])) {
-  $date_orders_select = $_GET['date_sbora_zakaza'];
-  
-} else {
-  $date_orders_select = '';
- 
-}
-
-if ($date_orders_select <> '') {
-  $text_about_date = "Заказы созданные : $date_orders_select";
-} else {
-  $text_about_date = "Заказы созданные ЗА ВСЕ ВРЕМЯ";
-}
 /********************************************************************************************************
  * ******************** Вычитываем и выводи заказы для ВБ
  ********************************************************************************************************/
 
+// $raw_arr_orders = get_all_new_zakaz($token_wb_orders); // получили массив новых отправлений
+
+
+// **** ВАЖНО !!!!!!!! (нужно закоментить основной массив для основного сбора /////\\\\||||)
+
+
+/****************************************************************************************
+ *  ЗАТЫЧКА ДЛЯ ОСОБЫХ РАЗБОРОВ
+ ***************************************************************************************/
+
+
+//СБОРКА ЗАКАЗОВ ЗА ОПРЕДЕЛЕННУЮ ДАТУ
+
+// $raw_arr_orders_t = get_all_new_zakaz($token_wb_orders); // получили массив новых отправлений
+
+// foreach ($raw_arr_orders_t['orders'] as $order) {
+
+//   if (substr($order['createdAt'],0,10) == '2024-05-03') {
+//       $raw_arr_orders['orders'][] = $order;
+//   }
+
+// }
+
+
+$date_orders_select = ''; // дата на которую нуэно собрать заказы (ПОКА ВРУЧНУЮ ИЗМЕНЯЕТСЯ В ФУНКЦИИ)
 $raw_arr_orders = select_order_by_check_date($token_wb_orders, $date_orders_select) ;
 
 /****************************************************************************************
- *  РИСУЕМ форму по выводу всех заказов
+ *  КОНЕЦ ЗАТЫЧКИ ДЛЯ ОСОБЫХ РАЗБОРОВ
  ***************************************************************************************/
-echo <<<HTML
-<div class = "table-wrapper">
-<table class = "fl-table">
-<thead>
-  <tr>
-    <th class="big_text" colspan ="3" >$shop_name </th>
-  </tr>
-</thead>
-<tbody>
-  <td >
-      <form action="#" method="get">
-        <label>Введите дату СОЗДАНИЯ ЗАКАЗА </label>
-        <input hidden type="text" name="transition" value="$transition_wb">
-        <input type="date" name="date_sbora_zakaza" value="$date_orders_select">
-      <input type="submit" value="НАЙТИ ЗАКАЗЫ НА ВЫБРАННУЮ ДАТУ">
-      </form>    
 
-  </td>
-
- 
-</tbody>
-</table>
-</div>
-HTML;
 
 
 
@@ -79,6 +66,7 @@ if (isset($raw_arr_orders['orders'][0])) {
 
 
   echo <<<HTML
+
 <div class = "table-wrapper">
 <table class = "fl-table">
 <thead>
@@ -87,17 +75,12 @@ if (isset($raw_arr_orders['orders'][0])) {
   </tr>
 </thead>
 <tbody>
-<tr>
-    <th colspan ="3" class="big_text" >$text_about_date</th>
- </tr>
-
 <td><b>Количество заказов :<br> $all_count </b></td>
-<td ><b>Сумма заказов :<br> $full_zakaz_wb_price </b></td>
+<td><b>Сумма заказов :<br> $full_zakaz_wb_price </b></td>
   <td >
       <form action="wb_new_razbor/start_new_supplies.php" method="post">
         <label for="wb">Введите номер заказа из 1С</label>
         <input hidden type="text" name="token" value="$token_wb_orders">
-        <input hidden type="date" name="date_sbora_zakaza" value="$date_orders_select">
         <input hidden type="text" name="wb_path" value="ooo">
         <input required type="number" name="Zakaz1cNumber" value="">
       <input type="submit" value="СОБРАТЬ">
