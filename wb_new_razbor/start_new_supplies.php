@@ -111,11 +111,11 @@ $arr_new_zakaz = select_order_by_check_date($token_wb, $date_orders_select) ;
 
 
 
-echo "=====".$date_orders_select."=====";
-echo "<pre>";
-print_r($arr_new_zakaz );
+// echo "=====".$date_orders_select."=====";
+// echo "<pre>";
+// print_r($arr_new_zakaz );
 
-die('kkkkkkkkkkkkkkkkkkk DIE DIE DIE DIE DIE kkkkkkkkkkkkkkkkkkkkkkkkkkk');
+// die('kkkkkkkkkkkkkkkkkkk DIE DIE DIE DIE DIE kkkkkkkkkkkkkkkkkkkkkkkkkkk');
 
 
 

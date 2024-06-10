@@ -1,10 +1,10 @@
 <?php
 
-require_once "connect_db.php";
-require_once "pdo_functions/pdo_functions.php";
-require_once "mp_functions/report_excel_file.php";
-// require_once "mp_functions/yandex_api_functions.php";
-// require_once "mp_functions/yandex_functions.php";
+require_once "../connect_db.php";
+require_once "../pdo_functions/pdo_functions.php";
+require_once "../mp_functions/report_excel_file.php";
+require_once "../mp_functions/yandex_api_functions.php";
+// require_once "../mp_functions/yandex_functions.php";
 
 
 
@@ -58,7 +58,7 @@ $ya_data = array(
 $next_page = '';
 do {
 	$ya_link =  'https://api.partner.market.yandex.ru/campaigns/' . $campaignId . '/stats/orders?page_token=' . $next_page . '&limit=200';
-	$arr_result_temp = post_query_with_data($ya_token, $ya_link, $ya_data);
+	$arr_result_temp = yandex_post_query_with_data($ya_token, $ya_link, $ya_data);
 	if (!isset($arr_result_temp['result']['paging']['nextPageToken'])) {
 		break;
 	}
@@ -155,10 +155,7 @@ foreach ($arr_items as $order_number => $orders) {
 
 
 // die();
-echo <<<HTML
-	<link rel="stylesheet" href="temp_css.css">
-HTML;
-print_r($arr_count_item);
+
 
 // print_r($arr_items_yandex);
 
@@ -169,8 +166,8 @@ foreach ($arr_items_yandex as $ya_key => &$ya_item)
 	
 	
 	if (!isset($arr_count_item[mb_strtolower($ya_item['sku'])])) {
-		print_r($ya_item);
-		echo "*************************** DELETE ***************************";
+		// print_r($ya_item);
+		// echo "*************************** DELETE ***************************";
 		unset($arr_items_yandex[$ya_key]);
 		continue;
 	}
@@ -238,33 +235,4 @@ $link = report_mp_make_excel_file_morzha($arr_items_yandex, $yandex_anmaks_fbs, 
  **************************** Простой запрос на YANDEX с данными **************************************
  ****************************************************************************************************************/
 
-function post_query_with_data($ya_token, $ya_link, $ya_data)
-{
-	$ch = curl_init($ya_link);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'Authorization: Bearer ' . $ya_token,
-		'Content-Type:application/json'
-	));
-	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ya_data, JSON_UNESCAPED_UNICODE));
-	// curl_setopt($ch, CURLOPT_POSTFIELDS, $ya_data); 
-
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_HEADER, false);
-
-	$res = curl_exec($ch);
-
-	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
-	curl_close($ch);
-
-	if (intdiv($http_code, 100) > 2) {
-		echo     'Результат обмена(with Data): ' . $http_code . "<br>";
-	}
-
-	$res = json_decode($res, true);
-	// var_dump($res);
-	return $res;
-}
-
-
-$jjj = 'https://api.partner.market.yandex.ru/reports/united-marketplace-services/generate';
+ require_once "yandex_print_report_table.php";
