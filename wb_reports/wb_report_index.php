@@ -36,6 +36,7 @@ if (isset($_GET['dateTo'])) {
 }
 
 
+
 echo <<<HTML
 <head>
 <link rel="stylesheet" href="css/main_table.css">
@@ -61,33 +62,61 @@ if (($dateFrom == false) or ($dateTo == false)) {
 die ('Нужно выбрать даты');
 } 
 
-$dop_link = "?dateFrom=".$dateFrom."&dateTo=".$dateTo;
+
+/*********************************************************
+ * Подгоняем даты по неделям, и формируем массив для запроса по неделям
+********************************************************/
+
+
+
+$time = strtotime($dateFrom);
+$temp_start = strtotime('this week monday' , $time);
+// Понедельник текущей недели:
+$first_monday =  date('Y-m-d', $temp_start); // 10.06.2024 00:00 
+$dateFrom = $first_monday;
+$i=0;
+do {
+$date_sunday  = date('Y-m-d', strtotime($first_monday . ' +6 day'));
+// echo "Дата понедельника  = ".$first_monday."<br>"; // 10.06.2024 00:00
+// echo "Дата воскресенья  = ".$date_sunday."<br>"; // 10.06.2024 00:00
+
+$week_array[$i]['monday'] = $first_monday;
+$week_array[$i]['sunday'] = $date_sunday;
+
+// echo "<br> Дата след понедельника  = ".$first_monday."<br>"; // 10.06.2024 00:00
+$first_monday = date('Y-m-d', strtotime($first_monday . ' +7 day'));
+$i++;
+} while ($date_sunday < $dateTo);
+$dateTo = $date_sunday;
+
+// die();
+
+
+/***
+ * 
+ ********************************************************/
+
+
+
+// $dop_link = "?dateFrom=".$dateFrom."&dateTo=".$dateTo;
 // $link_wb = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod".$dop_link;
 // $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
 // $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
-  $link_wb =  'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod'.$dop_link;
 
-$arr_result = light_query_without_data($token_wb, $link_wb);
+echo "<pre>";
+// print_r($week_array);
 
-// echo "<pre>";
+foreach ($week_array as $week) {
 
-
-// foreach ($arr_result As $gg) {
-
-//     // $bb[$gg['sa_name']] = $gg['ppvz_for_pay'];
-//     if ($gg['sa_name'] =='' ) {
-//         $bb[$gg['supplier_oper_name']] = $gg;
-
-//     }
-// }
-
-// print_r($bb);
+$dop_link = "?dateFrom=".$week['monday']."&dateTo=".$week['sunday'];
+$link_wb =  'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod'.$dop_link;
+$arr_result_temp = light_query_without_data($token_wb, $link_wb);
 
 /*********************************************************
 Проверяем нет ли ошибки взаимодействия
 ***********************************************************/
-if (isset($arr_result['code'])) {
-    if ($arr_result['code'] == 429) {
+if (isset($arr_result_temp['code'])) {
+    if ($arr_result_temp['code'] == 429) {
     echo "<br>".$arr_result['message']."<br>";
     die ('');
     }
@@ -96,10 +125,26 @@ if (isset($arr_result['code'])) {
 /**********************************************************
 Проверяем нет ли ошибки по возварту данных
 ************************************************************/
-if (isset($arr_result['errors'][0])) {
-    echo "<br>".$arr_result['errors'][0]."<br>";
+if (isset($arr_result_temp['errors'][0])) {
+    echo "<br>".$arr_result_temp['errors'][0]."<br>";
     die ('WB не вернул данные');
     } 
+
+foreach ($arr_result_temp as $item)  {
+ $arr_result[] = $item;
+}
+
+sleep(2);
+}
+
+echo (count($arr_result));
+
+
+// die();
+
+
+
+
 
 /***********************************
 Проверяем eсть ли вообще массив 
@@ -186,9 +231,7 @@ foreach ($arr_count_vozvrat as $vozvrat_item) {
             }
        }
    }
-} else {
-    echo "НЕТ Возвратов <br>";  
-}
+} 
 
 echo "<br>Продаж: $prodazh";
 echo "<br>СТОРНО продаж: $stornoprodazh";

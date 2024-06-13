@@ -42,7 +42,11 @@ $array_for_table[$key]['sum_k_pererchisleniu'] =@$arr_sum_k_pererchisleniu[$key]
 
 ///     Сумма выплат с ВБ до вычета 
 if (isset ($arr_count[$key])) {
+    if ($arr_count[$key] > 0) {
 $array_for_table[$key]['sum_k_pererchisleniu_za_shtuku'] = round(@$arr_sum_k_pererchisleniu[$key]/@$arr_count[$key],2);
+     } else {
+        $array_for_table[$key]['sum_k_pererchisleniu_za_shtuku'] = "-";
+     }
 } else {
     $array_for_table[$key]['sum_k_pererchisleniu_za_shtuku'] = "-";
 }

@@ -64,7 +64,7 @@ foreach ($arr_name_articles as $key=>$filename) {
 
     $pdf_ozom_merge->merge('file',  $link_merge_pdf_file );
 unset ($pdf_ozom_merge);
-echo "$key 8<br>";
+echo "$key<br>";
 }
 
 /*****************************************************************************************************************

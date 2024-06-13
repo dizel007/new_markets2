@@ -28,7 +28,7 @@ $campaignId = get_id_company_yam($pdo);
 if  (isset($_GET['select_date'])) {
     $need_date_temp = $_GET['select_date'];
     $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
-    echo $need_date."<br>"; 
+    echo $need_date."*********************************<br>"; 
 } else {
     echo "<br>NET DATE DIE<br>";
     die('die without date');
@@ -55,7 +55,7 @@ echo $need_date."<br>";
 
 // print_r($arr_all_new_orders['orders'][2]);
 
-
+// die();
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
     
     $orderId = $order['id']; // ID  выбранного заказа

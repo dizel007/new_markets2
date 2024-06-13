@@ -11,6 +11,13 @@ foreach ($arr_result as $item) {
 // if ($item['report_type'] <> 1) {
 //     continue;
 // }    
+
+// КОСТЫЛЬ, чтобы УБРАТЬ лишние непонятные продажи 
+// echo $item['date_to']."=====". $dateTo."<br>";
+// if ($item['date_to'] > $dateTo) {
+//     continue;
+// }  
+
 $article_new = make_right_articl($item['sa_name']); // Подставляем стандартный артикул
 
 $arr_type[$item['supplier_oper_name']]= $item['supplier_oper_name'];
