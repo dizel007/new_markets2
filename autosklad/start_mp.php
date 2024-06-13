@@ -21,7 +21,7 @@ echo <<< HTML
               <input  class="file_input_button" type="file" name="file_excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 			  </div>
         <div class="form-submit-btn">
-			<input type="submit" value="ЗАПУСК">	
+			<input type="submit" value="Обновить данные">	
         </div>
 
       </form>

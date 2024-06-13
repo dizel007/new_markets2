@@ -83,9 +83,12 @@ $arr_mass_one_date_orders[$order['id']]['date_delivery'] = $order['delivery']['s
 print_table_with_ALL_orders ($arr_mass_orders, '');
 
 
-/// Выводим все заказы на все даты 
+/// Выводим все на выбранную дату
+if (isset ($arr_mass_one_date_orders)) {
 print_table_with_ALL_orders ($arr_mass_one_date_orders, 'для отгрузки на дату: '.$need_date);
-
+} else {
+ echo "<h2>Нет заказов на дату : $need_date</h2>";
+}
 
 /// Выводим все заказы на выбранные даты
 if (isset($arr_all_items)) {

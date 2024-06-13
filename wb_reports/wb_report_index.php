@@ -107,7 +107,7 @@ echo "<pre>";
 // print_r($week_array);
 
 foreach ($week_array as $week) {
-
+echo "Запрос данных  c ".$week['monday']." по ".$week['sunday'];
 $dop_link = "?dateFrom=".$week['monday']."&dateTo=".$week['sunday'];
 $link_wb =  'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod'.$dop_link;
 $arr_result_temp = light_query_without_data($token_wb, $link_wb);
@@ -121,23 +121,30 @@ if (isset($arr_result_temp['code'])) {
     die ('');
     }
 } 
-
 /**********************************************************
 Проверяем нет ли ошибки по возварту данных
 ************************************************************/
-if (isset($arr_result_temp['errors'][0])) {
+elseif (isset($arr_result_temp['errors'][0])) {
     echo "<br>".$arr_result_temp['errors'][0]."<br>";
     die ('WB не вернул данные');
     } 
+elseif  (isset($arr_result_temp[0])){ 
+    echo " ...... OK<br>";
 
-foreach ($arr_result_temp as $item)  {
- $arr_result[] = $item;
+    foreach ($arr_result_temp as $item)  {
+        $arr_result[] = $item;
+       }
+       
+} else {
+    echo ('......WB не вернул данные!!!<br>');
+    break;
 }
 
-sleep(2);
+
+sleep(1);
 }
 
-echo (count($arr_result));
+
 
 
 // die();
@@ -154,7 +161,8 @@ if (!isset($arr_result)) {
     die ('WB не вернул данные');
     } 
 
-
+// количество данных в массиве
+echo (count($arr_result));
 
 
 /*******************************************************************************************
