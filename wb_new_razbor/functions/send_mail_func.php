@@ -1,11 +1,12 @@
 <?php
 
 function sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes){
-    require '../libs/mailer/phpmailer/PHPMailer.php';
-    require '../libs/mailer/phpmailer/SMTP.php';
-    require '../libs/mailer/phpmailer/Exception.php';
+    require_once '../libs/mailer/phpmailer/PHPMailer.php';
+    require_once '../libs/mailer/phpmailer/SMTP.php';
+    require_once '../libs/mailer/phpmailer/Exception.php';
 
-
+    require_once "mail_pass.php"; // логин пароот для почты отправителя
+     
     $mail = new PHPMailer\PHPMailer\PHPMailer();
     
     try {
@@ -16,8 +17,8 @@ function sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes
             $mail->Host = 'mail.netangels.ru';  // Specify main and backup SMTP servers
         
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
-            $mail->Username = 'markets@anmarkets.ru';             // Наш логин
-            $mail->Password = 'pYeiobiC4ZiZL134';                 // Наш пароль от ящика
+            $mail->Username = $mail_Username;             // Наш логин
+            $mail->Password = $mail_Password;                 // Наш пароль от ящика
     
             $mail->setFrom('markets@anmarkets.ru', 'Разбор МП');   // От кого письмо 
     

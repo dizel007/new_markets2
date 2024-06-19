@@ -9,6 +9,7 @@ login.php
 ozon_razbor/reports/
 
 wb_new_razbor/reports/
+wb_new_razbor/functions/mail_pass.php
 
 autosklad/temp/
 
@@ -33,3 +34,4 @@ wb_make_xml/reports/
 
 yandex_report/temp/
 yandex_report/reports/
+

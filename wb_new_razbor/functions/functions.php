@@ -494,6 +494,10 @@ function make_right_articl($article) {
 				} else if ($article == '7280-К-7280-К-8' ) {
 					$new_article = '7280-К-6-18'; // новый бордюр (подмена карточки)
 				} 
+				  else if ($article == 'ANM.39*59' ) {
+					$new_article = '301'; // нрешетка )
+				} 
+			
 			
 			// Вся неучтенка    
 				
