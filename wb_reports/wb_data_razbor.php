@@ -29,7 +29,13 @@ if (($item['supplier_oper_name'] == 'Продажа') ) {
             $sum_k_pererchisleniu = $sum_k_pererchisleniu  + $item['ppvz_for_pay'];
             $arr_count[$article_new] = @$arr_count[$article_new] + $item['quantity'];
             $prodazh++;
-} elseif (($item['supplier_oper_name'] == 'Коррекция продаж') ) {
+
+}elseif (($item['supplier_oper_name'] == 'Добровольная компенсация при возврате') ) {
+
+                $arr_sum_k_pererchisleniu[$article_new] = @$arr_sum_k_pererchisleniu[$article_new] + $item['ppvz_for_pay'];
+                $sum_k_pererchisleniu = $sum_k_pererchisleniu  + $item['ppvz_for_pay'];
+                
+ } elseif (($item['supplier_oper_name'] == 'Коррекция продаж') ) {
 
     $arr_sum_k_pererchisleniu[$article_new] = @$arr_sum_k_pererchisleniu[$article_new] - $item['ppvz_for_pay'];
     $sum_k_pererchisleniu = $sum_k_pererchisleniu  - $item['ppvz_for_pay'];

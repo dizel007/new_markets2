@@ -37,8 +37,8 @@ foreach ($nomenclatura as $nomen) {
 
 // die();
 
-$date_start = "2024-05-01";
-$date_stop = "2024-05-31";
+$date_start = "2024-04-01";
+$date_stop = "2024-04-30";
 
 
 $ya_data = array(
@@ -135,6 +135,7 @@ foreach ($arr_all as $order) {
 
 
 
+// print_r($arr_items);
 
 // die();
 
@@ -148,6 +149,8 @@ foreach ($arr_items as $order_number => $orders) {
 		$arr_sum_item[mb_strtolower($key_articke)] = @$arr_sum_item[mb_strtolower($key_articke)] + $item['pribil_s_SKU'];
 		$arr_count_item[mb_strtolower($key_articke)] = @$arr_count_item[mb_strtolower($key_articke)] + $item['count'];
 		$arr_sum_buyer_item[mb_strtolower($key_articke)] = @$arr_sum_buyer_item[mb_strtolower($key_articke)] + $item['BUYER'];
+		// массив сумм комиий за штуку товара
+		$arr_sum_commisions_item[mb_strtolower($key_articke)] = @$arr_sum_commisions_item[mb_strtolower($key_articke)] + $item['commission']/$item['count'];
 	
 	}
 }
@@ -194,6 +197,11 @@ foreach ($arr_items_yandex as $ya_key => &$ya_item)
 				
 				// Цена для покупателя со всеми скидками
 				$ya_item['Price_for_buyer'] =  $item['BUYER'];
+
+					
+				// Вся комиссия яндекса
+				$ya_item['commission'] =  $arr_sum_commisions_item[$key];
+
 				
 				// количество проданного
 				$ya_item['count_sell'] =  $arr_count_item[$key];
@@ -206,7 +214,7 @@ foreach ($arr_items_yandex as $ya_key => &$ya_item)
 				// дельта от себестоимости
 				$ya_item['delta_v_stoimosti'] =  round(($ya_item['price_for_shtuka'] - $ya_item['min_price']), 2);
 				// дельта от хорошей цены
-				$ya_item['good_delta'] =  round(($ya_item['price_for_shtuka'] - $ya_item['main_price']), 2);
+				$ya_item['delta_good_and_sell_prices'] =  round(($ya_item['price_for_shtuka'] - $ya_item['main_price']), 2);
 				// наша прибыль
 				$ya_item['our_pribil'] =  round(($ya_item['delta_v_stoimosti'] * $ya_item['count_sell']), 2);
 				// габариты 

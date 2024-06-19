@@ -124,22 +124,16 @@ echo <<<HTML
 
 
 <tr>
-    <td class="big_text">ОТЧЕТЫ ОЗОН</td>
-    <td></td>
-    <td></td>
-    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>Отчет OZON Анмакс</div>    </a></td>
-    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip.jpg" ><div>Отчет OZON ИП Зел</div>    </a></td>
-</tr>
-
-
-<tr>
-    <td class="big_text" >ОТЧЕТЫ WB</td>
+    <td class="big_text">ОТЧЕТЫ </td>
     <td><a href = "wb_reports/wb_report_index.php?wb_shop=wb_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/wb_report_ooo.jpg" ><div>ОТЧЕТЫ WB АНМАКС</div>    </a></td>
     <td><a href = "wb_reports/wb_report_index.php?wb_shop=wb_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/wb_report_ip.jpg" ><div>ОТЧЕТЫ WB ИП Зел</div>    </a></td>
 
-    <td></td>
-</tr>
+    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>Отчет OZON Анмакс</div>    </a></td>
+    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip.jpg" ><div>Отчет OZON ИП Зел</div>    </a></td>
 
+    <td><a href = "yandex_report/start_ya_razbor.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/razbor_yandex.jpg" ><div>Отчет ЯМ</div>    </a></td>
+
+</tr>
 
 
 <tr>
