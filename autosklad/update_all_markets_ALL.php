@@ -35,17 +35,21 @@ update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
 // /* **************************  Запуск Обновления остатков ОЗОН ООО  *********************************** */
     
 // Озон АНмакс 
-    update_ostatki_OZON($arr_tokens,$pdo, $ozon_anmaks) ;
+    // update_ostatki_OZON($arr_tokens,$pdo, $ozon_anmaks) ; // Старый метод
+    update_ostatki_OZON_v2($arr_tokens,$pdo, $ozon_anmaks, "20848498763000") ;
 
+    
 // /* **************************  Запуск Обновления остатков ОЗОН ИП ЗЕЛ  *********************************** */
 //     // озон ИП зел
-    update_ostatki_OZON($arr_tokens,$pdo, $ozon_ip) ;
+    // update_ostatki_OZON($arr_tokens,$pdo, $ozon_ip) ; // Старый метод
+    update_ostatki_OZON_v2($arr_tokens,$pdo, $ozon_ip, "1020001356628000") ;
+                                                        
+
 
 
 
 /* *************** возвращаемся к таблице*/
     header('Location: get_all_ostatki_skladov_new_ALL.php?return=777', true, 301);
-
 
  die('ОБновили все остатки, но не перенаправились на начальную страницу');
 
@@ -75,9 +79,11 @@ update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
 **************************************************************** */
 
 function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
+
    // ОЗОН АНМКАС
    $client_id_ozon = $arr_tokens[$shop_name]['id_market'];
    $token_ozon = $arr_tokens[$shop_name]['token'];
+   
    
    $ozon_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
    $arr_catalog =  get_catalog_tovarov_v_mp($shop_name, $pdo, 'active');
@@ -109,9 +115,12 @@ function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
        $send_data =  array("stocks" => $temp_data_send);
        $send_data = json_encode($send_data, JSON_UNESCAPED_UNICODE)  ;
        $ozon_dop_url = "v1/product/import/stocks";
+    // $ozon_dop_url = "v2/products/stocks";
+    
        $result_ozon = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
        }
 
+print_r($result_ozon); 
 }
 
  /***************************************************************
@@ -161,4 +170,58 @@ $res = yandex_put_query_with_data($ya_token, $ya_link, $ya_data);
 // die();
 
 }
+}
+
+
+/***************************************************************
+ ******** Обновление остаток на OZON из POST  запроса
+**************************************************************** */
+
+function update_ostatki_OZON_v2($arr_tokens,$pdo, $shop_name, $warehouse_id) {
+
+   // ОЗОН АНМКАС
+   $client_id_ozon = $arr_tokens[$shop_name]['id_market'];
+   $token_ozon = $arr_tokens[$shop_name]['token'];
+//   echo $client_id_ozon."<br>";
+  
+   $ozon_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
+   $arr_catalog =  get_catalog_tovarov_v_mp($shop_name, $pdo, 'active');
+   
+   if ($ozon_update_items_quantity <> "no_data") {
+   
+       // добавляем к массиву артикул
+       foreach ($ozon_update_items_quantity as &$item) {
+       
+           foreach ($arr_catalog as $prods) {
+            if ($item ['sku'] == $prods['barcode']) {
+               $item['article'] = $prods['mp_article'];
+               $item['real_sku'] = $prods['sku'];
+            }
+           }
+       }
+   
+       unset($item);
+       
+       // Формируем массив для метода ОЗОНа по обновления остатков
+       foreach ($ozon_update_items_quantity as $prods) {
+           $temp_data_send[] = 
+               array(
+                   "offer_id" =>  $prods['article'],
+                   "product_id" =>   $prods['real_sku'], // для обновления нужен СКУ а не баркод (поэтому подставляем СКУ)
+                   "stock" => $prods['amount'],
+                   "warehouse_id" => $warehouse_id,
+                  );
+           }
+       $send_data =  array("stocks" => $temp_data_send);
+    // echo "<pre>";
+    
+    
+       $send_data = json_encode($send_data, JSON_UNESCAPED_UNICODE)  ;
+       $ozon_dop_url = "v2/products/stocks";
+    
+       $result_ozon = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
+
+    //    print_r($result_ozon);
+       }
+
 }
