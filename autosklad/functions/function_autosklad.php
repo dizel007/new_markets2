@@ -53,7 +53,15 @@ function get_db_procent_tovara_v_magazine ($mp_catalog, $raspredelenie_ostatkov,
                
             foreach ($raspredelenie_ostatkov as $procent_tovara) {
                 if (mb_strtolower((string)$procent_tovara['main_article_1c']) == $string_main_article) {
-                    $mp_item['procent_raspredelenia'] = $procent_tovara[$name_sklad];
+
+                    $mp_item['block_tovar'] = $procent_tovara['block_tovar']; // продаем ли товар, или он заблокирован 
+                    
+                    if ($procent_tovara['block_tovar'] == 0) { // Если не заблокирован, то ставим его процент
+                    $mp_item['procent_raspredelenia'] = $procent_tovara[$name_sklad]; 
+                    } else {
+                        $mp_item['procent_raspredelenia'] = 0; // иначе  0 
+                    }
+                    
                 }
                
             }

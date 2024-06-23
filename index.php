@@ -76,7 +76,6 @@ echo <<<HTML
 
 
 
-
 <tr>
 <td class="big_text">Разбор заказов на МП</td>
 <td ><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
@@ -90,6 +89,15 @@ echo <<<HTML
 </tr>
 
 
+<tr>
+<td class="big_text">Распределение товаров по всем МП </td>
+<td> </td>
+<td colspan="2"><a href = "adminka/start_admin_mode.php" target="_blank"><img width="$width_pics" src="pics/main_screen/admin_mode.jpg" ><div>Остатки МП</div>    </a></td>
+<td> </td>
+
+
+
+</tr>
 
 
 

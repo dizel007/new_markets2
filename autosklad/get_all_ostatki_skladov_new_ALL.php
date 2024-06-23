@@ -96,7 +96,7 @@ $arr_all_nomenklatura = select_active_nomenklaturu($pdo);
 // Получаем поартикульное распределние товаров на каждом складе 
 $raspredelenie_ostatkov = get_procent_tovarov_marketa($pdo);
 
-// print_r($arr_all_nomenklatura);
+// print_r($raspredelenie_ostatkov);
 // die();
 
 // Названия магазинов
@@ -111,7 +111,7 @@ $wb_catalog      = get_catalog_tovarov_v_mp($wb_anmaks ,       $pdo, 'active');
 $wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip,            $pdo, 'active'); // фомируем каталог
 $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks,      $pdo, 'active'); // получаем озон каталог
 $ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip,          $pdo, 'active'); // получаем озон каталог
-$ya_fbs_catalog = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo, 'active'); // получаем yandex каталог
+$ya_fbs_catalog  = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo, 'active'); // получаем yandex каталог
 // Формируем массив в номенклатурой, с учетом того, что один товар можнт продаваться под разным артикулом на Маркете
 
 /* *****************************      Получаем Фактические остатки с ВБ *****************************/
@@ -141,23 +141,6 @@ $ya_fbs_catalog = get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catal
 //*****************************  Достаем фактически заказанные товары YANDEX *****************************
 $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепляем продажи
 
-
-
-
-
-// print_r($ya_fbs_catalog);
-// die();
-// print_r ($raspredelenie_ostatkov);
-// die();
-
-//*****************************  *************
-
-// Добавляем в каталог процент распрделения и остаток из 1С для магазина Озон ООО 
-// $wb_catalog      = get_db_procent_magazina ($wb_catalog, $sklads, $wb_anmaks , $arr_new_ostatoki_MP);
-// $wbip_catalog    = get_db_procent_magazina ($wbip_catalog, $sklads, $wb_ip, $arr_new_ostatoki_MP);
-// $ozon_catalog    = get_db_procent_magazina ($ozon_catalog, $sklads, $ozon_anmaks, $arr_new_ostatoki_MP);
-// $ozon_ip_catalog = get_db_procent_magazina ($ozon_ip_catalog, $sklads, $ozon_ip, $arr_new_ostatoki_MP);
-// $ya_fbs_catalog  = get_db_procent_magazina ($ya_fbs_catalog, $sklads, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
 
 
 
@@ -193,9 +176,24 @@ $ozon_catalog    = add_all_info_in_catalog ($ozon_catalog,    $arr_sell_tovari) 
 $ozon_ip_catalog = add_all_info_in_catalog ($ozon_ip_catalog, $arr_sell_tovari) ;
 $ya_fbs_catalog  = add_all_info_in_catalog ($ya_fbs_catalog,  $arr_sell_tovari) ;
 // $arr_all_nomenklatura;  // - перечень номенклатуры 
-// print_r($wb_catalog);
-// die();
+
 // print_r($ya_fbs_catalog);
+
+
+// Цепляем к номенклатуре признак того, что товар был заблокирван
+foreach ($arr_all_nomenklatura as &$item) {
+    foreach ($raspredelenie_ostatkov as $block_tovar ) {
+        if (mb_strtolower($item['main_article_1c']) ==  mb_strtolower($block_tovar['main_article_1c'])) {
+            $item['block_tovar'] = $block_tovar['block_tovar'];
+            break;
+        }else {
+        $item['block_tovar'] = 0;
+       }
+    }
+}
+
+// print_r($arr_all_nomenklatura);
+// die();
 
 
 $link_all_update = "update_all_markets_ALL.php";
@@ -217,9 +215,16 @@ echo "<td>";
         echo "</tr>";
 
     foreach ($arr_all_nomenklatura as $item) {
+        
+      if ($item['block_tovar'] == 1) {
+        $block_tovar='block_tovar';
+      } else {
+        $block_tovar='';
+      }
+
         echo "<tr  class=\"rovnay_table\">";
-            echo "<td>".$item['main_article_1c']."</td>";
-            echo "<td>".@$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
+            echo "<td class =\"$block_tovar\">".$item['main_article_1c']."</td>";
+            echo "<td".@$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
             echo "<td>".@$arr_sell_tovari[mb_strtolower($item['main_article_1c'])]."</td>";
         echo "</tr>";
      }
@@ -229,28 +234,30 @@ echo "</td>";
 
 // ******************************************* WB OOO **************************************
 echo "<td>";
-show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $wb_catalog, $wb_anmaks);
+// show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $wb_catalog, $wb_anmaks);
+show_update_part_table($arr_all_nomenklatura, $wb_catalog, $wb_anmaks);
+
 echo "</td>";
 
  //******************************************* * WB IP ************************ 
 echo "<td>";
-show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $wbip_catalog,$wb_ip);
+show_update_part_table($arr_all_nomenklatura, $wbip_catalog,$wb_ip);
 echo "</td>";
 
 //******************************************* * WB IP ************************ 
 echo "<td>";
-show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ozon_catalog, $ozon_anmaks);
+show_update_part_table($arr_all_nomenklatura,  $ozon_catalog, $ozon_anmaks);
 echo "</td>";
 
 
 //******************************************* * WB IP ************************ 
 echo "<td>";
-show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ozon_ip_catalog,$ozon_ip);
+show_update_part_table($arr_all_nomenklatura,  $ozon_ip_catalog,$ozon_ip);
 echo "</td>";
 
 //******************************************* * YANDEX ************************ 
 echo "<td>";
-show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ya_fbs_catalog,$yandex_anmaks_fbs);
+show_update_part_table($arr_all_nomenklatura, $ya_fbs_catalog,$yandex_anmaks_fbs);
 echo "</td>";
 
 
@@ -263,7 +270,7 @@ echo "<input class=\"btn\" type=\"submit\" value=\"ОБНОВИТЬ ALLLL ДАН
 
 echo "</table>";
 
-
+echo "</form>";
 
 // Выводим на экран сводную таблицу по продажам
 $arr_need_tovari = print_sum_information ($arr_all_nomenklatura, $arr_new_ostatoki_MP, $arr_sell_tovari) ;
@@ -288,7 +295,14 @@ die('Закончили разбор');
 
 
 
-function show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $mp_catalog, $mp_name) {
+
+/**********************************************************************************************
+* Выводим таблицу товаров для обновления остатков для одного МП
+*************************************************************************************************/
+
+// function show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $mp_catalog, $mp_name) {
+
+ function show_update_part_table($arr_all_nomenklatura, $mp_catalog, $mp_name) {
 
 echo <<<HTML
  <link rel="stylesheet" href="pics/css/styles.css">
@@ -312,6 +326,7 @@ HTML;
 
      foreach ($arr_all_nomenklatura as $item) {
         echo "<tr class=\"rovnay_table\">";
+
         echo "<td>".$item['main_article_1c']."</td>";
     
     // ******************************************* WB OOO **************************************

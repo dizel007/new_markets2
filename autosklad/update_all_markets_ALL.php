@@ -73,56 +73,6 @@ update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
 
 }
 
-
- /***************************************************************
- ******** Обновление остаток на OZON из POST  запроса
-**************************************************************** */
-
-function update_ostatki_OZON($arr_tokens,$pdo, $shop_name) {
-
-   // ОЗОН АНМКАС
-   $client_id_ozon = $arr_tokens[$shop_name]['id_market'];
-   $token_ozon = $arr_tokens[$shop_name]['token'];
-   
-   
-   $ozon_update_items_quantity = razbor_post_massive_mp_2($_POST, $shop_name);
-   $arr_catalog =  get_catalog_tovarov_v_mp($shop_name, $pdo, 'active');
-   
-   if ($ozon_update_items_quantity <> "no_data") {
-   
-       // добавляем к массиву артикул
-       foreach ($ozon_update_items_quantity as &$item) {
-       
-           foreach ($arr_catalog as $prods) {
-            if ($item ['sku'] == $prods['barcode']) {
-               $item['article'] = $prods['mp_article'];
-               $item['real_sku'] = $prods['sku'];
-            }
-           }
-       }
-   
-       unset($item);
-       
-       // Формируем массив для метода ОЗОНа по обновления остатков
-       foreach ($ozon_update_items_quantity as $prods) {
-           $temp_data_send[] = 
-               array(
-                   "offer_id" =>  $prods['article'],
-                   "product_id" =>   $prods['real_sku'], // для обновления нужен СКУ а не баркод (поэтому подставляем СКУ)
-                   "stock" => $prods['amount'],
-                  );
-           }
-       $send_data =  array("stocks" => $temp_data_send);
-       $send_data = json_encode($send_data, JSON_UNESCAPED_UNICODE)  ;
-       $ozon_dop_url = "v1/product/import/stocks";
-    // $ozon_dop_url = "v2/products/stocks";
-    
-       $result_ozon = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
-       }
-
-print_r($result_ozon); 
-}
-
  /***************************************************************
  ******** Обновление остаток на YANDEX из POST  запроса
 **************************************************************** */
