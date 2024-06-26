@@ -1,0 +1,57 @@
+/* Рисуем клетки важности */
+.prod_table {
+	width: 100%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+}
+
+.prod_table td{
+	border: 1px solid #000000;
+	padding: 5px;
+	text-align: center;
+}
+
+.prod_table tr:nth-child(odd){
+	background: #fff;
+}
+.prod_table tr:nth-child(even){
+	background: #f1ddd3;
+}
+
+
+  label {
+	display: inline-block;
+	margin: 0.25em 0;
+  }
+  
+  /*-- selects --*/
+  
+  select {
+	/* height: 250px; */
+	/*  the bare minimum  */
+	font: inherit;
+	letter-spacing: inherit;
+	word-spacing: inherit;
+	/*  match my text boxen styles  */
+	border: 0.1em solid;
+	padding: 0 0.2em;
+	/*  from Filament  */
+
+  }
+  
+  .plus {
+	color:green;
+	font-weight: 400;
+  }
+  .minus {
+	color: red;
+	font-weight: 400;
+  }
+  .our_many {
+	color: rgb(0, 119, 255);
+	font-weight: 700;
+  }
+ 
+
+  

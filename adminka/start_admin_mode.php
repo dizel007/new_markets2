@@ -60,6 +60,7 @@ echo "<form action=\"update_new_ostatki.php\" method=\"post\">";
         echo "<td>ОЗОН ИП<br>Upd</td>";
         echo "<td>ЯМ ООО<br>Upd</td>";
         echo "<td>БЛОК<br>Upd</td>";
+        echo "<td>Сумма %</td>";
     echo "</tr>";
 
 foreach ($tovar_table_data as $item) {
@@ -95,7 +96,10 @@ if ($item['block_tovar']  == 1) {
       echo  "<td><input type=\"checkbox\" name=\"_mp_block_$name_for_update\" > </td>";
  }
 
-        echo "</tr>";
+/// СУмма распределния товаров во всех МП
+echo  "<td>".$summa100procentov."</td>";
+
+ echo "</tr>";
         
     }
     echo "</table>";

@@ -192,6 +192,7 @@ foreach ($arr_all_nomenklatura as &$item) {
     }
 }
 
+// echo "<pre>";
 // print_r($arr_all_nomenklatura);
 // die();
 
@@ -213,7 +214,7 @@ echo "<td>";
             echo "<td>Кол-во 1с</td>";
             echo "<td>SELL</td>";
         echo "</tr>";
-
+unset($item);
     foreach ($arr_all_nomenklatura as $item) {
         
       if ($item['block_tovar'] == 1) {
@@ -224,7 +225,7 @@ echo "<td>";
 
         echo "<tr  class=\"rovnay_table\">";
             echo "<td class =\"$block_tovar\">".$item['main_article_1c']."</td>";
-            echo "<td".@$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
+            echo "<td>".@$arr_new_ostatoki_MP[mb_strtolower($item['main_article_1c'])]."</td>";
             echo "<td>".@$arr_sell_tovari[mb_strtolower($item['main_article_1c'])]."</td>";
         echo "</tr>";
      }

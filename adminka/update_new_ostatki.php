@@ -10,7 +10,7 @@ $tovar_table_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $arr_post = $_POST;
 
 
-echo "<pre>";
+// echo "<pre>";
 
 
 // print_r($arr_post);

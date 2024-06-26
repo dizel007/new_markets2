@@ -251,8 +251,8 @@ $temp_count_soten_2++;
 }
 
 echo "<br> Массив со стикерами не преобразованный РАЗБИТЫЙ ПО СОТНЯМ <br>";
-echo "<pre>";
-print_r($arr_temp_res_stikers);
+// echo "<pre>";
+// print_r($arr_temp_res_stikers);
 
 foreach ($arr_temp_res_stikers as $arr_temp_stikers){
 	foreach ($arr_temp_stikers['stickers'] as $z_items){
@@ -262,8 +262,8 @@ foreach ($arr_temp_res_stikers as $arr_temp_stikers){
 }
 
 echo "<br> МАССИВ Со стикерами ДЛЯ ПДФ <br>";
-echo "<pre>";
-print_r($res_stikers);
+// echo "<pre>";
+// print_r($res_stikers);
 
 
 
