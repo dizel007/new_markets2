@@ -57,6 +57,7 @@ foreach ($array_first_excel_razbor['data'] as $key => &$item) {
       }
   }
   $summa = @$summa + $item['sum_nasha_viplata'];
+  $sum_cinut = @$sum_cinut + $item['count_sell'];
 }
 
 // Формируем массив Яндекс каталог
@@ -96,8 +97,9 @@ $proc_rapr_vsey_summi =  $summa / 100;
 }
 
 
+// сортируем товар  по номерному порядку  (Почему то ключ массива портится)
 
-//
+echo " COUNT  =  $sum_cinut<br>";
 echo " POSTUPLENIA =  $summa<br>";
 echo " KOMISSII =  " . $array_first_excel_razbor['komissii'] . "<br>";
 $na_schet = $summa + $array_first_excel_razbor['komissii'];
@@ -112,11 +114,13 @@ $arr_new__first_excel_razbor  = $array_first_excel_razbor['data'];
 // сортируем товар  по номерному порядку  (Почему то ключ массива портится)
 array_multisort(array_column($arr_new__first_excel_razbor, 'number_in_spisok'), SORT_ASC, $arr_new__first_excel_razbor);
 // восстанавливаем ключи
+unset ($item);
 foreach ($arr_new__first_excel_razbor as $item ) {
+
   $item['delta_v_stoimosti'] = $item['price_for_shtuka'] - $item['sebes_str_item'];  // дельма от себестотимости
   $item['delta_good_and_sell_prices'] = $item['price_for_shtuka'] - $item['main_price'];  // дельма от себестотимости
 
-  
+// print_r($item);
 
   $arr_with_key[$item['main_article_1c']] = $item;
 
@@ -125,7 +129,7 @@ foreach ($arr_new__first_excel_razbor as $item ) {
 
 
 echo "<pre>";
-print_r($arr_with_key['8910-30']);
+// print_r($arr_with_key);
 
 
 

@@ -15,15 +15,16 @@ echo <<<HTML
  <td>Артикул</td>
  <td>Кол-во<br> продаж</td>
  <td>К перечислению<br> за товар</td>
+ <td>% распред</td>
  <td>Комиссия <br> Яндекса</td>
  <td>К нам на счет </td>
+ <td>На счет за 1 шт</td>
 
  <td>Хорошая <br> цена</td>
  <td>Себест</td>
  <td>Прибыль<br> с артикула</td>
- <td>% распред<br>штрафов</td>
- <td>% от штрафов<br>удержаний</td>
- <td>Прибыль с <br>учетом штрафов</td>
+
+  <td>Прибыль </td>
  </tr>
  
  
@@ -41,7 +42,7 @@ foreach ($arr_with_key as $key => $item) {
     $sum_k_pererchisleniu = @$sum_k_pererchisleniu + @$item['sum_k_pererchisleniu'];
 
 
-
+// К перечислению за товар
 
     if (isset($item['count_sell'])) {
       if ($item['count_sell'] > 0) {
@@ -52,10 +53,21 @@ foreach ($arr_with_key as $key => $item) {
     } else {
       $price_one_shtuka_na_site = "-"; 
     }
-    echo "<td class=\"\">" . number_format(@$item['sum_nasha_viplata'], 2, ',', ' '). "</td>";
-    echo "<td class=\"\">" . number_format(@$item['raspred_komissii'], 2, ',', ' '). "</td>";
 
-    echo "<td class=\"\">" . number_format(@$item['sum_k_pererchisleniu'], 2, ',', ' '). "</td>";
+
+
+
+         
+
+    echo "<td class=\"\">" . number_format(@$item['sum_nasha_viplata'], 2, ',', ' '). "</td>";
+
+      // процент распредегты
+      echo "<td class=\"\">" . number_format(@$item['proc_raspred'], 2, ',', ' ') . "</td>";
+      $sum_proc_raspred = @$sum_proc_raspred + $item['proc_raspred'];
+
+    echo "<td class=\"minus\">" . number_format(@$item['raspred_komissii'], 2, ',', ' '). "</td>";
+
+    echo "<td class=\"plus\">" . number_format(@$item['sum_k_pererchisleniu'], 2, ',', ' '). "</td>";
 
     
     
@@ -76,32 +88,22 @@ foreach ($arr_with_key as $key => $item) {
       echo "<td class=\"minus\">" . @$item['sebes_str_item']."<br>".number_format(@$item['delta_v_stoimosti'], 2, ',', ' '). "</td>";
      }
 
-     // процент распредегты
-    echo "<td class=\"our_many\">" . number_format(@$item['proc_raspred'], 2, ',', ' ') . "</td>";
-$sum_proc_raspred = @$sum_proc_raspred + $item['proc_raspred'];
 
      // Прибыль с артикула 
     echo "<td class=\"our_many\">" . number_format(@$item['delta_v_stoimosti'], 2, ',', ' ') . "</td>";
 
     ///     Заработок с артикула 
     $our_pribil = @$item['delta_v_stoimosti'] * @$item['count_sell'];
-
+$sum_our_pribil = @$sum_our_pribil  +   $our_pribil;
     echo "<td class=\"our_many\"><b>" . number_format( $our_pribil, 2, ',', ' ') . "</b></td>"; // заработали на артикуле
 
-      ///     Процент от суммы выплаты  с артикула 
-      echo "<td class=\"minus\"><b>" . number_format(@$item['procent_ot_summi'], 2, ',', ' ') . "</b></td>"; // заработали на артикуле
-///     Сумма штрафа для артикула (распределяем по всем)
-echo "<td class=\"minus\"><b>" . number_format(@$item['summa_strafa_article'], 2, ',', ' ') . "</b></td>"; // заработали на артикуле
-
-///     Заработок с артикула после вычета штрафа
-    echo "<td class=\"our_many\"><b>" . number_format(@$item['pribil_posle_vicheta_strafa'], 2, ',', ' ') . "</b></td>"; // заработали на артикуле
-
-
+ 
+    echo "</tr>";
 }
 
 
 
-echo "</tr>";
+
 
 
 
@@ -110,15 +112,16 @@ echo "<td></td>";
 echo "<td class=\"plus\"><b>" . number_format($sum_count_sell, 2, ',', ' ') . "</b></td>";
 
 echo "<td class=\"plus\"><b>" . number_format($sum_nasha_viplata, 2, ',', ' ') . "</b></td>";
-
-echo "<td class=\"plus\"><b>" . number_format($sum_raspred_komissii, 2, ',', ' ') . "</b></td>";
-echo "<td class=\"plus\"><b>" . number_format($sum_raspred_komissii, 2, ',', ' ') . "</b></td>";
-echo "<td class=\"plus\"><b>" . number_format($sum_k_pererchisleniu, 2, ',', ' ') . "</b></td>";
-
-// echo "<td class=\"our_many\"><b>" . number_format($sum_nasha_viplata_po_wb, 2, ',', ' ') . "</b></td>";
 echo "<td>$sum_proc_raspred</td>";
+echo "<td class=\"minus\"><b>" . number_format($sum_raspred_komissii, 2, ',', ' ') . "</b></td>";
+echo "<td class=\"plus\"><b>" . number_format($sum_k_pererchisleniu, 2, ',', ' ') . "</b></td>";
 echo "<td></td>";
 echo "<td></td>";
+echo "<td></td>";
+echo "<td></td>";
+
+echo "<td class=\"our_many\"><b>" . number_format($sum_our_pribil, 2, ',', ' ') . "</b></td>";
+
 echo "</tr>";
 
 ////////////////////////////////////////////////////////////////

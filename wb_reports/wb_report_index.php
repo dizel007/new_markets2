@@ -145,9 +145,13 @@ sleep(1);
 }
 
 
+// echo "<pre>";
+$text =  json_encode($arr_result, JSON_UNESCAPED_UNICODE);
+file_put_contents('array.json', $text);
 
 
-// die();
+// file_put_contents('1.txt',$arr_result);
+die();
 
 
 
