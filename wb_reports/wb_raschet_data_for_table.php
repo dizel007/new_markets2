@@ -159,7 +159,9 @@ $summa_posle_vicheta_shtrafa = 0;
 
     $t_item['procent_ot_summi'] = abs($t_item['sum_nasha_viplata'] / $procent_ot_viplati);
     $procent_all +=$t_item['procent_ot_summi'];
-    $t_item['summa_strafa_article'] = abs(round($summa_shrafa*$t_item['procent_ot_summi'] /100,2));
+    // $t_item['summa_strafa_article'] = abs(round($summa_shrafa*$t_item['procent_ot_summi'] /100,2));
+    $t_item['summa_strafa_article'] = (round($summa_shrafa*$t_item['procent_ot_summi'] /100,2));
+
     $summa_shtrafa_raschet +=  $t_item['summa_strafa_article'];
 
     $t_item['pribil_posle_vicheta_strafa'] = $t_item['our_pribil'] - $t_item['summa_strafa_article'];

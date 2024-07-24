@@ -40,6 +40,16 @@ return $res11;
 *Функция запроса без данных 
 */ 
 
+$id_parcel = "";
+
+// *******************************  Количество запрашиваемых заказов **************************************
+
+// $dop_link = '?limit='.MAX_LIMIT_ORDERS;  // Дописваем максимальное количество Заказов
+
+// $dop_link = '?limit='.MAX_LIMIT_ORDERS; 
+$dop_link = '';
+$link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels'.$id_parcel.$dop_link;
+
 function light_query_without_data ($jwt_token, $link, $message) {
 $ch = curl_init($link);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -57,7 +67,7 @@ $ch = curl_init($link);
 	
 	$res = json_decode($res, true);
 
-    // echo     "Результат обмена [".$message."] : ".$http_code. "<br>";
+    echo     "Результат обмена [".$message."] : ".$http_code. "<br>";
 
     return $res;
 }
@@ -106,10 +116,10 @@ function get_create_spisok_from_lerua($jwt_token, $art_catalog, $ship_status) {
 
 
 
-//   echo "<pre>";
-// print_r($list_all_sending );
+  echo "<pre>";
+print_r($list_all_sending );
 // die('fffffffffffffff');
-
+// 
   // Перебираем все отправления  и ищем новые (созданные)
   $dop_link = '/statuses';
   // echo "<pre>";

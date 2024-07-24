@@ -8,6 +8,8 @@ require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 require_once "functions/excel_style.php";
 
 
+$kk='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5NjU5IiwibmFtZSI6ItCX0LXQu9C40LfQutC-INCU0LzQuNGC0YDQuNC5IiwibG9naW4iOiJ0ZW5kZXJAYW5tYWtzLnJ1Iiwicm9sZXMiOlsibWVyY2hhbnQiLCJtcF9tYW5hZ2VyIl0sIm1lcmoYW50X2lkIjoiMjYxOSIsIm1lcmNoYW50SWQiOiIyNjE5IiwiaWF0IjoxNzIwNjAwMTQ0LCJqdGkiOiJmOTVhNzRlNS1hODYwLTQ1NDAtODFlZC0zNjZlNTM1ZjIyNmQifQ.JlbAZJ8t4zt5_WDHSG6c0gK5ECAPzXwrBrupxlFYmL0';
+echo strlen($kk);
 
 echo <<<HTML
 <a href="lerua_get_token_WORK.php">GET NEW TOKEN</a>
@@ -30,10 +32,10 @@ $new_array_create_sends = get_create_spisok_from_lerua($jwt_token, $art_catalog,
 
 // echo "NEN ";
 
-// echo "<pre>";
-// print_r($new_array_create_sends);
+echo "<pre>";
+print_r($new_array_create_sends);
 
-
+die('jjjjjjjjjjjjjjjjjjjjj    ');
 if (isset($new_array_create_sends)) {
     echo "<h2>Неподтвержденные позиции (лимит ".MAX_LIMIT_ORDERS." заказов)</h2>";
     make_spisok_sendings ($new_array_create_sends);

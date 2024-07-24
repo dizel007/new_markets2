@@ -151,7 +151,7 @@ file_put_contents('array.json', $text);
 
 
 // file_put_contents('1.txt',$arr_result);
-die();
+// die();
 
 
 
@@ -217,6 +217,9 @@ echo "<pre>";
 
 require_once "wb_data_razbor.php";
 
+
+
+// print_r($arr_straf); ///////////////////////////////// DELETE////////////////////////////////////////////////////////////////////////
 
     /// Выводим необработанные строки из отчета
 if (isset($array_neuchet)){

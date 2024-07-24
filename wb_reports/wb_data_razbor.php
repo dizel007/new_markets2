@@ -23,7 +23,7 @@ $article_new = make_right_articl($item['sa_name']); // Подставляем с
 $arr_type[$item['supplier_oper_name']]= $item['supplier_oper_name'];
 //******* Сумма К перечислению за товар ************************************************************************************************************
     
-if (($item['supplier_oper_name'] == 'Продажа') ) {
+if (($item['supplier_oper_name'] == 'Продажа') OR ($item['supplier_oper_name'] == 'Компенсация ущерба')) {
 
             $arr_sum_k_pererchisleniu[$article_new] = @$arr_sum_k_pererchisleniu[$article_new] + $item['ppvz_for_pay'];
             $sum_k_pererchisleniu = $sum_k_pererchisleniu  + $item['ppvz_for_pay'];
@@ -124,6 +124,7 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
 } elseif (($item['supplier_oper_name'] == 'Штрафы') || ($item['supplier_oper_name'] == 'Штраф') || ($item['supplier_oper_name'] == 'Штрафы и доплаты')){
  // Стоимость ШТРАФЫ И ДОПЛАТЫ  ****************************************************************************************************
     $sum_shtafi_i_doplati = $sum_shtafi_i_doplati  + $item['penalty'];
+    // $arr_straf[]= $item;////////////////////////////////////// DELETE /////////////////////////////////////////////
 
 // Возмещение издержек по перевозке/по складским операциям с товаром
 } elseif($item['supplier_oper_name'] == 'Возмещение издержек по перевозке/по складским операциям с товаром') {

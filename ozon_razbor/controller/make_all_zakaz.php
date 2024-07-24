@@ -87,9 +87,11 @@ if (!isset($arr_for_zakaz)) {
 }
 // если есть Заказы на ОЗОН, то перебираем все отправления по одному и формируем JSON для отправки в ОЗОН
     // echo "<pre>";
+    echo "<br>==/ Количество заказов /==". count($arr_for_zakaz);
+
+
 foreach ($arr_for_zakaz as $one_post) {
     set_time_limit(0);
-    // echo "<br>==/ Следующий заказ /==";
     $result = make_packeges_for_one_post($token_ozon, $client_id_ozon,$one_post);
     usleep(10000);
     $array_list_podbora[] = $result['list_podbora'];
