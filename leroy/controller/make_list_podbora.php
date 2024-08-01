@@ -1,4 +1,7 @@
 <?php
+require_once '../../connect_db.php';
+
+
 require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel.php';
 require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
 require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
@@ -64,7 +67,7 @@ foreach ($new_array_list_podbora as $items) {
     $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
 
 
-$array_s_item = light_query_without_data ($jwt_token, $link, 'Лист подбора с грузоместами');
+$array_s_item = light_query_without_data ($token_lerua, $link, 'Лист подбора с грузоместами');
 
         foreach ($array_s_item as $shiped_posts) {
     

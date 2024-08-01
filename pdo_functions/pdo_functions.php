@@ -138,3 +138,59 @@ function get_id_company_yam($pdo) {
    $id_company =  $ya_token_info[0]['id_market'];
 return $id_company;
 }
+
+
+/*************************************************
+ * Фукнкция добавляет строку с данными о разборе со ссылкой на скачивание
+ ****************************************************/
+
+
+ function insert_info_in_table_razbor($pdo, $name_shop, $number_order, $date_otgruzki,  $link1, $link2) {
+
+
+   if (($name_shop == 'ozon_anmaks' ) OR ($name_shop == 'ozon_ip_zel')) {
+   $first_adress_part = 'https://ow2.ru/ozon_razbor';
+   } elseif (($name_shop == 'wb_anmaks' ) OR ($name_shop == 'wb_ip_zel')) {
+       $first_adress_part = 'https://ow2.ru/wb_new_razbor';
+   }elseif (($name_shop == 'ya_anmaks_fbs' )) {
+       $first_adress_part = 'https://ow2.ru/yandex_razbor';
+   } else {
+       $first_adress_part='';
+   }
+   
+   
+       $link1 = str_replace('..','', $link1);
+       $link1 = str_replace('\\','/', $link1);
+       $link1 = $first_adress_part.$link1;
+   
+       $link2 = str_replace('..','', $link2);
+       $link2 = str_replace('\\','/', $link2);
+       $link2 = $first_adress_part.$link2;
+   
+     
+    
+       echo $link1;
+    
+       $date_razbora = date('Y-m-d H:m:s+0300');
+       $sql = "INSERT INTO `table_razbor` SET `type_shop` = :type_shop, 
+                                              `number_order` = :number_order,
+                                              `date_razbora` = :date_razbora, 
+                                              `date_otgruzki` = :date_otgruzki, 
+                                              `link1` = :link1,
+                                              `link2` = :link2";
+       
+       $stmt = $pdo->prepare($sql);
+       
+       $stmt->execute(array('type_shop'      =>  $name_shop,
+                            'number_order'   =>  $number_order,
+                            'date_razbora'   => $date_razbora,
+                            'date_otgruzki'  => $date_otgruzki,
+                            'link1'   => $link1,
+                            'link2'   => $link2
+                            ));
+       
+       // $info = $stmt->errorInfo();
+       // print_r($info);
+       }   
+   
+   

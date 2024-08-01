@@ -84,9 +84,24 @@ HTML;
 
 
 
-
+// высылаем на почту письмо с данными
 sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes);
 
-delete_marker_recover_file($path_recovery); // дошли до конца и удаляем маркерный файл о незаконченности выполения скрипта
+
+// дошли до конца и удаляем маркерный файл о незаконченности выполения скрипта
+delete_marker_recover_file($path_recovery); 
+
+
+
+/// Запись в ВБ со ссылкой на архив этикеток
+$date_otgruzki = date('Y-m-d');
+$stmt = $pdo->prepare("SELECT `name_market` FROM tokens WHERE token='$token_wb'");
+$stmt->execute([]);
+$arr_name_shop = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$name_shop = $arr_name_shop[0];
+insert_info_in_table_razbor($pdo, $name_shop, $Zakaz_v_1c, $date_otgruzki,  $link_downloads_stikers, $link_downloads_qr_codes);
+
+
+
 die('<br><br><br>ПЕРЕДАНО В ДОСТАВКУ');
 

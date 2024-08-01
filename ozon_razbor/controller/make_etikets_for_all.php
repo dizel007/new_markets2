@@ -147,6 +147,17 @@ file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_fo
 file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_files));
 
 
+
+
+
+/**************************************************************************************************************
+ **********************************     Запись о разборе в БД     ********************************************
+ ******************************************************************************************************************/
+
+ insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, '');
+
+
+
 die ('<br> Дошли до финиша');
 /***********************
  * *
