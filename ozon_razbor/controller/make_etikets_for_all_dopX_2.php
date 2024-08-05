@@ -41,7 +41,9 @@ $dop_days_query = 0; // Всегда собираем за один день
  ******  Формируем папки для разнесения информации 
  ******************************************************************************************************************/
 // $new_date = date('Y-m-d');
-$new_path = '../reports/'.$date_query_ozon."/";
+// $new_path = '../reports/'.$date_query_ozon."/";
+$new_path = '../../!all_razbor/ozon/'.$date_query_ozon.""; // переход в новую папку 
+
 make_new_dir_z($new_path,0); // создаем папку с датой
 
 $new_path = $new_path.'/'.$number_order.'(dop)'.'/';
@@ -87,6 +89,26 @@ file_put_contents($temp_path, $string_json_list_podbora);
 
 require_once "make_etikets_for_all.php";
 
+
+
+
+/*****************************************************************************************************************
+ ******  Формируем папки для разнесения информации 
+ ******************************************************************************************************************/
+// // $new_date = date('Y-m-d');
+// $new_path = '../../!all_razbor/ozon/'.$date_query_ozon."";
+
+// make_new_dir_z($new_path,0); // создаем папку с датой
+
+// $new_path = $new_path.'/'.$number_order.'(dop)'.'/';
+// make_new_dir_z($new_path,0); // создаем папку с датой
+
+// $path_etiketki = $new_path.'etiketki';
+// make_new_dir_z($path_etiketki,0); // создаем папку с датой
+// $path_excel_docs = $new_path.'excel_docs';
+// make_new_dir_z($path_excel_docs,0); // создаем папку с датой
+// $path_zip_archives = $new_path.'zip_archives';
+// make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 
 
 die('ОТПРАВИЛИ МНОГО ЗАКАЗОВ');

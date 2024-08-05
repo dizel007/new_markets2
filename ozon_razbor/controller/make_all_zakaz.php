@@ -41,7 +41,8 @@ $dop_days_query = 0; // Всегда собираем за один день
  ******  Формируем папки для разнесения информации 
  ******************************************************************************************************************/
 // $new_date = date('Y-m-d');
-$new_path = '../reports/'.$date_query_ozon."";
+// $new_path = '../reports/'.$date_query_ozon."";
+$new_path = '../../!all_razbor/ozon/'.$date_query_ozon.""; // переход в новую папку 
 make_new_dir_z($new_path,0); // создаем папку с датой
 
 $new_path = $new_path.'/'.$number_order.'/';
@@ -121,7 +122,6 @@ file_put_contents($temp_path, $string_json_list_podbora);
  ******************************************************************************************************************/
 
 require_once "make_etikets_for_all.php";
-
 
 
 die('ОТПРАВИЛИ МНОГО ЗАКАЗОВ');

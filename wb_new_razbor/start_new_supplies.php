@@ -397,6 +397,16 @@ echo <<<HTML
 HTML;
 
 
+/*************** DELETE  (тестим новую папку для разборов)*/
+$new_date_n = date('Y-m-d');
+make_new_dir_z('../!all_razbor/wb/reports/'.$new_date,0); // создаем папку с датой
+$new_path = '../!all_razbor/wb/reports/'.$new_date."/".$Zakaz_v_1c;
+$path_qr_supply = $new_path.'/qr_code_supply';
+$path_stikers_orders = $new_path.'/stikers_orders';
+$path_arhives = $new_path.'/arhives';
+$path_recovery = $new_path.'/recovery';
+
+
 die('РАЗБОР ОКОНЧЕН (STOP)');
 
 

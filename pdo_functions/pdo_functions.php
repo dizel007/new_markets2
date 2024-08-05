@@ -150,7 +150,7 @@ return $id_company;
 /// Подготовка ссылок для ОЗОН
    if (($name_shop == 'ozon_anmaks' ) OR ($name_shop == 'ozon_ip_zel')) {
 
-   $first_adress_part = 'https://ow2.ru/ozon_razbor';
+   $first_adress_part = 'https://ow2.ru';
    $link1 = str_replace('..','', $link1);
    $link1 = str_replace('\\','/', $link1);
    $link1 = $first_adress_part.$link1;

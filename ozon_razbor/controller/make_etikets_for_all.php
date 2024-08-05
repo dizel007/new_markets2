@@ -158,7 +158,7 @@ file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_
 
 
 
-die ('<br> Дошли до финиша');
+// die ('<br> Дошли до финиша');
 /***********************
  * *
  *****************************/

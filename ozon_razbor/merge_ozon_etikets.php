@@ -11,9 +11,17 @@ $filepath = $_GET['filepath'];
     echo "Не получили ссылку на файл";
     die('');
 }
+
+
+print_r($_GET['filepath'] );
+echo "<br>";
 // Костыли чтобы исправить адрес пути у фаилам
-$filepath = str_replace("//", "/", $filepath);
-$filepath = str_replace("../", "", $filepath);
+// $filepath = str_replace("//", "/", $filepath);
+$filepath = "../".str_replace("../", "", $filepath);
+// $filepath = str_replace("../", "", $filepath);
+
+print_r($filepath);
+
 
 $array_dop_files = json_decode(file_get_contents($filepath."array_dop_info.json"), true);
 

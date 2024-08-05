@@ -78,7 +78,7 @@ echo <<<HTML
 
 <tr>
 <td class="big_text">Разбор заказов на МП</td>
-<td ><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
+<td><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
 <td><a href = "?transition=11"><img width="$width_pics" src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
 <td><a href = "?transition=20"><img width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
 <td><a href = "?transition=21"><img width="$width_pics" src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
