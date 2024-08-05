@@ -147,11 +147,29 @@ return $id_company;
 
  function insert_info_in_table_razbor($pdo, $name_shop, $number_order, $date_otgruzki,  $link1, $link2) {
 
-
+/// Подготовка ссылок для ОЗОН
    if (($name_shop == 'ozon_anmaks' ) OR ($name_shop == 'ozon_ip_zel')) {
+
    $first_adress_part = 'https://ow2.ru/ozon_razbor';
+   $link1 = str_replace('..','', $link1);
+   $link1 = str_replace('\\','/', $link1);
+   $link1 = $first_adress_part.$link1;
+
+   $link2 = str_replace('..','', $link2);
+   $link2 = str_replace('\\','/', $link2);
+   $link2 = $first_adress_part.$link2;
+/// Подготовка ссылок для ВБ
    } elseif (($name_shop == 'wb_anmaks' ) OR ($name_shop == 'wb_ip_zel')) {
        $first_adress_part = 'https://ow2.ru/wb_new_razbor';
+       
+       $link1 = str_replace('..','', $link1);
+       $link1 = str_replace('\\','/', $link1);
+       $link1 = $first_adress_part."/".$link1;
+   
+       $link2 = str_replace('..','', $link2);
+       $link2 = str_replace('\\','/', $link2);
+       $link2 = $first_adress_part."/".$link2;
+/// Подготовка ссылок для ЯНДЕКСА
    }elseif (($name_shop == 'ya_anmaks_fbs' )) {
        $first_adress_part = 'https://ow2.ru/yandex_razbor';
    } else {
@@ -159,13 +177,7 @@ return $id_company;
    }
    
    
-       $link1 = str_replace('..','', $link1);
-       $link1 = str_replace('\\','/', $link1);
-       $link1 = $first_adress_part.$link1;
-   
-       $link2 = str_replace('..','', $link2);
-       $link2 = str_replace('\\','/', $link2);
-       $link2 = $first_adress_part.$link2;
+
    
      
     
