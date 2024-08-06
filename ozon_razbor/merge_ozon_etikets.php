@@ -13,14 +13,13 @@ $filepath = $_GET['filepath'];
 }
 
 
-print_r($_GET['filepath'] );
-echo "<br>";
+// print_r($_GET['filepath'] );
+// echo "<br>";
 // Костыли чтобы исправить адрес пути у фаилам
-// $filepath = str_replace("//", "/", $filepath);
-$filepath = "../".str_replace("../", "", $filepath);
-// $filepath = str_replace("../", "", $filepath);
 
-print_r($filepath);
+$filepath = "../".str_replace("../", "", $filepath);
+
+// print_r($filepath);
 
 
 $array_dop_files = json_decode(file_get_contents($filepath."array_dop_info.json"), true);
@@ -32,10 +31,11 @@ print_r($array_dop_files);
 $number_order = $array_dop_files['number_order'];
 $path_excel_docs = $array_dop_files['path_excel_docs'];
 
-$path_excel_docs = str_replace("//", "/", $path_excel_docs);
-$path_excel_docs = str_replace("../", "", $path_excel_docs);
-
-
+// $path_excel_docs = str_replace("//", "/", $path_excel_docs);
+$path_excel_docs = "../".str_replace("../", "", $path_excel_docs);
+echo  "<br>********************************<br>";
+print_r($path_excel_docs);
+echo  "<br>********************************<br>";
 $file_name_1c_list = $array_dop_files['file_name_1c_list'];
 $file_name_list_podbora =  $array_dop_files['file_name_list_podbora'];
 

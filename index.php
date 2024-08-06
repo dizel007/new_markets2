@@ -150,8 +150,10 @@ echo <<<HTML
     <td class="big_text">Получение этикеток с озон (аварийное)</td>
     <td></td>
     <td></td>
-    <td><a href = "ozon_razbor/index_ozon_ooo_dop.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ООО ТД АНМАКС</div>    </a></td>
+    <td><a href = "ozon_razbor/index_ozon_ooo_dop.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ООО АНМАКС</div>    </a></td>
     <td><a href = "ozon_razbor/index_ozon_ip_dop.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ИП Зел</div>    </a></td>
+    <td><a href = "ozon_returns/get_returns.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_returns.jpg" ><div>Возвраты <br> двух<br> ОЗОНов</div>    </a></td>
+
 </tr>
 
 

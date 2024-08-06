@@ -399,13 +399,19 @@ HTML;
 
 /*************** DELETE  (тестим новую папку для разборов)*/
 $new_date_n = date('Y-m-d');
-make_new_dir_z('../!all_razbor/wb/reports/'.$new_date,0); // создаем папку с датой
-$new_path = '../!all_razbor/wb/reports/'.$new_date."/".$Zakaz_v_1c;
+make_new_dir_z('../!all_razbor/wb/'.$new_date,0); // создаем папку с датой
+$new_path = '../!all_razbor/wb/'.$new_date."/".$Zakaz_v_1c;
 $path_qr_supply = $new_path.'/qr_code_supply';
 $path_stikers_orders = $new_path.'/stikers_orders';
 $path_arhives = $new_path.'/arhives';
 $path_recovery = $new_path.'/recovery';
 
+/// проверяем  наличие папки с таким номером заказа
+make_new_dir_z($new_path,0); // создаем папку с номером заказа
+make_new_dir_z($path_qr_supply,0); // создаем папку с QR
+make_new_dir_z($path_stikers_orders,0); // создаем папку со стикерами
+make_new_dir_z($path_arhives,0); // создаем папку с архивами
+make_new_dir_z($path_recovery,0); // создаем папку с инфой по восстановлению
 
 die('РАЗБОР ОКОНЧЕН (STOP)');
 
