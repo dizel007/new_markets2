@@ -179,11 +179,11 @@ $kolvo_soten = 1;
 $j=0;
 	for ($k=0; $k < count($arr_orders); $k++){
 
-		echo "<br>K=$k---J=$j<br>";
+		// echo "<br>K=$k---J=$j<br>";
 		if ($j == 100) {
 			$kolvo_soten ++;
 			$j=0;
-			echo "<br>**************    Добавили СОТНЮ     *********<br>";
+			// echo "<br>**************    Добавили СОТНЮ     *********<br>";
 		}
 
 		if ($j < 100){
@@ -195,9 +195,9 @@ $j=0;
 	}
 
 
-echo "<br> МАССИВ РАЗБИТЫЙ ПО СОТНЯМ <br>";
-echo "<pre>";
-print_r($arr_temp_orders);
+// echo "<br> МАССИВ РАЗБИТЫЙ ПО СОТНЯМ <br>";
+// echo "<pre>";
+// print_r($arr_temp_orders);
 $temp_count_soten_2 = 0;
 foreach ($arr_temp_orders as $arr_sot_orders) {
 

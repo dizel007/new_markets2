@@ -170,8 +170,11 @@ function update_ostatki_OZON_v2($arr_tokens,$pdo, $shop_name, $warehouse_id) {
        $ozon_dop_url = "v2/products/stocks";
     
        $result_ozon = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
-
+        
+    //    echo "<pre>";
     //    print_r($result_ozon);
+    //    die();
+    
        }
 
 }

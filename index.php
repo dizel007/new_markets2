@@ -1,5 +1,6 @@
 <?php
 // session_start();
+
 require_once("connect_db.php"); // подключение к БД
 require_once('pdo_functions/pdo_functions.php');
 

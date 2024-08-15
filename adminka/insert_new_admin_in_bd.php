@@ -51,7 +51,7 @@ $date_write =date('Y-m-d');
     
 if (!$stmt ->execute())
  { 
-   echo $stmt->ErrorInfo(); 
+  print_r($stmt->ErrorInfo()); 
    die("<br>Померли на вводе нового пользователя");
  }
             

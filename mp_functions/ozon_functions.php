@@ -65,7 +65,7 @@ function  get_ostatki_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
     
     $res = send_injection_on_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
     
-
+// echo "<pre>";
 // print_r($res) ;
 // die();
 

@@ -112,6 +112,13 @@ $wbip_catalog    = get_catalog_tovarov_v_mp($wb_ip,            $pdo, 'active'); 
 $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks,      $pdo, 'active'); // получаем озон каталог
 $ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip,          $pdo, 'active'); // получаем озон каталог
 $ya_fbs_catalog  = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo, 'active'); // получаем yandex каталог
+
+
+// print_r ($ozon_catalog);
+// die();
+
+
+
 // Формируем массив в номенклатурой, с учетом того, что один товар можнт продаваться под разным артикулом на Маркете
 
 /* *****************************      Получаем Фактические остатки с ВБ *****************************/
@@ -141,7 +148,8 @@ $ya_fbs_catalog = get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catal
 //*****************************  Достаем фактически заказанные товары YANDEX *****************************
 $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепляем продажи
 
-
+// print_r ($ozon_catalog);
+// die();
 
 
 $wb_catalog      = get_db_procent_tovara_v_magazine ($wb_catalog, $raspredelenie_ostatkov, $$wb_anmaks, $arr_new_ostatoki_MP);
@@ -151,7 +159,7 @@ $ozon_ip_catalog = get_db_procent_tovara_v_magazine ($ozon_ip_catalog, $rasprede
 $ya_fbs_catalog  = get_db_procent_tovara_v_magazine ($ya_fbs_catalog, $raspredelenie_ostatkov, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
 
 
-// print_r ($wb_catalog);
+// print_r ($ozon_catalog);
 // die();
 //*****************************  Формируем массив из всех каталогов  *****************************
 
