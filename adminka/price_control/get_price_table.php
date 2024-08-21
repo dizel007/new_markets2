@@ -1,27 +1,27 @@
 <?php
+$offset ="../../";
+require_once $offset."connect_db.php";
+require_once $offset."pdo_functions/pdo_functions.php";
+require_once $offset."mp_functions/wb_api_functions.php";
+require_once $offset."mp_functions/wb_functions.php";
+require_once "functions.php";
 
-require_once "connect_db.php";
-require_once "pdo_functions/pdo_functions.php";
-require_once "mp_functions/wb_api_functions.php";
-require_once "mp_functions/wb_functions.php";
+$wb_anmaks = 'wb_anmaks';
+$wb_ip = 'wb_ip_zel';
+/**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
 
+$token_wb = $token_wb_ip;
+$wb_shop = $wb_ip;
 
 // Доставем информацию по складам ****** АКТИВНЫМ СКЛАДАМ ******
 $sklads = select_info_about_sklads($pdo); // ОБщая Информация по складам
 // Названия магазинов
-$wb_anmaks = 'wb_anmaks';
-$wb_ip = 'wb_ip_zel';
-
-$wb_catalog = get_wb_prices($pdo, $token_wb, $wb_anmaks);
-
-echo "<pre>";
+$wb_catalog = get_wb_prices($pdo, $token_wb, $wb_shop);
+// echo "<pre>";
 // print_r($wb_catalog);
 
-
-
-
 foreach ($wb_catalog as &$item) {
-	$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_anmaks);
+	$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
 
 	if (isset($gtemp[0])) {
 // если нашли массив в таблице то добавляем данные в каталог
@@ -41,9 +41,9 @@ foreach ($wb_catalog as &$item) {
 		$data_for_input['dis_price_now'] = $item['dis_price_now'];
 		$data_for_input['discount_now'] = $item['discount_now'];
 		$data_for_input['date_now'] = date('Y-m-d');;
-		insert_data_in_prices_tabla_db($pdo, $wb_anmaks, $data_for_input);
+		insert_data_in_prices_tabla_db($pdo, $wb_shop, $data_for_input);
 	// вычитываем добавленные данные с БД
-		$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_anmaks);
+		$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
 	// если нашли массив в таблице то добавляем данные в каталог
 		if (isset($gtemp[0])) {
 			$item['price_old'] = $gtemp[0]['price_old'];
@@ -55,11 +55,11 @@ foreach ($wb_catalog as &$item) {
 }
 
 
-print_r($wb_catalog[0]);
+// print_r($wb_catalog[0]);
 
-print_table_with_prices($wb_catalog);
+print_table_with_prices($wb_catalog, $token_wb, $wb_shop);
 
-
+die('END SCRIPT');
 /************************************************************************************************
  * *************** Получаем каталог их БД и берем цены с сайта ВБ *******************************
  ************************************************************************************************/
@@ -146,64 +146,28 @@ function select_last_data_from_db($pdo, $sku, $shop_name)
 	return $tovar_table_data;
 }
 
-/************************************************************************************************
- ******  Вычитываем из БД самую свежую цену ************************************************
- ************************************************************************************************/
-function print_table_with_prices($wb_catalog){
+// /************************************************************************************************
+//  ******  Обновляем цену и скидку на товар на сайте ВБ и в БД ************************************************
+//  ************************************************************************************************/
+// function update_prices_and_discount_inWB_and_inDB_work($token_wb)
+// {
+
+	
+// 	$arr_data['sku'] = (int)$_GET['sku'];
+// 	$arr_data['price_now'] = (int)$_GET['price_now'];
+// 	$arr_data['discount_now'] = (int)$_GET['discount_now'];
+
+// $data= array("data"=> array(array(
+// 	"nmID" => $arr_data['sku'],
+// 	"price"=> $arr_data['price_now'],
+// 	"discount"=> $arr_data['discount_now']
+// ))
+
+// );
+
+// $link_wb = 'https://discounts-prices-api.wildberries.ru/api/v2/upload/task';
+// $res = light_query_with_data($token_wb, $link_wb, $data);
 
 
- echo "<link rel=\"stylesheet\" href=\"adminka/css/main_table.css\">";
- echo "<form action=\"\" method=\"post\">";
-   
- echo "<table class=\"prods_table\">";
-
-
- echo "<tr  class=\"rovnay_table_shapka\">";
-	 echo "<td>Артикул МП</td>";
-	 echo "<td>Цена с БД<br></td>";
-	 echo "<td>Скидка<br> Цена <br>с БД</td>";
-	 echo "<td>Скидка<br></td>";
-	 echo "<td>Дата в БД<br></td>";
-	 echo "<td>Цена с <br>сайта<br>Upd</td>";
-	 echo "<td>СкидЦена с ВБ<br>Upd</td>";
-	 echo "<td>Скидка<br> с ВБ<br>Upd</td>";
-	 echo "<td>Сумма %</td>";
- echo "</tr>";
-
-foreach ($wb_catalog as $item) {
-
-
-// Проверяем одинаковые ли цена на сайт и в БД
-$delta_prices = $item['dis_price_old'] -  $item['dis_price_now'];
-
-	($item['dis_price_old'] <> $item['dis_price_now'])? $bolshe100 = 'bolshe100': $bolshe100 = '' ;
-
-	 
-	 echo "<tr class=\"rovnay_table  $bolshe100 \">";
-
-	 echo "<td>".$item['main_article']."</td>";
-
-	 $name_for_update = $item['main_article'];
-// данные из БД
-echo  "<td>".$item['price_old']."</td>";
-echo  "<td>".$item['dis_price_old']."</td>";
-echo  "<td>".$item['discount_old']."</td>";
-echo  "<td>".$item['date_old']."</td>";
-
-/// данные с сайта ВБ
-echo  "<td><input class=\"text-field__input future_ostatok\" type=\"number\" name=\"_mp_ozon_ip_zel_$name_for_update\" value=".$item['price_now']."></td>";
-echo  "<td>".$item['dis_price_now']."</td>";
-// заблокированный товар иили нет
-echo  "<td><input class=\"text-field__input future_ostatok\" type=\"number\" name=\"_mp_ya_anmaks_fbs_$name_for_update\" value=".$item['discount_now']."></td>";
-
-
-/// СУмма распределния товаров во всех МП
-echo  "<td>".$delta_prices."</td>";
-
-echo "</tr>";
-	 
- }
- echo "</table>";
- echo "<input class=\"btn\" type=\"submit\" value=\"ОБНОВИТЬ ДАННЫЕ\">";
-
-}
+// print_r($res);
+// }

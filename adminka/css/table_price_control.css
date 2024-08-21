@@ -41,7 +41,7 @@ input[type="text"] {
   line-height: inherit; /* 1 */
   margin: 0; /* 2 */
 }
-.text-field_input {
+.text-field__input {
   display: block;
   /* width: 100%; */
   /* padding: 0.375rem 0.75rem; */
@@ -52,7 +52,7 @@ input[type="text"] {
   color: #0f0f0f;
   background-color: #fff;
   /* background-clip: padding-box; */
-  border: 1px solid #bdbdbd;
+  border: 1px solid #67685e;
   /* border-radius: 0.25rem; */
   transition: border-color 0.75s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -60,8 +60,17 @@ input[type="text"] {
   background-color: rgb(93, 201, 150);
   text-align: center;
   width: 60px;
+  
 }
 
+.old_data_from_sql {
+    background-color: rgb(141, 204, 206);
+    text-align: center;
+    width: 60px;
+    border: none;
+  }
+
+  
 
 /* стилизуем кнопку  */
 .btn {

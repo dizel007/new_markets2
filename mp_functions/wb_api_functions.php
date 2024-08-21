@@ -41,6 +41,7 @@ function light_query_with_data($token_wb, $link_wb, $data){
 		'Authorization:' . $token_wb,
 		'Content-Type:application/json'
 	));
+
 	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE)); 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
