@@ -128,7 +128,7 @@ td.text-right {
   }
 
 .bolshe100 {
-    background-color: #e0a4a4  !important;
+    background-color: #ff5757  !important;
   }
 
 .menshe0 {
@@ -170,4 +170,43 @@ input[type="number"] {
   font-size: inherit; /* 1 */
   line-height: inherit; /* 1 */
   margin: 0; /* 2 */
+}
+
+/* КНОПКА*/
+
+
+.atuin-btn {
+  text-align: center;
+  display: inline-flex;
+  margin: 20px;
+  text-decoration: none;
+  border: 2px solid #BFE2FF;
+  position: relative;
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 12px 30px;
+  color: #FFF;
+  font-weight: bold;
+  text-transform: uppercase; 
+  font-family: 'Roboto', Тahoma, sans-serif;
+  background: #337AB7;
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.atuin-btn:hover,
+.atuin-btn:active,
+.atuin-btn:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 16px 20px rgba(0,0,0,0.2);
+  color: #FFF;
+}
+.atuin-btn:before {
+  content: "";
+}
+
+.ccc {
+  width: 20%;
+  margin:0 auto;
+
 }
