@@ -206,7 +206,6 @@ function get_wb_prices($pdo, $token_wb, $shop_name)
 
  function insert_data_in_prices_table_db($pdo, $shop_name, $data_for_input)
  {
-
 	 $article = $data_for_input['main_article'];
 	 $sku = $data_for_input['sku'];
 	 $price_old = $data_for_input['price_now_DB'];

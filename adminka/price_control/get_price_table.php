@@ -6,12 +6,19 @@ require_once $offset."mp_functions/wb_api_functions.php";
 require_once $offset."mp_functions/wb_functions.php";
 require_once "functions.php";
 
-$wb_anmaks = 'wb_anmaks';
-$wb_ip = 'wb_ip_zel';
-/**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
 
-$token_wb = $token_wb_ip;
-$wb_shop = $wb_ip;
+/**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
+if ($_GET['wb_shop'] == 'wb_ip_zel') {
+	$token_wb = $token_wb_ip;
+	$wb_shop = 	'wb_ip_zel';
+} elseif ($_GET['wb_shop'] == 'wb_anmaks') {
+	$token_wb = $token_wb;
+	$wb_shop = 	'wb_anmaks';
+} else {
+	die('Не нашли маркет');
+}
+
+
 
 // Доставем информацию по складам ****** АКТИВНЫМ СКЛАДАМ ******
 $sklads = select_info_about_sklads($pdo); // ОБщая Информация по складам

@@ -64,3 +64,14 @@
 .prod_table_small tr:nth-child(even){
 	background: #ebdddd;
 }
+/* Для блокировки экрана */
+.LockOff { 
+    display: block; 
+    visibility: visible; 
+
+
+ } 
+ .LockOn { 
+    display: none; 
+    visibility: hidden; 
+ } 

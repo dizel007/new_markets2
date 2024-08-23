@@ -2,7 +2,9 @@
 
 
 <head>
-<link rel="stylesheet" href="ozon_razbor/css/main_ozon.css">
+<img src="../pics/ozon.jpg">
+<link rel="stylesheet" href="css/main_ozon.css">
+
 
 </head>
 

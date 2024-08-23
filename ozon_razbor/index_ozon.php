@@ -1,12 +1,12 @@
 <?php
-
+require_once "../connect_db.php";
 require_once "main_ozon/header.php";
-require_once 'ozon_razbor/include_funcs.php';
+require_once 'include_funcs.php';
 
 
 echo <<<HTML
 
-<img src="pics/ozon.jpg">
+<img src="../pics/ozon.jpg">
 
 HTML;
 
@@ -24,31 +24,34 @@ if (isset($_GET['date_query_ozon'])) {
 echo <<<HTML
 <h2>ОЗОН ООО ТД АНМАКС</h2>
 <h2>Найти заказы для комплектации по дате</h2>
-<div>
-    <form method="get" action="#">
-    <input  hidden type="text" name="transition" value="20">
-    <input  required type="date" name="date_query_ozon" value="$date_query_ozon">
-    <input type="submit" value="Найти заказы на выбранную дату">
-   
-</div>
-<label for="dop_days_query">Количество дополнительных дней</label>
-<select name="dop_days_query" >
-         <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
+    <div>
+        <form method="get" action="#">
+        <div id="up_input" class="LockOff">
+            <input  hidden type="text" name="transition" value="20">
+            <input  required type="date" name="date_query_ozon" value="$date_query_ozon">
+            <input type="submit" value="Найти заказы на выбранную дату">
+        
+        </div>
+        <br>
+        <label for="dop_days_query">Количество дополнительных дней</label>
+        <select name="dop_days_query" >
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
 
-      </select>
-      </form>    
+            </select>
+            </form>    
+    </div>
 <hr>
 HTML;
 
@@ -64,9 +67,6 @@ if (isset($date_query_ozon)) {
 // Из полученного массива формируем массив данных,$array_art   для создания Заказа в 1С.
 $kolvo_tovarov = 0;
 $summa_tovarov = 0;
-echo "<pre>";
-
-// print_R($res['result']['postings']);
 
    foreach ($res['result']['postings'] as $posts) {
 
@@ -97,21 +97,31 @@ echo "<pre>";
         // Ссылка для запуска сбора всех заказов
         $link ="ozon_razbor/controller/make_all_zakaz.php";
 
-
-        echo "<form action=\"$link\" method=\"get\">";
-        echo "<label for=\"date_query_ozon\">Дата заказов</label>";
-        echo "<input  type=\"date\" name=\"date_query_ozon\" value=\"$date_query_ozon\" readonly>";
-        echo "<br><br>";
-        echo "<label for=\"number_order\">Номер заказа</label>";
-        echo "<input required type=\"text\" name=\"number_order\" value=\"\">";
+echo <<<HTML
+        <form action="$link" method="get">
+        <label for="date_query_ozon">Дата заказов</label>
+        <input  type="date" name="date_query_ozon" value="$date_query_ozon" readonly>
+        <br><br>
+        <label for="number_order">Номер заказа</label>
+        <input required type="text" name="number_order" value="">
         
-        echo "<input hidden type=\"text\" name=\"ozon_shop\" value=\"ozon_anmaks\">";
+        <input hidden type="text" name="ozon_shop" value="ozon_anmaks">
         
-        echo "<br><br>";
-        echo "<input  type=\"submit\" value=\"СОБРАТЬ ЗАКАЗЫ выбранную дату\">";
-        echo "</form>";
+        <br><br>
+        <div id="down_input" class="LockOff">
+             <input type="submit" value="СОБРАТЬ  выбранную дату!" onclick="alerting();"> 
+        </div>  
+        <div id="OnLock_textLockPane" class="LockOn">
+             Обрабатываем запрос.........
+        </div>  
+       
+         
+        </form>
 
+     
+<script type="text/javascript" src="js/js_functions.js"></script>
 
+HTML;
 
         // echo "Собрать все Заказы<a href=\"$link\">*СТАРТ*</a> ";
  } else {

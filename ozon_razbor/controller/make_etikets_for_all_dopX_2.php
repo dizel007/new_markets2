@@ -7,6 +7,7 @@ require_once 'make_1c_file.php';
 
 
 
+
 $ozon_shop = $_GET['ozon_shop'];
 if ($_GET['ozon_shop'] == 'ozon_anmaks') {
        $token_ozon = $token_ozon;
@@ -23,19 +24,11 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
  }
 
 
-// $token_ozon = $_GET['token_ozon'];
-// $client_id_ozon = $_GET['client_id_ozon'];
-// // echo $client_id_ozon."<br>";
-// echo $token_ozon."<br>";
-
 
 $date_query_ozon = $_GET['date_query_ozon'];
 $number_order = $_GET['number_order'];
 $dop_days_query = 0; // Всегда собираем за один день
 
-
-
-// die('kmnfjbflkbfg');
 
 /*****************************************************************************************************************
  ******  Формируем папки для разнесения информации 
