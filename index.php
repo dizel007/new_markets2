@@ -82,9 +82,8 @@ echo <<<HTML
 <td><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
 <td><a href = "?transition=11"><img width="$width_pics" src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
 
-<td><a href = "ozon_razbor/index_ozon.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
-<!-- <td><a href = "?transition=20"><img width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td> -->
-<td><a href = "ozon_razbor/index_ozon_ip.php"><img width="$width_pics" src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
+<td><a href = "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
+<td><a href = "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel"><img width="$width_pics" src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
 <td><a href = "?transition=31"><img width="$width_pics" src="pics/main_screen/razbor_yandex.jpg"><div>Yandex Анмакс</div> </a></td>
 <td><a href = "leroy/"><img width="$width_pics" src="pics/main_screen/razbor_leroy.jpg"><div>LEROY Анмакс</div> </a></td>
 <td><a href = "vse_instrumenti/start.php"><img width="$width_pics" src="pics/main_screen/vse_instrumrnti.jpg"><div>Все ИНСТР</div> </a></td>
@@ -154,8 +153,8 @@ echo <<<HTML
     <td class="big_text">Получение этикеток с озон (аварийное)</td>
     <td></td>
     <td></td>
-    <td><a href = "ozon_razbor/index_ozon_ooo_dop.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ООО АНМАКС</div>    </a></td>
-    <td><a href = "ozon_razbor/index_ozon_ip_dop.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ИП Зел</div>    </a></td>
+    <td><a href = "ozon_razbor/index_ozon_dop.php?shop_name=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ООО АНМАКС</div>    </a></td>
+    <td><a href = "ozon_razbor/index_ozon_dop.php?shop_name=ozon_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip.jpg" ><div>ПОЛУЧИТЬ этикетки ОЗОН ИП Зел</div>    </a></td>
     <td><a href = "ozon_returns/get_returns.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_returns.jpg" ><div>Возвраты <br> двух<br> ОЗОНов</div>    </a></td>
 
 </tr>
@@ -167,4 +166,4 @@ HTML;
 }
         die();
 
-    
+     

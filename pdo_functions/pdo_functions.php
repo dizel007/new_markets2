@@ -181,7 +181,7 @@ return $id_company;
    
      
     
-       echo $link1;
+      //  echo $link1;
     
        $date_razbora = date('Y-m-d H:m:s+0300');
        $sql = "INSERT INTO `table_razbor` SET `type_shop` = :type_shop, 

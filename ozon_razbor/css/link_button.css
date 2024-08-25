@@ -1,0 +1,57 @@
+
+body{
+    background-color: #9eced6;
+}
+.button {
+    width: 600px;
+    margin: 22% auto;
+}
+
+.button a {
+    display: block;
+    height: 50px;
+    width: 600px;
+    color: white;
+    font: 17px/50px sans-serif,Helvetica;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    background: #355C7D; 
+}
+
+.button p {
+    background: #6C5B7B;
+    display: block;
+    height: 40px;
+    width: 580px;
+    margin: -50px 0 0 10px;
+    text-align: center;
+    font: 14px/45px sans-serif,Helvetica;
+    color: #eee;
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: margin 0.13s cubic-bezier(0.6, -0.28, 0.74, 0.05);
+    -moz-transition: margin 0.13s cubic-bezier(0.6, -0.28, 0.74, 0.05);
+    -o-transition: margin 0.13s cubic-bezier(0.6, -0.28, 0.74, 0.05);
+    -ms-transition: margin 0.13s cubic-bezier(0.6, -0.28, 0.74, 0.05);
+    transition: margin 0.13s cubic-bezier(0.6, -0.28, 0.74, 0.05);
+}
+
+
+.button a, p {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 13px;
+    -webkit-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    -moz-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+.button:hover .bottom { 
+  margin: -10px 0 0 10px 
+}
+
+.button:hover .top {
+    margin: -80px 0 0 10px;
+    line-height: 35px;
+}

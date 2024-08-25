@@ -112,8 +112,7 @@ $i++; // смешение по строкам
 
 
 
-
-
+if ($array_oben[0] != 1) {
 foreach ($array_oben as $array_items) {
     $i2=$i-1;
     $sheet2->getStyle("A".$i2.":E".$i2 )->applyFromArray($bg); // фон
@@ -132,7 +131,7 @@ foreach ($array_oben as $array_items) {
   $sheet2->setCellValue("A".$i, "Следующий заказ");
   $i++; // смешение по строкам
 }
-
+}
 $i--;
 $sheet2->setCellValue("A".$i, "Процесс сборки завершен");
 

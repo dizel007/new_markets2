@@ -56,12 +56,12 @@ function get_all_barcodes_for_all_sending ($token, $client_id,   $string_etiket,
             
     // НАзвание файла с этикеткой	
         $file = $date_send.".pdf";
-    echo "<br>************** FILE ****************************************************************<br>";
+    // echo "<br>************** FILE ****************************************************************<br>";
     // print_r($file);
 
         if (file_put_contents($path_etiketki."/".$file, file_get_contents($url)))
         {
-            echo "Файл со штрихкодам получен";
+            // echo "Файл со штрихкодам получен";
         }
         else
         {

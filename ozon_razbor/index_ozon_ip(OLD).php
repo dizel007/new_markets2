@@ -4,29 +4,11 @@ require_once "main_ozon/header.php";
 require_once 'include_funcs.php';
 
 
-
-
-
-
 echo <<<HTML
 
 <img src="../pics/ozon.jpg">
 
 HTML;
-
-$get_shop_name = $_GET['shop_name'];
-if ($get_shop_name == 'ozon_anmaks' ) {
-    $token_ozon =  $token_ozon;
-    $client_id_ozon = $client_id_ozon;
-
-} elseif  ($get_shop_name == 'ozon_ip_zel' ) {
-    $token_ozon =  $token_ozon_ip;
-    $client_id_ozon = $client_id_ozon_ip;
-} else {
-    die('Магазин не нашли');
-}
-
-
 
 if (isset($_GET['date_query_ozon'])) {
     $date_query_ozon = $_GET['date_query_ozon'];  
@@ -36,22 +18,20 @@ if (isset($_GET['date_query_ozon'])) {
     // $date_query_ozon =''; 
     $date_query_ozon = date('Y-m-d'); 
     $dop_days_query = 0;
-
 }
 
 echo <<<HTML
-<h2>ОЗОН ООО ТД АНМАКС</h2>
+<h2>ОЗОН ИП Зел</h2>
 <h2>Найти заказы для комплектации по дате</h2>
-    <div>
-        <form method="get" action="#">
-        <div id="up_input" class="LockOff">
-            <input  hidden type="text" name="shop_name" value="$get_shop_name">
-            <input  required type="date" name="date_query_ozon" value="$date_query_ozon">
-            <input type="submit" value="Найти заказы на выбранную дату">
-        
-        </div>
-        <br>
-        <label for="dop_days_query">Количество дополнительных дней</label>
+<div>
+    <form method="get" action="#">
+    <div id="up_input" class="LockOff">
+        <!-- <input  hidden type="text" name="transition" value="21"> -->
+        <input  required type="date" name="date_query_ozon" value="$date_query_ozon">
+        <input type="submit" value="Найти заказы на выбранную дату">
+    </div>
+    <br>
+    <label for="dop_days_query">Количество дополнительных дней</label>
         <select name="dop_days_query" >
                 <option value="0">0</option>
                 <option value="1">1</option>
@@ -67,9 +47,9 @@ echo <<<HTML
                 <option value="11">11</option>
                 <option value="12">12</option>
 
-            </select>
-            </form>    
-    </div>
+        </select>
+      </form>    
+</div>
 <hr>
 HTML;
 
@@ -77,7 +57,7 @@ HTML;
 if (isset($date_query_ozon)) {
     if ($date_query_ozon <> '') {
    // получаем массив всех отправления на эту дату
-   $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging" , $dop_days_query);
+   $res = get_all_waiting_posts_for_need_date($token_ozon_ip, $client_id_ozon_ip, $date_query_ozon, "awaiting_packaging" , $dop_days_query);
    
 
 
@@ -87,7 +67,6 @@ $kolvo_tovarov = 0;
 $summa_tovarov = 0;
 
    foreach ($res['result']['postings'] as $posts) {
-
       foreach ($posts['products'] as $prods) 
         {
            $array_art[$prods['offer_id']]= @$array_art[$prods['offer_id']] + $prods['quantity'];
@@ -102,11 +81,11 @@ $summa_tovarov = 0;
 
  //  Выводим таблицу с Количество купленно
  if (isset($array_art_price)){
-    echo "<h2>Сумма купленных товаров : $summa_tovarov руб. </h2>";
-    
+
+    echo "<h3>Сумма купленных товаров : $summa_tovarov руб. </h3>";
 
 
-        echo "<h2>Список купленных товаров</h2>";
+        echo "<h3>Список купленных товаров</h3>";
         make_spisok_sendings_ozon_1С ($array_art_price);
 
         //  Выводим таблицу с Заказами
@@ -114,8 +93,8 @@ $summa_tovarov = 0;
         make_spisok_sendings_ozon ($res['result']['postings']);
         // Ссылка для запуска сбора всех заказов
         $link ="ozon_razbor/controller/make_all_zakaz.php";
-
 echo <<<HTML
+
         <form action="$link" method="get">
         <label for="date_query_ozon">Дата заказов</label>
         <input  type="date" name="date_query_ozon" value="$date_query_ozon" readonly>
@@ -123,8 +102,8 @@ echo <<<HTML
         <label for="number_order">Номер заказа</label>
         <input required type="text" name="number_order" value="">
         
-        <input hidden type="text" name="ozon_shop" value="ozon_anmaks">
-        
+        <input hidden type="text" name="ozon_shop" value="ozon_ip_zel">
+
         <br><br>
         <div id="down_input" class="LockOff">
              <input type="submit" value="СОБРАТЬ  выбранную дату!" onclick="alerting();"> 
@@ -138,6 +117,7 @@ echo <<<HTML
 
      
 <script type="text/javascript" src="js/js_functions.js"></script>
+  
 
 HTML;
 

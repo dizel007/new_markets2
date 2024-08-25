@@ -48,15 +48,15 @@ sleep(2);
 /******************************************************************************************************************
 ****** формирование листа подбора (из обработанного массива)
 /******************************************************************************************************************/
-// echo "<br> ВЫШЛИ ИЗ формирования 1С файла <br>";
+echo "<br> ВЫШЛИ ИЗ формирования 1С файла <br>";
 $temp_path = $path_excel_docs."/json_list_podbora.json";
 if (file_exists($temp_path)) {
 $json_arr_obmen = file_get_contents($temp_path);   
 $array_oben = json_decode($json_arr_obmen, true);
 
 
-// echo "<br> Массив для создания Листа подбора  <br>";
-// echo "<pre>";
+echo "<br> Массив для создания Листа подбора  <br>";
+echo "<pre>";
 $xls2 = new PHPExcel();
 $file_name_list_podbora = make_list_podbora_new ($array_oben, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
 // $file_name_list_podbora = make_list_podbora_new2 ($res, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
@@ -90,8 +90,8 @@ foreach ($arr_article_tovar as $key=> $posts) {
   }
 $string_etiket = substr($string_etiket, 0, -2); // удаляем последний разделитель из строки с заказами 
 
-// echo "<br>Разбираем артикул : $key<br>";
-// echo "Строка заказов артикула: $string_etiket<br>";
+echo "<br>Разбираем артикул : $key<br>";
+echo "Строка заказов артикула: $string_etiket<br>";
 
 /*****************************************************************************************************************
  ******  Формируем PDF файлы поартикульно
@@ -123,6 +123,13 @@ if (isset($file_name_list_podbora)){
 
   $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
+  echo <<<HTML
+  <br><br>
+  <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
+  <br><br>
+  <a href="../merge_ozon_etikets.php?filepath=$path_etiketki/">MERGE</a>
+  <br><br>
+  HTML;
 
 
 
@@ -137,7 +144,6 @@ file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_fo
   $array_dop_files['path_excel_docs'] = $path_excel_docs;
   $array_dop_files['file_name_1c_list'] = $file_name_1c_list;
   $array_dop_files['file_name_list_podbora'] = $file_name_list_podbora;
-  $array_dop_files['file_non_merge_archive'] = $link_path_zip2;
 file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_files));
 
 
@@ -151,17 +157,9 @@ file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_
  insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, '');
 
 
+
 // die ('<br> Дошли до финиша');
 /***********************
  * *
  *****************************/
-header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
 
-
- echo <<<HTML
- <br><br>
- <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
- <br><br>
- <a href="../merge_ozon_etikets.php?filepath=$path_etiketki/">MERGE</a>
- <br><br>
- HTML;
