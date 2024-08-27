@@ -1,19 +1,19 @@
 <?php
-
-require_once "pdo_functions/pdo_functions.php";
-
-require_once "mp_functions/yandex_api_functions.php";
-require_once "mp_functions/yandex_functions.php";
-
-
-
-
+$offset = "../";
+require_once $offset."connect_db.php";
+require_once $offset."pdo_functions/pdo_functions.php";
+require_once $offset."mp_functions/yandex_api_functions.php";
+require_once $offset."mp_functions/yandex_functions.php";
 require_once "functions/functions_yandex.php";
 require_once "functions/functions.php";
 
- $ya_token =  get_token_yam($pdo);
- $campaignId =  get_id_company_yam($pdo);
+//  $ya_token =  get_token_yam($pdo);
+//  $campaignId =  get_id_company_yam($pdo);
 
+
+    // Яндекс ООО склад FBS
+    $ya_token =  $arr_tokens['ya_anmaks_fbs']['token'];
+    $campaignId =  $arr_tokens['ya_anmaks_fbs']['id_market'];
     // print_r($campaignId);
 
 
@@ -48,39 +48,17 @@ $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
 // die();
 if  (isset($arr_all_new_orders)) {
  
-foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
+    $return_arrays = make_array_sell_items ($arr_all_new_orders , $need_date);
+
+
+isset($return_arrays['arr_mass_orders'])?$arr_mass_orders = $return_arrays['arr_mass_orders']:$x=0;
+isset($return_arrays['arr_mass_one_date_orders'])?$arr_mass_one_date_orders = $return_arrays['arr_mass_one_date_orders']:$x=0;
+isset($return_arrays['arr_all_items'])?$arr_all_items = $return_arrays['arr_all_items']:$x=0;
+
     
-// формируем массиов товаров по заказам 
-$arr_mass_orders[$order['id']]['data'] = $order['items'];
-$arr_mass_orders[$order['id']]['date_delivery'] = $order['delivery']['shipments'][0]['shipmentDate'];
-
-
-// формируем массиов товаров общим переченем
-
-    $orderId = $order['id']; // ID  выбранного заказа
-    $item_number = 0; // порядквый номер товаров, если их несколько
-    $need_ship_date = $order['delivery']['shipments'][$item_number]['shipmentDate'];
-    $id_shipment = $order['delivery']['shipments'][$item_number]['id'];
-  
-        if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
-
-// формируем массиов товаров по заказам 
-$arr_mass_one_date_orders[$order['id']]['data'] = $order['items'];
-$arr_mass_one_date_orders[$order['id']]['date_delivery'] = $order['delivery']['shipments'][0]['shipmentDate'];
-
-
-          
-            foreach ($order['items'] as $items) { // перебираем все товары из выбранного заказа
-               unset ($items['subsidies']);
-                $arr_all_items[] = $items;
-            }
-        }
-
-}
-
-
 /// Выводим все заказы на все даты 
 print_table_with_ALL_orders ($arr_mass_orders, '');
+
 
 
 /// Выводим все на выбранную дату
@@ -95,7 +73,7 @@ if (isset($arr_all_items)) {
     print_table_with_orders ($arr_all_items, $need_date_temp);
     /// переход на разбивку заказа
     echo <<<HTML
-    <a href="yandex_razbor/razbiavaem_po_gruzomestam.php?select_date=$need_date_temp">разбить товары по грузоместам</a>
+    <a href="razbiavaem_po_gruzomestam.php?select_date=$need_date_temp">разбить товары по грузоместам</a>
     
     HTML;  
 }

@@ -46,7 +46,9 @@ foreach ($arr_post as $item) {
     $arr_post_new[$item['sku']]=  $item;
   
 }
-
+// echo"<pre>";
+// print_r($arr_post_new);
+// print_r($wb_catalog[8]);
 
 if (!isset($arr_post_new)) {
 	die('НЕТ ДАННЫХ ДЛЯ ОБНОВЛЕНИЯ');
@@ -59,7 +61,7 @@ if (!isset($arr_post_new)) {
 foreach ($wb_catalog as $wb_item) {
 foreach ($arr_post_new as $update_item){
 	if ($update_item['sku'] == $wb_item['sku']) {
-		if(($update_item['pricenowWB'] != $wb_item['price_now_DB']) || ($update_item['discountnowWB'] != $wb_item['discount_now_DB'])) {
+		if(($update_item['pricenowWB'] != $wb_item['price_now_WB']) || ($update_item['discountnowWB'] != $wb_item['discount_now_WB'])) {
 			$arr_for_update[] =$update_item; 
 		}
 	}

@@ -6,7 +6,7 @@
  * РАБОЧАЯ ВЕРСИЯ 
  *************************************************************************/
 function get_all_barcodes_for_all_sending ($token, $client_id,   $string_etiket, $date_send, $path_etiketki) {
-    echo "<pre>";
+    // echo "<pre>";
     // echo "<br>***********************************************************************************<br>";
     // print_r($string_etiket);
     // Данные запроса

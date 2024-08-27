@@ -6,31 +6,8 @@ require_once 'make_1c_file.php';
 
 
 
-// $token_ozon ='0a2679cf-74cb-43eb-b042-94997de5f748';
-// $client_id_ozon ='1724451';
-// $date_query_ozon ='2024-03-21';
-// $number_order = 777777;
-
-/*****************************************************************************************************************
- ******  Формируем папки для разнесения информации 
- ******************************************************************************************************************/
-// // $new_date = date('Y-m-d');
-// $new_path = '../reports/'.$date_query_ozon."/";
-// make_new_dir_z($new_path,0); // создаем папку с датой
-
-// $new_path = $new_path.'/'.$number_order.'/';
-// make_new_dir_z($new_path,0); // создаем папку с датой
-
-// $path_etiketki = $new_path.'etiketki';
-// make_new_dir_z($path_etiketki,0); // создаем папку с датой
-// $path_excel_docs = $new_path.'excel_docs';
-// make_new_dir_z($path_excel_docs,0); // создаем папку с датой
-// $path_zip_archives = $new_path.'zip_archives';
-// make_new_dir_z($path_zip_archives,0); // создаем папку с датой
-
-
-
 sleep(5);
+
 // Получаем списрк заказов готовых к отправлению (Берем только на выбранное число)
 $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver",0);
 
@@ -89,7 +66,6 @@ foreach ($arr_article_tovar as $key=> $posts) {
     die('<br> ПОмерли без этикеток');
   }
 $string_etiket = substr($string_etiket, 0, -2); // удаляем последний разделитель из строки с заказами 
-
 // echo "<br>Разбираем артикул : $key<br>";
 // echo "Строка заказов артикула: $string_etiket<br>";
 
@@ -123,10 +99,6 @@ if (isset($file_name_list_podbora)){
 
   $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
-
-
-
-
  /// Формируем ПДФ файл с анименованием артикула 
 make_pdf_file($arr_for_merge_pdf, $path_etiketki , $number_order);
 
@@ -150,11 +122,11 @@ file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_
 
  insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, '');
 
-
 // die ('<br> Дошли до финиша');
 /***********************
  * *
  *****************************/
+
 header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
 
 

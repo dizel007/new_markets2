@@ -113,7 +113,7 @@ $summa_tovarov = 0;
         echo "<h2>Перечень заказов</h2>";
         make_spisok_sendings_ozon ($res['result']['postings']);
         // Ссылка для запуска сбора всех заказов
-        $link ="ozon_razbor/controller/make_all_zakaz.php";
+        $link ="controller/make_all_zakaz.php";
 
 echo <<<HTML
         <form action="$link" method="get">
@@ -123,7 +123,7 @@ echo <<<HTML
         <label for="number_order">Номер заказа</label>
         <input required type="text" name="number_order" value="">
         
-        <input hidden type="text" name="ozon_shop" value="ozon_anmaks">
+        <input hidden type="text" name="ozon_shop" value="$get_shop_name">
         
         <br><br>
         <div id="down_input" class="LockOff">

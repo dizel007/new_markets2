@@ -29,9 +29,9 @@ switch ($transition) {
     //     require_once('ozon_razbor/index_ozon_ip.php');
     //     break;
 
-    case 31: // Разбор Yandex
-        require_once('yandex_razbor/index_yandex.php');
-        break;
+    // case 31: // Разбор Yandex
+    //     require_once('yandex_razbor/index_yandex.php');
+    //     break;
 
     case 50: // Автосклад
         require_once('autosklad/start_mp.php');
@@ -75,8 +75,9 @@ echo <<<HTML
 <td></td>
 </tr>
 
-
-
+<!-- ******************************************************************************* -->
+<!-- ***************************** РАЗБОРЫ ЗАКАЗОВ ************************************************** -->
+<!-- ******************************************************************************* -->
 <tr>
 <td class="big_text">Разбор заказов на МП</td>
 <td><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
@@ -84,7 +85,7 @@ echo <<<HTML
 
 <td><a href = "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
 <td><a href = "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel"><img width="$width_pics" src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
-<td><a href = "?transition=31"><img width="$width_pics" src="pics/main_screen/razbor_yandex.jpg"><div>Yandex Анмакс</div> </a></td>
+<td><a href = "yandex_razbor/index_yandex.php"><img width="$width_pics" src="pics/main_screen/razbor_yandex.jpg"><div>Yandex Анмакс</div> </a></td>
 <td><a href = "leroy/"><img width="$width_pics" src="pics/main_screen/razbor_leroy.jpg"><div>LEROY Анмакс</div> </a></td>
 <td><a href = "vse_instrumenti/start.php"><img width="$width_pics" src="pics/main_screen/vse_instrumrnti.jpg"><div>Все ИНСТР</div> </a></td>
 

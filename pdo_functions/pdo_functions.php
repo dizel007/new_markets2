@@ -176,13 +176,7 @@ return $id_company;
        $first_adress_part='';
    }
    
-   
-
-   
      
-    
-      //  echo $link1;
-    
        $date_razbora = date('Y-m-d H:m:s+0300');
        $sql = "INSERT INTO `table_razbor` SET `type_shop` = :type_shop, 
                                               `number_order` = :number_order,

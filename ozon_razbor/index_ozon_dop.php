@@ -58,7 +58,7 @@ HTML;
 if (isset($date_query_ozon)) {
     if ($date_query_ozon <> '') {
         // получаем массив всех отправления на эту дату
-        $res = get_all_waiting_posts_for_need_date($token_ozon_ip, $client_id_ozon_ip, $date_query_ozon, "awaiting_deliver", 0);
+        $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", 0);
 
 
 
@@ -108,7 +108,7 @@ if (isset($date_query_ozon)) {
         <label for="number_order">Номер заказа</label>
         <input required type="text" name="number_order" value="">
         
-        <input hidden type="text" name="ozon_shop" value="ozon_ip_zel">
+        <input hidden type="text" name="ozon_shop" value="$get_shop_name">
 
         <br><br>
         <div id="down_input" class="LockOff">

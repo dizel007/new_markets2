@@ -112,7 +112,7 @@ $merge_file_name = "etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zi
   
 </div>
 <div style="text-align:center">
- <a  href="$non_merge_file_link">скачать архив со стикерамии листом подбора</a>
+ <a  href="$non_merge_file_link">скачать архив со стикерамии листом подбора(старая версия)</a>
 </div>
 </body>
   

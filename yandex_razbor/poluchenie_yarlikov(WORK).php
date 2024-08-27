@@ -128,29 +128,33 @@ foreach ($new_box_array as $items) {
 
 // Формируем ексель файл 
 
-// echo "<pre>";
+echo "<pre>";
 $return_arrays = make_array_sell_items ($arr_all_new_orders , $need_date);
 $arr_mass_one_date_orders = $return_arrays['arr_mass_one_date_orders'];
-// формируем массив для 1С
 $sell_tovari = make_array_sell_items_for_1c ($arr_mass_one_date_orders);
-// print_r($sell_tovari);
-// die();
+print_r($sell_tovari);
+die();
 
 
-if (isset($sell_tovari)) {
+if (isset($new_box_array)) {
     // Создаем файл для 1С
     $xls = new PHPExcel();
     $xls->setActiveSheetIndex(0);
     $sheet = $xls->getActiveSheet();
     $i=1;
-   
-    foreach ($sell_tovari as $key => $items) {
-    
+   //  echo "<pre>";
+        foreach ($new_box_array as $key => $items) {
+    // print_r($items);	
+            $price = 0; // 
+            foreach ($items as $item) {
+                $price = $price +  $item['priceBeforeDiscount'];
+            }
+            
        $new_key =  change_sku_for_1c_article($key); // подменяем артикул на наш
 
         $sheet->setCellValue("A".$i, $new_key);
-        $sheet->setCellValue("C".$i, $items['count']);
-        $sheet->setCellValue("D".$i, $items['middle_price']);
+        $sheet->setCellValue("C".$i, count($items));
+        $sheet->setCellValue("D".$i, $price/count($items));
         $i++; // смешение по строкам
     
     }

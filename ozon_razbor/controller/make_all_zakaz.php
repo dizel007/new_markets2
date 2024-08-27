@@ -6,7 +6,6 @@ require_once '../include_funcs.php';
 require_once 'make_1c_file.php';
 
 
-
 $ozon_shop = $_GET['ozon_shop'];
 if ($_GET['ozon_shop'] == 'ozon_anmaks') {
        $token_ozon = $token_ozon;
@@ -23,19 +22,12 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
  }
 
 
-// $token_ozon = $_GET['token_ozon'];
-// $client_id_ozon = $_GET['client_id_ozon'];
-// // echo $client_id_ozon."<br>";
-// echo $token_ozon."<br>";
-
 
 $date_query_ozon = $_GET['date_query_ozon'];
 $number_order = $_GET['number_order'];
 $dop_days_query = 0; // Всегда собираем за один день
 
 
-
-// die('kmnfjbflkbfg');
 
 /*****************************************************************************************************************
  ******  Формируем папки для разнесения информации 
@@ -88,7 +80,7 @@ if (!isset($arr_for_zakaz)) {
 }
 // если есть Заказы на ОЗОН, то перебираем все отправления по одному и формируем JSON для отправки в ОЗОН
     // echo "<pre>";
-    echo "<br>==/ Количество заказов /==". count($arr_for_zakaz);
+    // echo "<br>==/ Количество заказов /==". count($arr_for_zakaz);
 
 
 foreach ($arr_for_zakaz as $one_post) {
@@ -103,10 +95,6 @@ foreach ($arr_for_zakaz as $one_post) {
 
 // echo "<pre>";
 // print_r($array_oben);
-
-echo "************************************************************************************************<br>";
-// die();
-
 
 
 /*****************************************************************************************************************
