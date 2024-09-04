@@ -236,6 +236,28 @@ if (isset($Summa_hranenia_FBO)) {
 if (isset($Summa_obrabotka_gruzomestFBO)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_gruzomestFBO, "Обработка товара в составе грузоместа на FBO");
 }
+// Услуга за обработку операционных ошибок продавца: отмена
+if (isset($Summa_oshibka_obrabotki)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_oshibka_obrabotki, "Услуга за обработку операционных ошибок продавца: отмена");
+}
+// Кросс-докинг
+if (isset($Summa_kross_doking)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_kross_doking, "Кросс-докинг");
+}
+
+// Подписка Premium
+if (isset($Summa_primiun_5000)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_primiun_5000, "Подписка Premium");
+}
+// Подписка Premium Plus
+if (isset($Summa_primiun_plus25000)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_primiun_plus25000, "Подписка Premium Plus");
+}
+
+
+
+
+
 if (isset($Summa_utilizacii_tovara)) {
     echo "Утилизация : $Summa_utilizacii_tovara<br>";
 }

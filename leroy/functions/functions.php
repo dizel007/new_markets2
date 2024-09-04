@@ -187,8 +187,8 @@ $sku_K_12 = 90502007;
 $sku_K_16 = 90502006;
 
 
-echo "<pre>";
-print_r($post_array);
+// echo "<pre>";
+// print_r($post_array);
 
 // die('fffffffffffffffffffffvvvvvvvvvvvvvvvvvvvvvvvv');
 

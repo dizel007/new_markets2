@@ -33,10 +33,6 @@ foreach ($_FILES as $key => $files) {
   $arr_files[] = $file_name; // массив с названием файлов
 }
 
-echo "<pre>";
-// print_r($arr_files);
-// echo "</pre>";
-// die();
 
 
 $xls = PHPExcel_IOFactory::load("files/" . $arr_files[0]);
@@ -45,6 +41,9 @@ $xls_2 = PHPExcel_IOFactory::load("files/" . $arr_files[1]);
 
 // $f = parce_yandex_excel_report($xls);
 $array_first_excel_razbor = parce_yandex_excel_report($xls);
+
+
+// die('STOP STOP');
 $array_second_ex_razbor = parce_yandex_excel_report($xls_2);
 
 // довавляем рекламные суммы к нашему разбору
@@ -59,6 +58,15 @@ foreach ($array_first_excel_razbor['data'] as $key => &$item) {
   $summa = @$summa + $item['sum_nasha_viplata'];
   $sum_cinut = @$sum_cinut + $item['count_sell'];
 }
+
+
+
+// echo "<pre>";
+// print_r($array_first_excel_razbor);
+// echo "</pre>";
+// die();
+
+
 
 // Формируем массив Яндекс каталог
 foreach ($nomenclatura as $nomen) {
@@ -135,11 +143,97 @@ echo "<pre>";
 
 
 require_once "ya_print_report_table.php";
+/*****
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+ 
+ function obj_to_arr_my($object, $i) {
+  echo "*** STARt_FUNCTION *******ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp******<<br>";
+  
+  $array =  (array) $object ;
+  
+  foreach ($array as $key=>$item) {
+  echo "<br>** НОМЕР ЭЛЕМЕНТА В МАССИВЕ[$i] *********{$key}*************************************************************************<br>";
+  echo "Количество элементов в массиве =".$count_array = count($array)."<br>";
+     // если МАОБ то смотрим сколько элементов в МАОБ
+   if (is_array($item)) {
+    echo "*** ARRAY ************************/////////////////////********<<br>";
+    $count_item = count($item)."<br>";
+    echo "******** COUNT_ITEM = $count_item *****<br>";
+    // print_r($item);
+  
+    obj_to_arr_my($item,$i);
+  
+   }elseif(is_object($item)){
+
+    echo "*** OBJEKT ************************/////////////////////********<<br>";
+
+    obj_to_arr_my($item,$i);
+
+    ///////// Если не объект и не массив то выводим что есть 
+   } else {
+   echo "<br> **не МАОБ <b><-$item-></b> КОНЕЦ *<br>";
+   $message = $item.PHP_EOL;
+   file_put_contents("temp/$i.txt", $message, FILE_APPEND);
+   }
+ 
+
+    // print_r($item);
+    // file_put_contents("1.txt", print_r($arr_arr[$key],true) , FILE_APPEND);
+
+   
+   $i++;
+   $count_item = 'z';
+   }
+ 
+//  return $arr_arr_j;
+ }
+
+
 
 function parce_yandex_excel_report($xls)
 {
   $xls->setActiveSheetIndex(1);
   $sheet = $xls->getActiveSheet();
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// $i= 2 ;
+// $cell = $sheet->getCell("A{$i}");
+// // Check if cell is merged
+// foreach ($sheet->getMergeCells() as $cells) {
+//     if ($cell->isInRange($cells)) {
+//         echo 'Cell is merged!';
+//         break;
+//     }
+// }
+
+
+// echo "<pre>";
+// $arr_1 = (array) $object ;
+// $arr_2 = obj_to_arr_my($object,0) ;
+// $arr_3 = obj_to_arr_my($arr_2) ;
+
+// print_r($object);
+
+
+
+//  $item_2 =  (array) $item_1 ;
+//  print_r($item_2); 
+
+// die('j');
+// $sheet->unmergeCellsByColumnAndRow(0,1,6,1);
+
+
+
+
+
   $empty_10 = 0; //переменнная которая считает количество пустых ячеек подряд
   // ищем количество массивов для обработки
   $j = 1;
@@ -170,9 +264,9 @@ function parce_yandex_excel_report($xls)
         if ($next_string == '') {
           break;
         }
-        $arr_nachilslenia[$str_number]['article'] = mb_strtolower($sheet->getCellByColumnAndRow(10, $j)->getValue());
-        $arr_nachilslenia[$str_number]['count_sell'] = $sheet->getCellByColumnAndRow(12, $j)->getValue();
-        $arr_nachilslenia[$str_number]['sum_nasha_viplata'] = $sheet->getCellByColumnAndRow(13, $j)->getValue();
+        $arr_nachilslenia[$str_number]['article'] = mb_strtolower($sheet->getCellByColumnAndRow(11, $j)->getValue());
+        $arr_nachilslenia[$str_number]['count_sell'] = $sheet->getCellByColumnAndRow(13, $j)->getValue();
+        $arr_nachilslenia[$str_number]['sum_nasha_viplata'] = $sheet->getCellByColumnAndRow(14, $j)->getValue();
 
         $j++;
         $str_number++;
@@ -189,9 +283,9 @@ function parce_yandex_excel_report($xls)
         if ($next_string == '') {
           break;
         }
-        $arr_vozvrati[$str_number]['article'] = mb_strtolower($sheet->getCellByColumnAndRow(10, $j)->getValue());
-        $arr_vozvrati[$str_number]['count_sell'] = $sheet->getCellByColumnAndRow(12, $j)->getValue();
-        $arr_vozvrati[$str_number]['sum_nasha_viplata'] = $sheet->getCellByColumnAndRow(13, $j)->getValue();
+        $arr_vozvrati[$str_number]['article'] = mb_strtolower($sheet->getCellByColumnAndRow(11, $j)->getValue());
+        $arr_vozvrati[$str_number]['count_sell'] = $sheet->getCellByColumnAndRow(13, $j)->getValue();
+        $arr_vozvrati[$str_number]['sum_nasha_viplata'] = $sheet->getCellByColumnAndRow(14, $j)->getValue();
 
         $j++;
         $str_number++;
@@ -207,10 +301,10 @@ function parce_yandex_excel_report($xls)
         if ($next_string == '') {
           break;
         }
-        $arr_komissia[$str_number]['article'] = $sheet->getCellByColumnAndRow(10, $j)->getValue();
-        $arr_komissia[$str_number]['count_sell'] = $sheet->getCellByColumnAndRow(12, $j)->getValue();
-        $arr_komissia[$str_number]['sum_nasha_viplata'] = $sheet->getCellByColumnAndRow(13, $j)->getValue();
-        $summa_komisii = @$summa_komisii + $sheet->getCellByColumnAndRow(13, $j)->getValue();
+        // $arr_komissia[$str_number]['article'] = $sheet->getCellByColumnAndRow(10, $j)->getValue();
+        // $arr_komissia[$str_number]['count_sell'] = $sheet->getCellByColumnAndRow(12, $j)->getValue();
+        $arr_komissia[$str_number]['sum_nasha_viplata'] = $sheet->getCellByColumnAndRow(14, $j)->getValue();
+        $summa_komisii = @$summa_komisii + $sheet->getCellByColumnAndRow(14, $j)->getValue();
 
         $j++;
         $str_number++;
@@ -218,10 +312,18 @@ function parce_yandex_excel_report($xls)
     }
   }
 
+
+
+
+
+
+
+
   // все начисления
   // формируем массив 
   $summa = 0;
   foreach ($arr_nachilslenia as $item) {
+
     $sum_array[$item['article']]['count_sell'] = @$sum_array[$item['article']]['count_sell'] + $item['count_sell'];
     $sum_array[$item['article']]['sum_nasha_viplata'] = @$sum_array[$item['article']]['sum_nasha_viplata'] + $item['sum_nasha_viplata'];
     // $sum_array[$item['article']]['price_one_shtuka'] = round($sum_array[$item['article']]['summa'] / $sum_array[$item['article']]['count'] ,2);
@@ -231,13 +333,30 @@ function parce_yandex_excel_report($xls)
 
   // все вовзарты 
   $summa_vozvratov = 0;
-  foreach ($arr_vozvrati as $item) {
-    $sum_array[$item['article']]['count_sell'] = @$sum_array[$item['article']]['count_sell'] - $item['count_sell'];
-    $sum_array[$item['article']]['sum_nasha_viplata'] = @$sum_array[$item['article']]['sum_nasha_viplata'] + $item['sum_nasha_viplata'];
-    $summa_vozvratov = $summa_vozvratov + $item['sum_nasha_viplata'];
+  if (isset($arr_vozvrati)){
+    foreach ($arr_vozvrati as $item) {
+      $sum_array[$item['article']]['count_sell'] = @$sum_array[$item['article']]['count_sell'] - $item['count_sell'];
+      $sum_array[$item['article']]['sum_nasha_viplata'] = @$sum_array[$item['article']]['sum_nasha_viplata'] + $item['sum_nasha_viplata'];
+      $summa_vozvratov = $summa_vozvratov + $item['sum_nasha_viplata'];
+    }
   }
 
   $all_info['data'] = $sum_array;
   (isset($summa_komisii)) ? $all_info['komissii'] =  $summa_komisii : $all_info['komissii'] =  0;
+  
+  
+  
+
+
+  // echo "<pre>";
+  // print_r($all_info);
+  // echo "</pre>";
+  // die();
+
+
+  
   return $all_info;
+
+
+
 }

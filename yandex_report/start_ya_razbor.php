@@ -3,7 +3,7 @@
 require_once "../connect_db.php";
 
 echo <<<HTML
-
+<a href = "https://partner.market.yandex.ru/business/789064/payments-report?campaignId=22076999">ССылка для скачивания отчетов </a>
 <form enctype="multipart/form-data" action="parce_excel_zayavka.php" method="POST">
     
     <input type="hidden" name="MAX_FILE_SIZE" value="4000000" />

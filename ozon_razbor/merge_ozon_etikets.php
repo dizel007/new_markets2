@@ -101,7 +101,7 @@ $merge_file_name = "etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zi
   <head>
   <link rel="stylesheet" href="css/link_button.css">
   <script type="text/javascript" src="js/download.js"></script>
-  <script type="text/javascript" src="js/ jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
  
 </head>
 <body>

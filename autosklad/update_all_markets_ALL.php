@@ -1,13 +1,21 @@
 <?php
-require_once '../connect_db.php';
-require_once '../pdo_functions/pdo_functions.php';
+$offset = "../";
+
+
+require_once $offset."connect_db.php";
+require_once $offset."pdo_functions/pdo_functions.php";
+require_once $offset."mp_functions/ozon_api_functions.php";
+require_once $offset."mp_functions/ozon_functions.php";
+require_once $offset."mp_functions/wb_api_functions.php";
+require_once $offset."mp_functions/wb_functions.php";
+require_once $offset."mp_functions/yandex_api_functions.php";
+require_once $offset."mp_functions/yandex_functions.php";
 require_once "functions/razbor_post_array_ALL.php"; // массиво с каталогов наших товаров
-require_once "../mp_functions/ozon_api_functions.php";
-require_once "../mp_functions/ozon_functions.php";
-require_once "../mp_functions/wb_api_functions.php";
-require_once "../mp_functions/wb_functions.php";
-require_once "../mp_functions/yandex_api_functions.php";
-require_once "../mp_functions/yandex_functions.php";
+
+
+// Запись в таблицу Действия пользователя
+insert_in_table_user_action($pdo, $userdata['user_login'] , 'UPDATE_ALL_STOCKS(SKLAD)');
+
 
 // Получаем все токены
 $arr_tokens = get_tokens($pdo);

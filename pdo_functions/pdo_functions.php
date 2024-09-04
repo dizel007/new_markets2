@@ -199,4 +199,22 @@ return $id_company;
        // print_r($info);
        }   
    
-   
+ /*********************************************************************************************************
+ ************************ Функуция записи действия пользователя  ********************************************
+ **********************************************************************************************************/  
+
+ function insert_in_table_user_action($pdo, $user, $action) {
+          $date_action = date('Y-m-d H:m:s+0300');
+          $sql = "INSERT INTO `user_actions` SET `user` = :user, 
+                                                 `action` = :action,
+                                                 `date_action` = :date_action";
+          
+          $stmt = $pdo->prepare($sql);
+          
+          $stmt->execute(array('user'      =>  $user,
+                               'action'   =>  $action,
+                               'date_action'   => $date_action
+                               ));
+          
+       
+          }   

@@ -8,7 +8,7 @@ function print_table_with_prices($wb_catalog, $token_wb, $wb_shop)
 {
 
 echo <<<HTML
-<link rel="stylesheet" href="../css/print_table.css">
+<link rel="stylesheet" href="css/print_table.css">
 <h1 class="text-center">Таблица корректировка цен для : $wb_shop</h1>
   <form action="update_data.php" method="POST">
     <table class="table-fill">
@@ -201,6 +201,27 @@ function get_wb_prices($pdo, $token_wb, $shop_name)
 }
 
 /************************************************************************************************
+ ******  Обновляем цену и скидку на товар на сайте ВБ и в БД ************************************************
+ ************************************************************************************************/
+function update_prices_and_discount_inWB_and_inDB($token_wb, $arr_for_update)
+{
+foreach ($arr_for_update as $item) {
+	$data = array("data"=> array(array(
+		"nmID" => (int)$item['sku'],
+		"price"=> (int)$item['pricenowWB'],
+		"discount"=> (int)$item['discountnowWB']
+	))
+);
+
+$link_wb = 'https://discounts-prices-api.wildberries.ru/api/v2/upload/task';
+$res = light_query_with_data($token_wb, $link_wb, $data);
+// print_r($res);
+usleep(200);
+}
+
+}
+
+/************************************************************************************************
  ******  Вставляем новую строку в БД ************************************************
  ************************************************************************************************/
 
@@ -258,23 +279,3 @@ function select_last_data_from_db($pdo, $sku, $shop_name)
 }
 
 
-/************************************************************************************************
- ******  Обновляем цену и скидку на товар на сайте ВБ и в БД ************************************************
- ************************************************************************************************/
-function update_prices_and_discount_inWB_and_inDB($token_wb, $arr_for_update)
-{
-foreach ($arr_for_update as $item) {
-	$data = array("data"=> array(array(
-		"nmID" => (int)$item['sku'],
-		"price"=> (int)$item['pricenowWB'],
-		"discount"=> (int)$item['discountnowWB']
-	))
-);
-
-$link_wb = 'https://discounts-prices-api.wildberries.ru/api/v2/upload/task';
-$res = light_query_with_data($token_wb, $link_wb, $data);
-// print_r($res);
-usleep(200);
-}
-
-}

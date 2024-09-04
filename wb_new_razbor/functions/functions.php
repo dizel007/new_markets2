@@ -176,7 +176,7 @@ if (count($arr_orders)> 100) {
 	echo "<br><br>****** ФОРМИРУЕМ МАССИВ СО СТИКЕРАМИ, ПОПАЛИ В УСЛОВИЕ БОЛЬШЕ СОТНИ ЗАКАЗОВ  *****<br><br>";	
 
 $kolvo_soten = 1;
-$j=0;
+$j = 0;
 	for ($k=0; $k < count($arr_orders); $k++){
 
 		// echo "<br>K=$k---J=$j<br>";

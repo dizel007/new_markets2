@@ -1,5 +1,5 @@
 <?php
-require_once("../connect_db.php");
+require_once("../../connect_db.php");
 $err = [];
 
 if(strlen($_POST['login']) < 3 or strlen($_POST['login']) > 10)
@@ -56,7 +56,7 @@ if (!$stmt ->execute())
  }
             
 //  Уходим в реестре
-   header("Location: ../index.php"); exit();
+   header("Location: ../../index.php"); exit();
 }
 else
 {

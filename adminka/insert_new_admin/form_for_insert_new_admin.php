@@ -1,7 +1,7 @@
 <?php
 
 
-require_once '../connect_db.php';
+require_once '../../connect_db.php';
 
 echo <<<HTML
  <link rel="stylesheet" href="css/input_new_admin.css">
@@ -23,7 +23,7 @@ echo <<<HTML
     </button>
   </form>
   </p>
-<a href="../index.php"> Вернуться на главную станицу</a>
+<a href="../../index.php"> Вернуться на главную станицу</a>
 </div>
 
 HTML;

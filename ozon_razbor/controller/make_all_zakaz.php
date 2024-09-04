@@ -6,6 +6,10 @@ require_once '../include_funcs.php';
 require_once 'make_1c_file.php';
 
 
+
+
+
+
 $ozon_shop = $_GET['ozon_shop'];
 if ($_GET['ozon_shop'] == 'ozon_anmaks') {
        $token_ozon = $token_ozon;
@@ -26,6 +30,9 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
 $date_query_ozon = $_GET['date_query_ozon'];
 $number_order = $_GET['number_order'];
 $dop_days_query = 0; // Всегда собираем за один день
+
+
+
 
 
 

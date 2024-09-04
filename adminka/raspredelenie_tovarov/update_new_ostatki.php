@@ -1,5 +1,6 @@
 <?php
-require_once("../connect_db.php"); // подключение к БД
+$offset = "../../";
+require_once($offset."connect_db.php"); // подключение к БД
 
 
 
@@ -10,24 +11,13 @@ $tovar_table_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $arr_post = $_POST;
 
 
-// echo "<pre>";
-
-
-// print_r($arr_post);
-
-
-
-
 
 foreach ($tovar_table_data as $item) {
 foreach ($arr_post as $key => $value) {
 
         $article_1c = $item['main_article_1c'];
         
-        // $ррр = mb_strpos($key, $article_1c);
-        // $key_n= str_replace('_mp_block_', '', $key);
-        // $new_wb_anmaks = str_replace('_mp_wb_anmaks_', '', $key);
-        // echo "$key []   -$key_n<br>";
+
 
            if ($key == '_mp_wb_anmaks_'.$article_1c) {
                 $arr_update[$article_1c]['wb_anmaks'] = $value;
@@ -93,15 +83,3 @@ header('Location: start_admin_mode.php', true, 301);
 exit();
 
 
-// if (mb_strpos($key, '_mp_wb_anmaks_') > 0){
-//     $new_key = str_replace('_'.$mp_name.'_mp_BarCode_', '', $key);
-//     $arr_BarCode[$new_key] = $value;
-// }
-
-   //     if (mb_strpos($key, 'mp_check_')){
-    //         $new_key = str_replace('_'.$mp_name.'_mp_check_', '', $key);
-    // // формируем массив для обновления (Где стояла галочка в строке)
-    //         $item_quantity[$new_key] = array("sku"    => $arr_BarCode[$new_key],
-    //                         "amount" => (int)$arr_value[$new_key]); // требуется преобразование типа на интегер
-
-    // }

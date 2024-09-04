@@ -34,6 +34,7 @@ wb_make_xml/reports/
 
 yandex_report/temp/
 yandex_report/reports/
+yandex_report/files/
 
 
 wb_reports/array.json

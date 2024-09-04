@@ -80,8 +80,8 @@ echo <<<HTML
 <!-- ******************************************************************************* -->
 <tr>
 <td class="big_text">Разбор заказов на МП</td>
-<td><a href = "?transition=10"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
-<td><a href = "?transition=11"><img width="$width_pics" src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
+<td><a href = "wb_new_razbor/index_wb.php"><img width="$width_pics" src="pics/main_screen/razbor_wb.jpg" ><div>WB Анмакс</div>        </a></td>
+<td><a href = "wb_new_razbor/index_wbip.php"><img width="$width_pics" src="pics/main_screen/razbor_wb_ip.jpg" ><div>WB ИП Зел</div>     </a></td>
 
 <td><a href = "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/razbor_ozon.jpg" ><div>OZON Анмакс</div>    </a></td>
 <td><a href = "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel"><img width="$width_pics" src="pics/main_screen/razbor_ozon_ip.jpg" ><div>OZON ИП Зел</div> </a></td>
@@ -95,8 +95,8 @@ echo <<<HTML
 <tr>
 <td class="big_text">Администрирование </td>
 
-<td colspan="2"><a href = "adminka/start_admin_mode.php" target="_blank"><img width="$width_pics" src="pics/main_screen/admin_mode.jpg" ><div>Остатки МП</div>    </a></td>
-<td colspan="1"><a href = "adminka/form_for_insert_new_admin.php" target="_blank"><img width="$width_pics" src="pics/main_screen/new_user.png" ><div>Новый юзер</div>    </a></td>
+<td colspan="2"><a href = "adminka/raspredelenie_tovarov/start_admin_mode.php" target="_blank"><img width="$width_pics" src="pics/main_screen/admin_mode.jpg" ><div>Остатки МП</div>    </a></td>
+<td colspan="1"><a href = "adminka/insert_new_admin/form_for_insert_new_admin.php" target="_blank"><img width="$width_pics" src="pics/main_screen/new_user.png" ><div>Новый юзер</div>    </a></td>
 <td colspan="1"><a href = "adminka/price_control/select_shop.php" target="_blank"><img width="$width_pics" src="pics/main_screen/fix_price.jpg" ><div>Контроль цен</div>    </a></td>
 
 <td> </td>

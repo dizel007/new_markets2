@@ -44,14 +44,10 @@ if (isset($new_array_create_sends)) { // если есть неподтверж�
     foreach ($new_array_create_sends  as $item) {
            $data_send =  make_right_posts_gruzomesta_NEW ($item['id'], $item['products']);
 
-
-           print_r($data_send); //////////////////////// DELETE///////////////////////////////////////
-
-
            $id_parcel = $item['id'];
            $dop_link = '/boxes';
            $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
-           echo "<br>[$link]<br>";
+        //    echo "<br>[$link]<br>";
 // **********************   Запуск разбития по грузоотправлениям 
            $rrr = query_with_data ($token_lerua, $link, json_encode($data_send), 'Размещение по грузометам' );
 
@@ -60,7 +56,8 @@ $arr_for_complete[] = $id_parcel; // формируем массив с номе
 }
 
 
+$stop_date = date('Y-m-d');
+$date_request_new = date('Y-m-d', strtotime($stop_date . ' +1 day'));
 
-
-header('Location: ../index.php');
+header("Location: ../index.php?type_query=345&date_complete_leroy=$date_request_new");
 exit();

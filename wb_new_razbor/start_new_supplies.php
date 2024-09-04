@@ -1,18 +1,25 @@
 <?php
 require_once "../connect_db.php";
+require_once "../pdo_functions/pdo_functions.php";
+
 
 
 require_once 'libs/fpdf/fpdf.php'; // библиотккеа для создания ПДф файилов
-
-
-
 require_once "functions/functions.php";
 require_once "functions/recover_func.php"; // функции для восстановления работы вб
 require_once "functions/make_1c_func.php"; // создания файла для 1С
 require_once "functions/make_zip_func.php";
-
 require_once "get_zakaz_by_check_date.php"; // функция выбора заказов по дате
 
+
+//******************************************************************************************
+
+$token_wb = $_POST['token'];
+$Zakaz_v_1c = $_POST['Zakaz1cNumber'];
+$wb_path = $_POST['wb_path'];
+
+// Запись в таблицу Действия пользователя
+insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_WB Order№($Zakaz_v_1c)");
 
 // die('Ostanovili rabotu / Dieknilu tut ');
 
@@ -24,11 +31,7 @@ function write_info_filelog($path, $info_comment) {
 };
 
 
-//******************************************************************************************
 
-$token_wb = $_POST['token'];
-$Zakaz_v_1c = $_POST['Zakaz1cNumber'];
-$wb_path = $_POST['wb_path'];
 
 /******************************************************************************************
  *  ************   Создаем каталог для сегодняшнего разбора
@@ -38,13 +41,25 @@ $wb_path = $_POST['wb_path'];
 
 //******************************************************************************************
 
+// C*********** СТАРЫЙ ВАРИАНТ ПАПОК
+// $new_date = date('Y-m-d');
+// make_new_dir_z('reports/'.$new_date,0); // создаем папку с датой
+// $new_path = 'reports/'.$new_date."/".$Zakaz_v_1c;
+// $path_qr_supply = $new_path.'/qr_code_supply';
+// $path_stikers_orders = $new_path.'/stikers_orders';
+// $path_arhives = $new_path.'/arhives';
+// $path_recovery = $new_path.'/recovery';
+
+
+// C*********** НОВЫЙ ВАРИАНТ ПАПОК
 $new_date = date('Y-m-d');
-make_new_dir_z('reports/'.$new_date,0); // создаем папку с датой
-$new_path = 'reports/'.$new_date."/".$Zakaz_v_1c;
+make_new_dir_z('../!all_razbor/wb/'.$new_date,0); // создаем папку с датой
+$new_path = '../!all_razbor/wb/'.$new_date."/".$Zakaz_v_1c;
 $path_qr_supply = $new_path.'/qr_code_supply';
 $path_stikers_orders = $new_path.'/stikers_orders';
 $path_arhives = $new_path.'/arhives';
 $path_recovery = $new_path.'/recovery';
+
 
 
 // Если Такой номер заказа на эту дату уже существует то выводим данные для скачивания
@@ -99,9 +114,9 @@ write_info_filelog ($file_Log_name,'Получаем все новые зака�
 //****************************************************************************************
 
 if (isset($_POST['date_sbora_zakaza'])) {
-    $date_orders_select = $_POST['date_sbora_zakaza'];
+    $date_orders_select = $_POST['date_sbora_zakaza']; // заказ на определенную дату
   } else {
-    $date_orders_select = '';
+    $date_orders_select = ''; // собираем все заказы
   }
  
 //****************************************************************************************
@@ -109,31 +124,13 @@ if (isset($_POST['date_sbora_zakaza'])) {
 //****************************************************************************************
 $arr_new_zakaz = select_order_by_check_date($token_wb, $date_orders_select) ;
 
-
-
 // echo "=====".$date_orders_select."=====";
+
 // echo "<pre>";
 // print_r($arr_new_zakaz );
 
+
 // die('kkkkkkkkkkkkkkkkkkk DIE DIE DIE DIE DIE kkkkkkkkkkkkkkkkkkkkkkkkkkk');
-
-
-
-/****************************************************************************************
- *  КОНЕЦ ЗАТЫЧКИ ДЛЯ ОСОБЫХ РАЗБОРОВ
- ***************************************************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Сформировали массив с ключем - артикулом и значением - массив отправлений
@@ -151,8 +148,8 @@ foreach ($arr_new_zakaz['orders'] as $items) {
  ******************************************************************************************/
 
 foreach ($new_arr_new_zakaz  as $key => $items) {
-    $priznzak_net_massiva=0;
-    $priznzak_ne_ves_massiv=0;
+    $priznzak_net_massiva = 0;
+    $priznzak_ne_ves_massiv = 0;
     $result_insert_order_in_supply = 777;
 
     write_info_filelog ($file_Log_name,"Разбираем артикул: $key "); // Вывод коммент-я на экран
@@ -194,10 +191,10 @@ usleep(300000); // трата на создание Поставки на сай
     $arr_supply[$right_article] =  array('supplayId'      =>  $supplyId['id'],
                                          'name_postavka'  =>  $name_postavka);
     
-    $count_order_art=0; // количество Заказов в поставке
+    $count_order_art = 0; // количество Заказов в поставке
     
 /*****************************************************************************************************************
-*  ПОПРОБОВАТЬ СДЕЛАТЬ ДРУГОЙ АЛГОРИТМ, ОТПРАВЛЯЕМ ЗАКАЗ В ПОСТАВКУ И СРАЗУ СМОТРИМ, ЧТО ЗАКАЗ ЛЕГ В ПОСТАВКУ
+*  ПОПРОБОВАТЬ СДЕЛАТЬ ДРУГОЙ АЛГОРИТМ, ОТПРАВЛЯЕМ ЗАКАЗ В ПОСТАВКУ И СРАЗУ СМОТРИМ, ЧТО ЗАКАЗ ЛЕГ В ПОСТАВКУ (СДЕЛАНО)
 *********************************************************************************************************************/    
     foreach ($items as $item) {
         $orderId = $item['id']; // номер заказа для добавления в сборку
@@ -398,20 +395,20 @@ HTML;
 
 
 /*************** DELETE  (тестим новую папку для разборов)*/
-$new_date_n = date('Y-m-d');
-make_new_dir_z('../!all_razbor/wb/'.$new_date,0); // создаем папку с датой
-$new_path = '../!all_razbor/wb/'.$new_date."/".$Zakaz_v_1c;
-$path_qr_supply = $new_path.'/qr_code_supply';
-$path_stikers_orders = $new_path.'/stikers_orders';
-$path_arhives = $new_path.'/arhives';
-$path_recovery = $new_path.'/recovery';
+// $new_date_n = date('Y-m-d');
+// make_new_dir_z('../!all_razbor/wb/'.$new_date,0); // создаем папку с датой
+// $new_path = '../!all_razbor/wb/'.$new_date."/".$Zakaz_v_1c;
+// $path_qr_supply = $new_path.'/qr_code_supply';
+// $path_stikers_orders = $new_path.'/stikers_orders';
+// $path_arhives = $new_path.'/arhives';
+// $path_recovery = $new_path.'/recovery';
 
-/// проверяем  наличие папки с таким номером заказа
-make_new_dir_z($new_path,0); // создаем папку с номером заказа
-make_new_dir_z($path_qr_supply,0); // создаем папку с QR
-make_new_dir_z($path_stikers_orders,0); // создаем папку со стикерами
-make_new_dir_z($path_arhives,0); // создаем папку с архивами
-make_new_dir_z($path_recovery,0); // создаем папку с инфой по восстановлению
+// /// проверяем  наличие папки с таким номером заказа
+// make_new_dir_z($new_path,0); // создаем папку с номером заказа
+// make_new_dir_z($path_qr_supply,0); // создаем папку с QR
+// make_new_dir_z($path_stikers_orders,0); // создаем папку со стикерами
+// make_new_dir_z($path_arhives,0); // создаем папку с архивами
+// make_new_dir_z($path_recovery,0); // создаем папку с инфой по восстановлению
 
 die('РАЗБОР ОКОНЧЕН (STOP)');
 

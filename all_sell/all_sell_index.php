@@ -1,13 +1,14 @@
 <?php
-require_once '../connect_db.php';
-require_once '../pdo_functions/pdo_functions.php';
+$offset = "../";
+require_once $offset.'connect_db.php';
+require_once $offset.'pdo_functions/pdo_functions.php';
 
-require_once "../mp_functions/ozon_api_functions.php";
-require_once "../mp_functions/ozon_functions.php";
-require_once "../mp_functions/wb_api_functions.php";
-require_once "../mp_functions/wb_functions.php";
-require_once "../mp_functions/yandex_api_functions.php";
-require_once "../mp_functions/yandex_functions.php";
+require_once $offset."mp_functions/ozon_api_functions.php";
+require_once $offset."mp_functions/ozon_functions.php";
+require_once $offset."mp_functions/wb_api_functions.php";
+require_once $offset."mp_functions/wb_functions.php";
+require_once $offset."mp_functions/yandex_api_functions.php";
+require_once $offset."mp_functions/yandex_functions.php";
 
 require_once "functions/all_sell_functions.php";
 
@@ -15,7 +16,7 @@ echo '<link rel="stylesheet" href="css/sell_table.css">';
 
 echo "<pre>";
     // die();
-
+ insert_in_table_user_action($pdo, $userdata['user_login'] , 'OPEN_SELL_TABLE');
 
 
 

@@ -5,6 +5,11 @@ require_once '../include_funcs.php';
 require_once 'make_1c_file.php';
 
 
+require_once '../../pdo_functions/pdo_functions.php'; // подключаем функцию записи в Таблицу действия пользователя
+
+// Запись в таблицу Действия пользователя
+insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order№($number_order)");
+
 
 sleep(5);
 

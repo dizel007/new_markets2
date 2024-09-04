@@ -36,11 +36,11 @@ echo <<<HTML
   <td >
       <form action="#" method="get">
         <label>Введите дату СОЗДАНИЯ ЗАКАЗА </label>
-        <input hidden type="text" name="transition" value="$transition_wb">
-        <input type="date" name="date_sbora_zakaza" value="$date_orders_select">
+    <div id="up_input" class="LockOff"> 
+      <input type="date" name="date_sbora_zakaza" value="$date_orders_select">
       <input type="submit" value="НАЙТИ ЗАКАЗЫ НА ВЫБРАННУЮ ДАТУ">
       </form>    
-
+</div>
   </td>
 
  
@@ -80,6 +80,7 @@ if (isset($raw_arr_orders['orders'][0])) {
 
   echo <<<HTML
 <div class = "table-wrapper">
+
 <table class = "fl-table">
 <thead>
   <tr>
@@ -94,13 +95,22 @@ if (isset($raw_arr_orders['orders'][0])) {
 <td><b>Количество заказов :<br> $all_count </b></td>
 <td ><b>Сумма заказов :<br> $full_zakaz_wb_price </b></td>
   <td >
-      <form action="wb_new_razbor/start_new_supplies.php" method="post">
+      <form action="start_new_supplies.php" method="post">
         <label for="wb">Введите номер заказа из 1С</label>
         <input hidden type="text" name="token" value="$token_wb_orders">
         <input hidden type="date" name="date_sbora_zakaza" value="$date_orders_select">
         <input hidden type="text" name="wb_path" value="ooo">
-        <input required type="number" name="Zakaz1cNumber" value="">
-      <input type="submit" value="СОБРАТЬ">
+
+        <!--  БЛОК который пропаадет после нажатия кнопки -->
+        <div id="down_input" class="LockOff">
+          <input required type="number" name="Zakaz1cNumber" value="">
+          <input type="submit" value="СОБРАТЬ"  onclick="alerting()">
+        </div>
+
+        <!--  БЛОК который появляется после нажатия кнопки -->
+        <div id="OnLock_textLockPane" class="LockOn">
+             Обрабатываем запрос.........
+        </div> 
       </form>    
 
   </td>
@@ -108,10 +118,10 @@ if (isset($raw_arr_orders['orders'][0])) {
  
 </tbody>
 </table>
+
 </div>
 
 HTML;
-
 
   show_orders($sum_arr_article);
 

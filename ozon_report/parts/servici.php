@@ -98,8 +98,23 @@ elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearc
        //Реклама Продвижение в поиске
             $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
         }
-          
-    
+elseif ($items['operation_type'] == 'DefectRateCancellation'){
+     //Услуга за обработку операционных ошибок продавца: отмена
+            $Summa_oshibka_obrabotki = @$Summa_oshibka_obrabotki + $items['amount']; 
+        }         
+elseif ($items['operation_type'] == 'MarketplaceServiceItemCrossdocking'){
+    //Кросс-докинг
+            $Summa_kross_doking = @$Summa_kross_doking + $items['amount']; 
+        }  
+elseif ($items['operation_type'] == 'OperationSubscriptionPremium'){
+    //Подписка Premium
+            $Summa_primiun_5000 = @$Summa_primiun_5000 + $items['amount']; 
+        }  
+elseif ($items['operation_type'] == 'OperationSubscriptionPremiumPlus'){
+    //Подписка Premium Plus
+            $Summa_primiun_plus25000 = @$Summa_primiun_plus25000 + $items['amount']; 
+        }  
+
 
 else {
     $Summa_neizvestnogo =  @$Summa_neizvestnogo  + $items['amount']; 

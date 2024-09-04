@@ -62,3 +62,16 @@ label {
     font-size: 25px;
     background:#fc9724;
 }
+
+
+/* Для блокировки экрана */
+.LockOff { 
+    display: block; 
+    visibility: visible; 
+
+
+ } 
+ .LockOn { 
+    display: none; 
+    visibility: hidden; 
+ } 

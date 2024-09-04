@@ -3,8 +3,9 @@
 $offset ="../../";
 require_once $offset .'connect_db.php';
 $link = $offset.'index.php';
+
 echo <<<HTML
- <link rel="stylesheet" href="../css/select_shop.css">
+ <link rel="stylesheet" href="css/select_shop.css">
 <div class="wrapper">
   <form action="get_price_table.php" class="login" method="get">
     <p class="title">Выбор Маркета</p>
