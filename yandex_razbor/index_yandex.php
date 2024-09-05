@@ -27,7 +27,7 @@ require_once "functions/functions.php";
         $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
     }
     
-    echo $need_date."<br>"; 
+    // echo $need_date."<br>"; 
     echo <<<HTML
     <form action="#" method= "get">
         <input required type="date" name="select_date" value="$need_date_temp">

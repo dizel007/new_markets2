@@ -41,7 +41,7 @@ for ($page=1; $page <= $orders['pager']['pagesCount']; $page++) {
 
 }
 
-echo "КОЛИЧЕСТВО ПОЛУЧЕННЫХ ЗАКАЗОВ =".count($result['orders'])."<br><br>";
+// echo "КОЛИЧЕСТВО ЗАКАЗОВ ЗА ВСЕ ВРЕМЯ = ".count($result['orders'])." <br>";
 return $result;
 }
 
@@ -141,7 +141,9 @@ function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, 
  function make_all_dir ($date_query_yandex, $zakaz_1c_number) {
  $date_query_yandex = date('Y-m-d');
 //  $zakaz_1c_number = "0312";
- $new_path = 'reports/'.$date_query_yandex."/".$zakaz_1c_number."/";
+//  $new_path = 'reports/'.$date_query_yandex."/".$zakaz_1c_number."/";
+ $new_path = '../!all_razbor/yandex/'.$date_query_yandex."/".$zakaz_1c_number."/";
+
  make_new_dir_z($new_path,0); // создаем папку с датой
  $path_etiketki = $new_path.'yarliki';
  make_new_dir_z($new_path,0); // создаем папку с датой
@@ -177,32 +179,44 @@ function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, 
  ******************* Выводим таблицу с заказами  ***********************************
  *************************************************************************************************/
 function print_table_with_orders ($array_orders, $date_orders) {
-  
+//   echo "<pre>";
+// print_r($array_orders);
+foreach ($array_orders as $items)  {
+    $new_article = change_sku_for_1c_article($items['offerId']);
+    $new_array_orders[$new_article]['summa'] = round(@$new_array_orders[$new_article]['summa'] + ($items['buyerPrice'] + $items['subsidy'])*$items['count'],0);
+    $new_array_orders[$new_article]['count'] = @$new_array_orders[$new_article]['count'] + $items['count'];
+    $new_array_orders[$new_article]['offerName'] = $items['offerName'];
+    $new_array_orders[$new_article]['buyerPrice'] =  round($new_array_orders[$new_article]['summa'] /  $new_array_orders[$new_article]['count'],0); 
+}
+
+
     echo <<<HTML
     <link rel="stylesheet" href="yandex_razbor/css/style.css">
     <link rel="stylesheet" href="css/style.css">
-    <h1>Все товары на дату: $date_orders</h2>
+    <h2>Все товары на дату: $date_orders</h2>
     <table class="">
+
     <tr>
         <th>пп</th>
         <th>артикул</th>
         <th>Наименование</th>
         <th>Кол-во</th>
-        <th>Цена</th>
+        <th>Сред.цена за шт <br> с субсибиями</th>
+        <th>Стоимость</th>
     </tr>
     HTML;
     $i=1;
     $summa_tovarov = 0;
     $kolichestvo_tovarov = 0;
     
-    foreach ($array_orders as $items)  {
+    foreach ($new_array_orders as $key=>$items)  {
     echo "<tr>";
         echo "<td>".$i."</td>";
-        $new_article = change_sku_for_1c_article($items['offerId']);
-        echo "<td>".$new_article."</td>";
+        echo "<td>".$key."</td>";
         echo "<td>".$items['offerName']."</td>";
         echo "<td>".$items['count']."</td>";
         echo "<td>".$items['buyerPrice']."</td>";
+        echo "<td>".$items['buyerPrice']*$items['count']."</td>";
 
     
     echo "</tr>";
@@ -217,8 +231,10 @@ function print_table_with_orders ($array_orders, $date_orders) {
         <td></td>
         <td></td>
         <td>Итого </td>
-        <td>$summa_tovarov руб</td>
         <td>$kolichestvo_tovarov шт</td>
+        <td></td>
+        <td>$summa_tovarov руб</td>
+        
     </tr>
     HTML;
     
@@ -270,7 +286,7 @@ function print_table_with_ALL_orders ($array_mass_orders, $date_orders) {
     echo <<<HTML
     <link rel="stylesheet" href="yandex_razbor/css/style.css">
     <link rel="stylesheet" href="css/style.css">
-    <h1>Все заказы $date_orders</h2>
+    <h2>Все заказы $date_orders</h2>
     <table class="">
     <tr>
         <th>пп</th>

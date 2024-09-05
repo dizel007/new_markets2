@@ -16,13 +16,13 @@ require_once "functions/functions.php";
 $ya_token =  get_token_yam($pdo);
 $campaignId =  get_id_company_yam($pdo);
 
-echo "<pre>";
+// echo "<pre>";
 
 // получаем даты на которую нужно разобрать заказы по грузоместам
 if  (isset($_GET['select_date'])) {
     $need_date_temp = $_GET['select_date'];
     $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
-    echo $need_date."<br>"; 
+    // echo $need_date."<br>"; 
 } else {
     echo "<br>NET DATE DIE<br>";
     die('die without date');
@@ -40,19 +40,19 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
     
     }
 
-echo "<br>**** ЗАКАЗЫ ДЛЯ РАЗБИВКИ ПО ГРУЗОМЕСТАМ  ********************************************************************************<br>";
+echo "* ЗАКАЗЫ ДЛЯ РАЗБИВКИ ПО ГРУЗОМЕСТАМ *";
 
 
 foreach ($new_arr_select_date as $order) { // перебираем все новые заказы
 
     $orderId = $order['id']; // ID  выбранного заказа
 
-    echo "<br>**** НОМЕР ЗАКАЗА =$orderId= ********************************************************************************<br>";
+    echo "<br>* НОМЕР ЗАКАЗА = <b>$orderId </b> *";
         // print_r($items);
         $res[] = razbivaev_zakazi_po_gruzomestam ($ya_token, $campaignId, $orderId, $order['items']);
 
 }
-
+echo "<h3> Количество заказов в поставке =  ".count($new_arr_select_date)."</h3>";
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
