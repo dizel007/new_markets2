@@ -21,6 +21,7 @@ function soglasovanie_zaiavki_na_skidku($token_ozon, $client_id_ozon, $arr_data)
 
 
 function perebor_skidok($token, $client_id, $arr_zapros_skidki, $procent_skidki) {
+    $success_result_discount = 0;
     foreach ($arr_zapros_skidki['result'] as $zapros_skidki) {
 
         $arr_data['id'] = $zapros_skidki['id'];
@@ -31,9 +32,12 @@ function perebor_skidok($token, $client_id, $arr_zapros_skidki, $procent_skidki)
         $arr_data['max_count'] = $zapros_skidki['requested_quantity_max'];
      
     
-        soglasovanie_zaiavki_na_skidku($token, $client_id, $arr_data);
-    
+       $res =  soglasovanie_zaiavki_na_skidku($token, $client_id, $arr_data);
+        if ($res['result']['success_count'] == 1) {
+            $success_result_discount = 1;
+        }
     usleep(50000);
     // print_r($arr_data['price']);
+    return $success_result_discount;
     }
 }

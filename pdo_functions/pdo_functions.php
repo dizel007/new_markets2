@@ -59,19 +59,32 @@ function get_procent_tovarov_marketa($pdo) {
  ****************************************************/
 
 function get_catalog_tovarov_v_mp($market_name, $pdo, $type) {
+
+
+// сортировка товара по номеру в списке  "Номенклатура"
+///// Достаем каталог товароы из БД 
 if ($type == 'active') {
-   $stmt = $pdo->prepare("SELECT * FROM $market_name WHERE `active_tovar` = 1");
+   // $stmt = $pdo->prepare("SELECT * FROM $market_name WHERE `active_tovar` = 1");
+   $stmt = $pdo->prepare("SELECT $market_name.*, nomenklatura.number_in_spisok
+   FROM $market_name 
+   INNER JOIN nomenklatura ON $market_name.main_article = nomenklatura.main_article_1c 
+   WHERE $market_name.active_tovar = 1
+   ORDER BY nomenklatura.number_in_spisok ASC");
+
 } else {
    $stmt = $pdo->prepare("SELECT * FROM $market_name");
 }
-   
    $stmt->execute();
-   $arr_catalog = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   $arr_catalog = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+   
    foreach ($arr_catalog as $catalog) {
       $new_arr_cat[$catalog['id']] = $catalog['main_article'];
    }
    
    $new_arr_cat= array_unique($new_arr_cat,SORT_STRING );
+
+
+
    foreach ($new_arr_cat as $key => $item) {
       foreach ($arr_catalog as $cata) {
       if ($item == $cata['main_article']) {
@@ -81,8 +94,7 @@ if ($type == 'active') {
    }}
 
 // print_r($new_arr_cat);
-// print_r($super_new_arr);
-//    die();
+
 return $super_new_arr;
 
 }

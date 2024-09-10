@@ -16,6 +16,7 @@ unset($_POST['wb_shop']);
 $wb_catalog = get_wb_prices($pdo, $token_wb, $wb_shop);
 // Подтягиваем значения из БД СКЬЮЭЛ
 foreach ($wb_catalog as &$item) {
+	// echo "<br>".$item['sku']."<br>";
 	$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
 	if (isset($gtemp[0])) {
 // если нашли массив в таблице то добавляем данные в каталог
@@ -41,19 +42,21 @@ foreach ($_POST as $key=>$value) {
 
 
 // фомриуем массив для обновления данных (только то что нужно обновить)
-foreach ($arr_post as $item) {
-   if (isset($item['needupdate']))
-    $arr_post_new[$item['sku']]=  $item;
+foreach ($arr_post as $item_post) {
+   if (isset($item_post['needupdate']))
+    $arr_post_new[$item_post['sku']]=  $item_post;
   
 }
-// echo"<pre>";
-// print_r($arr_post_new);
-// print_r($wb_catalog[8]);
+
 
 if (!isset($arr_post_new)) {
 	die('НЕТ ДАННЫХ ДЛЯ ОБНОВЛЕНИЯ');
 }
 
+
+// echo"<pre>";
+// print_r($arr_post_new);
+// print_r($wb_catalog);
 
 
 // Чтобы обновить данные на сайте ВБ, нужно чтобы либо цена либо скидка отличались
@@ -96,7 +99,7 @@ foreach ($wb_catalog as $wb_data) {
 // print_r($arr_for_db);
 // Вставляем новую строку в БД с обновленными ценами
 foreach ($arr_for_db as $data_for_input) {
-	insert_data_in_prices_table_db($pdo, $wb_shop, $data_for_input);
+	insert_data_in_prices_table_db_wb($pdo, $wb_shop, $data_for_input);
 	}
 
 // обновляем данные на ВБ 

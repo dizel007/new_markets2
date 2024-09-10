@@ -44,7 +44,15 @@ for ($procent_skidki = 4; $procent_skidki <= 7; $procent_skidki++) {
     echo "<br> *********** СКИДКА  =  $procent_skidki ПРОЦЕНТОВ **************************** <br>";
     $arr_zapros_skidki = post_with_data_ozon($token, $client_id, $send_data, $ozon_dop_url );
     echo "<br> Количество Заявок для согласования :". count($arr_zapros_skidki['result'])."<br>";
-    perebor_skidok($token, $client_id, $arr_zapros_skidki, $procent_skidki);
+    
+    $success_result_discount = perebor_skidok($token, $client_id, $arr_zapros_skidki, $procent_skidki);
+     
+    if ($success_result_discount == 1) {
+        $procent_skidki --;
+    } else {
+        break ;
+    }
+echo  "<br> ЕСТЬ ЛИ УДАЧНЫЕ СКИДКИ  : = ". $success_result_discount."<br>";
 }
 die();
 /************************************

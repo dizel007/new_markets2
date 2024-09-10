@@ -1,78 +1,147 @@
 <?php
-$offset ="../../";
-require_once $offset."connect_db.php";
-require_once $offset."pdo_functions/pdo_functions.php";
-require_once $offset."mp_functions/ozon_api_functions.php";
-require_once $offset."mp_functions/ozon_functions.php";
+$offset = "../../";
+require_once $offset . "connect_db.php";
+require_once $offset . "pdo_functions/pdo_functions.php";
+require_once $offset . "mp_functions/ozon_api_functions.php";
+require_once $offset . "mp_functions/ozon_functions.php";
 require_once "functions.php";
 
 
 // /**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
-// if ($_GET['wb_shop'] == 'wb_ip_zel') {
-// 	$token_wb = $token_wb_ip;
-// 	$wb_shop = 	'wb_ip_zel';
-// } elseif ($_GET['wb_shop'] == 'wb_anmaks') {
-// 	$token_wb = $token_wb;
-// 	$wb_shop = 	'wb_anmaks';
-// } else {
-// 	die('Не нашли маркет');
+// озон ИП зел
+$market_name = 'ozon_anmaks';
+
+
+$client_id_ozon_ip = $arr_tokens[$market_name ]['id_market'];
+$token_ozon_ip = $arr_tokens[$market_name ]['token'];
+
+
+echo "<pre>";
+
+$ozon_catalog    = get_catalog_tovarov_v_mp($market_name , $pdo, 'active'); // получаем озон каталог
+// наxодим ID товаров озона 
+
+// $ozon_dop_url = "v2/product/info";
+// foreach ($ozon_catalog as &$items) {
+// 	$send_data = array(
+// "offer_id" => "",
+// "product_id" => 0,
+// "sku" => $items['sku']);
+// $send_data = json_encode($send_data);
+// $ozcatalog = post_with_data_ozon($token_ozon_ip, $client_id_ozon_ip, $send_data, $ozon_dop_url);
+// $items['id_ozon'] = $ozcatalog['result']['id'];
 // }
 
+// file_put_contents('1.json', json_encode($ozon_catalog, JSON_UNESCAPED_UNICODE));
+// echo "<pre>";
+// print_r($ozon_catalog);
 
-    // озон ИП зел
-    $client_id_ozon_ip = $arr_tokens['ozon_ip_zel']['id_market'];
-    $token_ozon_ip = $arr_tokens['ozon_ip_zel']['token'];
-// Доставем информацию по складам ****** АКТИВНЫМ СКЛАДАМ ******
-$sklads = select_info_about_sklads($pdo); // ОБщая Информация по складам
-// Названия магазинов
-$ozon_catalog = get_wb_prices($pdo, $token_wb, $wb_shop);
-echo "<pre>";
-print_r($ozon_catalog);
-die();
+// $ozon_catalog = json_decode(file_get_contents('1.json'), true);
 
-foreach ($wb_catalog as &$item) {
-	$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
+
+// формируем массиd для запроса цены ********************
+foreach ($ozon_catalog as $tovars) {
+$arr_article[] = $tovars['mp_article'];
+$arr_id_ozon[] = $tovars['product_id'];
+}
+
+$ozon_dop_url = "v4/product/info/prices";
+$send_data = array(
+	"filter" => array(
+		"offer_id" => $arr_article,
+		"product_id" => $arr_id_ozon,
+		"visibility" =>  "ALL"
+	),
+	"last_id" => "",
+	"limit" => 100
+);
+
+$send_data = json_encode($send_data);
+
+// непосредственный запрос цен
+$ozcatalog = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url);
+
+unset($items);
+foreach ($ozcatalog['result']['items'] as $items) {
+	$new_ozon_catalog_from_site[$items['offer_id']]['product_id'] =  $items['product_id'];
+	$new_ozon_catalog_from_site[$items['offer_id']]['offer_id'] =  $items['offer_id'];
+	$new_ozon_catalog_from_site[$items['offer_id']]['marketing_seller_price'] =  $items['price']['marketing_seller_price'];
+	$new_ozon_catalog_from_site[$items['offer_id']]['marketing_price'] =  $items['price']['marketing_price'];
+	$new_ozon_catalog_from_site[$items['offer_id']]['price'] =  $items['price']['price'];
+	// $new_ozon_catalog_from_site[$items['offer_id']]['min_price'] =  $items['price']['min_price'];
+
+}
+
+///////  ***************   Добавляем цены с наш каталог озон*********************************
+//********************************************************************************************
+foreach ($ozon_catalog as &$ozon_item) {
+	foreach ($new_ozon_catalog_from_site as $item_query) {
+	 if ($ozon_item['product_id'] == $item_query['product_id']) {
+		 $ozon_item['price_now_ozon'] = $item_query['price'];
+		 $ozon_item['price_na_mp_ozon'] = $item_query['marketing_price'];
+		 $ozon_item['price_seller_na_mp_ozon'] = $item_query['marketing_seller_price'];
+	 }
+
+	}
+}
+
+
+//***************************************************************************************************** 
+//**********  Вычитываем данные с БД если есть, если нет , то добавляем в БД данные ******************* 
+//***************************************************************************************************** 
+unset($item);
+foreach ($ozon_catalog as &$item) {
+	$gtemp = select_last_data_from_db($pdo, $item['sku'], $market_name);
 	
 	if (isset($gtemp[0])) {
 // если нашли массив в таблице то добавляем данные в каталог
 		$item['price_old_DB'] = $gtemp[0]['price_old'];
 		$item['dis_price_old_DB'] = $gtemp[0]['dis_price_old'];
-		$item['discount_old_DB'] = $gtemp[0]['discount_old'];
+		$item['price_na_mp_old_DB'] = $gtemp[0]['price_na_mp_old'];
 		$item['date_old_DB'] = $gtemp[0]['date_old'];
+		$item['price_seller_na_mp_old_DB'] = $gtemp[0]['price_seller_na_mp_old'];
+		
 
 		$item['price_now_DB'] = $gtemp[0]['price_now'];
 		$item['dis_price_now_DB'] = $gtemp[0]['dis_price_now'];
-		$item['discount_now_DB'] = $gtemp[0]['discount_now'];
+		$item['price_na_mp_ozon_DB'] = $gtemp[0]['price_na_mp_ozon'];
+		$item['price_seller_na_mp_ozon_DB'] = $gtemp[0]['price_seller_na_mp_ozon'];
+		
 		$item['date_now_DB'] = $gtemp[0]['date_now'];
 	} else { // 
 // если НЕ нашли данных , то добавляем первые значения
 		$data_for_input['main_article'] = $item['main_article'];
 		$data_for_input['sku'] = $item['sku'];
-		$data_for_input['price_now_DB'] = $item['price_now_WB'];
-		$data_for_input['dis_price_now_DB'] = $item['dis_price_now_WB'];
-		$data_for_input['discount_now_DB'] = $item['discount_now_WB'];
-		$data_for_input['date_now_DB'] = date('Y-m-d');
-		$data_for_input['pricenowWB'] = $item['price_now_WB'];
-		$data_for_input['dispricenowWB'] = $item['dis_price_now_WB'];
-		$data_for_input['discountnowWB'] = $item['discount_now_WB'];
+		$data_for_input['product_id'] = $item['product_id'];
+
+
+/// new data
+		$data_for_input['price_now_DB']            = $item['price_now_ozon'];
+		$data_for_input['dis_price_now_DB']        = 77777;
+		$data_for_input['price_na_mp_old']         = $item['price_na_mp_ozon'];
+		$data_for_input['price_seller_na_mp_old']  = $item['price_seller_na_mp_ozon'];
+		$data_for_input['date_now_DB']             = date('Y-m-d');
+		$data_for_input['pricenowWB']              = $item['price_now_ozon'];
+		$data_for_input['dispricenowWB']           = 77777;
+		$data_for_input['price_na_mp_ozon']        = $item['price_na_mp_ozon'];
+		$data_for_input['price_seller_na_mp_ozon'] = $item['price_seller_na_mp_ozon'];
 		$data_for_input['date_now'] = date('Y-m-d');;
-		insert_data_in_prices_table_db($pdo, $wb_shop, $data_for_input);
+		
+		insert_data_in_prices_table_db_OZON($pdo, $market_name, $data_for_input);
 	// вычитываем добавленные данные с БД
-		$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
+		$gtemp = select_last_data_from_db($pdo, $item['sku'], $market_name);
 	// если нашли массив в таблице то добавляем данные в каталог
 		if (isset($gtemp[0])) {
 			$item['price_old'] = $gtemp[0]['price_old'];
-			$item['dis_price_old'] = $gtemp[0]['dis_price_old'];
-			$item['discount_old'] = $gtemp[0]['discount_old'];
+			$item['price_na_mp_old'] = $gtemp[0]['price_na_mp_old'];
+			$item['price_seller_na_mp_old'] = $gtemp[0]['price_seller_na_mp_old'];
 			$item['date_old'] = $gtemp[0]['date_old'];
 		}
 	}
 }
 
-// echo "<pre>";
-// print_r($wb_catalog[0]);
 
 
-print_table_with_prices($wb_catalog, $token_wb, $wb_shop);
-
+print_r($ozon_catalog[0]);
+print_table_with_prices_OZON($ozon_catalog, $market_name);
 die();

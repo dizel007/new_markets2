@@ -54,7 +54,7 @@ foreach ($wb_catalog as &$item) {
 		$data_for_input['dispricenowWB'] = $item['dis_price_now_WB'];
 		$data_for_input['discountnowWB'] = $item['discount_now_WB'];
 		$data_for_input['date_now'] = date('Y-m-d');;
-		insert_data_in_prices_table_db($pdo, $wb_shop, $data_for_input);
+		insert_data_in_prices_table_db_wb($pdo, $wb_shop, $data_for_input);
 	// вычитываем добавленные данные с БД
 		$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
 	// если нашли массив в таблице то добавляем данные в каталог
@@ -68,9 +68,10 @@ foreach ($wb_catalog as &$item) {
 }
 
 // echo "<pre>";
-// print_r($wb_catalog[0]);
+// print_r($wb_catalog);
 
 
-print_table_with_prices($wb_catalog, $token_wb, $wb_shop);
+
+print_table_with_prices_WB($wb_catalog, $token_wb, $wb_shop);
 
 die();
