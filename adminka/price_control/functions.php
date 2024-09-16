@@ -297,8 +297,8 @@ function select_last_data_from_db($pdo, $sku, $shop_name)
 
 
 	 $date_old =                $data_for_input['date_now_DB'];
-	 $price_now =               $data_for_input['pricenowWB'];
-	 $dis_price_now =           $data_for_input['dispricenowWB'];
+	 $price_now =               $data_for_input['pricenow_OZON'];
+	 $dis_price_now =           $data_for_input['dispricenow_OZON'];
 
    $price_na_mp_ozon =        $data_for_input['price_na_mp_ozon']; // //// OZON
 	 $price_seller_na_mp_ozon = $data_for_input['price_seller_na_mp_ozon']; //////// OZON
@@ -357,15 +357,15 @@ echo <<<HTML
 
   <tr>
       <th class="width_article text-center">Артикул МП</th>
-      <th class="text-center">Цена с БД</th>
-      <th class="text-center">Скидка</th>
-      <th class="text-center">Цена со скидкой с БД</th>
+      <th class="text-center">Цена в ЛК БД</th>
+      <th class="text-center">Цена Продавца БД</th>
+      <th class="text-center">Цена на МП с БД</th>
       <th class="width_date text-center">Дата в БД</th>
    
-      <th class="text-center">Цена ВБ</th>
-      <th class="text-center">Скидка ВБ</th>
-      <th class="text-center">Цена со скидкой в ВБ</th>
-      <th class="text-center">Разница цен</th>
+      <th class="text-center">Цена в ЛК Озон</th>
+      <th class="text-center">Цена Продавца Озон</th>
+      <th class="text-center">Цена на МП Озон</th>
+      <th class="text-center">Разница цен <br> Продавца</th>
       <th class="text-center">Артикул МП</th>
       <th class="text-center">CheckBox</th>
   </tr>
@@ -377,13 +377,13 @@ HTML;
   foreach ($ozon_catalog as $item) {
     // echo $item['sku'],"<br>";
     $check_box = 0; // флаг чтобы обновлять цену и скидку
-    $dis_price_now_DB = round($item['dis_price_now_DB'],0); 
-    $dis_price_now_WB = round($item['dis_price_now_WB'],0);
-    $delta_discount_prices =  round($dis_price_now_DB - $dis_price_now_WB,0);
+    $seller_price_now_DB = round($item['price_seller_na_mp_ozon_DB'],0); 
+    $dis_price_now_OZON = round($item['price_seller_na_mp_ozon'],0);
+    $delta_discount_prices =  round($seller_price_now_DB - $dis_price_now_OZON,0);
 
 
     // Проверяем одинаковые ли цена на сайт и в БД
-    $summa_price = round(($dis_price_now_DB -  $dis_price_now_WB), 0);
+    $summa_price = round(($seller_price_now_DB -  $dis_price_now_OZON), 0);
     if ($summa_price > 0) {
       $bolshe100 = 'bolshe100';
       $check_box=1;
@@ -401,33 +401,33 @@ HTML;
 
     echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
     // данные из БД
-    echo  "<td class=\" text-center\">" . $item['price_now_DB'] . "</td>"; // цена до скидкт
-    echo  "<td class=\"text-center \">" . $item['discount_now_DB'] . "</td>"; // скидка
-    echo  "<td class=\" text-center\">" . $item['dis_price_now_DB'] . "</td>"; // цена со скидкой
-    echo  "<td class=\" text-center\">" . $item['date_now_DB'] . "</td>";
+    echo  "<td class=\" text-center\">" . $item['price_now_DB'] . "</td>"; // цена в личном кабинете БД
+    echo  "<td class=\"text-center \">" . $item['price_seller_na_mp_ozon_DB'] . "</td>"; // цена продавца в БД
+    echo  "<td class=\" text-center\">" . $item['price_na_mp_ozon_DB'] . "</td>"; // цена на Маркете в БД
+    echo  "<td class=\" text-center\">" . $item['date_old_DB'] . "</td>";
     echo <<<HTML
 <!-- Дельту цен загоняе мв в форму -->
-<input type="hidden" readonly type="text" id="dis_price_now_DB{$p}" name = "dis_price_now_DB{$p}"  value="{$dis_price_now_DB}">
+<input type="hidden" readonly type="text" id="seller_price_now_DB{$p}" name = "seller_price_now_DB{$p}"  value="{$seller_price_now_DB}">
 
-<!--  ЦЕНА НА САЙТЕ ВБ -->
+<!--  ЦЕНА В ЛК ОЗОН -->
  <td class="width_input">
   <input  class="input_width_vvod" onkeyup="CalculateItem();"  onkeydown="CalculateItem();" onchange="CalculateItem();" onfocus="CalculateItem();"
-   type="number" step="1" min="0" max="9999" id="price_now_WB{$p}" name="price_now_WB{$p}" value ="{$item['price_now_WB']}" required>
+   type="number" step="1" min="0" max="9999" id="price_now_OZON{$p}" name="price_now_OZON{$p}" value ="{$item['price_now_ozon']}" required>
 </td>
-<!--  СКИДКА НА ВБ -->
+<!--  ЦЕНА ПРОДАВЦВ НА ОЗОН -->
 <td class="width_input">
-    <input class="input_width_vvod"  required type="number" step="1" min="0" max="70" id="discount_now_WB{$p}" name="discount_now_WB{$p}"
-     value ="{$item['discount_now_WB']}" onkeyup="CalculateItem();" onkeydown="CalculateItem();"
+    <input class="input_width_vvod"  required type="number" step="1" min="0" max="9999" id="price_seller_na_mp_ozon{$p}" name="price_seller_na_mp_ozon{$p}"
+     value ="{$item['price_seller_na_mp_ozon']}" onkeyup="CalculateItem();" onkeydown="CalculateItem();"
       onchange="CalculateItem();" onfocus="CalculateItem();">
 </td>
 
- <!-- СКИДОЧНАЯ ЦЕНА  -->
+ <!-- ЦЕНА НА САЙТЕ ОЗОН (ДЛЯ ПОКУПАТЕЛЯ)  -->
 <td class="width_input">
-   <input class="input_width_raschet" readonly type="number" id="dis_price_now_WB{$p}" name = "dis_price_now_WB{$p}"  value="{$dis_price_now_WB}">
+   <input class="input_width_raschet" readonly type="number" id="dis_price_now_OZON{$p}" name = "dis_price_now_OZON{$p}"  value="{$item['price_na_mp_old_DB']}">
   </td>
 <!-- РАЗНИЦА В ЦЕНАХ -->
 <td class="width_input"> 
-  <input  class="input_width_raschet" readonly type="number" id="delta_discount_prices{$p}" name = "_delta_discount_prices_{$p}"  value="{$delta_discount_prices}">
+  <input  class="input_width_raschet" readonly type="number" id="delta_seller_prices{$p}" name = "delta_seller_prices{$p}"  value="{$delta_discount_prices}">
  </td>
 HTML;
 
@@ -435,20 +435,20 @@ echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
 
 
     // тезнические данные
-    echo  "<input  type=\"hidden\" name=\"_sku_{$p}\" value=" . $item['sku'] . ">";
+    echo  "<input  type=\"hidden\" name=\"sku{$p}\" value=" . $item['sku'] . ">";
     echo  "<input  type=\"hidden\" name=\"type_question\" value=\"discount_update\">";
-    // echo  "<input  type=\"hidden\" name=\"token_wb\" value=\"$token_wb\">";
-    // echo  "<input  type=\"hidden\" name=\"token_wb\" value=\"$token_wb\">";
-    echo  "<input  type=\"hidden\" name=\"wb_shop\" value=\"$ozon_shop\">";
+    echo "<input type=\"hidden\" type=\"text\" name = \"product_id{$p}\"  value=\"{$item['product_id']}\">";
+    echo "<input type=\"hidden\" type=\"text\" name = \"mp_article{$p}\"  value=\"{$item['mp_article']}\">";
+        echo  "<input  type=\"hidden\" name=\"ozon_shop\" value=\"$ozon_shop\">";
 
 
 
 
   // Кнопки checkBboxi
     if ($check_box == 1) {
-    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"_need_update_{$p}\" value=\"\"></td>";
+    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"need_update{$p}\" value=\"\"></td>";
     } else {
-      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"_need_update_{$p}\" value=\"\"></td>";
+      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"need_update{$p}\" value=\"\"></td>";
     }
     $p++;
 
@@ -459,7 +459,7 @@ echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
 
  echo <<<HTML
 <div class="ccc">
-<input class="atuin-btn" type="submit" value="ОБНОВИТЬ ДАННЫЕ НА ВБ">
+<input class="atuin-btn" type="submit" value="ОБНОВИТЬ ДАННЫЕ НА $ozon_shop">
 </div>
 
 HTML;
@@ -478,17 +478,16 @@ echo <<<HTML
               var Str_Number = Str_Number.replace(/\D/g, "");
               
                 try {
-                    inputPriceNoVat = Math.round($('#price_now_WB' + Str_Number).val() -  $('#price_now_WB' + Str_Number).val()*$('#discount_now_WB'+ Str_Number).val()/100);
-                    delta_discount_prices = Math.round($('#dis_price_now_DB' + Str_Number).val() - inputPriceNoVat);
+                    
+        delta_seller_prices = Math.round($('#seller_price_now_DB' + Str_Number).val() - $('#price_seller_na_mp_ozon' + Str_Number).val());
                    
-                 $('#dis_price_now_WB' + Str_Number).val(inputPriceNoVat);
-                 $('#delta_discount_prices' + Str_Number).val(delta_discount_prices);
+                 
+                 $('#delta_seller_prices' + Str_Number).val(delta_seller_prices);
 
               
 
                 } catch (e) {
-                    $('#dis_price_now_WB' + Str_Number).val('cccccccc');
-                    $('#delta_discount_prices' + Str_Number).val('cccccccc');
+                    $('#delta_seller_prices' + Str_Number).val('7778777');
                 }
 
             }

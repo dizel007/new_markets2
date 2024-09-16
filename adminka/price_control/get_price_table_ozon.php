@@ -9,16 +9,31 @@ require_once "functions.php";
 
 // /**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
 // озон ИП зел
-$market_name = 'ozon_anmaks';
+$ozon_shop = 'ozon_anmaks';
+// $ozon_shop = 'ozon_ip_zel';
 
+if ($ozon_shop == 'ozon_anmaks') {
+	// ОЗОН АНМКАС
+	$client_id = $arr_tokens['ozon_anmaks']['id_market'];
+	$token_ozon = $arr_tokens['ozon_anmaks']['token'];
+  } elseif ($ozon_shop == 'ozon_ip_zel') {
+	// озон ИП зел
+	$client_id = $arr_tokens['ozon_ip_zel']['id_market'];
+	$token_ozon = $arr_tokens['ozon_ip_zel']['token'];
+  } else {
+	  echo "Не нашли маркет" ;
+	  die();
+  }
 
-$client_id_ozon_ip = $arr_tokens[$market_name ]['id_market'];
-$token_ozon_ip = $arr_tokens[$market_name ]['token'];
-
+  echo "Не $ozon_shop маркет" ;
 
 echo "<pre>";
 
-$ozon_catalog    = get_catalog_tovarov_v_mp($market_name , $pdo, 'active'); // получаем озон каталог
+$ozon_catalog    = get_catalog_tovarov_v_mp($ozon_shop , $pdo, 'active'); // получаем озон каталог
+
+
+
+
 // наxодим ID товаров озона 
 
 // $ozon_dop_url = "v2/product/info";
@@ -55,11 +70,15 @@ $send_data = array(
 	"last_id" => "",
 	"limit" => 100
 );
-
 $send_data = json_encode($send_data);
 
+
 // непосредственный запрос цен
-$ozcatalog = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url);
+$ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
+
+// print_r($ozcatalog );
+// print_r($arr_article);
+
 
 unset($items);
 foreach ($ozcatalog['result']['items'] as $items) {
@@ -77,9 +96,9 @@ foreach ($ozcatalog['result']['items'] as $items) {
 foreach ($ozon_catalog as &$ozon_item) {
 	foreach ($new_ozon_catalog_from_site as $item_query) {
 	 if ($ozon_item['product_id'] == $item_query['product_id']) {
-		 $ozon_item['price_now_ozon'] = $item_query['price'];
-		 $ozon_item['price_na_mp_ozon'] = $item_query['marketing_price'];
-		 $ozon_item['price_seller_na_mp_ozon'] = $item_query['marketing_seller_price'];
+		 $ozon_item['price_now_ozon'] =  round($item_query['price'],0);
+		 $ozon_item['price_na_mp_ozon'] =  round($item_query['marketing_price'],0);
+		 $ozon_item['price_seller_na_mp_ozon'] =  round($item_query['marketing_seller_price'],0);
 	 }
 
 	}
@@ -91,7 +110,7 @@ foreach ($ozon_catalog as &$ozon_item) {
 //***************************************************************************************************** 
 unset($item);
 foreach ($ozon_catalog as &$item) {
-	$gtemp = select_last_data_from_db($pdo, $item['sku'], $market_name);
+	$gtemp = select_last_data_from_db($pdo, $item['sku'], $ozon_shop);
 	
 	if (isset($gtemp[0])) {
 // если нашли массив в таблице то добавляем данные в каталог
@@ -116,20 +135,20 @@ foreach ($ozon_catalog as &$item) {
 
 
 /// new data
-		$data_for_input['price_now_DB']            = $item['price_now_ozon'];
-		$data_for_input['dis_price_now_DB']        = 77777;
-		$data_for_input['price_na_mp_old']         = $item['price_na_mp_ozon'];
-		$data_for_input['price_seller_na_mp_old']  = $item['price_seller_na_mp_ozon'];
+		$data_for_input['price_now_DB']            = round($item['price_now_ozon'],0);
+		$data_for_input['dis_price_now_DB']        = 0;
+		$data_for_input['price_na_mp_old']         = round($item['price_na_mp_ozon'],0);
+		$data_for_input['price_seller_na_mp_old']  = round($item['price_seller_na_mp_ozon'],0);
 		$data_for_input['date_now_DB']             = date('Y-m-d');
-		$data_for_input['pricenowWB']              = $item['price_now_ozon'];
-		$data_for_input['dispricenowWB']           = 77777;
-		$data_for_input['price_na_mp_ozon']        = $item['price_na_mp_ozon'];
-		$data_for_input['price_seller_na_mp_ozon'] = $item['price_seller_na_mp_ozon'];
+		$data_for_input['pricenow_OZON']           = round($item['price_now_ozon'],0);
+		$data_for_input['dispricenow_OZON']        = 0;
+		$data_for_input['price_na_mp_ozon']        = round($item['price_na_mp_ozon'],0);
+		$data_for_input['price_seller_na_mp_ozon'] = round($item['price_seller_na_mp_ozon'],0);
 		$data_for_input['date_now'] = date('Y-m-d');;
 		
-		insert_data_in_prices_table_db_OZON($pdo, $market_name, $data_for_input);
+		insert_data_in_prices_table_db_OZON($pdo, $ozon_shop, $data_for_input);
 	// вычитываем добавленные данные с БД
-		$gtemp = select_last_data_from_db($pdo, $item['sku'], $market_name);
+		$gtemp = select_last_data_from_db($pdo, $item['sku'], $ozon_shop);
 	// если нашли массив в таблице то добавляем данные в каталог
 		if (isset($gtemp[0])) {
 			$item['price_old'] = $gtemp[0]['price_old'];
@@ -143,5 +162,5 @@ foreach ($ozon_catalog as &$item) {
 
 
 print_r($ozon_catalog[0]);
-print_table_with_prices_OZON($ozon_catalog, $market_name);
+print_table_with_prices_OZON($ozon_catalog, $ozon_shop);
 die();

@@ -2,35 +2,31 @@
 $offset ="../../";
 require_once $offset."connect_db.php";
 require_once $offset."pdo_functions/pdo_functions.php";
-require_once $offset."mp_functions/wb_api_functions.php";
-require_once $offset."mp_functions/wb_functions.php";
+require_once $offset."mp_functions/ozon_api_functions.php";
+require_once $offset."mp_functions/ozon_functions.php";
 require_once "functions.php";
 
 
 /**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
-$token_wb = $_POST['token_wb'];
-unset($_POST['token_wb']);
-$wb_shop = $_POST['wb_shop'];
-unset($_POST['wb_shop']);
 
+$ozon_shop = $_POST['ozon_shop'];
+unset($_POST['ozon_shop']);
 
-echo  "JPJP OZON";
-die();
-$wb_catalog = get_wb_prices($pdo, $token_wb, $wb_shop);
-// Подтягиваем значения из БД СКЬЮЭЛ
-foreach ($wb_catalog as &$item) {
-	// echo "<br>".$item['sku']."<br>";
-	$gtemp = select_last_data_from_db($pdo, $item['sku'], $wb_shop);
-	if (isset($gtemp[0])) {
-// если нашли массив в таблице то добавляем данные в каталог
-		$item['price_now_DB'] = $gtemp[0]['price_now'];
-		$item['dis_price_now_DB'] = $gtemp[0]['dis_price_now'];
-		$item['discount_now_DB'] = $gtemp[0]['discount_now'];
-		$item['date_now_DB'] = $gtemp[0]['date_now'];
-	} 
+if ($ozon_shop == 'ozon_anmaks') {
+  // ОЗОН АНМКАС
+  $client_id = $arr_tokens['ozon_anmaks']['id_market'];
+  $token_ozon = $arr_tokens['ozon_anmaks']['token'];
+} elseif ($ozon_shop == 'ozon_ip_zel') {
+  // озон ИП зел
+  $client_id = $arr_tokens['ozon_ip_zel']['id_market'];
+  $token_ozon = $arr_tokens['ozon_ip_zel']['token'];
+} else {
+	echo "Не нашли маркет" ;
+	die();
 }
 
 
+// Проверка что наш запрашиваемый массив (незер не нужна)
 if (isset($_POST['type_question'])) {
 	if ($_POST['type_question'] == "discount_update") {
         unset($_POST['type_question']);
@@ -38,15 +34,17 @@ if (isset($_POST['type_question'])) {
 foreach ($_POST as $key=>$value) {
     // echo "$key"."<br>";
     $cifra_key = preg_replace("/[^,.0-9]/", '', $key);
-    $key = str_replace('_','',$key); // убираем черточки
+    // $key = str_replace('_','',$key); // убираем черточки
     $arr_post[$cifra_key][preg_replace('/[0-9]+/', '', $key)] =  $value;
     
 }
 
 
+
+
 // фомриуем массив для обновления данных (только то что нужно обновить)
 foreach ($arr_post as $item_post) {
-   if (isset($item_post['needupdate']))
+   if (isset($item_post['need_update']))
     $arr_post_new[$item_post['sku']]=  $item_post;
   
 }
@@ -56,29 +54,16 @@ if (!isset($arr_post_new)) {
 	die('НЕТ ДАННЫХ ДЛЯ ОБНОВЛЕНИЯ');
 }
 
-
-// echo"<pre>";
-// print_r($arr_post_new);
-// print_r($wb_catalog);
-
-
-// Чтобы обновить данные на сайте ВБ, нужно чтобы либо цена либо скидка отличались
-// Формируем массив для обновления с учетом отличий
-foreach ($wb_catalog as $wb_item) {
-foreach ($arr_post_new as $update_item){
-	if ($update_item['sku'] == $wb_item['sku']) {
-		if(($update_item['pricenowWB'] != $wb_item['price_now_WB']) || ($update_item['discountnowWB'] != $wb_item['discount_now_WB'])) {
-			$arr_for_update[] =$update_item; 
-		}
-	}
-}
-}
 }
 }
 
-if (!isset($arr_for_update)) {
-	die('ДАННЫЕ ДЛЯ ОБНОВЛЕНИЯ СОВПАДАЮТ С ДАННЫМИ НА САЙТЕ ВБ');
-}
+echo "<pre>";
+print_r($arr_post_new);
+
+
+update_prices_on_ozon($token_ozon, $client_id);
+die();
+
 
 
 // Формируем массив в БД 
@@ -112,3 +97,31 @@ sleep(3);
 header('Location: get_price_table.php?wb_shop='.$wb_shop, true, 301);
 exit();
 
+
+
+function update_prices_on_ozon($token, $client_id) {
+
+$send_data = '
+	{
+	"prices": [
+	{
+	"auto_action_enabled": "UNKNOWN",
+	"currency_code": "RUB",
+	"min_price": "",
+	"offer_id": "",
+	"old_price": "",
+	"price": "842",
+	"price_strategy_enabled": "UNKNOWN",
+	"product_id": 56476066
+	}
+	]
+	}
+}';
+
+$ozon_dop_url = "v1/product/import/prices";
+$res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
+
+print_r($res);
+
+
+}
