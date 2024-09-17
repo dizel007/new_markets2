@@ -87,10 +87,10 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
         $sum_k_pererchisleniu = $sum_k_pererchisleniu  - $item['ppvz_for_pay'];
         $arr_count[$article_new] = @$arr_count[$article_new] - $item['quantity'];
         $stornoprodazh++;
-} elseif ($item['supplier_oper_name'] == 'Логистика') {
+} elseif (($item['supplier_oper_name'] == 'Логистика') OR ($item['supplier_oper_name'] == 'Коррекция логистики') ){
     // Сумма логистики ************************************************************************************************************
         $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['delivery_rub'];
-        $sum_logistiki = $sum_logistiki  + $item['delivery_rub'];
+        $sum_logistiki = $sum_logistiki + $item['delivery_rub'];
         // $pp++;
 } elseif ($item['supplier_oper_name'] == 'Возмещение издержек по перевозке') {
     // Сумма логистики ИПЕШНИКАМ ************************************************************************************************************
