@@ -161,6 +161,17 @@ echo <<<HTML
 </tr>
 
 
+<tr>
+    <td class="big_text">Работа с каталогами в БД </td>
+    <td></td>
+    <td></td>
+    <td><a href = "adminka/find_product_id_ozon/select_shop_find_product.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/product_id.jpg" ><div>Update product_id в БД Ozon</div>    </a></td>
+    <td><a href = "adminka/dimensions/select_shop_demensions.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/product_id.jpg" ><div>Смотрим размеры Товаров</div>    </a></td>
+    
+</tr>
+
+
+
 
         </table>
 HTML;
