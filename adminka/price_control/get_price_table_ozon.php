@@ -8,9 +8,9 @@ require_once "functions.php";
 
 
 // /**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
-// озон ИП зел
-$ozon_shop = 'ozon_anmaks';
-// $ozon_shop = 'ozon_ip_zel';
+
+$ozon_shop = $_GET['shop_name']; // Какаой магазин дернуди
+
 
 if ($ozon_shop == 'ozon_anmaks') {
 	// ОЗОН АНМКАС
@@ -25,34 +25,10 @@ if ($ozon_shop == 'ozon_anmaks') {
 	  die();
   }
 
-  echo "Не $ozon_shop маркет" ;
 
-echo "<pre>";
+// echo "<pre>";
 
 $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_shop , $pdo, 'active'); // получаем озон каталог
-
-
-
-
-// наxодим ID товаров озона 
-
-// $ozon_dop_url = "v2/product/info";
-// foreach ($ozon_catalog as &$items) {
-// 	$send_data = array(
-// "offer_id" => "",
-// "product_id" => 0,
-// "sku" => $items['sku']);
-// $send_data = json_encode($send_data);
-// $ozcatalog = post_with_data_ozon($token_ozon_ip, $client_id_ozon_ip, $send_data, $ozon_dop_url);
-// $items['id_ozon'] = $ozcatalog['result']['id'];
-// }
-
-// file_put_contents('1.json', json_encode($ozon_catalog, JSON_UNESCAPED_UNICODE));
-// echo "<pre>";
-// print_r($ozon_catalog);
-
-// $ozon_catalog = json_decode(file_get_contents('1.json'), true);
-
 
 // формируем массиd для запроса цены ********************
 foreach ($ozon_catalog as $tovars) {
@@ -161,6 +137,6 @@ foreach ($ozon_catalog as &$item) {
 
 
 
-print_r($ozon_catalog[0]);
+// print_r($ozon_catalog[0]);
 print_table_with_prices_OZON($ozon_catalog, $ozon_shop);
 die();

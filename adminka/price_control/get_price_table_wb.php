@@ -8,10 +8,10 @@ require_once "functions.php";
 
 
 /**НАСТРОЙКИ МАГАЗИНЫ ****************************************** */
-if ($_GET['wb_shop'] == 'wb_ip_zel') {
+if ($_GET['shop_name'] == 'wb_ip_zel') {
 	$token_wb = $token_wb_ip;
 	$wb_shop = 	'wb_ip_zel';
-} elseif ($_GET['wb_shop'] == 'wb_anmaks') {
+} elseif ($_GET['shop_name'] == 'wb_anmaks') {
 	$token_wb = $token_wb;
 	$wb_shop = 	'wb_anmaks';
 } else {

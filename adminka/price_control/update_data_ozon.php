@@ -57,49 +57,27 @@ if (!isset($arr_post_new)) {
 }
 }
 
-echo "<pre>";
-print_r($arr_post_new);
+// echo "<pre>";
+// print_r($arr_post_new);
 
+foreach ($arr_post_new as $item_need_price_update) {
+	$array_for_update['price_seller_na_mp_ozon'] =  $item_need_price_update['price_seller_na_mp_ozon'];
+	$array_for_update['product_id'] =  $item_need_price_update['product_id'];
 
-update_prices_on_ozon($token_ozon, $client_id);
-die();
-
-
-
-// Формируем массив в БД 
-foreach ($wb_catalog as $wb_data) {
-	foreach ($arr_for_update as $update_date_z) {
-		if ($update_date_z['sku'] == $wb_data['sku']) {
-
-			$wb_data['pricenowWB']=$update_date_z['pricenowWB'];
-			$wb_data['discountnowWB']=$update_date_z['discountnowWB'];
-			$wb_data['dispricenowWB']=$update_date_z['dispricenowWB'];
-			
-			$arr_for_db[]=$wb_data;
-
-		}
-	}
-
-
+	update_prices_on_ozon($token_ozon, $client_id, $array_for_update);
 }
 
 
-// print_r($arr_for_db);
-// Вставляем новую строку в БД с обновленными ценами
-foreach ($arr_for_db as $data_for_input) {
-	insert_data_in_prices_table_db_wb($pdo, $wb_shop, $data_for_input);
-	}
 
-// обновляем данные на ВБ 
-update_prices_and_discount_inWB_and_inDB($token_wb, $arr_for_update);
-// print_r($arr_post_new);
-sleep(3);
-header('Location: get_price_table.php?wb_shop='.$wb_shop, true, 301);
+sleep(2);
+header('Location: get_price_table_ozon.php?wb_shop='.$ozon_shop, true, 301);
 exit();
 
 
 
-function update_prices_on_ozon($token, $client_id) {
+function update_prices_on_ozon($token, $client_id, $array_for_update) {
+$new_price = $array_for_update['price_seller_na_mp_ozon'];
+$product_id = $array_for_update['product_id'];
 
 $send_data = '
 	{
@@ -110,9 +88,9 @@ $send_data = '
 	"min_price": "",
 	"offer_id": "",
 	"old_price": "",
-	"price": "842",
+	"price": "'.$new_price.'",
 	"price_strategy_enabled": "UNKNOWN",
-	"product_id": 56476066
+	"product_id": '.$product_id.'
 	}
 	]
 	}
@@ -121,6 +99,7 @@ $send_data = '
 $ozon_dop_url = "v1/product/import/prices";
 $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
 
+sleep(1);
 print_r($res);
 
 

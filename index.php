@@ -4,8 +4,15 @@
 require_once("connect_db.php"); // подключение к БД
 require_once('pdo_functions/pdo_functions.php');
 
+// echo "<pre>";
+// print_r($userdata);
+// Настраиваем доступность 
+if ($userdata['userType'] == 7) { 
+    $see_class = "show_all"; 
 
-
+} else {
+    $see_class = "no_show"; 
+}
 // Формируем тип перехода (Все переходы должны быть через index.php)
 isset($_GET['transition']) ? $transition = $_GET['transition'] : $transition = 0; // показывает куда переходить
 
@@ -92,7 +99,7 @@ echo <<<HTML
 </tr>
 
 
-<tr>
+<tr class="$see_class">
 <td class="big_text">Администрирование </td>
 
 <td colspan="2"><a href = "adminka/raspredelenie_tovarov/start_admin_mode.php" target="_blank"><img width="$width_pics" src="pics/main_screen/admin_mode.jpg" ><div>Остатки МП</div>    </a></td>
@@ -161,7 +168,7 @@ echo <<<HTML
 </tr>
 
 
-<tr>
+<tr  class="$see_class">
     <td class="big_text">Работа с каталогами в БД </td>
     <td></td>
     <td></td>

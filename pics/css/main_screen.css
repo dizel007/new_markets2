@@ -23,3 +23,11 @@
     font-size: 25px;
     font-weight: 900;
   }
+
+
+  .show_all {
+    background-color: rgb(160, 159, 117)
+  }
+  .no_show {
+    display: none;
+  }

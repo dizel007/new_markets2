@@ -1,10 +1,11 @@
 <?php
-require_once "../connect_db.php";
-require_once '../pdo_functions/pdo_functions.php';
+$offset ="../";
+require_once $offset."connect_db.php";
+require_once $offset.'pdo_functions/pdo_functions.php';
 
-require_once "../mp_functions/wb_api_functions.php";
-require_once "../mp_functions/wb_functions.php";
-require_once "../mp_functions/report_excel_file.php";
+require_once $offset."mp_functions/wb_api_functions.php";
+require_once $offset."mp_functions/wb_functions.php";
+require_once $offset."mp_functions/report_excel_file.php";
 
 
 /// для ООО
@@ -35,39 +36,45 @@ if (isset($_GET['dateTo'])) {
     $dateTo = false;
 }
 
-
-
+$link_return = $offset."index.php";
+// Вывод
 echo <<<HTML
-<head>
 <link rel="stylesheet" href="css/main_table.css">
-
-</head>
-<body>
-
-<form action="" method="get">
-</select>
-
-
-<label>дата начала</label>
-<input required type="date" name = "dateFrom" value="$dateFrom">
-<label>дата окончания</label>
-<input required type="date" name = "dateTo" value="$dateTo">
-<input hidden type="text" name = "wb_shop" value="$wb_shop">
-<input type="submit"  value="START">
-</form>
+<link rel="stylesheet" href="css/select_shop.css">
+<div class="wrapper">
+  <h1>ФИНАНСОВЫЙ ОТЧЕТ ПО <u>$name_mp_shop</u></h1>
 HTML;
 
-
+echo <<<HTML
+  <form action="" class="login" method="get">
+    <p class="title">дата начала</p>
+   <input class ="date_class" required type="date" name = "dateFrom" value="$dateFrom">
+   <p class="title">дата окончания</p>
+    <input class ="date_class" required type="date" name = "dateTo" value="$dateTo">
+    <input hidden type="text" name = "wb_shop" value="$wb_shop">
+    <button>
+      <i class="spinner"></i>
+      <span class="state">выбрать</span>
+    </button>
+  </form>
+  
+HTML;
 if (($dateFrom == false) or ($dateTo == false)) {
-die ('Нужно выбрать даты');
+    echo "<h3> Даты не выбраны</h3>";
+die ('');
 } 
+
+echo <<<HTML
+<a href="$link_return"> Вернуться на главную станицу</a>
+</div>
+
+HTML;
+
 
 
 /*********************************************************
  * Подгоняем даты по неделям, и формируем массив для запроса по неделям
 ********************************************************/
-
-
 
 $time = strtotime($dateFrom);
 $temp_start = strtotime('this week monday' , $time);

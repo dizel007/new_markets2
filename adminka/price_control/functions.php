@@ -45,13 +45,13 @@ HTML;
     $summa_price = round(($dis_price_now_DB -  $dis_price_now_WB), 0);
     if ($summa_price > 0) {
       $bolshe100 = 'bolshe100';
-      $check_box=1;
+      // $check_box=1;
     } elseif ($summa_price < -0) {
       $bolshe100 = 'menshe0';
-      $check_box=0;
+      // $check_box=0;
     } else {
       $bolshe100 = '';
-      $check_box=0;
+      // $check_box=0;
     }
     
 
@@ -386,20 +386,20 @@ HTML;
     $summa_price = round(($seller_price_now_DB -  $dis_price_now_OZON), 0);
     if ($summa_price > 0) {
       $bolshe100 = 'bolshe100';
-      $check_box=1;
+      // $check_box=1;
     } elseif ($summa_price < -0) {
       $bolshe100 = 'menshe0';
-      $check_box=0;
+      // $check_box=0;
     } else {
       $bolshe100 = '';
-      $check_box=0;
+      // $check_box=0;
     }
     
 
 
     echo "<tr class=\"\">";
 
-    echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
+    echo "<td class=\"$bolshe100 text-center\">" . $item['mp_article'] . "</td>";
     // данные из БД
     echo  "<td class=\" text-center\">" . $item['price_now_DB'] . "</td>"; // цена в личном кабинете БД
     echo  "<td class=\"text-center \">" . $item['price_seller_na_mp_ozon_DB'] . "</td>"; // цена продавца в БД
