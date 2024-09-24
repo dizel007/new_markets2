@@ -1,5 +1,6 @@
 <?php
-require_once "connect_db.php";
+$offset="../";
+require_once $offset."connect_db.php";
 
 
 echo <<< HTML
@@ -8,14 +9,14 @@ echo <<< HTML
     <meta charset="utf-8" />
     <title>Обновление остаток МП</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	  <link rel="stylesheet" href="autosklad/css/input_forma.css"/>
+	  <link rel="stylesheet" href="css/input_forma.css"/>
     
   </head>
   <body>
     <div class="container">
       <h1 class="form-title">Обновление остатков МП</h1>
 
-      <form action= "autosklad/get_all_ostatki_skladov_new_ALL.php" method="post" enctype="multipart/form-data"> 
+      <form action= "get_all_ostatki_skladov_new_ALL.php" method="post" enctype="multipart/form-data"> 
 	  
 	  <div class="file_input_form">   
               <input  class="file_input_button" type="file" name="file_excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">

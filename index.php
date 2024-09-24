@@ -3,15 +3,14 @@
 
 require_once("connect_db.php"); // подключение к БД
 require_once('pdo_functions/pdo_functions.php');
-
+require_once "index_main_page/index_function.php";
 // echo "<pre>";
 // print_r($userdata);
 // Настраиваем доступность 
-if ($userdata['userType'] == 7) { 
-    $see_class = "show_all"; 
-
+if ($userdata['userType'] == 7) {
+    $see_class = "show_all";
 } else {
-    $see_class = "no_show"; 
+    $see_class = "no_show";
 }
 // Формируем тип перехода (Все переходы должны быть через index.php)
 isset($_GET['transition']) ? $transition = $_GET['transition'] : $transition = 0; // показывает куда переходить
@@ -28,21 +27,21 @@ switch ($transition) {
 
         break;
 
-    // case 20: // Разбор OZON OOO
-    //     require_once('ozon_razbor/index_ozon.php');
-    //     break;
+        // case 20: // Разбор OZON OOO
+        //     require_once('ozon_razbor/index_ozon.php');
+        //     break;
 
-    // case 21: // Разбор OZON IP
-    //     require_once('ozon_razbor/index_ozon_ip.php');
-    //     break;
+        // case 21: // Разбор OZON IP
+        //     require_once('ozon_razbor/index_ozon_ip.php');
+        //     break;
 
-    // case 31: // Разбор Yandex
-    //     require_once('yandex_razbor/index_yandex.php');
-    //     break;
+        // case 31: // Разбор Yandex
+        //     require_once('yandex_razbor/index_yandex.php');
+        //     break;
 
     case 50: // Автосклад
         require_once('autosklad/start_mp.php');
-       break;
+        break;
     case 61: // ОЗОН СКИДКА
         require_once('ozon_skidka/index_ozon_skidka.php');
         break;
@@ -57,21 +56,135 @@ switch ($transition) {
         // 
     case 0: // основная таблица со всеми КП
         //         $arr_temp = get_catalog_wb();
-   
-$width_pics = 120;
+
+        $width_pics = 120;
 
 
-echo <<<HTML
+        echo <<<HTML
 <head>
 <link rel="stylesheet" href="pics/css/main_screen.css">
+<link rel="stylesheet" href="pics/css/new_main_table.css">
+<title>Портал Маркет</title>
+
+<style>
+ body {
+  background-image: url(pics/upbanner.jpg);
+  background-repeat: no-repeat;
+  /* background: rgb(0, 0, 0); */
+}
+
+  </style>
 
 </head>
 
 HTML;
 echo <<<HTML
 
+<body>
+<!-- Баннер на Бэкграунде -->
+<div class="upbanner"></div>
+
+<div class="container">
+    <div class = "zagolovok"> Сводные данные по всем МП </div>
+</div>
+
+<!-- Контеукнер с блоками -->
+<div class="container">
+
+HTML;
+print_one_block ('table_element', "autosklad/start_mp.php", 'АВТОСКЛАД',
+                'Распределение складских остатков по всех маркетплэйсам', 'pics/main_screen/autosklad.jpg');
+
+print_one_block ('table_element', "all_sell/all_sell_index.php", 'ПРОДАЖИ ВСЕ',
+                'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells.jpg');
+
+print_one_block ('table_element', "all_sell/all_sell_one_day_index.php", 'ПРОДАЖИ ДЕНЬ',
+                'Список товаров, которые были проданы за один день', 'pics/main_screen/sell_one_day.jpg');
+
+  
+
+echo <<<HTML
+</div><!-- Конец контейнера -->
+
+<div class="container">
+    <div class = "zagolovok"> Разбор заказов на маркетах </div>
+</div>
+<!--**********************************************************************************************-->
+<!--**************************** Контеукнер ПО РАЗБОРУ МАРКЕТОВ **********************************-->
+<!--**********************************************************************************************-->
+<div class="container">
+HTML;
+print_one_block ('table_element_razbor', "wb_new_razbor/index_wb.php", 'WB Анмакс',
+'Формирование QR кодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_wb.jpg');
+
+print_one_block ('table_element_razbor', "wb_new_razbor/index_wbip.php", 'WB ИП Зел',
+'Формирование QR кодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_wb_ip.jpg');
+
+print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks", 'OZON Анмакс',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+
+print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel", 'OZON ИП Зел',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
+
+print_one_block ('table_element_razbor', "yandex_razbor/index_yandex.php", 'Yandex Анмакс',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_yandex.jpg');
+
+print_one_block ('table_element_razbor', "leroy/", 'LEROY Анмакс',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_leroy.jpg');
+
+print_one_block ('table_element_razbor', "vse_instrumenti/start.php", 'Все ИНСТР',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/vse_instrumrnti.jpg');
+
+echo <<<HTML
+</div><!-- Конец контейнера ПО РАЗБОРУ МАРКЕТОВ -->
+<div class="container">
+    <div class = "zagolovok"> Вспомогательные функции ОТЗЫВ/АвтоСкидки </div>
+</div>
+
+<!--**********************************************************************************************-->
+<!--**************************** Контеукнер Вспомогательные функции ОТЗЫВ/АвтоСкидки *************-->
+<!--**********************************************************************************************-->
+
+<div class="container">
+HTML;
+print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks", 'WB Анмакс отзывы',
+'Автоматический ответ на положительные отзывы с оценкой 5', 'pics/main_screen/otziv_wb.jpg');
+
+print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel", 'WB ИП Зел отзывы',
+'Автоматический ответ на положительные отзывы с оценкой 5', 'pics/main_screen/otziv_wb_ip.jpg');
+
+print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks", 'OZON Анмакс скидка',
+'Одобрение скидки от 4 до 7 процентов (по возрастающей)', 'pics/main_screen/ikon_skidka_ozon.jpg');
+
+print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_ip_zel", 'OZON ИП Зел скидка',
+'Одобрение скидки от 4 до 7 процентов (по возрастающей)', 'pics/main_screen/ikon_skidka_ozon_ip.jpg');
+
+
+echo <<<HTML
+</div><!-- Конец контейнера ПО Вспомогательные функции ОТЗЫВ/АвтоСкидки -->
+<div class="container">
+    <div class = "zagolovok"> XML отчет  </div>
+</div>
+
+<!--**********************************************************************************************-->
+<!--**************************** Контеукнер XML отчет *************-->
+<!--**********************************************************************************************-->
+
+<div class="container">
+HTML;
+
+print_one_block ('table_element', "wb_make_xml/take_data_wb.php", 'XML',
+'Формирование УПД файла в формате XML на ВБ ООО', 'pics/main_screen/xml.jpg');
+
+echo <<<HTML
+</div><!-- Конец контейнера XML отчет -->
+
+
+
+
 
 <table class="main_table_screen">
+
 <tr>
 <td class="big_text">Общие данные по всем МП </td>
 <td><a href = "?transition=50">                      <img class="zoom13" width="$width_pics" src="pics/main_screen/autosklad.jpg" ><div>Автосклад<br>&reg;</div></a></td>
@@ -149,8 +262,8 @@ echo <<<HTML
     <td><a href = "wb_reports/wb_report_index.php?wb_shop=wb_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/wb_report_ooo.jpg" ><div>ОТЧЕТЫ WB АНМАКС</div>    </a></td>
     <td><a href = "wb_reports/wb_report_index.php?wb_shop=wb_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/wb_report_ip.jpg" ><div>ОТЧЕТЫ WB ИП Зел</div>    </a></td>
 
-    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo_td.jpg" ><div>Отчет OZON Анмакс</div>    </a></td>
-    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip.jpg" ><div>Отчет OZON ИП Зел</div>    </a></td>
+    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ooo.jpg" ><div>Отчет OZON Анмакс</div>    </a></td>
+    <td><a href = "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel"><img class="zoom13" width="$width_pics" src="pics/main_screen/ozon_report_ip_z.jpg" ><div>Отчет OZON ИП Зел</div>    </a></td>
 
     <td><a href = "yandex_report/start_ya_razbor.php"><img class="zoom13" width="$width_pics" src="pics/main_screen/razbor_yandex.jpg" ><div>Отчет ЯМ</div>    </a></td>
 
@@ -180,9 +293,11 @@ echo <<<HTML
 
 
 
-        </table>
+   </table>
+
+<body>
+
+
 HTML;
 }
-        die();
-
-     
+die();

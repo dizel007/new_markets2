@@ -106,6 +106,6 @@ foreach ($arr_for_db as $data_for_input) {
 update_prices_and_discount_inWB_and_inDB($token_wb, $arr_for_update);
 // print_r($arr_post_new);
 sleep(3);
-header('Location: get_price_table.php?wb_shop='.$wb_shop, true, 301);
+header('Location: get_price_table_wb.php?shop_name='.$wb_shop, true, 301);
 exit();
 
