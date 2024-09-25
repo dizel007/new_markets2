@@ -11,16 +11,17 @@ body {
     justify-content: center;
     align-items: center;
     background-size: cover;
+    background-color: black;
 }
 
 .container {
     width: 100%;
     max-width: 400px;
-    background: rgba(65, 64, 64, 0.5);
+    background: rgba(116, 109, 109, 0.5);
     padding: 28px;
     margin: 0 28px;
     border-radius: 10px;
-    box-shadow: inset -2px 2px 2px white;
+    /* box-shadow: inset -2px -2px 2px white; */
 }
 
 .form-title {
@@ -29,7 +30,7 @@ body {
     text-align: center;
     padding-bottom: 6px;
     color: white;
-    text-shadow: 2px 2px 2px black;
+    /* text-shadow: 2px 2px 2px black; */
     border-bottom: solid 1px white;
 }
 
@@ -62,7 +63,7 @@ body {
 }
 
 .form-submit-btn input:hover {
-    background: rgba(56, 204, 93, 0.7);
+    background: rgba(62, 175, 90, 0.7);
     color: rgb(255, 255, 255);
 }
 

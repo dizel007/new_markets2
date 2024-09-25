@@ -77,6 +77,10 @@ input[type="text"] {
   line-height: inherit; /* 1 */
   margin: 0; /* 2 */
 }
+td.center_input {
+  text-align: center;
+
+}
 .text-field__input {
   display: block;
   /* width: 100%; */

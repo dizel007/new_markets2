@@ -1,27 +1,26 @@
 <?php
-require_once '../connect_db.php';
-require_once '../pdo_functions/pdo_functions.php';
+$offset = "../";
+require_once $offset.'connect_db.php';
+require_once $offset.'/pdo_functions/pdo_functions.php';
 
 
-require_once "../mp_functions/ozon_api_functions.php";
-require_once "../mp_functions/ozon_functions.php";
-require_once "../mp_functions/wb_api_functions.php";
-require_once "../mp_functions/wb_functions.php";
-require_once "../mp_functions/yandex_api_functions.php";
-require_once "../mp_functions/yandex_functions.php";
+require_once $offset."mp_functions/ozon_api_functions.php";
+require_once $offset."mp_functions/ozon_functions.php";
+require_once $offset."mp_functions/wb_api_functions.php";
+require_once $offset."mp_functions/wb_functions.php";
+require_once $offset."mp_functions/yandex_api_functions.php";
+require_once $offset."mp_functions/yandex_functions.php";
 
 
-require_once "../autosklad/functions/parce_excel_sklad_json.php";
-require_once "../autosklad/functions/function_autosklad.php";
-require_once "../autosklad/functions/write_html_table.php";
-require_once "../autosklad/functions/add_info_in_all_catalog.php";
-require_once "../autosklad/functions/print_sum_information.php";
-require_once "../autosklad/functions/print_info_about_market.php";
+require_once "functions/parce_excel_sklad_json.php";
+require_once "functions/function_autosklad.php";
+require_once "functions/write_html_table.php";
+require_once "functions/add_info_in_all_catalog.php";
+require_once "functions/print_sum_information.php";
+require_once "functions/print_info_about_market.php";
 
 
-echo '<link rel="stylesheet" href="css/main_table.css">';
-
-echo "<pre>";
+// echo "<pre>";
  
 if (isset($_GET['return'])) {
     $return_after_update = $_GET['return'];
@@ -54,7 +53,7 @@ $uploadfile = $uploaddir . basename( $_FILES['file_excel']['name']);
 
     if(move_uploaded_file($_FILES['file_excel']['tmp_name'], $uploadfile))
             {
-            echo "Файл с остатками товаров, УСПЕШНО ЗАГРУЖЕН<br>";
+            // echo "Файл с остатками товаров, УСПЕШНО ЗАГРУЖЕН<br>";
             // $xls = PHPExcel_IOFactory::load('temp_sklad/temp.xlsx');
             $xls = PHPExcel_IOFactory::load($uploadfile);
             $arr_new_ostatoki_MP =  Parce_excel_1c_sklad ($xls) ; // парсим Загруженный файл и формируем JSON архив для дальнейшей работы
@@ -206,7 +205,20 @@ foreach ($arr_all_nomenklatura as &$item) {
 
 
 $link_all_update = "update_all_markets_ALL.php";
+
+// Стили лдя таблицы 
+
+
+echo "<body>";
+echo '<link rel="stylesheet" href="css/main_table_2.css">';
+
 echo "<form action=\"$link_all_update\" method=\"post\">";
+
+
+// ***********************************************************************************************************
+// *** Начинаем отрисовывать общую талицу  **********************************************************************************
+// ***********************************************************************************************************
+
 echo "<table class=\"prods_table\">";
 echo "<tr>";
 
@@ -299,7 +311,7 @@ if (isset($arr_need_tovari)){
 // die();
 
 print_info_about_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog, $ya_fbs_catalog);
-
+echo "</body>";
 die('Закончили разбор');
 
 
@@ -309,14 +321,8 @@ die('Закончили разбор');
 * Выводим таблицу товаров для обновления остатков для одного МП
 *************************************************************************************************/
 
-// function show_update_part_table($arr_all_nomenklatura, $arr_new_ostatoki_MP, $mp_catalog, $mp_name) {
-
  function show_update_part_table($arr_all_nomenklatura, $mp_catalog, $mp_name) {
 
-echo <<<HTML
- <link rel="stylesheet" href="pics/css/styles.css">
-HTML;
-    
     echo "<table >";
 
 
@@ -370,7 +376,7 @@ echo "<td class=\"$count_cell_color\" >".$temp_item['quantity']."<br>f=".@$temp_
  echo <<<HTML
         <input hidden type="text" name="$name_for_barcode" value=$temp_barcode>
      
-        <td><input class="text-field__input future_ostatok" type="number" name="$name_for_value" value=$kolvo_tovarov_dlya_magazina></td>
+        <td ><input class="text-field__input future_ostatok" type="number" name="$name_for_value" value=$kolvo_tovarov_dlya_magazina></td>
 HTML;
 
                $check_update = $temp_item['nead_update'];

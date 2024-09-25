@@ -23,11 +23,11 @@ for ($j=0; $j<30;$j++) {
     $poisk_perem = $sheet->getCellByColumnAndRow($j,$name_string)->getValue(); // артикул
     if ($poisk_perem == 'Номенклатура' ){
         $nomenklatura = $j;
-        echo "Нашли столбец с номенклатурой - ".$nomenklatura."<br>";
+        // echo "Нашли столбец с номенклатурой - ".$nomenklatura."<br>";
       }
     if ($poisk_perem == 'Доступно' ){
            $quantity = $j;
-           echo "Нашли столбец с доступным количеством - ".$quantity."<br>";
+        //    echo "Нашли столбец с доступным количеством - ".$quantity."<br>";
            break;
         }
 
@@ -38,7 +38,7 @@ for ($j=0; $j<30;$j++) {
     $poisk_tovarov = $sheet->getCellByColumnAndRow(0,$str)->getValue(); // артикул
     if ($poisk_tovarov == 'Итого' ){
         $i = $str+1;
-        echo "Нашли начало таблицы товаров - i = ".$i."<br>";
+        // echo "Нашли начало таблицы товаров - i = ".$i."<br>";
         break;
      }
    

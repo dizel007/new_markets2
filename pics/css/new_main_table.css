@@ -15,7 +15,7 @@ body {
  .container {
     width: 90%;
     margin: 0 auto;
-    padding: 10px;
+    padding: 5px;
     /* background-color: aquamarine; */
     /* border: 1px solid rgb(0, 255, 255); */
     display: flex;
@@ -25,7 +25,7 @@ body {
  } 
   
   .upbanner {
-    height: 10%;
+    height: 5%;
   }
   .table_element {
 
@@ -36,14 +36,19 @@ body {
     border-radius: 14px;
     /* width: calc((100% - 48px) / 9); */
     width: 200px;
+    border: 2px solid rgb(82, 82, 82);
+
 
 
   }
   .table_element:hover {
     background-color: rgb(0, 0, 0);
-    transition: all 1s;
+    transition: all 0.3s;
+
+
    }
 
+  /* РАзбор товарв */
 
   .table_element_razbor {
     display: flex;
@@ -53,10 +58,28 @@ body {
     border-radius: 14px;
     width: calc((100% - 48px) / 9);
     min-width: 170px;
+    border: 2px solid rgb(15, 107, 27);
+
   }
   .table_element_razbor:hover {
     background-color: rgb(0, 0, 0);
-    transition: all 1s;
+    transition: all 0.3s;
+   }
+
+  /* Администрирование */
+   .table_element_admin {
+    display: flex;
+    background-color: rgb(85, 47, 47);
+    margin: 5px;
+    padding: 10px;
+    border-radius: 14px;
+    width: calc((100% - 48px) / 9);
+    min-width: 170px;
+    border: 2px solid red;
+  }
+  .table_element_admin:hover {
+    background-color: rgb(0, 0, 0);
+    transition: all 0.3s;
    }
   
 
@@ -90,10 +113,7 @@ body {
     height: 120px;
 
 }
-.img_new:hover {
-  transform: scale(1.1);
-  transition: all 0.5s;
-}
+
 a{
   display: inline;
     text-decoration: none; 
