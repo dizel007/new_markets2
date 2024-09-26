@@ -92,7 +92,7 @@ $arr_for_merge_pdf[$good_key]['value'] = count($posts);
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
   $zip_new = new ZipArchive();
-  $zip_new->open($path_zip_archives."/"."etikets_№".$number_order." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+  $zip_new->open($path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
   foreach ($Arr_filenames_for_zip as $zips) {
   $zip_new->addFile($path_etiketki."/".$zips, "$zips"); // Добавляем пдф файлы
 }
@@ -102,7 +102,7 @@ if (isset($file_name_list_podbora)){
 }
   $zip_new->close();  
 
-  $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
+  $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
  /// Формируем ПДФ файл с анименованием артикула 
 make_pdf_file($arr_for_merge_pdf, $path_etiketki , $number_order);
@@ -124,8 +124,8 @@ file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_
 /**************************************************************************************************************
  **********************************     Запись о разборе в БД     ********************************************
  ******************************************************************************************************************/
-
- insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, '');
+$link_2_ = str_replace('.zip','', $link_path_zip2)."_MERGE.zip";
+ insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, $link_2_);
 
 // die ('<br> Дошли до финиша');
 /***********************

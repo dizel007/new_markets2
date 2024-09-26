@@ -2,6 +2,7 @@
 
 require_once '../libs/PDFMerger/PDFMerger.php';
 
+require_once '../pdo_functions/pdo_functions.php';
 error_reporting(E_ERROR | E_PARSE | E_NOTICE);
 
 // // Пусть у JSON файлу с массивов имен файлов этикеток
@@ -40,7 +41,7 @@ $file_name_1c_list = $array_dop_files['file_name_1c_list'];
 $file_name_list_podbora =  $array_dop_files['file_name_list_podbora'];
 
 
-// Создаем новую директорую  куда будем складывать соедененные файлы
+// Создаем новую директорую куда будем складывать соедененные файлы
 $new_dir = $filepath."merge_pdf";
 mkdir($new_dir, 0777);
 $arr_name_articles = json_decode(file_get_contents($filepath."art_etik.json"), true);
@@ -79,7 +80,7 @@ unset ($pdf_ozom_merge);
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
   $zip_new = new ZipArchive();
-  $zip_new->open($new_dir."/"."etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+  $zip_new->open($new_dir."/"."etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
   foreach ($arr_name_articles as $zips) {
     // echo $new_dir."/".$zips.'_MERGE.pdf'."<br>";
   $zip_new->addFile($new_dir."/".$zips.'_MERGE.pdf', "$zips"); // Добавляем пдф файлы
@@ -89,7 +90,7 @@ if (isset($file_name_list_podbora)){
   $zip_new->addFile($path_excel_docs."/".$file_name_list_podbora, "$file_name_list_podbora"); // добавляем для НОВЫЙ 1С файл /// *****************
 }
   $zip_new->close();  
-$merge_file_name = "etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zip";
+$merge_file_name = "etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zip";
   $link_path_zip2 = $new_dir."/".$merge_file_name; //  ссылка чтобы скачать архив
 
   $file_size= round((filesize( $link_path_zip2)/1000000),2)." Mb";
@@ -118,6 +119,5 @@ $merge_file_name = "etikets_№".$number_order." от ".date("Y-M-d")."_MERGE.zi
   
   
 HTML;
-
 
 

@@ -1,0 +1,22 @@
+.center {
+    text-align: center;
+}
+
+.svod_po_ostatkam {
+    width: 50%;
+    border-collapse: collapse ;
+    border: 1px solid rgb(185, 21, 21);
+    text-align: center;
+    padding: 5px;
+    margin: auto;
+
+}
+
+.svod_po_ostatkam td {
+    
+    border: 2px solid rgb(19, 16, 16);
+    font-size: 14px;
+    text-align: center;
+    height: 20px;
+  
+  }

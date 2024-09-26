@@ -6,8 +6,8 @@ function print_sum_information ($arr_all_nomenklatura, $arr_new_ostatoki_MP, $ar
 echo <<<HTML
 
 <hr>
-<h1>Сводная таблица по 5 магазинам</h1>
-<table class="prods_table">
+<h2 class="center">Сводная таблица по 5 магазинам</h2>
+<table class="svod_po_ostatkam">
 
 <tr>
     <td>пп</td>
@@ -22,11 +22,11 @@ echo <<<HTML
 
 HTML;
 
-
+$k=1;
 foreach ($arr_all_nomenklatura as $item_99) {
    $article = mb_strtolower($item_99['main_article_1c']);
     echo "<tr>";
-        echo "<td>".""."</td>";
+        echo "<td>"."$k"."</td>";
         echo "<td>".$article."</td>";
         echo "<td>".@$arr_new_ostatoki_MP[$article]."</td>";
         echo "<td>".@$arr_sell_tovari[$article]."</td>";
@@ -41,7 +41,7 @@ foreach ($arr_all_nomenklatura as $item_99) {
         echo "<td>".@$need_tovarov."</td>";    
     echo "</tr>";
 
-    
+  $k++;  
 }
 
 echo "</table>";

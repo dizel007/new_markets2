@@ -64,8 +64,8 @@ $path_recovery = $new_path.'/recovery';
 
 // Если Такой номер заказа на эту дату уже существует то выводим данные для скачивания
 if(is_dir($new_path)) {
-    $link_alarm_stikers  = $path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
-    $link_alarm_qr_code  = $path_arhives."/"."QRcode-".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
+    $link_alarm_stikers  = $path_arhives."/"."Stikers_".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
+    $link_alarm_qr_code  = $path_arhives."/"."QRcode-".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
     
     echo "<a href=\"$link_alarm_stikers\">Скачать стикеры</a><br>";
     echo "<a href=\"$link_alarm_qr_code\">Скачать Qr код поставки</a><br>";
@@ -371,7 +371,7 @@ file_put_contents($file_recovery_data_json, $recovery_data_json,  FILE_APPEND); 
 /******************************************************************************************
  *  **************   Выводим кнопку для продолжения работы -> перевод поставок в ДОСТАВКУ
  ******************************************************************************************/
-$link_q1=$path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
+$link_q1=$path_arhives."/"."Stikers_".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
 
  echo "<a href=\"$link_q1\">СКАЧАТЬ АРХИВ СО СТИКЕРАМИ И ФАЙЛОМ для 1С(новый)</a>"; // 
 

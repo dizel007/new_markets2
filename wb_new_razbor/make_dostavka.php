@@ -68,7 +68,7 @@ print_r($app_qr_pdf_file_names);
  *  ***************   Формируем архив с QR кодам поставок ********************************
  ******************************************************************************************/
 $zip_new = new ZipArchive();
-$zip_arhive_name = "QRcode-".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
+$zip_arhive_name = "QRcode-".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
 $zip_new->open($path_arhives."/".$zip_arhive_name, ZipArchive::CREATE|ZipArchive::OVERWRITE);
  foreach ($app_qr_pdf_file_names as $zips) {
     $zip_new->addFile($path_qr_supply."/".$zips, "$zips"); // Добавляем пдф файлы
@@ -85,7 +85,7 @@ HTML;
 
 
 // высылаем на почту письмо с данными
-sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes);
+// sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes);
 
 
 // дошли до конца и удаляем маркерный файл о незаконченности выполения скрипта

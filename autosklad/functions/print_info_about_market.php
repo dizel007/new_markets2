@@ -11,8 +11,8 @@
     echo <<<HTML
 
 <hr>
-<h1>Сводная таблица по 5 магазинам по продажам</h1>
-<table class="prods_table">
+<h2 class ="center" >Сводная таблица по 5 магазинам по продажам</h2>
+<table class="svod_po_ostatkam">
 
 <tr>
     <td>пп</td>

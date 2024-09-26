@@ -92,3 +92,42 @@ input[type="number"]::-webkit-inner-spin-button
     background-color: rgb(230, 220, 252);
   }
   
+
+
+  /* RYJGRF */
+  /* стилизуем кнопку  */
+.btn {
+	display: block;	
+	box-sizing: border-box;
+	padding: 0 20px;
+	margin: 0 auto;
+	outline: none;
+	border: none;  
+	border-radius: 10px;
+	height: 60px;
+	/* line-height: 40px; */
+	font-size: 17px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #ffffff;
+	background-color: #124901;
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;
+  margin: 10px auto;
+
+}
+.btn:focus-visible {
+	box-shadow: 0 0 0 2px #666;
+}
+.btn:hover {
+	background-color: #213f5c;
+}
+.btn:active {
+	transform: scale(0.96);
+}
+.btn:disabled {
+	pointer-events: none;
+	opacity: 0.65;
+}

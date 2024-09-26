@@ -211,6 +211,9 @@ $link_all_update = "update_all_markets_ALL.php";
 
 echo "<body>";
 echo '<link rel="stylesheet" href="css/main_table_2.css">';
+echo '<link rel="stylesheet" href="css/svod_po_ostatkam.css">';
+
+
 
 echo "<form action=\"$link_all_update\" method=\"post\">";
 
@@ -285,9 +288,9 @@ echo "</td>";
 
 /***************************************************************
  * *********************** ЩЯЩТ
- */
+ *********************************************************************/
 echo "</tr>";
-echo "<input class=\"btn\" type=\"submit\" value=\"ОБНОВИТЬ ALLLL ДАННЫЕ\">";
+echo "<input class=\"btn\" type=\"submit\" value=\"ОБНОВИТЬ ОСТАТКИ ПО ВСЕМ МАРКЕТАМ\">";
 
 echo "</table>";
 
