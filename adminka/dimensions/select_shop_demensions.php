@@ -6,12 +6,12 @@ $link = $offset.'index.php';
 
 echo <<<HTML
 
- <link rel="stylesheet" href="css/select_shop.css">
+ <link rel="stylesheet" href="css/select_shop_dimentions.css">
 <div class="wrapper">
-  <h1>СРАВНИВАЕМ ГАБАРИТНЫЕ РАЗМЕРЫ ТОВАРОВ (по ОЗОНУ)</h1>
+  <h2 class="h2_color_green">СРАВНИВАЕМ ГАБАРИТНЫЕ РАЗМЕРЫ ТОВАРОВ (по ОЗОНУ)</h2>
   <form action="get_demensions.php" class="login" method="post">
     <p class="title">Выбор Маркета</p>
-    <i class="fa fa-user"></i>
+    <!-- <i class="fa fa-user"></i> -->
 
 
     <p><select size="1" name="ozon_shop">
@@ -26,7 +26,7 @@ echo <<<HTML
     </button>
   </form>
   </p>
-<a href="$link"> Вернуться на главную станицу</a>
+<a href="$link">Вернуться на главную станицу</a>
 </div>
 
 HTML;
