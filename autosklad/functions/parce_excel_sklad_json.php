@@ -87,6 +87,7 @@ if ($temp_zero_cell == 'ЛЕРУА' ) {
 $json_array_ozon = json_encode($arr_article_items, JSON_UNESCAPED_UNICODE);
 
 file_put_contents('uploads/array_items.json', $json_array_ozon);
+file_put_contents('uploads/priznak_razbora_net.txt', 'Если есть этот файл, значит разбора товара не было');
 // echo "<pre>";
 // print_r($arr_article_items);
 

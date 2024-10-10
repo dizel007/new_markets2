@@ -37,20 +37,6 @@ function write_info_filelog($path, $info_comment) {
  *  ************   Создаем каталог для сегодняшнего разбора
  ******************************************************************************************/
 
-
-
-//******************************************************************************************
-
-// C*********** СТАРЫЙ ВАРИАНТ ПАПОК
-// $new_date = date('Y-m-d');
-// make_new_dir_z('reports/'.$new_date,0); // создаем папку с датой
-// $new_path = 'reports/'.$new_date."/".$Zakaz_v_1c;
-// $path_qr_supply = $new_path.'/qr_code_supply';
-// $path_stikers_orders = $new_path.'/stikers_orders';
-// $path_arhives = $new_path.'/arhives';
-// $path_recovery = $new_path.'/recovery';
-
-
 // C*********** НОВЫЙ ВАРИАНТ ПАПОК
 $new_date = date('Y-m-d');
 make_new_dir_z('../!all_razbor/wb/'.$new_date,0); // создаем папку с датой
@@ -61,15 +47,40 @@ $path_arhives = $new_path.'/arhives';
 $path_recovery = $new_path.'/recovery';
 
 
+/******************************************************************************************
+ *  ************   Формируем название файла для СТИКЕРОВ
+ ******************************************************************************************/
+$stikers_file_name = "Stikers_".$Zakaz_v_1c."_(".date("Y-m-d").").zip";
+$path_for_zip_arhive_strikers = $path_arhives."/".$stikers_file_name; // путь к ЗИП архиву со стикерам
+$QR_code_post_file_name = "QRcode_".$Zakaz_v_1c."_(".date("Y-M-d").").zip";
 
 // Если Такой номер заказа на эту дату уже существует то выводим данные для скачивания
 if(is_dir($new_path)) {
-    $link_alarm_stikers  = $path_arhives."/"."Stikers_".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
-    $link_alarm_qr_code  = $path_arhives."/"."QRcode-".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
+   
+    $link_alarm_qr_code  = $path_arhives."/".$QR_code_post_file_name;
     
-    echo "<a href=\"$link_alarm_stikers\">Скачать стикеры</a><br>";
-    echo "<a href=\"$link_alarm_qr_code\">Скачать Qr код поставки</a><br>";
-    die("Такой номер ЗАКАЗА на сегодняшнюю дату уже существует<br><a href=\"index.php\">Вернуться</a>");
+
+
+    //Проверяем ечть ли Признак, что все разбирали
+    $check_alarm_marker = check_marker_recover_file($new_path);
+    // echo "<br>++++$check_alarm_marker+++<br>";
+    if ($check_alarm_marker == 1) {
+        $recovery_file = $new_path."/not_ready_supply.json";
+        echo "<br>По признакам разбор заказом не был закончен";
+        echo "<br>";
+        echo "<br>";
+        echo "<a href=\"recovery_dostavka.php?filerecovery=$recovery_file\">Попытка продолжить разбор (перевод постаки в доставку)</a><br>";
+        echo "<br>";
+        echo "<br>";
+       
+    } else {
+        echo "<a href=\"$path_for_zip_arhive_strikers\">Скачать стикеры</a><br>";
+        echo "<a href=\"$link_alarm_qr_code\">Скачать Qr код поставки</a><br>";
+        echo "<br>По признакам товары были переданы в Доставку";
+        echo "<br>Такой номер ЗАКАЗА на сегодняшнюю дату уже существует";
+    }
+    echo "<br><a href=\"index.php\">Вернуться</a>";
+    die("<br><br>***************** ************ Попали в ветку, что уже разбирали этот заказ ************* *****************");
 }
 
 
@@ -91,11 +102,6 @@ write_info_filelog ($file_Log_name,'Начали разбор заказов');
 //********************* OutPut КОММЕНТАРИЙ *******************************************
 write_info_filelog ($file_Log_name,'Формирование папок');
 
-
-
-
-
-
 // Формируем файл для восстановления работы 
 
 write_info_filelog ($file_Log_name, 'Формируем файл для восстановления работы'); // Вывод коммент-я на экран
@@ -103,6 +109,11 @@ create_marker_recover_file($new_path); // создается маркерный 
 
 
 // die('ffffffffffffffff');
+
+
+
+
+
 write_info_filelog ($file_Log_name,'Получаем все новые заказы с сайта ВБ'); // Вывод коммент-я на экран
 
 
@@ -336,13 +347,19 @@ $file_name_1c_list_q = make_1c_file ($arr_for_1C_file_temp, $new_arr_new_zakaz, 
 /******************************************************************************************
  *  ***************   Формируем архив со стикерами для данного Заказа
  ******************************************************************************************/
-make_stikers_zip ($ArrFileNameForZIP, $path_arhives, $Zakaz_v_1c, $path_stikers_orders, $new_path, $file_name_1c_list_q );
+make_stikers_zip ($ArrFileNameForZIP, $path_for_zip_arhive_strikers, $Zakaz_v_1c, $path_stikers_orders, $new_path, $file_name_1c_list_q );
 
-    $link_download_stikers = $path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
+
+ /******************************************************************************************
+ **********************   Формируем JSON со списком реальных заказов (ДЛЯ ОТРАБОТКИ)
+ ******************************************************************************************/
+ 
+ $filedata_json_orders = json_encode($arr_for_1C_file_temp, JSON_UNESCAPED_UNICODE);
+ file_put_contents($new_path."/".$Zakaz_v_1c." от ".date("Y-M-d")."_real_orders.json", $filedata_json_orders, FILE_APPEND); // добавляем данные в файл с накопительным итогом
 
 
 /******************************************************************************************
- *  ************************   Формируем JSON со списком поставок (Для продолжения обработки)
+ **************************   Формируем JSON со списком поставок (Для продолжения обработки)
  ******************************************************************************************/
  
 $filedata_json = json_encode($arr_supply, JSON_UNESCAPED_UNICODE);
@@ -354,37 +371,31 @@ $recovery_array = ["token"             => $token_wb,
                    "json_path"         => $file_json_new,
                    "path_qr_supply"    => $path_qr_supply,
                    "path_arhives"      => $path_arhives,
-                   "downloads_stikers" => $link_download_stikers,
+                   "downloads_stikers" => $path_for_zip_arhive_strikers,
+                   "path_recovery"     => $path_recovery,
                    "Zakaz1cNumber"     => $Zakaz_v_1c];
-$recovery_data_json = json_encode($arr_supply, JSON_UNESCAPED_UNICODE);
+$recovery_data_json = json_encode($recovery_array, JSON_UNESCAPED_UNICODE);
 $file_recovery_data_json = $new_path."/not_ready_supply.json"; // создаем файл для продолжение перевода в доставку товаров
 file_put_contents($file_recovery_data_json, $recovery_data_json,  FILE_APPEND); // добавляем данные в файл с накопительным итогом
-
-/******************************************************************************************
- *  *********************   Формируем JSON со списком реальных заказов (ДЛЯ ОТРАБОТКИ)
- ******************************************************************************************/
- 
- $filedata_json_orders = json_encode($arr_for_1C_file_temp, JSON_UNESCAPED_UNICODE);
- file_put_contents($new_path."/".$Zakaz_v_1c." от ".date("Y-M-d")."_real_orders.json", $filedata_json_orders, FILE_APPEND); // добавляем данные в файл с накопительным итогом
 
 
 /******************************************************************************************
  *  **************   Выводим кнопку для продолжения работы -> перевод поставок в ДОСТАВКУ
  ******************************************************************************************/
-$link_q1=$path_arhives."/"."Stikers_".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
 
- echo "<a href=\"$link_q1\">СКАЧАТЬ АРХИВ СО СТИКЕРАМИ И ФАЙЛОМ для 1С(новый)</a>"; // 
+echo "<br>";
+ echo "<a href=\"$path_for_zip_arhive_strikers\">СКАЧАТЬ АРХИВ СО СТИКЕРАМИ И ФАЙЛОМ для 1С(новый)</a>"; // 
 
 echo <<<HTML
 <form action="make_dostavka.php" method="post">
-<label for="wb">ПЕРЕВЕЗТИ ЗАКАЗЫ В ДОСТАВКУ</label><br>
+<label for="wb">ПЕРЕВЕСТИ ЗАКАЗЫ В ДОСТАВКУ</label><br>
 <label for="wb">Номер заказа</label><br>
   <input hidden type="text" name="token" value="$token_wb">
   <input hidden type="text" name="json_path" value="$file_json_new">
   
   <input hidden type="text" name="path_qr_supply" value="$path_qr_supply">
   <input hidden type="text" name="path_arhives" value="$path_arhives">
-  <input hidden type="text" name="downloads_stikers" value="$link_download_stikers">
+  <input hidden type="text" name="downloads_stikers" value="$path_for_zip_arhive_strikers">
 
   <input hidden type="text" name="path_recovery" value="$path_recovery">
 
@@ -394,21 +405,19 @@ echo <<<HTML
 HTML;
 
 
-/*************** DELETE  (тестим новую папку для разборов)*/
-// $new_date_n = date('Y-m-d');
-// make_new_dir_z('../!all_razbor/wb/'.$new_date,0); // создаем папку с датой
-// $new_path = '../!all_razbor/wb/'.$new_date."/".$Zakaz_v_1c;
-// $path_qr_supply = $new_path.'/qr_code_supply';
-// $path_stikers_orders = $new_path.'/stikers_orders';
-// $path_arhives = $new_path.'/arhives';
-// $path_recovery = $new_path.'/recovery';
+/******************************************************************************************
+ *  **************  Запись в БД со ссылкой на архив этикеток
+ ******************************************************************************************/
 
-// /// проверяем  наличие папки с таким номером заказа
-// make_new_dir_z($new_path,0); // создаем папку с номером заказа
-// make_new_dir_z($path_qr_supply,0); // создаем папку с QR
-// make_new_dir_z($path_stikers_orders,0); // создаем папку со стикерами
-// make_new_dir_z($path_arhives,0); // создаем папку с архивами
-// make_new_dir_z($path_recovery,0); // создаем папку с инфой по восстановлению
+$date_otgruzki = date('Y-m-d');
+$stmt = $pdo->prepare("SELECT `name_market` FROM tokens WHERE token='$token_wb'");
+$stmt->execute([]);
+$arr_name_shop = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$name_shop = $arr_name_shop[0];
+insert_info_in_table_razbor($pdo, $name_shop, $Zakaz_v_1c, $date_otgruzki,  $path_for_zip_arhive_strikers, '');
+
+/// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
+unlink('../autosklad/uploads/priznak_razbora_net.txt');
 
 die('РАЗБОР ОКОНЧЕН (STOP)');
 

@@ -197,4 +197,8 @@ $json_file_link = $arr_dir['zip_archives']."/".$order_number.'.json';
   <br><br>
   HTML;
 
+
+ /// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
+unlink('../autosklad/uploads/priznak_razbora_net.txt'); 
+
 die ('<br> Дошли до финиша');

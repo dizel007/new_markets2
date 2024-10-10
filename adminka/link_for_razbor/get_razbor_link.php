@@ -41,15 +41,15 @@ if ($shop_name <> '') {
 // выборка по дате отгрузки
 if ($date_order <> '') {
     if ($and == "AND") {
-        $sql = $sql." $and `date_otgruzki` = '$date_order'";
+        $sql = $sql." $and `date_razbora` = '$date_order'";
     } else {
-        $sql = $sql." `date_otgruzki` =  '$date_order' ";
+        $sql = $sql." `date_razbora` =  '$date_order' ";
     }
     $and = "AND";
 }
 // сотрировка по дате
 $count_zakazov = 30; // количество показываемых заказов
-$sql = $sql. " ORDER BY `date_otgruzki` DESC LIMIT $count_zakazov";
+$sql = $sql. " ORDER BY `date_razbora` DESC LIMIT $count_zakazov";
 
 // echo " {{$sql}}";
 

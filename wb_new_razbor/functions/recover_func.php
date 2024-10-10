@@ -11,6 +11,17 @@ function create_marker_recover_file($new_path) {
      file_put_contents($new_path.'/recovery/'.$file_recovery, $contents);          // Save our content to the file.
  }
 }
+
+ //********************************************************************************************************************************* */
+ // функция проверяет есть ли маркерный файл
+ function check_marker_recover_file($new_path) {
+    $file_recovery = 'not_ready_supply.xxx';
+    if(is_file($new_path.'/recovery/'.$file_recovery)){
+        return 1;
+    }
+    return 0;
+   }
+
  //********************************************************************************************************************************* */
  // функция удаляет маркерный файл, что сборка закончилась
  function delete_marker_recover_file($path_recovery) {

@@ -6,8 +6,6 @@ require_once "functions/recover_func.php";
 require_once "functions/send_mail_func.php";
 
 // require_once "functions/dop_moduls_for_orders.php";
-usleep(500000); // трата на транзакции на сайте ВБ (перевод состояния поставок)
-
 
 // функция записи логов в файл
 function write_info_filelog_2($path, $info_comment) {
@@ -18,15 +16,18 @@ function write_info_filelog_2($path, $info_comment) {
 
 // $new_path = 'reports/'.$new_date."/".$Zakaz_v_1c;
 
-$file_json = $_POST['json_path'];
-$token_wb = $_POST['token'];
-// $wb_path = $_POST['wb_path'];
+$file_recover_array = json_decode(file_get_contents($_GET['filerecovery']), true);
+echo "<pre>";
+print_r($file_recover_array);
 
-$path_qr_supply =  $_POST['path_qr_supply'];
-$path_arhives  = $_POST['path_arhives'];
-$link_downloads_stikers = $_POST['downloads_stikers']; //
-$path_recovery = $_POST['path_recovery']; 
-$Zakaz_v_1c = $_POST['Zakaz1cNumber'];
+// Восстнавливаем данные из файла восстановления
+$token_wb = $file_recover_array['token'];
+$file_json = $file_recover_array['json_path'];
+$path_qr_supply =  $file_recover_array['path_qr_supply'];
+$path_arhives  = $file_recover_array['path_arhives'];
+$link_downloads_stikers = $file_recover_array['downloads_stikers']; //
+$path_recovery = $file_recover_array['path_recovery']; 
+$Zakaz_v_1c = $file_recover_array['Zakaz1cNumber'];
 
 $data = file_get_contents($file_json);
 $arr_data = json_decode($data,true);
@@ -34,6 +35,15 @@ $arr_data = json_decode($data,true);
 
 $file_Log_name = $path_arhives.'/..'; // название файла с логами
 $file_Log_name = $file_Log_name.'/filelog.txt'; // название файла с логами
+
+//********************* OutPut КОММЕНТАРИЙ *******************************************
+write_info_filelog_2 ($file_Log_name,"Попали в файл восстановления заказа: $Zakaz_v_1c");
+
+die('ddddddddddddddddddddddddddddddddddddddd');
+
+
+
+
 
 
 //********************* OutPut КОММЕНТАРИЙ *******************************************
@@ -65,7 +75,7 @@ print_r($app_qr_pdf_file_names);
  *  ***************   Формируем архив с QR кодам поставок ********************************
  ******************************************************************************************/
 $zip_new = new ZipArchive();
-$zip_arhive_name = "QRcode_".$Zakaz_v_1c."_(".date("Y-M-d").").zip";
+$zip_arhive_name = "QRcode-".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
 $zip_new->open($path_arhives."/".$zip_arhive_name, ZipArchive::CREATE|ZipArchive::OVERWRITE);
  foreach ($app_qr_pdf_file_names as $zips) {
     $zip_new->addFile($path_qr_supply."/".$zips, "$zips"); // Добавляем пдф файлы
@@ -98,7 +108,7 @@ $name_shop = $arr_name_shop[0];
 
 // Корректируем адрес QR кодов поставки
 $first_adress_part = 'https://ow2.ru/wb_new_razbor';
-$link2 = str_replace('..','', $link_downloads_qr_codes);
+$link2 = str_replace('..','', $link2);
 $link2 = str_replace('\\','/', $link2);
 $link2 = $first_adress_part."/".$link2;
 

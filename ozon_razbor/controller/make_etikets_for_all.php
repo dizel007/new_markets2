@@ -127,6 +127,9 @@ file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_
 $link_2_ = str_replace('.zip','', $link_path_zip2)."_MERGE.zip";
  insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, $link_2_);
 
+/// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
+unlink('../../autosklad/uploads/priznak_razbora_net.txt');
+
 // die ('<br> Дошли до финиша');
 /***********************
  * *

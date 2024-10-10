@@ -131,3 +131,11 @@ input[type="number"]::-webkit-inner-spin-button
 	pointer-events: none;
 	opacity: 0.65;
 }
+
+
+.red_center {
+  background-color: chartreuse;
+text-align: center;
+color: crimson;
+
+}
