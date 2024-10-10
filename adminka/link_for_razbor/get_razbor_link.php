@@ -79,12 +79,13 @@ foreach ($arr_razbor_orders as $orders) {
 
  $link1 =  $orders['link1']  ;
  $link1 = str_replace('wb_new_razbor/', '',$link1);
- $link1 = str_replace('ow2/', 'ow2',$link1);
+ $link1 = str_replace(DOMAIN_NAME.'/', DOMAIN_NAME,$link1);
  $link1 = str_replace(' ', '%20',$link1);
  
  $link2 =  $orders['link2']  ;
  $link2 = str_replace('wb_new_razbor/', '',$link2);
- $link2 = str_replace('ow2/', 'ow2',$link2);
+ $link2 = str_replace(DOMAIN_NAME.'/', DOMAIN_NAME,$link2);
+//  $link2 = str_replace('ow2/', 'ow2',$link2);
  $link2 = str_replace(' ', '%20',$link2);
 
  if($orders['type_shop'] == 'wb_anmaks' )  {

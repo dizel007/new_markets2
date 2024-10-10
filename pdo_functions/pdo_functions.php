@@ -162,7 +162,7 @@ return $id_company;
 /// Подготовка ссылок для ОЗОН
    if (($name_shop == 'ozon_anmaks' ) OR ($name_shop == 'ozon_ip_zel')) {
 
-   $first_adress_part = 'https://ow2.ru';
+   $first_adress_part = DOMAIN_NAME;
    $link1 = str_replace('..','', $link1);
    $link1 = str_replace('\\','/', $link1);
    $link1 = $first_adress_part.$link1;
@@ -172,7 +172,7 @@ return $id_company;
    $link2 = $first_adress_part.$link2;
 /// Подготовка ссылок для ВБ
    } elseif (($name_shop == 'wb_anmaks' ) OR ($name_shop == 'wb_ip_zel')) {
-       $first_adress_part = 'https://ow2.ru/wb_new_razbor';
+       $first_adress_part = DOMAIN_NAME.'/wb_new_razbor';
        
        $link1 = str_replace('..','', $link1);
        $link1 = str_replace('\\','/', $link1);
@@ -183,7 +183,7 @@ return $id_company;
        $link2 = $first_adress_part."/".$link2;
 /// Подготовка ссылок для ЯНДЕКСА
    }elseif (($name_shop == 'ya_anmaks_fbs' )) {
-       $first_adress_part = 'https://ow2.ru/yandex_razbor';
+       $first_adress_part = DOMAIN_NAME.'/yandex_razbor';
    } else {
        $first_adress_part='';
    }

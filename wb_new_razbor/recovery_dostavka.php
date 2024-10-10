@@ -37,6 +37,12 @@ $file_Log_name = $path_arhives.'/..'; // название файла с лога
 $file_Log_name = $file_Log_name.'/filelog.txt'; // название файла с логами
 
 //********************* OutPut КОММЕНТАРИЙ *******************************************
+
+
+echo "<pre>";
+print_r($arr_data);
+die('DOST');
+
 write_info_filelog_2 ($file_Log_name,"Попали в файл восстановления заказа: $Zakaz_v_1c");
 
 die('ddddddddddddddddddddddddddddddddddddddd');
@@ -50,9 +56,7 @@ die('ddddddddddddddddddddddddddddddddddddddd');
 write_info_filelog_2 ($file_Log_name,"Начали собирать Заказ :$Zakaz_v_1c");
 
 echo "Начали собирать Заказ :$Zakaz_v_1c.<br>";
-echo "<pre>";
-// print_r($arr_data);
-// die('DOST');
+
 
 /************************************************************************************************
  *  ***************   Перебираем массив поставок и отправляем в доставку ************************
@@ -75,7 +79,7 @@ print_r($app_qr_pdf_file_names);
  *  ***************   Формируем архив с QR кодам поставок ********************************
  ******************************************************************************************/
 $zip_new = new ZipArchive();
-$zip_arhive_name = "QRcode-".$Zakaz_v_1c."_от_".date("Y-M-d").".zip";
+$zip_arhive_name = "QRcode_".$Zakaz_v_1c."_(".date("Y-M-d").").zip";
 $zip_new->open($path_arhives."/".$zip_arhive_name, ZipArchive::CREATE|ZipArchive::OVERWRITE);
  foreach ($app_qr_pdf_file_names as $zips) {
     $zip_new->addFile($path_qr_supply."/".$zips, "$zips"); // Добавляем пдф файлы
@@ -107,7 +111,7 @@ $name_shop = $arr_name_shop[0];
 
 
 // Корректируем адрес QR кодов поставки
-$first_adress_part = 'https://ow2.ru/wb_new_razbor';
+$first_adress_part = DOMAIN_NAME.'/wb_new_razbor';
 $link2 = str_replace('..','', $link2);
 $link2 = str_replace('\\','/', $link2);
 $link2 = $first_adress_part."/".$link2;

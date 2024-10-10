@@ -97,7 +97,7 @@ $name_shop = $arr_name_shop[0];
 
 
 // Корректируем адрес QR кодов поставки
-$first_adress_part = 'https://ow2.ru/wb_new_razbor';
+$first_adress_part = DOMAIN_NAME.'/wb_new_razbor';
 $link2 = str_replace('..','', $link_downloads_qr_codes);
 $link2 = str_replace('\\','/', $link2);
 $link2 = $first_adress_part."/".$link2;

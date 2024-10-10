@@ -79,9 +79,18 @@ if(is_dir($new_path)) {
         echo "<br>По признакам товары были переданы в Доставку";
         echo "<br>Такой номер ЗАКАЗА на сегодняшнюю дату уже существует";
     }
-    echo "<br><a href=\"index.php\">Вернуться</a>";
+    echo "<br><a href=\"../index.php\">Вернуться</a>";
     die("<br><br>***************** ************ Попали в ветку, что уже разбирали этот заказ ************* *****************");
 }
+
+
+
+
+
+die('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz');
+
+
+
 
 
 /// проверяем  наличие папки с таким номером заказа
