@@ -378,7 +378,7 @@ die('Закончили разбор');
         ($temp_item['quantity'] < 10)?$count_cell_color = 'orange_color': $z= '';
         ($temp_item['quantity'] == 0)?$count_cell_color = 'zero_alarm_color': $z= '';
     
-echo "<td class=\"$count_cell_color\" >".$temp_item['quantity']."<br>f=".@$temp_item['fake_count']."</td>";
+echo "<td class=\"$count_cell_color td_count_tovar\" >".$temp_item['quantity']."<br>f=".@$temp_item['fake_count']."</td>";
     } else {
         echo "<td class=\"$count_cell_color\" >"."НД"."<br>f=".@$temp_item['fake_count']."</td>";
     }

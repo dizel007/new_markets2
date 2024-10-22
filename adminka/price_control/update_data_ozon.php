@@ -70,7 +70,7 @@ foreach ($arr_post_new as $item_need_price_update) {
 
 
 sleep(2);
-header('Location: get_price_table_ozon.php?wb_shop='.$ozon_shop, true, 301);
+header('Location: get_price_table_ozon.php?shop_name='.$ozon_shop, true, 301);
 exit();
 
 
