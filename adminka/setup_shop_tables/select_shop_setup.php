@@ -8,7 +8,7 @@ echo <<<HTML
 
  <link rel="stylesheet" href="css/select_shop_setup.css">
 <div class="wrapper">
-  <h2 class="h2_color_green">НАСТРОИВАЕМ МАГАЗИНЫ ПО ТОВАРАМ</h2>
+  <h2 class="h2_color_green">НАСТРАИВАЕМ МАГАЗИНЫ ПО ТОВАРАМ</h2>
 
   <form action="start_shop_tables.php" class="login" method="get">
     <p class="title">Выбор Маркета</p>

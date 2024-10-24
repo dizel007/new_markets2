@@ -201,6 +201,9 @@ echo "<div class=\"container\">";
     print_one_block ('table_element_admin', "adminka/price_control/select_shop.php", 'Контроль цены товаров',
     'Сравниваем цены товаров в БД и нв личных кабинетах МП', 'pics/main_screen/fix_price.jpg');
 
+    print_one_block ('table_element_admin', "adminka/setup_shop_tables/select_shop_setup.php", 'Настройка товаров в магазинах',
+    'Настройка распределения товаров и отключение артикулов', 'pics/main_screen/setup_shop.png');
+
     print_one_block ('table_element_admin', "adminka/insert_new_admin/form_for_insert_new_admin.php", 'Новый юзер',
     'Добавляем нового пользователя с правами нулевого админа', 'pics/main_screen/new_user.png');
     print_one_block ('table_element_admin', "adminka/find_product_id_ozon/select_shop_find_product.php", 'Insert product_id в БД Ozon',
