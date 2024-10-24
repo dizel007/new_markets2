@@ -1,0 +1,64 @@
+body {
+    color:aliceblue;
+    background-color: #000000;
+    
+
+}
+
+.center {
+    text-align: center;
+}
+.h2_color_green {
+    color: rgb(20, 148, 20);  
+}
+.h2_color_red {
+    color: rgb(206, 43, 43);  
+}
+.svod_po_ostatkam {
+    width: 70%;
+    background-color: rgb(30, 32, 32);
+    border-collapse: collapse ;
+    text-align: center;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.red_color  {
+    color: rgb(206, 43, 43);  
+    border: 3px solid ;
+  }
+
+.green_color {
+    color: rgb(20, 148, 20);  
+  }
+.orange_color {
+    color: rgb(223, 176, 48);  
+    opacity: 0.7;
+  }
+
+
+
+.svod_po_ostatkam td {
+    
+    border: 2px solid rgb(247, 132, 0);
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    font-size: 18;
+    /* color: rgb(100, 149, 104); */
+
+
+  
+  }
+
+  a {
+    text-decoration: none;
+    color: rgb(20, 148, 20);
+    font-weight: 700;
+    font-size: 18;
+    text-shadow: -5 -5 -5 ;
+  }
+
+
+
+    

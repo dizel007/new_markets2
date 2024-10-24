@@ -40,7 +40,7 @@ if (isset($_GET['date_query_ozon'])) {
 }
 
 echo <<<HTML
-<h2>ОЗОН ООО ТД АНМАКС</h2>
+<h2>ОЗОН "$get_shop_name"</h2>
 <h2>Найти заказы для комплектации по дате</h2>
     <div>
         <form method="get" action="#">
