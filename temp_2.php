@@ -2,58 +2,45 @@
 $offset = "";
 require_once $offset . "connect_db.php";
 require_once $offset . "pdo_functions/pdo_functions.php";
-require_once $offset . "mp_functions/ozon_api_functions.php";
-require_once $offset . "mp_functions/ozon_functions.php";
+require_once $offset . "mp_functions/wb_api_functions.php";
 
-    // озон ИП зел
+
+ // Запрос поисковых фраз по товару
  
-    $ozon_shop = 'ozon_anmaks';
+ 
 
-$client_id = $arr_tokens['ozon_anmaks']['id_market'];
-	$token_ozon = $arr_tokens['ozon_anmaks']['token'];
-// наxодим ID товаров озона 
-// $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_shop , $pdo, 'active'); // получаем озон каталог
+//  echo $token_wb;
+//  die();
+/**
+ * https://dev.wildberries.ru/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1table~1details/post
+ */
+    $link_wb = "https://seller-analytics-api.wildberries.ru/api/v2/search-report/product/search-texts";
 
-// $ozon_dop_url = "v2/product/info";
-// foreach ($ozon_catalog as &$items) {
-// 	$send_data = array(
-// "offer_id" => "",
-// "product_id" => 0,
-// "sku" => $items['sku']);
-// $send_data = json_encode($send_data);
-// $ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
-// $items['id_ozon'] = $ozcatalog['result']['id'];
-// }
+    $data = '{
+"currentPeriod": {
+"start": "2024-10-01",
+"end": "2024-10-31"
+},
+"pastPeriod": {
+"start": "2024-09-01",
+"end": "2024-09-30"
+},
+"nmIds": [
+215488593,
+215495142,
+216952104,
+9376932
+],
+"topOrderBy": "openToCart",
+"orderBy": {
+"field": "avgPosition",
+"mode": "asc"
+},
+"limit": 30
+}';
+    
+  $ff =  light_query_with_data($token_wb, $link_wb, $data);
 
-// file_put_contents('1.json', json_encode($ozon_catalog, JSON_UNESCAPED_UNICODE));
+  echo "<pre>";
 
-$ozon_catalog = json_decode(file_get_contents('1.json'), true);
-echo "<pre>";
-// print_r($ozon_catalog);
-
-
-foreach ($ozon_catalog as $itmmm) {
-
-$send_data = '{
-    "filter": {
-    "product_id": [
-    "'.$itmmm['product_id'].'"
-    ],
-    "visibility": "ALL"
-    },
-    "limit": 100,
-    "last_id": "",
-    "sort_dir": "ASC"
-    }';
-
-    $ozon_dop_url = "v3/products/info/attributes";
-$ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
-
-
-
-echo  "<br>".$ozcatalog['result'][0]['offer_id'];
-echo  "<br>height=".$ozcatalog['result'][0]['height'];
-echo  "<br>depth=".$ozcatalog['result'][0]['depth'];
-echo  "<br>width=".$ozcatalog['result'][0]['width'];
-echo  "<br><br>";
-}
+  print_r($ff);

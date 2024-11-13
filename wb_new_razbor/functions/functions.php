@@ -59,6 +59,7 @@ function light_query_with_data($token_wb, $link_wb, $data){
 
 }
 
+
 /****************************************************************************************************************
 ****************************  ОТправка PATCH на ВБ  с данными **************************************
 ****************************************************************************************************************/
@@ -102,6 +103,21 @@ function get_all_new_zakaz ($token_wb) {
 	$res = light_query_without_data($token_wb, $link_wb);
 	return $res;
 }
+
+/****************************************************************************************************************
+**************************** Получаем все старые заказы **************************************
+****************************************************************************************************************/
+
+function get_all_old_zakaz ($token_wb) {
+	$dateTo = strtotime(time());
+	$dateFrom = strtotime('-1 week', time());
+
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/orders?limit=1000&next=0&dateFrom='.$dateFrom.'&dateTo='.$dateTo;
+
+	$res = light_query_without_data($token_wb, $link_wb);
+	return $res;
+}
+
 
 
 /****************************************************************************************************************
@@ -562,6 +578,7 @@ function show_orders ($new_array_orders){
 
 	echo <<<HTML
 	<div class = "table-wrapper">
+		
 	<table class = "fl-table">
 		<thead>
 			<tr>

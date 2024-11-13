@@ -1,13 +1,8 @@
 <?php
 
-
 require_once '../../connect_db.php';
 require_once '../include_funcs.php';
 require_once 'make_1c_file.php';
-
-
-
-
 
 
 $ozon_shop = $_GET['ozon_shop'];
@@ -27,9 +22,14 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
 
 
 
-$date_query_ozon = $_GET['date_query_ozon'];
+// $date_query_ozon = $_GET['date_query_ozon'];
 $number_order = $_GET['number_order'];
-$dop_days_query = 0; // Всегда собираем за один день
+// $dop_days_query = 0; // Всегда собираем за один день
+
+$now_date_razbora = date('Y-m-d');
+$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
+$dop_days_query = 10;
+
 
 
 
@@ -41,7 +41,7 @@ $dop_days_query = 0; // Всегда собираем за один день
  ******************************************************************************************************************/
 // $new_date = date('Y-m-d');
 // $new_path = '../reports/'.$date_query_ozon."";
-$new_path = '../../!all_razbor/ozon/'.$date_query_ozon.""; // переход в новую папку 
+$new_path = '../../!all_razbor/ozon/'.$now_date_razbora.""; // переход в новую папку 
 make_new_dir_z($new_path,0); // создаем папку с датой
 
 $new_path = $new_path.'/'.$number_order.'/';
@@ -54,13 +54,11 @@ make_new_dir_z($path_excel_docs,0); // создаем папку с датой
 $path_zip_archives = $new_path.'zip_archives';
 make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 
-// die('kmnfjbflkbfg');
-
-// вычитываем все Заказы н эту дату
+// вычитываем все Заказы в состоянии ОЖИДАЮТ ОТГУЗКИ *******************************************
 $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging", $dop_days_query);
 
 // сохраняем JSON всех заказов 
-$string_json_all_order = json_encode($res);
+$string_json_all_order = json_encode($res, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
 
@@ -90,27 +88,31 @@ if (!isset($arr_for_zakaz)) {
     // echo "<br>==/ Количество заказов /==". count($arr_for_zakaz);
 
 
+
+
+
+
+
+
+
 foreach ($arr_for_zakaz as $one_post) {
     set_time_limit(0);
-    $result = make_packeges_for_one_post($token_ozon, $client_id_ozon,$one_post);
+    $result = make_packeges_for_one_post_2($token_ozon, $client_id_ozon,$one_post);
     usleep(10000);
-    $array_list_podbora[] = $result['list_podbora'];
-    $array_oben[] = $result['obmen'];
+    // $array_list_podbora[] = $result['list_podbora'];
+    // $array_oben[] = $result['obmen'];
     // print_r($result['obmen']);
 
 }
-
-// echo "<pre>";
-// print_r($array_oben);
 
 
 /*****************************************************************************************************************
  ******  Формируем JSON файл поартикульно Для формирования Листа подбора ПОТОМ
  ******************************************************************************************************************/
-$string_json_list_podbora = json_encode($array_oben);
-$temp_path = $path_excel_docs."/json_list_podbora.json";
+// $string_json_list_podbora = json_encode($array_oben);
+// $temp_path = $path_excel_docs."/json_list_podbora.json";
 
-file_put_contents($temp_path, $string_json_list_podbora);
+// file_put_contents($temp_path, $string_json_list_podbora);
 
 /*****************************************************************************************************************
  *****************************  Формируем штрих кода / 1с файл и лист подбора

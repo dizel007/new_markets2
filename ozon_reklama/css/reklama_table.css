@@ -1,0 +1,64 @@
+/* Рисуем клетки важности */
+
+
+.center_form {
+  display:flex;
+  justify-content: center;
+}
+
+.text14 {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+
+ }
+ table { 
+  width: 100%;
+  border-collapse: collapse ;
+  border: 1px solid black;
+  text-align: center;
+  padding: 5px;
+}
+
+.prods_table td {
+
+  border: 2px solid rgb(138, 138, 138);
+  font-size: 12px;
+  text-align: center;
+
+}
+
+
+
+/*  УБРАЛИ СТРЕЛОЧКИ ИЗ INPUTA */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+}
+input[type="text"] {
+  font-family: inherit; /* 1 */
+  font-size: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  margin: 0; /* 2 */
+}
+.cells {
+  padding: 5px;
+}
+.td_tuning {
+  padding: 5px;
+  background-color: rgb(195, 224, 186);
+}
+.td_tuning_summ
+{
+  padding: 5px;
+  background-color: rgb(84, 168, 216);
+  font-weight: 700;
+}
+
+.td_tuning_summ_all
+{
+  padding: 5px;
+  background-color: rgb(216, 145, 38);
+  font-weight: 900;
+}

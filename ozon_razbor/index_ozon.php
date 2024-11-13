@@ -28,16 +28,20 @@ if ($get_shop_name == 'ozon_anmaks' ) {
 
 
 
-if (isset($_GET['date_query_ozon'])) {
-    $date_query_ozon = $_GET['date_query_ozon'];  
-    $dop_days_query = $_GET['dop_days_query'];
+// if (isset($_GET['date_query_ozon'])) {
+//     $date_query_ozon = $_GET['date_query_ozon'];  
+//     $dop_days_query = $_GET['dop_days_query'];
 
-}else {
-    // $date_query_ozon =''; 
-    $date_query_ozon = date('Y-m-d'); 
-    $dop_days_query = 0;
+// }else {
+//     // $date_query_ozon =''; 
+//     $date_query_ozon = date('Y-m-d'); 
+//     $dop_days_query = 0;
 
-}
+// }
+$now_temp_date = date('Y-m-d');
+$date_query_ozon = date('Y-m-d', strtotime($now_temp_date . ' -5 day'));
+$dop_days_query = 10;
+
 
 echo <<<HTML
 <h2>ОЗОН "$get_shop_name"</h2>
@@ -51,23 +55,7 @@ echo <<<HTML
         
         </div>
         <br>
-        <label for="dop_days_query">Количество дополнительных дней</label>
-        <select name="dop_days_query" >
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
 
-            </select>
             </form>    
     </div>
 <hr>

@@ -28,12 +28,18 @@ if ($get_shop_name == 'ozon_anmaks' ) {
 
 
 
-if (isset($_GET['date_query_ozon'])) {
-    $date_query_ozon = $_GET['date_query_ozon'];
-} else {
-    // $date_query_ozon =''; 
-    $date_query_ozon = date('Y-m-d');
-}
+// if (isset($_GET['date_query_ozon'])) {
+//     $date_query_ozon = $_GET['date_query_ozon'];
+// } else {
+//     // $date_query_ozon =''; 
+//     $date_query_ozon = date('Y-m-d');
+// }
+
+
+$now_date_razbora = date('Y-m-d');
+$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
+$dop_days_query = 10;
+
 
 echo <<<HTML
 <h1>Данные по ОЗОН : $get_shop_name</h1>
@@ -45,8 +51,9 @@ echo <<<HTML
     <form method="get" action="#">
     <div id="up_input" class="LockOff">
         <input  hidden type="text" name=" shop_name" value="$get_shop_name">
-        <input  required type="date" name="date_query_ozon" value="$date_query_ozon">
-        <input type="submit" value="Найти заказы на выбранную дату">
+        <input  hidden required type="date" name="date_query_ozon" value="$date_query_ozon">
+        <label>Все заказы в статусе ОЖИДАЮТ ОТГУЗКИ начиная с $date_query_ozon<label>
+        <input type="submit" value="Найти заказы ">
     </div>
 
 </form>    
@@ -54,13 +61,19 @@ echo <<<HTML
 <hr>
 HTML;
 
+
+$now_date_razbora = date('Y-m-d');
+$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
+$dop_days_query = 10;
+
+
+
+
 // если есть Дата поиска, то начинаем вычитывать данные с сайта ОЗОН
 if (isset($date_query_ozon)) {
     if ($date_query_ozon <> '') {
         // получаем массив всех отправления на эту дату
-        $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", 0);
-
-
+        $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 
 
         // Из полученного массива формируем массив данных,$array_art   для создания Заказа в 1С.
@@ -102,8 +115,8 @@ if (isset($date_query_ozon)) {
             echo <<<HTML
 
         <form action="$link" method="get">
-        <label for="date_query_ozon">Дата заказов</label>
-        <input  type="date" name="date_query_ozon" value="$date_query_ozon" readonly>
+        
+        <label>Все заказы в статусе ОЖИДАЮТ ОТГУЗКИ начиная с $date_query_ozon<label>
         <br><br>
         <label for="number_order">Номер заказа</label>
         <input required type="text" name="number_order" value="">
@@ -129,7 +142,6 @@ HTML;
         }
     }
 }
-
 
 
 

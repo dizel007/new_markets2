@@ -13,42 +13,87 @@ insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order�
 
 sleep(5);
 
-// Получаем списрк заказов готовых к отправлению (Берем только на выбранное число)
-$res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver",0);
+// Получаем списoк заказов готовых к отправлению (Берем только на выбранное число)
+// ***********************************************************************************************************************************
+$res_repeat = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
+// сохраняем JSON всех заказов 
+$string_json_all_order = json_encode($res_repeat, JSON_UNESCAPED_UNICODE);
+$temp_path_all_order = $path_excel_docs."/json_all_repeat_order.json";
+file_put_contents($temp_path_all_order, $string_json_all_order);
+
+// ***********************************************************************************************************************************
+
+
+// echo "<pre>";
+// print_r($res_reapeat);
+
+$arr_reapeat_numbers[]=''; // массив куда добавляем номера записанных в новый массив заказов, чтобы избежать дублирования заказов
+/// выбираем из всей пачки только те заказы, которые мы запросили ранее
+foreach ($res['result']['postings'] as $old_order) {
+  foreach ($res_repeat['result']['postings'] as $new_order) {
+    $priz_reapeat = 0;
+      if ($old_order['order_number'] == $new_order['order_number']) {
+        // проверяем нет ли уже этого отправлния яв новом массиве
+        foreach ($arr_reapeat_numbers as $post_number) {
+          if ($post_number == $new_order['posting_number']) {
+            $priz_reapeat = 1;
+          }
+        }
+        if ($priz_reapeat == 0) {
+          // Формируем новый массив, где все разбитые по грузоотправлениям заказы из нового запроса
+          $new_res[]=$new_order;
+          $arr_reapeat_numbers[] = $new_order['posting_number'];
+        }
+
+        
+      }
+  }
+}
+
+// формируем массив для 1с файла
+$array_for_1C =  make_array_for_1c_file($new_res);
+// формируем массив для листа подборf
+$array_for_list_podbora = make_array_for_list_podbora($new_res);
+
+
+// echo "<pre>";
+// print_r($array_for_list_podbora);
+
+
+
 
 /// сохраняем обмен для этикеток 
-$json_zapros_etiketok = json_encode($array_oben);
-$temp_path_2 = $path_excel_docs."/json_zapros_etiketok.json";
-file_put_contents($temp_path_2, $json_zapros_etiketok);
+// $json_zapros_etiketok = json_encode($array_oben);
+// $temp_path_2 = $path_excel_docs."/json_zapros_etiketok.json";
+// file_put_contents($temp_path_2, $json_zapros_etiketok);
 sleep(2);
 /******************************************************************************************************************
 ******  формирование 1С файла 
 /******************************************************************************************************************/
-    $xls = new PHPExcel();
-   $file_name_1c_list = make_1c_file($res, $date_query_ozon, $number_order, $path_excel_docs, $xls);
-
+  $xls = new PHPExcel();
+  $file_name_1c_list = make_1c_file($array_for_1C, $date_query_ozon, $number_order, $path_excel_docs, $xls);
 /******************************************************************************************************************
 ****** формирование листа подбора (из обработанного массива)
 /******************************************************************************************************************/
 // echo "<br> ВЫШЛИ ИЗ формирования 1С файла <br>";
-$temp_path = $path_excel_docs."/json_list_podbora.json";
-if (file_exists($temp_path)) {
-$json_arr_obmen = file_get_contents($temp_path);   
-$array_oben = json_decode($json_arr_obmen, true);
+// $temp_path = $path_excel_docs."/json_list_podbora.json";
+// if (file_exists($temp_path)) {
+// $json_arr_obmen = file_get_contents($temp_path);   
+// $array_oben = json_decode($json_arr_obmen, true);
 
 
 // echo "<br> Массив для создания Листа подбора  <br>";
 // echo "<pre>";
 $xls2 = new PHPExcel();
-$file_name_list_podbora = make_list_podbora_new ($array_oben, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
+$file_name_list_podbora = make_list_podbora_new ($array_for_list_podbora, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
 // $file_name_list_podbora = make_list_podbora_new2 ($res, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
-} else { 
-  echo "Нет файла для формирования листа подбора";
-  // unset($file_name_list_podbora);
-}
+// } else { 
+//   echo "Нет файла для формирования листа подбора";
+//   // unset($file_name_list_podbora);
+// }
 
-// формируем массиы где заказы разбиты поартикульно 
-foreach ($res['result']['postings'] as $posts_z) {
+// формируем массивы где заказы разбиты поартикульно 
+foreach ($new_res as $posts_z) {
   $article = $posts_z['products'][0]['offer_id'];
   $arr_article_tovar[$article][] = $posts_z;
 }
@@ -63,7 +108,7 @@ foreach ($arr_article_tovar as $key=> $posts) {
 
   $string_etiket = '';
   foreach ($posts as $post) {
-  $string_etiket =@$string_etiket."\"".$post['posting_number']."\", ";
+  $string_etiket = @$string_etiket."\"".$post['posting_number']."\", ";
   }
 
   if (!isset($string_etiket)) {
@@ -73,6 +118,7 @@ foreach ($arr_article_tovar as $key=> $posts) {
 $string_etiket = substr($string_etiket, 0, -2); // удаляем последний разделитель из строки с заказами 
 // echo "<br>Разбираем артикул : $key<br>";
 // echo "Строка заказов артикула: $string_etiket<br>";
+
 
 /*****************************************************************************************************************
  ******  Формируем PDF файлы поартикульно
@@ -124,8 +170,12 @@ file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_
 /**************************************************************************************************************
  **********************************     Запись о разборе в БД     ********************************************
  ******************************************************************************************************************/
+$link_2_test = $path_etiketki."/merge_pdf/"."etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zip";
+
+// file_put_contents('../gg.txt', $link_2_test );
+
 $link_2_ = str_replace('.zip','', $link_path_zip2)."_MERGE.zip";
- insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $date_query_ozon,  $link_path_zip2, $link_2_);
+ insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $now_date_razbora,  $link_path_zip2, $link_2_test);
 
 /// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
 unlink('../../autosklad/uploads/priznak_razbora_net.txt');

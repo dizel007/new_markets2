@@ -25,9 +25,15 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
 
 
 
-$date_query_ozon = $_GET['date_query_ozon'];
+// $date_query_ozon = $_GET['date_query_ozon'];
 $number_order = $_GET['number_order'];
 $dop_days_query = 0; // Всегда собираем за один день
+
+
+$now_date_razbora = date('Y-m-d');
+$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
+$dop_days_query = 10;
+
 
 // echo "1d";
 /*****************************************************************************************************************
@@ -35,7 +41,7 @@ $dop_days_query = 0; // Всегда собираем за один день
  ******************************************************************************************************************/
 // $new_date = date('Y-m-d');
 // $new_path = '../reports/'.$date_query_ozon."/";
-$new_path = '../../!all_razbor/ozon/'.$date_query_ozon.""; // переход в новую папку 
+$new_path = '../../!all_razbor/ozon/'.$now_date_razbora.""; // переход в новую папку 
 
 make_new_dir_z($new_path,0); // создаем папку с датой
 
@@ -52,10 +58,10 @@ make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 // die('kmnfjbflkbfg');
 
 // вычитываем все Заказы н эту дату
-$res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging", $dop_days_query);
+$res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 
 // сохраняем JSON всех заказов 
-$string_json_all_order = json_encode($res);
+$string_json_all_order = json_encode($res, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
 
@@ -68,11 +74,11 @@ file_put_contents($temp_path_all_order, $string_json_all_order);
 /*****************************************************************************************************************
  ******  Формируем JSON файл поартикульно Для формирования Листа подбора ПОТОМ
  ******************************************************************************************************************/
-$array_oben[] = (1);
-$string_json_list_podbora = json_encode($array_oben);
-$temp_path = $path_excel_docs."/json_list_podbora.json";
+// $array_oben[] = (1);
+// $string_json_list_podbora = json_encode($array_oben);
+// $temp_path = $path_excel_docs."/json_list_podbora.json";
 
-file_put_contents($temp_path, $string_json_list_podbora);
+// file_put_contents($temp_path, $string_json_list_podbora);
 
 /*****************************************************************************************************************
  *****************************  Формируем штрих кода / 1с файл и лист подбора
