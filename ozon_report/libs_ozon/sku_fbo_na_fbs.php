@@ -1,4 +1,7 @@
 <?php
+/**
+ *  ФУНЦКИЯ НУЖНА ДЛЯ ОТЧЕТОВ ОЗОНА 
+ */
 function get_sebestiomost_ozon_with_sku_FBO() {
     $arr_catalog = array(
 // Новые метровые без якорей
