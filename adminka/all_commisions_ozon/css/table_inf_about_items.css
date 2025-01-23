@@ -1,0 +1,43 @@
+/* Рисуем клетки важности */
+
+
+
+ table { 
+  border-collapse: collapse ;
+  border: 1px solid black;
+  text-align: center;
+  padding: 5px;
+}
+
+.info_about_items td, .info_about_items th {
+
+  border: 2px solid rgb(138, 138, 138);
+  font-size: 12px;
+  text-align: center;
+
+}
+
+
+ 
+.rovnay_table {
+  height: 35px;
+  background-color: #f1cccc;
+  padding: 5px;
+}
+.rovnay_table_shapka {
+  height: 70px;
+  background-color: #f1cccc;
+}
+
+
+.block_tovar {
+  background-color: #5e638f;
+}
+
+.bolshe100 {
+  background-color: #ff0000;
+}
+
+.menshe0 {
+  background-color: #6a9999;
+}

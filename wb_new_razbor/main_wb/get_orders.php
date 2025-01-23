@@ -19,14 +19,11 @@ if ($date_orders_select <> '') {
 /********************************************************************************************************
  * ******************** Вычитываем и выводи заказы для ВБ
  ********************************************************************************************************/
-
 $raw_arr_orders = select_order_by_check_date($token_wb_orders, $date_orders_select) ;
-
-
 /********************************************************************************************************
  * ******************** Вычитываем Заказы, которые ВБ не приняли
  ********************************************************************************************************/
-$find_old_orders = select_all_old_order($token_wb); // 
+// $find_old_orders = select_all_old_order($token_wb); // 
 
 // echo "<pre>";
 // print_r($raw_arr_orders);
@@ -37,6 +34,6 @@ $find_old_orders = select_all_old_order($token_wb); //
 
 print_wb_order_table($shop_name, $date_orders_select , $raw_arr_orders, $text_about_date , $token_wb_orders) ;
 
-if ($find_old_orders) {
-  echo "<h2>Есть просроченные заказы</h2>";
-}
+// if ($find_old_orders) {
+//   echo "<h2>Есть просроченные заказы</h2>";
+// }

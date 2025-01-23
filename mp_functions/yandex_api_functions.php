@@ -35,6 +35,11 @@ function yandex_get_query_without_data($ya_token, $ya_link){
 ****************************************************************************************************************/
 
 function yandex_post_query_with_data($ya_token, $ya_link, $ya_data){
+	// echo "<pre>";
+	// echo "<br>$ya_link<br>";
+	// echo "<br>$ya_token<br>";
+	// print_r ($ya_data);
+
 	$ch = curl_init($ya_link);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 		'Authorization: Bearer '.$ya_token,
@@ -51,12 +56,14 @@ function yandex_post_query_with_data($ya_token, $ya_link, $ya_data){
 	curl_close($ch);
 
 	if (intdiv($http_code,100) > 2) {
-		echo     'Результат обмена(with Data): '.$http_code. "<br>";
+		echo     'Результат обмена YANDEX (with Data): '.$http_code. "<br>";
 	
 		}
 	
 	$res = json_decode($res, true);
+	
 	// var_dump($res);
+	// die();
 	return $res;
 
 }

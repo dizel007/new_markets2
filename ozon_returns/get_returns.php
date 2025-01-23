@@ -9,43 +9,51 @@ $date_now = date('Y-m-d');
 $date_start = date('Y-m-d', strtotime($date_now . " - 20 day"));
 $date_finish = date('Y-m-d', strtotime($date_now . " + 20 day"));
 
-// формируем запрос на эти даты
+
 $send_data_arr = json_encode(array(
     "filter" => array(
-        "last_free_waiting_day" => array(
+        "logistic_return_date" => array(
             "time_from" => $date_start . "T00:00:00Z",
             "time_to" => $date_finish . "T23:59:59Z"
         ),
-
-
-        "status" => "returned_to_seller"
+       
     ),
-    "limit" => 1000,
+    "limit" => 500,
     "last_id" => 0
 ));
-$ozon_dop_url = "v3/returns/company/fbs";
 
+
+
+// $ozon_dop_url = "v3/returns/company/fbs";
+$ozon_dop_url = "v1/returns/list";
 // получаем массив возвратов 
 $arr_ozon_ooo_returns = post_with_data_ozon($token_ozon, $client_id_ozon, $send_data_arr, $ozon_dop_url);
 
+
+// echo "<pre>";
+// print_r($arr_ozon_ooo_returns['returns'][0]);
+
+
 // формируем массив с датами, когда были возвраты ДЛЯ ООО
 foreach ($arr_ozon_ooo_returns['returns'] as $itemss) {
-    $date_n = date('Y-m-d', strtotime($itemss['returned_to_seller_date_time'])); // дата получения заказа ПРОДАВЦОМ
+    $date_n = date('Y-m-d', strtotime($itemss['logistic']['final_moment'])); // дата получения заказа ПРОДАВЦОМ
     $arr_date_n[$date_n] = $date_n;
 }
 
-// echo "<pre>";
-// print_r($arr_date_n);
 
 // формируем массив с датами, когда были возвраты ДЛЯ ИП
 $arr_ozon_ip_returns = post_with_data_ozon($token_ozon_ip, $client_id_ozon_ip, $send_data_arr, $ozon_dop_url);
 
 foreach ($arr_ozon_ip_returns['returns'] as $itemss) {
-    $date_n = date('Y-m-d', strtotime($itemss['returned_to_seller_date_time'])); // дата получения заказа ПРОДАВЦОМ
+    $date_n = date('Y-m-d', strtotime($itemss['logistic']['final_moment'])); // дата получения заказа ПРОДАВЦОМ
     $arr_date_n[$date_n] = $date_n;
 }
 //  убираем дублирующие даты
 asort($arr_date_n);
+
+// echo "<pre>";
+// print_r($arr_date_n);
+// die();
 
 
 if (isset($_GET['need_date'])) {

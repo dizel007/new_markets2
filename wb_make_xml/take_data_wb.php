@@ -112,7 +112,7 @@ if ($datediff != 6 )  {
 }
 
 $dop_link = "?dateFrom=".$dateFrom."&limit=100000&dateTo=".$dateTo."&rrdid=0";
-$link_wb = "https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod".$dop_link;
+$link_wb = "https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod".$dop_link;
 
 $arr_result = light_query_without_data($token_wb, $link_wb);
 

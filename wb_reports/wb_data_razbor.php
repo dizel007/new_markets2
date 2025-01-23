@@ -18,9 +18,9 @@ foreach ($arr_result as $item) {
 //     continue;
 // }  
 
-$article_new = make_right_articl($item['sa_name']); // Подставляем стандартный артикул
+$article_new = mb_strtolower(make_right_articl($item['sa_name'])); // Подставляем стандартный артикул
 
-$arr_type[$item['supplier_oper_name']]= $item['supplier_oper_name'];
+// $arr_type[$item['supplier_oper_name']]= $item['supplier_oper_name'];
 //******* Сумма К перечислению за товар ************************************************************************************************************
     
 if (($item['supplier_oper_name'] == 'Продажа') OR ($item['supplier_oper_name'] == 'Компенсация ущерба')) {
@@ -72,6 +72,7 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
     $arr_sum_vozvratov[$article_new] = @$arr_sum_vozvratov[$article_new] + $item['ppvz_for_pay'];
     $sum_vozvratov = $sum_vozvratov  + $item['ppvz_for_pay'];
     $arr_count[$article_new] = @$arr_count[$article_new] - 1;
+    $arr_vozvratov_count[$article_new] = @$arr_vozvratov_count[$article_new] + 1;
 
 } elseif (($item['supplier_oper_name'] == 'Корректная продажа') ) {
 
@@ -92,16 +93,32 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
         $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['delivery_rub'];
         $sum_logistiki = $sum_logistiki + $item['delivery_rub'];
         // $pp++;
+
+// **** ПЛАТНАЯ ПРИЕМКА *******************
+// **** ПЛАТНАЯ ПРИЕМКА *******************
+// **** ПЛАТНАЯ ПРИЕМКА *******************
+// **** ПЛАТНАЯ ПРИЕМКА *******************
+// **** ПЛАТНАЯ ПРИЕМКА *******************
+
+} elseif (($item['supplier_oper_name'] == 'Платная приемка')){
+        // Сумма платной приемки ***********************************************************************************************************
+            // $arr_sum_k_pererchisleniu[$article_new] = @$arr_sum_k_pererchisleniu[$article_new] - $item['acceptance'];
+            $arr_sum_paid_priemka[$article_new] = @$arr_sum_paid_priemka[$article_new] + $item['acceptance'];
+            $sum_paid_priemka = $sum_paid_priemka + $item['acceptance'];
+            // echo $item['acceptance']."****"."<br>";
+
 } elseif ($item['supplier_oper_name'] == 'Возмещение издержек по перевозке') {
     // Сумма логистики ИПЕШНИКАМ ************************************************************************************************************
     // $summa_izderzhik_po_perevozke = $summa_izderzhik_po_perevozke + $item['rebill_logistic_cost'];
     //     $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['rebill_logistic_cost'];
     //     $sum_logistiki = $sum_logistiki  + $item['rebill_logistic_cost'];
-} elseif ($item['supplier_oper_name'] == 'Логистика сторно') {
+
+} elseif (($item['supplier_oper_name'] == 'Логистика сторно') OR  ($item['supplier_oper_name'] == 'Сторно логистики')) {
 
     $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] - $item['delivery_rub'];
-        $sum_logistiki = $sum_logistiki  - $item['delivery_rub'];
+    $sum_logistiki = $sum_logistiki  - $item['delivery_rub'];
 
+                
 } elseif ($item['supplier_oper_name'] == 'Хранение') {
  // Стоимость ХРАНЕНИЯ  ****************************************************************************************************
         $sum_storage = $sum_storage  + $item['storage_fee'];

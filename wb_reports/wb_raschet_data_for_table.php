@@ -4,7 +4,9 @@ $sum_procent_raspredelenia_tovarov = 0;
 $our_pribil =0;
  
  $sebestoimos = select_all_nomenklaturu($pdo);
-
+//  echo "<pre>";
+//  print_r($arr_key);
+// echo "<br> ****************************************************** <br>";
 
   foreach ($arr_key as $key){
  // Находим себестоимость товара
@@ -56,8 +58,10 @@ $array_for_table[$key]['sum_avance'] =@$arr_sum_avance[$key];
       echo "<tr>";
  ///     Сумма выплат с возвратов 
  $array_for_table[$key]['sum_vozvratov'] =@$arr_sum_vozvratov[$key];
-
-
+ 
+ /// Количество возвратов 
+ $array_for_table[$key]['count_vozvratov'] =@$arr_vozvratov_count[$key];
+ 
 
  ///     Сумма ЛОгистики 
 
@@ -74,9 +78,9 @@ $array_for_table[$key]['sum_avance'] =@$arr_sum_avance[$key];
  ///     Сумма Комиссии ВБ
  $array_for_table[$key]['sum_voznagrazhdenie_wb'] =@$arr_sum_voznagrazhdenie_wb[$key];
 
- ///     Сумма к выплате
+ ///     Итого к оплате 
  $nasha_viplata_za_article[$key] =  @$arr_sum_k_pererchisleniu[$key] - @$arr_sum_vozvratov[$key] + @$arr_sum_avance[$key] +  
- @$arr_sum_brak[$key] - @$arr_sum_logistik[$key] ;
+ @$arr_sum_brak[$key] - @$arr_sum_logistik[$key] - @$arr_sum_paid_priemka[$key] ;
 
 //
 
@@ -96,9 +100,19 @@ if ((isset($arr_count[$key]) && ($arr_count[$key]) <> 0)) {
 $delta_good_and_sell_prices = round($price_for_shtuka -$good_price,2) ;
 $array_for_table[$key]['delta_good_and_sell_prices'] =$delta_good_and_sell_prices;
 
+$array_for_table[$key]['price_for_shtuka'] =round($price_for_shtuka,2);
+
+// Платная приемка
+
+if (isset($arr_sum_paid_priemka[$key]) ) {
+    $paid_priemka =  $arr_sum_paid_priemka[$key];
+    } else {
+        $paid_priemka =  0;
+    }
+ $array_for_table[$key]['paid_priemka'] =  $paid_priemka;
+    
 
 
- $array_for_table[$key]['price_for_shtuka'] =round($price_for_shtuka,2);
  ///     себестоимость
  $array_for_table[$key]['sebes_str_item'] =$sebes_str_item;
 // хорошпя цена товара
@@ -118,7 +132,15 @@ $array_for_table[$key]['delta_v_stoimosti'] =round($delta_v_stoimosti,2);
 $array_for_table[$key]['our_pribil'] = round($delta_v_stoimosti * @$arr_count[$key],2);
  
  }
+
  
+
+
+//  echo "<pre>";
+//  print_r($array_for_table);
+
+
+
  /******************************************************************************************************************
  *******************  Делаем рассчеты общих сумм ********************
  *******************************************************************************************************************/
@@ -129,6 +151,7 @@ $sum_logistik_po_wb = 0;
 $sum_avance_po_wb = 0;
 $sum_vozvratov_po_wb = 0;
 $sum_voznagrazhdenie_wb_po_wb = 0;
+
 
 
 

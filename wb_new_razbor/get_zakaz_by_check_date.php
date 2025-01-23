@@ -15,13 +15,14 @@ function select_order_by_check_date($token_wb, $date_orders)
     } else {
         // когда выбрана дата, то выберем заказы только на одну дату
         $raw_arr_orders_t = get_all_new_zakaz($token_wb);
-
+    if (isset($raw_arr_orders_t['orders'])) { // если есть заказы на эту дату, то формируем массив товаров
         foreach ($raw_arr_orders_t['orders'] as $order) {
 
             if (substr($order['createdAt'], 0, 10) == $date_orders) { // сортировка только по выбранной дате
                 $arr_new_zakaz['orders'][] = $order;
             }
         }
+    }
     }
     if (isset($arr_new_zakaz)) {
         return $arr_new_zakaz;
@@ -36,13 +37,16 @@ function select_all_old_order($token_wb)
 {
 
     $arr_old_orders = get_all_old_zakaz($token_wb);
-
+    // echo "<pre>";
+    // print_r( $arr_old_orders);
     if (isset($arr_old_orders)) {
 
         foreach ($arr_old_orders['orders'] as $old_orders) {
             $arr_numbers_old_orders[] = $old_orders['id'];
         }
     }
+
+
 
     // если ли страые заказы, то получаем их статутс
     if (isset($arr_numbers_old_orders)) {

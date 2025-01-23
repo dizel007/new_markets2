@@ -6,7 +6,7 @@ function get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog) {
     $ya_data = array (
         "withTurnover" => false,
         "archived" => false,
-        "offerIds" => array()
+        // "offerIds" => array("7245-К-10")
      );
     
     $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId_FBS.'/offers/stocks';

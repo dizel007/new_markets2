@@ -3,6 +3,8 @@
 /******************************************************************************
  * Рисуем ттаблицу
  *****************************************************************************/
+
+
 $sum_procent_raspredelenia_tovarov = 0;
 
 echo <<<HTML
@@ -12,9 +14,8 @@ echo <<<HTML
  <td>Кол-во<br> продаж</td>
  <td>К перечислению<br> за товар</td>
  <td>Авансовая <br>оплата</td>
- 
- 
  <td>Возвраты</td>
+ <td>Плат. Приемка</td>
  <td>Стоимость <br> логистки (/шт)</td>
  <td>Комиссия ВБ</td>
  <td>Итого к оплате</td>
@@ -47,13 +48,18 @@ foreach ($array_for_table as $key => $item) {
     echo "<td class=\"plus\">" . number_format(@$item['sum_k_pererchisleniu'], 2, ',', ' ') ."<br>".$price_one_shtuka_na_site. "</td>";
     // Авансовая оплата за товар без движения
     echo "<td class=\"plus\">" . number_format(@$item['sum_avance'], 2, ',', ' ') . "</td>";
-    ///     Сумма выплат с возвратов 
-    echo "<td class=\"minus\">" . number_format(@$item['sum_vozvratov'], 2, ',', ' ') . "</td>";
+    ///    Количество и  Сумма выплат с возвратов 
+    echo "<td class=\"minus\">" . @$item['count_vozvratov']."<br>". number_format(@$item['sum_vozvratov'], 2, ',', ' ') . "</td>";
+    //   Платная приемка
+    echo "<td class=\"minus\">" . number_format(@$item['paid_priemka'], 2, ',', ' ');
     ///     Сумма ЛОгистики 
     echo "<td class=\"minus\">" . number_format(@$item['sum_logistik'], 2, ',', ' ') .
         "<br>" . number_format(@(int)$item['logistika_za_shtuku'], 2, ',', ' ') . "</td>";
     ///     Сумма Комиссии ВБ
     echo "<td class=\"minus\">" . number_format(@$item['sum_voznagrazhdenie_wb'], 2, ',', ' ') . "</td>";
+
+
+
     ///     Сумма к выплате
     echo "<td class=\"our_many\">" . number_format(@$item['sum_nasha_viplata'], 2, ',', ' ') . "</td>";
     ///     Цена за штуку
@@ -104,6 +110,8 @@ echo "<td></td>";
 echo "<td class=\"plus\"><b>" . number_format($sum_k_pererchisleniu_po_wb, 2, ',', ' ') . "</b></td>";
 echo "<td class=\"plus\"><b>" . number_format($sum_avance_po_wb, 2, ',', ' ') . "</b></td>";
 echo "<td class=\"minus\"><b>" . number_format($sum_vozvratov_po_wb, 2, ',', ' ') . "</b></td>";
+echo "<td class=\"minus\"><b>" . number_format($sum_paid_priemka, 2, ',', ' ') . "</b></td>";
+
 echo "<td class=\"minus\"><b>" . number_format($sum_logistik_po_wb, 2, ',', ' ') . "</b></td>";
 echo "<td class=\"minus\"><b>" . number_format($sum_voznagrazhdenie_wb_po_wb, 2, ',', ' ') . "</b></td>";
 echo "<td class=\"our_many\"><b>" . number_format($sum_nasha_viplata_po_wb, 2, ',', ' ') . "</b></td>";
@@ -131,6 +139,8 @@ echo "<td class=\"plus\"><b>" . number_format($summa_k_perechilseniu_za_tovar, 2
 echo "<td> <-- </td>";
 echo "<td> <-- </td>";
 echo "<td></td>";
+echo "<td></td>";
+
 echo "<td class=\"plus\"><b>Выплата с<br>учетом штрафов</td>";
 // Сумма итого у оплате За вычетов штрафов / Хранение / Удержания /
 $summa_itogo_k_oplate = $sum_nasha_viplata_po_wb - $sum_storage - $sum_uderzhania - $sum_shtafi_i_doplati + $sum_brak - $sum_storage_correctirovka;

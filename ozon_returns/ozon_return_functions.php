@@ -97,17 +97,17 @@ function make_simple_return_array_with_our_article ($pdo, $arr_ozon_ooo_returns,
     $i = 0;
     // Формируем массив и добавляем артикул из нашей базы данных
     foreach ($arr_ozon_ooo_returns['returns'] as $items) {
-        $date_n = date('Y-m-d', strtotime($items['returned_to_seller_date_time'])); // дата получения заказа ПРОДАВЦОМ
-        $arr_date[$i]['sku'] =  $items['sku'];
-        $arr_date[$i]['quantity'] =  $items['quantity'];
+        $date_n = date('Y-m-d', strtotime($items['logistic']['final_moment'])); // дата получения заказа ПРОДАВЦОМ
+        $arr_date[$i]['sku'] =  $items['product']['sku'];
+        $arr_date[$i]['quantity'] =  $items['product']['quantity'];
         $arr_date[$i]['returned_to_seller_date_time'] =  $date_n;
-        $arr_date[$i]['product_name'] =  $items['product_name'];
-        $arr_date[$i]['posting_number'] =  $items['posting_number'];
-        $arr_date[$i]['price'] =  $items['price'];
+        $arr_date[$i]['product_name'] =  $items['product']['name'];
+        $arr_date[$i]['posting_number'] =  $items['order_number'];
+        $arr_date[$i]['price'] =  $items['product']['price']['price'];
         $arr_date[$i]['return_reason_name'] =  $items['return_reason_name'];
     
         $sth = $pdo->prepare("SELECT main_article FROM `$name_db` WHERE `sku` = :sku");
-        $sth->execute(array('sku' => $items['sku']));
+        $sth->execute(array('sku' => $items['product']['sku']));
         $article = $sth->fetch(PDO::FETCH_COLUMN);
     
         $arr_date[$i]['article'] =  mb_strtolower($article); // цепляем артикул товара

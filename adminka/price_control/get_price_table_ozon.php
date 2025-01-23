@@ -36,28 +36,41 @@ $arr_article[] = $tovars['mp_article'];
 $arr_id_ozon[] = $tovars['product_id'];
 }
 
-$ozon_dop_url = "v4/product/info/prices";
+// $ozon_dop_url = "v4/product/info/prices";
+$ozon_dop_url = "v5/product/info/prices";
+
+// $send_data = array(
+// 	"filter" => array(
+// 		"offer_id" => $arr_article,
+// 		"product_id" => $arr_id_ozon,
+// 		"visibility" =>  "ALL"
+// 	),
+// 	"last_id" => "",
+// 	"limit" => 100
+// );
 $send_data = array(
 	"filter" => array(
 		"offer_id" => $arr_article,
 		"product_id" => $arr_id_ozon,
 		"visibility" =>  "ALL"
 	),
-	"last_id" => "",
 	"limit" => 100
 );
+
 $send_data = json_encode($send_data);
 
 
 // непосредственный запрос цен
 $ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
 
-// print_r($ozcatalog );
+// echo "<pre>";
+// print_r($ozcatalog['items'][0] );
+// die();
 // print_r($arr_article);
 
 
 unset($items);
-foreach ($ozcatalog['result']['items'] as $items) {
+foreach ($ozcatalog['items'] as $items) {
 	$new_ozon_catalog_from_site[$items['offer_id']]['product_id'] =  $items['product_id'];
 	$new_ozon_catalog_from_site[$items['offer_id']]['offer_id'] =  $items['offer_id'];
 	$new_ozon_catalog_from_site[$items['offer_id']]['marketing_seller_price'] =  $items['price']['marketing_seller_price'];

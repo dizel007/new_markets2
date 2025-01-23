@@ -63,7 +63,7 @@ $uploadfile = $uploaddir . basename( $_FILES['file_excel']['name']);
          {
 
             // die ("DIE ОШИБКА при загрузке файла");
-            echo "<h1>Подгружены данные из последнего JSON файла</h1>";
+            echo "<h1>Подгружены Остатки из последнего JSON файла</h1>";
             $arr_article_items = json_decode(file_get_contents("uploads/array_items.json"));
 
 
@@ -141,14 +141,13 @@ $ozon_ip_catalog = get_ostatki_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_i
 //*****************************  Достаем фактически заказанные товары OZON *****************************
 $ozon_ip_catalog = get_new_zakazi_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_ip_catalog); // цепляем продажи
 
-// var_dump($ozon_ip_catalog);
-
 //***************************** Получаем Фактические остатки с ЯНДЕКС *****************************
 $ya_fbs_catalog = get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепояем остатки
 //*****************************  Достаем фактически заказанные товары YANDEX *****************************
 $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепляем продажи
-
-// print_r ($ozon_catalog);
+// echo "<br>*****************************************************<br>";
+// echo "<pre>";
+// print_r ($ya_fbs_catalog);
 // die();
 
 

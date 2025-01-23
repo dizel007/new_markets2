@@ -86,13 +86,6 @@ if(is_dir($new_path)) {
 
 
 
-
-die('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz');
-
-
-
-
-
 /// проверяем  наличие папки с таким номером заказа
 make_new_dir_z($new_path,0); // создаем папку с номером заказа
 make_new_dir_z($path_qr_supply,0); // создаем папку с QR

@@ -110,7 +110,7 @@ $dateTo = $date_sunday;
 // $link_wb =  'https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod'.$dop_link;
 // $link_wb =  'https://statistics-api.wildberries.ru/api/v4/supplier/reportDetailByPeriod'.$dop_link;// временный метод
 
-echo "<pre>";
+// echo "<pre>";
 // print_r($week_array);
 
 foreach ($week_array as $week) {
@@ -152,12 +152,15 @@ sleep(1);
 }
 
 
-// echo "<pre>";
+
 $text =  json_encode($arr_result, JSON_UNESCAPED_UNICODE);
 file_put_contents('array.json', $text);
 
 
-// file_put_contents('1.txt',$arr_result);
+// $arr_result =  file_get_contents('array.json');
+// $arr_result = json_decode($arr_result, true);
+// echo "<pre>";
+// print_r($arr_result);
 // die();
 
 
@@ -193,7 +196,7 @@ if (!$arr_result) {
   // формируем массива с артикулами
   foreach ($arr_result as $item) {
     if ($item['sa_name'] <>'') {
-        $arr_key[] = make_right_articl($item['sa_name']); // массив артикулов
+        $arr_key[] = mb_strtolower(make_right_articl($item['sa_name'])); // массив артикулов
     }
   }
   $arr_key = array_unique($arr_key); //  оставляем только уникальные артикулы
@@ -217,8 +220,9 @@ $correctProdazh=0;
 $guts_summa_sell=0;
 $summa_izderzhik_po_perevozke = 0;
 $sum_korrectirovka_eqvairinga = 0;
+$sum_paid_priemka = 0;
 
-echo "<pre>";
+// echo "<pre>";
 
 
 
@@ -265,6 +269,7 @@ echo "<br>Стоимость Удержания (нет артикула): <b>[$
 echo "<br>Стоимость Штрафы и доплаты (нет артикула):<b> [$sum_shtafi_i_doplati]</b> {вычитается из Итого к оплате}";
 echo "<br>Стоимость Частичная компенсация брака (нет артикула):<b> [$sum_brak]</b> {добавляется к перечислению за товар}{добавляется из Итого к оплате} ";
 
+echo "<br>Стоимость Платной приемки :<b> [$sum_paid_priemka]</b> {вычитается из Итого к оплате} ";
 
 
 

@@ -65,18 +65,18 @@ return $arr_catalog;
 
 function get_dimensions_from_SITE_ozon($token_ozon, $client_id, $items_ozon) {
   
+            $send_data = '{
+                "filter": {
+                "product_id": [
+                "'.$items_ozon['product_id'].'"
+                ],
+                "visibility": "ALL"
+                },
+                "limit": 100,
+                "sort_dir": "ASC"
+                }';
 
-        $send_data = '{
-            "filter": {
-            "product_id": [
-            "'.$items_ozon['product_id'].'"
-            ],
-            "visibility": "ALL"
-            },
-            "limit": 100,
-            "last_id": "",
-            "sort_dir": "ASC"
-            }';
+
         
             $ozon_dop_url = "v3/products/info/attributes";
         $oz_catalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
