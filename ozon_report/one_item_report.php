@@ -48,33 +48,18 @@ foreach ($array_with_all_sellers as $arr_temp) {
 
 
 
-
-$i=0;
+}
 foreach ($array_MINI as $item) {
-    $i++;
+   
     $posting_number = $item['posting']['posting_number'];
     $posting_number_for_array = make_posting_number ($posting_number);
-    $i++;
-    // if ($i > 400) {
-    //     break 2 ;
-    // }
+  
     $prod_array_2[$posting_number_for_array][] = $item;
     $prod_array_posts[$posting_number_for_array][] = $posting_number_for_array;
 
 }
-//     if ($test_posting ==  $posting_number_for_array) {
-//     $prod_array[$posting_number_for_array][] = $item;
-// }
-        // echo "*********************************************** $posting_number <br>";    
 
-}
-
-// print_r($array_our_posting_number);
-// $prod_array[0] =   $new_prod_array_33;
-// print_r($prod_array_posts);
-// $prod_array[] = $item;
-// foreach ($prod_array_2 as $item) {
-    $prod_array = $prod_array_2;
+$prod_array = $prod_array_2;
 require "razbor_dannih_one_item.php";
 // unset ($prod_array);
 // die();

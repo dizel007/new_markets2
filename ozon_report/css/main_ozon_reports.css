@@ -48,6 +48,10 @@
 }
 
 .fl-table th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Чтобы заголовки были четко видны против контента */
+    
     color: #ffffff;
     background: #55917f;
     margin:0 auto;
@@ -70,8 +74,11 @@
     color:#55917f;
     font-weight: 700;
 }
-
+.neutral_desired_price {
+    color:#3d2ec4;
+    font-weight: 900;
+}
 .bad_desired_price {
     color:#ff1919;
-    font-weight: 700;
+    font-weight: 300;
 }

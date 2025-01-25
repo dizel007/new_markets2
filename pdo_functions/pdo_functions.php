@@ -77,6 +77,8 @@ if ($type == 'active') {
    $stmt->execute();
    $arr_catalog = $stmt->fetchAll(PDO::FETCH_ASSOC); 
    
+
+   
    foreach ($arr_catalog as $catalog) {
       $new_arr_cat[$catalog['id']] = $catalog['main_article'];
    }
