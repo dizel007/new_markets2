@@ -2,11 +2,11 @@
 
 
 // print_r($arr_returns);
-
-foreach ($arr_returns as $big_key=>$items) {
+$gg = 0;
+foreach ($arr_returns as $big_key => $items) {
 
         $i++;
-     
+
         $our_item = $items['items'];
         // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
 
@@ -29,37 +29,58 @@ foreach ($arr_returns as $big_key=>$items) {
                 $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['name'] =  $item['name'];
                 $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['c_1c_article'] = $c_1c_article;
 
+                // if ($new_post_number == '0102957581-0048') {
+                //         echo "<br>***********************<br>";
+                //         print_r($items);
 
+                //         echo "<br>***********************<br>";
+                // }
                 // print_r($items);
                 // Разбиваем стоиомть возвратов на логистику и обработку ... может еще что то
                 //Доставка и обработка возврата, отмены, невыкупа
-                if (($items['operation_type'] == 'OperationReturnGoodsFBSofRMS')  || ($items['operation_type'] == 'OperationItemReturn')) {
+                if (($items['operation_type'] == 'OperationReturnGoodsFBSofRMS')  || ($items['operation_type'] == 'OperationItemReturn')
+                        || ($items['operation_type'] == 'OperationAgentStornoDeliveredToCustomer')
+                ) {
+
+
+
                         foreach ($items['services'] as $return_dop_obrabotka) {
 
-                                // логистика
+                                // логистика 77777 99999
                                 if ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDirectFlowLogistic') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] = $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
-                                // обратная логистика
+                                // последняя миля (возрат обратная логистика) 99999
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDelivToCustomer') {
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['last_mile11'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['last_mile11']  + $return_dop_obrabotka['price'];
+                                }
+                                // обратная логистика 77777
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowLogistic') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['back_logistika_vozvrat'] = $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['back_logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['back_logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
-                                // обработка отправления.
+                                // обработка отправления.      77777 99999
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffSC') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_SC'] = $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_SC'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_SC'] + $return_dop_obrabotka['price'];
                                 }
                                 // обработка отправления в ПВЗ.
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffPVZ') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_PVZ'] = $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_PVZ'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_PVZ'] + $return_dop_obrabotka['price'];
                                 }
 
                                 /// сборка заказа**************************************************************
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemFulfillment') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sborka_zakaza'] = $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sborka_zakaza'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sborka_zakaza'] + $return_dop_obrabotka['price'];
                                 }
-                                /// перевыставление возвратов на ПВЗ.
+                                /// перевыставление возвратов на ПВЗ. 77777
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemRedistributionReturnsPVZ') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['return_obrabotka'] = $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['return_obrabotka'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['return_obrabotka'] + $return_dop_obrabotka['price'];
                                 }
 
                                 /// Обработка отмен.
@@ -78,7 +99,7 @@ foreach ($arr_returns as $big_key=>$items) {
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowTrans') {
                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_obrat_magistral'] = $return_dop_obrabotka['price'];
                                 }
-                                /// обработка невыкупа.
+                                /// обработка невыкупа. 77777
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnPartGoodsCustomer') {
                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obtabotka_nevikupa'] = $return_dop_obrabotka['price'];
                                 } else {
@@ -93,57 +114,130 @@ foreach ($arr_returns as $big_key=>$items) {
                 elseif ($items['operation_type'] == 'ClientReturnAgentOperation') {
                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obtabotka_nevikupa'] = $items['amount'];
                         // возврат денег и возврат комиссии
-                        // $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obtabotka_nevikupa'] = $items['amount'];
-                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['accruals_for_sale'] = $items['accruals_for_sale'];
-                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sale_commission'] = $items['sale_commission'];
-                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['amount'] = $items['amount'];
-
+                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['accruals_for_sale'] =
+                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['accruals_for_sale'] + $items['accruals_for_sale'];
+                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sale_commission'] =
+                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sale_commission'] + $items['sale_commission'];
+                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['amount'] =
+                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['amount'] + $items['amount'];
                 }
-
-         
         }
 
         // Разбираем Получение возврата, отмены, невыкупа от покупателя
         if (($items['operation_type'] == 'OperationReturnGoodsFBSofRMS')  || ($items['operation_type'] == 'OperationItemReturn')) {
                 // обработано выше (Где есть артикул товара)
         } elseif ($items['operation_type'] == 'ClientReturnAgentOperation') {
-                // обработано выше (Где есть артикул товара)
-        } elseif ($items['operation_type'] == 'ClientReturnAgentOperation') {
                 $Summa_dostav_vozvratov = @$Summa_dostav_vozvratov  + $items['amount'];
+        } elseif ($items['operation_type'] == 'OperationAgentStornoDeliveredToCustomer') { // Доставка покупателю — отмена начисления (нам деньги)
 
-        } elseif ($items['operation_type'] == 'OperationAgentStornoDeliveredToCustomer'){ // Доставка покупателю — отмена начисления (нам деньги)
-                /// *********** НЕ УЧТЕНО В РАСЧЕТАХ (НУЖНОО УЧЕСТЬ )
-                $arr_article[$new_post_number]['otmena_nachislenia'] = @$arr_article[$new_post_number]['otmena_nachislenia'] + $items['amount'];    
+                $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['accruals_for_sale'] =
+                        @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['accruals_for_sale'] + $items['accruals_for_sale'];
+
+                $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sale_commission'] =
+                        @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sale_commission'] + $items['sale_commission'];
+
+                $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['amount'] =
+                        @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['amount'] + $items['amount'];
+                //  последняя миля
+
+                foreach ($items['services'] as $return_dop_obrabotka_2) {
+                        if ($return_dop_obrabotka_2['name'] == 'MarketplaceServiceItemDelivToCustomer') {
+                                $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['last_mile'] =
+                                        @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['last_mile'] + $return_dop_obrabotka_2['price'];
+                        }
+                }
         } else {
                 $arr_ALARM_vozvrztov[] = $items;
         }
 
 
         // ЕСЛИ ВЕРНУЛИ ТОВАР ПОСЛЕ ОПЛАТЫ, то нужно вычесть эти товары из уже полученных денег
-        // if ($new_post_number == '16450199-0119') {
-        if (isset($arr_article[$new_post_number]['items_returns']) AND (isset($arr_article[$new_post_number]['items_buy']))) {
-
-    
-                    
-                    foreach ($arr_article[$new_post_number]['items_returns'] as $return_key => $return_items) {
-                        foreach ($arr_article[$new_post_number]['items_buy'] as $sell_key => &$sell_items) {
-                                       if (($sell_key === $return_key) && (!isset($sell_items['delete_return']))) {
-                                        //    echo "<br>**************$sell_key === $return_key*****************************<br>";
-                                        $sell_items['delete_return'] = 1;
-                                        $sell_items['accruals_for_sale'] += $return_items['accruals_for_sale'];
-                                        $sell_items['sale_commission'] += $return_items['sale_commission'];
-                                        $sell_items['amount'] += $return_items['amount'];
-                                        //  print_r($sell_items);
+        // if ($new_post_number == '0102957581-0048') {
+        //         echo "<br>***********#########################*******************<br>";
+        //         print_r($arr_article[$new_post_number]);  
+        //         die();
+        // }
 
 
-                                        }
-                                }
-                        }
-               
-        }
+
+
+        // if (isset($arr_article[$new_post_number]['items_returns']) and (isset($arr_article[$new_post_number]['items_buy']))) {
+
+        //         foreach ($arr_article[$new_post_number]['items_returns'] as $return_key => $return_items) {
+        //                 foreach ($arr_article[$new_post_number]['items_buy'] as $sell_key => &$sell_items) {
+        //                         if (($sell_key === $return_key) && (!isset($sell_items['delete_return']))) {
+
+
+        //                                 $sell_items['delete_return'] = 1;
+
+        //                                 $sell_items['accruals_for_sale'] += $return_items['accruals_for_sale'];
+        //                                 $sell_items['sale_commission'] += $return_items['sale_commission'];
+        //                                 $sell_items['amount'] += $return_items['amount'];
+
+        //                                 if (isset($return_items['last_mile'])) {
+        //                                         $sell_items['last_mile'] += $return_items['last_mile'];
+        //                                 }
+        //                                 if (isset($return_items['obrabotka_otpravlenii_v_SC'])) {
+        //                                         $sell_items['obrabotka_otpravlenia'] += $return_items['obrabotka_otpravlenii_v_SC'];
+        //                                 }
+        //                                 if (isset($return_items['logistika_vozvrat'])) {
+        //                                         $sell_items['logistika'] += $return_items['logistika_vozvrat'];
+        //                                 }
+        //                         }
+        //                 }
+        //         }
+        // }
 } // КОНЕЦ ПЕРЕБОРА МАССИВА
 
 
+/***********************
+ * 
+ * 
+ * 
+ */
+
+
+
+
+foreach ($arr_article as &$k_items) {
+        if (isset($k_items['items_returns']) and (isset($k_items['items_buy']))) {
+
+                // echo "<br>***********#########---------$new_post_number-----------################*******************<br>";
+
+                foreach ($k_items['items_returns'] as $return_key => $return_items) {
+                        foreach ($k_items['items_buy'] as $sell_key => &$sell_items) {
+                                if ($sell_key === $return_key) {
+
+                    
+                                        $sell_items['delete_return'] = 1;
+
+                                        $sell_items['accruals_for_sale'] += $return_items['accruals_for_sale'];
+                                        $sell_items['sale_commission'] += $return_items['sale_commission'];
+                                        $sell_items['amount'] += $return_items['amount'];
+
+
+
+
+                                        if (isset($return_items['last_mile'])) {
+                                                $sell_items['last_mile'] += $return_items['last_mile'];
+                                        }
+                                        if (isset($return_items['obrabotka_otpravlenii_v_SC'])) {
+                                                $sell_items['obrabotka_otpravlenia'] += $return_items['obrabotka_otpravlenii_v_SC'];
+                                        }
+                                        if (isset($return_items['logistika_vozvrat'])) {
+                                                $sell_items['logistika'] += $return_items['logistika_vozvrat'];
+                                        }
+
+                                        // echo  $sell_items['last_mile']."jjjjj".$return_items['last_mile']."<br>";
+                                        //  print_r($sell_items);
+
+
+                                }
+                        }
+                }
+        }
+}
+/******************************************** */
 
 
 

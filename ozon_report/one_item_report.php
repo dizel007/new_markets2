@@ -11,7 +11,7 @@ require_once "libs_ozon/sku_fbo_na_fbs.php"; // массив с себестои
 require_once "../mp_functions/report_excel_file.php";
 
 
-$test_posting = '16450199-0120';
+// $test_posting = '16450199-0120';
 
 
 function make_posting_number ($posting_temp_number) {
@@ -32,7 +32,7 @@ return $pos4;
 // echo $pos2."<br>";
 // echo $pos4;
 
-$ozon_shop = 'ozon_anmaks';
+$ozon_shop = 'ozon_ip_zel';
 
 $t = file_get_contents('ozon_est.json');
 $array_with_all_sellers = json_decode($t, true);
@@ -96,3 +96,25 @@ function print_two_strings_in_table($print_item, $parametr1, $parametr2, $color_
     }
 }
 
+//// НАХОДИМ ЦЕНУ ИЗ БД (минимальную или нормальную)
+function get_min_price_ozon($otchet_article, $arr_all_nomenklatura, $type_price)
+{
+    foreach ($arr_all_nomenklatura as $nomenclatura) {
+
+        // echo "$otchet_article)  ({$nomenclatura['main_article_1c']}";
+        $price = 0;
+        if (mb_strtolower($otchet_article) == mb_strtolower($nomenclatura['main_article_1c'])) {
+
+            if ($type_price == 'min') {
+                $price = $nomenclatura['min_price'];
+            }
+            if ($type_price == 'norm') {
+                $price = $nomenclatura['main_price'];
+            }
+            break;
+        }
+    }
+
+
+    return $price;
+}

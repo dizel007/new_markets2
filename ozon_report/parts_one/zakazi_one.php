@@ -1,4 +1,9 @@
 <?php 
+$full_summa_accruals_for_sale = 0; // сумма цен для покупателя 
+$full_summa_amount = 0;
+$full_summa_sale_commission = 0; 
+$full_summa_sale_logistika = 0; 
+
 foreach ($arr_orders as $items) {
     $i++;
     $our_item = $items['items'];
@@ -12,7 +17,9 @@ $arr_article[$new_post_number]['post_number'] = $new_post_number;
 $arr_article[$new_post_number]['SELL'] = 'SELL';
 $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
 $arr_article[$new_post_number]['delivery_schema'] = $items['posting']['delivery_schema'];
-
+if (($items['accruals_for_sale'] == 0) && ($items['accruals_for_sale'] == 0)) {
+    $arr_article[$new_post_number]['kazahi'] = 'ino';
+}
 // количество товаров в заказе 
 
 
@@ -32,14 +39,11 @@ $arr_article[$new_post_number]['delivery_schema'] = $items['posting']['delivery_
    //  общемм количество товаров в заказке
        $arr_article[$new_post_number]['count'] = @$arr_article[$new_post_number]['count'] + 1;
 
-
-   // Суммируем суммы операции
-       $arr_article[$new_post_number]['amount'] = @$arr_article[$new_post_number]['amount'] + $items['amount']/count($our_item); 
-   // Суммируем Комиссию за продажу     
-       $arr_article[$new_post_number]['sale_commission'] = @$arr_article[$new_post_number]['sale_commission'] + $items['sale_commission']/count($our_item);
-   // Цена для покупателя    
-       $arr_article[$new_post_number]['accruals_for_sale'] = @$arr_article[$new_post_number]['accruals_for_sale'] + $items['accruals_for_sale']/count($our_item);
-    }
+// суммы 
+$full_summa_accruals_for_sale += $items['accruals_for_sale'];
+$full_summa_amount += $items['amount'];
+$full_summa_sale_commission += $items['sale_commission']; 
+}
 
 
 /********************************************************************************************
@@ -50,6 +54,7 @@ $arr_article[$new_post_number]['delivery_schema'] = $items['posting']['delivery_
     if ($services['name'] == 'MarketplaceServiceItemDirectFlowLogistic') {
 //логистика
     $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['logistika'] = $services['price'];
+    $full_summa_sale_logistika += $services['price']; 
      } 
     if ($services['name'] == 'MarketplaceServiceItemDropoffSC') {
 // обработка отправления

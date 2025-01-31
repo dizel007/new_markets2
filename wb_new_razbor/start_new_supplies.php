@@ -139,6 +139,11 @@ $arr_new_zakaz = select_order_by_check_date($token_wb, $date_orders_select) ;
 
 // echo "=====".$date_orders_select."=====";
 
+// ЕСЛИ НУЖНО СОХРАНИТЬ СЫРЫЕ ДАННЫЕ С ВБ 
+//
+$raw_data_json = json_encode($arr_new_zakaz);
+file_put_contents($new_path."/".$Zakaz_v_1c." от ".date("Y-M-d")."_raw_data.json", $raw_data_json, FILE_APPEND); // добавляем данные в файл с накопительным итогом
+
 // echo "<pre>";
 // print_r($arr_new_zakaz );
 
