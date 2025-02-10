@@ -181,14 +181,16 @@ foreach ($new_arr_new_zakaz  as $key => $items) {
     $name_postavka = $Zakaz_v_1c."-(".$right_article.") ".count($new_arr_new_zakaz[$key])."шт";
     // формируем одну поставку и туда суем весь товар с этим артикулом
     $supplyId = make_postavka ($token_wb, $name_postavka); // номер поставки
-    usleep(20000); // трата на создание Поставки 
+    usleep(50000); // трата на создание Поставки 
 /*****************************************************************************************************************
 *  Вычитываем информацию о поставке. И вообще существует или она
 *********************************************************************************************************************/    
 $SupplayId_info = get_info_by_postavka ($token_wb, $supplyId['id']); // информация о поставке
+
+
   if (!isset($SupplayId_info['id'])) {
     write_info_filelog ($file_Log_name, "(СБОЙ) Поставка для арт.".$right_article." не создана. Название поставки :$name_postavka"); 
-    for ($jjjj=0; $jjjj < 20; $jjjj ++) {
+    for ($jjjj=0; $jjjj < 2; $jjjj ++) {
         // unset($supplyId);
         write_info_filelog ($file_Log_name, "Повторный($jjjj) из (20) запуск создания поставка для арт.$right_article Название поставки :$name_postavka" ); // Вывод коммент-я на экран
         $supplyId = make_postavka ($token_wb, $name_postavka); // номер поставки
@@ -204,6 +206,12 @@ $SupplayId_info = get_info_by_postavka ($token_wb, $supplyId['id']); // инфо
     write_info_filelog ($file_Log_name, "(УСПЕШНО) Поставка для арт.$right_article создана, id поставки ".$supplyId['id'] ); // Вывод коммент-я на экран
   }
 //********************************************************************************************************************************** */
+
+
+// echo "<pre>";
+// print_r($SupplayId_info);
+
+// die('dddddddddddddddddddddddddddddddddddddddddddddddd <br><br> hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
 
 usleep(300000); // трата на создание Поставки на сайте 1С
     $arr_supply[$right_article] =  array('supplayId'      =>  $supplyId['id'],
@@ -249,7 +257,7 @@ usleep(300000); // трата на создание Поставки на сай
 }
 
 
-usleep(300000); // трата на времени на добавление товара в поставку  
+usleep(400000); // трата на времени на добавление товара в поставку  
     $arr_real_orders = get_orders_from_supply($token_wb, $supplyId['id']); // список Заказов которые ТОЧНО полпали в Поставку
 
     foreach ($arr_real_orders as $orders) {

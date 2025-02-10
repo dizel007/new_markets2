@@ -27,7 +27,7 @@ function get_ostatki_wb ($token_wb, $wb_catalog, $warehouseId) {
 	 
 		// print_r ($arr_skus);
 
-    $link_wb  = "https://suppliers-api.wildberries.ru/api/v3/stocks/".$warehouseId;
+    $link_wb  = "https://marketplace-api.wildberries.ru/api/v3/stocks/".$warehouseId;
 	$data = array("skus"=> $arr_skus);
 	$res = light_query_with_data($token_wb, $link_wb, $data);
 	

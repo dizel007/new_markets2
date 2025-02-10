@@ -52,7 +52,7 @@ function light_query_with_data($token_wb, $link_wb, $data)
 	curl_close($ch);
 
 	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
-		echo     '<br>Результат обмена(SELECT with Data): ' . $http_code . "<br>";
+		echo     '<br>Результат обмена(SELECT with Data): ' . $http_code ." link = ".$link_wb ."<br>";
 	}
 
 	$res = json_decode($res, true);
@@ -128,7 +128,7 @@ function patch_query_with_data($token_wb, $link_wb, $data)
 
 function get_all_new_zakaz($token_wb)
 {
-	$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/orders/new';
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/orders/new';
 	$res = light_query_without_data($token_wb, $link_wb);
 	return $res;
 }
@@ -159,7 +159,7 @@ function make_sborku_one_article_one_zakaz($token_wb, $supplyId, $orderId)
 		'supplyId' => $supplyId,
 		'orderId' => $orderId
 	);
-	$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/' . $supplyId . "/orders/" . $orderId;
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/' . $supplyId . "/orders/" . $orderId;
 
 	// echo "<br>$link_wb<br>"; // выводим ссылку на экран
 
@@ -180,19 +180,21 @@ function make_sborku_one_article_one_zakaz($token_wb, $supplyId, $orderId)
 function make_postavka($token_wb, $name_postavka)
 {
 	$data = array('name' => $name_postavka);
-	$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies';
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies';
 	$res = light_query_with_data($token_wb, $link_wb, $data);
 
 	return $res; // Возвращаем номер поставки
 }
 
 /****************************************************************************************************************
- ************************************* Создаем поставку на сайте WB **************************************
+ ************************************* Метод предоставляет подробную информацию о поставке **************************************
  ****************************************************************************************************************/
 function get_info_by_postavka($token_wb, $supply_id)
 {
-
-	$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/' . $supply_id;
+	usleep(20000);
+	// Запрос информации о поставке 
+	// echo "<br>Запрос информации о поставке <br>";
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/' . $supply_id;
 	$res = light_query_without_data($token_wb, $link_wb);
 
 	return $res; // Возвращаем номер поставки
@@ -204,7 +206,7 @@ function get_info_by_postavka($token_wb, $supply_id)
  ****************************************************************************************************************/
 function get_orders_from_supply($token_wb, $supplyId)
 {
-	$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/' . $supplyId . '/orders';
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/' . $supplyId . '/orders';
 	$res =  light_query_without_data($token_wb, $link_wb);
 	// echo "<pre>";
 	// print_r($res['orders']);
@@ -219,7 +221,8 @@ function get_orders_from_supply($token_wb, $supplyId)
 function get_stiker_from_supply($token_wb, $arr_orders, $N_1C_zakaz, $article, $path_stikers_orders)
 {
 	$dop_link = "?type=png&width=40&height=30";  // QUERY PARAMETERS
-	$link_wb  = "https://suppliers-api.wildberries.ru/api/v3/orders/stickers" . $dop_link;;
+	
+	$link_wb  = "https://marketplace-api.wildberries.ru/api/v3/orders/stickers" . $dop_link;;
 
 
 	// Разбиваем массив на 100 и менее заказов
@@ -418,7 +421,7 @@ function MakeUtf8Font($string)
 
 function put_supply_in_deliver($token_wb, $supplyId)
 {
-	$link_wb = "https://suppliers-api.wildberries.ru/api/v3/supplies/" . $supplyId . "/deliver";
+	$link_wb = "https://marketplace-api.wildberries.ru/api/v3/supplies/" . $supplyId . "/deliver";
 	echo "<br>$link_wb";
 	//  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
 	// раскоментировать при работе
@@ -437,7 +440,7 @@ function get_qr_cod_supply($token_wb, $supplyId, $name_postavka, $path_qr_supply
 
 
 	$dop_link = "?type=png";  // QUERY PARAMETERS
-	$link_wb  = "https://suppliers-api.wildberries.ru/api/v3/supplies/" . $supplyId . "/barcode" . $dop_link;
+	$link_wb  = "https://marketplace-api.wildberries.ru/api/v3/supplies/" . $supplyId . "/barcode" . $dop_link;
 
 	echo "<br>Заказ в поставку :$link_wb";
 

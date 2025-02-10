@@ -163,7 +163,7 @@ if ((@$arr_result['code'] == 401)) {
 
     $arr_key[] = $item['sa_name']; // массив артикулов
 foreach ($wb_catalog as $wb_item) {
-    if ($item['sa_name'] == $wb_item['mp_article'])
+    if (mb_strtolower($item['sa_name']) == mb_strtolower($wb_item['mp_article']))
     $arr_key_barcode[$item['sa_name']] = $wb_item['barcode'];
     }
     }
@@ -320,6 +320,8 @@ echo <<<HTML
 
 
 HTML;
+// print_r($arr_key);
+// print_r($arr_key_barcode);
 
     foreach ($arr_key as $key){
      echo "<tr>";

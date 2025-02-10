@@ -33,8 +33,10 @@ $dopLink = '?isAnswered=false&take=1000&skip=0&order=dateDesc)';
         
 $link_wb = 'https://feedbacks-api.wildberries.ru/api/v1/feedbacks'.$dopLink;
 $res = light_query_without_data($token, $link_wb);
-echo "<pre>";
+// echo "<pre>";
 // print_r ($res);
+
+// die();
 
 
 // перебираем все отзывы по одному

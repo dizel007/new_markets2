@@ -33,7 +33,7 @@ $price_bez_NDS = $item['FullPrice'] - $NDS;
 
 // **** Подставляем наименование и артикул *******************
 foreach ($arr_name_cat as $name) {
-    if ($item['key'] == $name['mp_article'] ) {
+    if (mb_strtolower($item['key']) == mb_strtolower($name['mp_article'] )) {
     $real_name = $name['main_article'].' '.$name['mp_name'];
     $real_name = str_replace("\"", "", $real_name);
     break;

@@ -7,7 +7,7 @@ require_once($offset."pdo_functions/pdo_functions.php");  //
 
 
 $nomenclatura = select_all_nomenklaturu($pdo);
-echo "<pre>";
+// echo "<pre>";
 
 
 
