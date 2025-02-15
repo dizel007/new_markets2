@@ -64,7 +64,7 @@ return $arr_catalog;
 ///// Достаем каталог товароы из БД 
 
 function get_dimensions_from_SITE_ozon($token_ozon, $client_id, $items_ozon) {
-  
+
             $send_data = '{
                 "filter": {
                 "product_id": [
@@ -78,10 +78,16 @@ function get_dimensions_from_SITE_ozon($token_ozon, $client_id, $items_ozon) {
 
 
         
-            $ozon_dop_url = "v3/products/info/attributes";
+            // $ozon_dop_url = "v3/products/info/attributes";
+            $ozon_dop_url = "v4/product/info/attributes";
+
         $oz_catalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
         
-        
+
+        // echo "<pre>";
+        // print_r($oz_catalog);
+
+        // die();
         
         $data_for_input['mp_article'] = $oz_catalog['result'][0]['offer_id'];
         $data_for_input['product_id'] =$items_ozon['product_id'];

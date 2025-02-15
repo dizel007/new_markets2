@@ -28,6 +28,13 @@ function make_array_for_1c_file($res) {
              if ($artick_temp2 == '82401-км') { // подмена артикула для второго черного 
                  $artick_temp2 = '82401-К';
              }
+             if ($artick_temp2 == '000882401-brown') { // подмена артикула для второго черного 
+                $artick_temp2 = '82401-К';
+            }
+            if ($artick_temp2 == '000882401-black') { // подмена артикула для второго черного 
+                $artick_temp2 = '82401-Ч';
+            }
+
              if ($artick_temp2 == 'ANM.39*59') { // подмена артикула для маленькой решетки
                  $artick_temp2 = '301';
              }

@@ -140,10 +140,10 @@ for ($i=1; $i <=$page_count; $i ++) {
 }
 
 
-file_put_contents('ozon_est.json',json_encode($prod_array, JSON_UNESCAPED_UNICODE));
+// file_put_contents('ozon_est.json',json_encode($prod_array, JSON_UNESCAPED_UNICODE));
 
-echo "<pre>";
-print_r ($prod_array);
+// echo "<pre>";
+// print_r ($prod_array);
 
 // die(); ///////////////////////// DELETEE ********************
 

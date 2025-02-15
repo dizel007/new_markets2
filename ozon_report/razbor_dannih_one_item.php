@@ -491,7 +491,9 @@ foreach($arr_poriadok as $number) {
 
 // ВЫВОД ОСНОВНОЙ ТАБЛИЦЫ ////////////////////////////////////////////////////
 
-require "print_one/real_money_one.php";
+
+require_once "print_one/real_money_one.php";
+
 // echo "<br><a href = \"$file_name_report_excel\"> Ссылка для скачивания Отчета</a><br>";
 // echo "<br><br><br>";
 

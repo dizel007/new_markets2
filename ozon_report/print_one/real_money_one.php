@@ -1,18 +1,8 @@
 <?php
 
-// echo "<pre>";
-// print_r($arr_article);
-// echo "</pre>";
-// // CSS цепляем
 
 
-
-// die();
 echo "<link rel=\"stylesheet\" href=\"css/main_ozon_reports.css\">";
-
-
-
-
 
 // Начинаем отрисовывать таблицу 
 
