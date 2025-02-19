@@ -127,7 +127,7 @@ $good_key = make_rigth_file_name($key); // убираем все запреще�
 
 $pdf_file_name = $number_order." (".$good_key.") ".count($posts)."шт";
 get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket, $pdf_file_name, $path_etiketki);
-$Arr_filenames_for_zip[$good_key] = $pdf_file_name.".pdf"; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
+$Arr_filenames_for_zip[$good_key] = $pdf_file_name; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 
 // $arr_for_merge_pdf[$good_key]['fileName'] = $pdf_file_name.".pdf";
 $arr_for_merge_pdf[$good_key]['value'] = count($posts);
@@ -154,14 +154,16 @@ if (isset($file_name_list_podbora)){
 make_pdf_file($arr_for_merge_pdf, $path_etiketki , $number_order);
 
 // Готовим информацию, чтобы сеодение файл с артикулом с файлом этикеток
-file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip));
+file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip, JSON_UNESCAPED_UNICODE));
   $array_dop_files['number_order'] = $number_order;
   $array_dop_files['filepath'] = "$path_etiketki/";
   $array_dop_files['path_excel_docs'] = $path_excel_docs;
   $array_dop_files['file_name_1c_list'] = $file_name_1c_list;
   $array_dop_files['file_name_list_podbora'] = $file_name_list_podbora;
   $array_dop_files['file_non_merge_archive'] = $link_path_zip2;
-file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_files));
+  $array_dop_files['ozon_shop'] = $ozon_shop;
+
+file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_files, JSON_UNESCAPED_UNICODE));
 
 
 
@@ -185,7 +187,7 @@ unlink('../../autosklad/uploads/priznak_razbora_net.txt');
  * *
  *****************************/
 
-header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
+header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/"."&ozon_shop =".$ozon_shop, true, 301);
 
 
  echo <<<HTML

@@ -15,7 +15,6 @@ $filepath = $_GET['filepath'];
 
 
 // print_r($_GET['filepath'] );
-// echo "<br>";
 // Костыли чтобы исправить адрес пути у фаилам
 
 $filepath = "../".str_replace("../", "", $filepath);
@@ -25,8 +24,6 @@ $filepath = "../".str_replace("../", "", $filepath);
 
 $array_dop_files = json_decode(file_get_contents($filepath."array_dop_info.json"), true);
 
-// echo  "<pre>";
-// print_r($array_dop_files);
 
 
 $number_order = $array_dop_files['number_order'];
@@ -60,7 +57,7 @@ foreach ($arr_name_articles as $key=>$filename) {
   //  echo "$filename<br>";
 
     $pdf_ozom_merge= new PDFMerger;
-    $file_etiket = $filepath.$filename;
+    $file_etiket = $filepath.$filename.".pdf";
 
     $file_key = $filepath.$key.".pdf";
 
@@ -68,7 +65,7 @@ foreach ($arr_name_articles as $key=>$filename) {
     
     $pdf_ozom_merge->addPDF($file_etiket); // этикетки
     $pdf_ozom_merge->addPDF($file_key);    // допописание
-
+// Название 
     $link_merge_pdf_file  = __DIR__."/".$new_dir."/".$filename.'_MERGE.pdf' ;
 
     $pdf_ozom_merge->merge('file',  $link_merge_pdf_file );
@@ -97,7 +94,10 @@ $merge_file_name = "etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zi
 
 
   $non_merge_file_link = mb_substr($array_dop_files['file_non_merge_archive'], 3);
-
+  
+  
+// ссылка для перехода к созданию этикеток с фэйковыми размероами
+$link_for_fake_gabarits = "make_fake_parametrs?filepath=".$path_etiketki."/";
   echo <<<HTML
   <head>
   <link rel="stylesheet" href="css/link_button.css">
@@ -115,6 +115,12 @@ $merge_file_name = "etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zi
 <div style="text-align:center">
  <a  href="$non_merge_file_link">скачать архив со стикерамии листом подбора(старая версия)</a>
 </div>
+
+</div>
+<div style="text-align:center">
+  <a  href="$link_for_fake_gabarits">СОЗДАТЬ ФАЙЛ С ЛЕВЫМИ ГАБАРИТАМИ</a>
+</div>
+
 </body>
   
   
