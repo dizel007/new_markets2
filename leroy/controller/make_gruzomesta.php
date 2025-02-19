@@ -23,7 +23,7 @@ if (isset($new_array_create_sends)) { // если есть неподтверж�
 foreach ($arr_for_complete as $item) {
 $id_parcel = $item;
 $dop_link = ':confirm';
-$link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
+$link = 'https://api.lemanapro.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
 $result_query = light_query_without_data_with_post ($token_lerua, $link, 'Запрос на подтверждение Заказа');
 }
 
@@ -46,7 +46,7 @@ if (isset($new_array_create_sends)) { // если есть неподтверж�
 
            $id_parcel = $item['id'];
            $dop_link = '/boxes';
-           $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
+           $link = 'https://api.lemanapro.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
         //    echo "<br>[$link]<br>";
 // **********************   Запуск разбития по грузоотправлениям 
            $rrr = query_with_data ($token_lerua, $link, json_encode($data_send), 'Размещение по грузометам' );

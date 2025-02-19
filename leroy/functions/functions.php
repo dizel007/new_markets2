@@ -110,11 +110,13 @@ function get_create_spisok_from_lerua($token_lerua, $art_catalog, $ship_status, 
     // *******************************  Количество запрашиваемых заказов **************************************
   
   $dop_link = '?limit='.$lerua_limit_items; 
-  $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels'.$dop_link;
+
+
+  $link = 'https://api.lemanapro.ru/marketplace/merchants/v1/parcels'.$dop_link;
   
   $list_all_sending = light_query_without_data ($token_lerua, $link, 'Список всех отправлений');
 
-  // echo "<pre>";
+//   echo "<pre>";
 // print_r($list_all_sending );
 // die('fffffffffffffff');
 // 
@@ -128,7 +130,7 @@ function get_create_spisok_from_lerua($token_lerua, $art_catalog, $ship_status, 
     // echo "*************************************************";
       // смотрим статус каждого отправления 
       $id_parcel = $item['id'];
-      $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
+      $link = 'https://api.lemanapro.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
   
       $status_item = light_query_without_data ($token_lerua, $link, 'Статус отпраления');
       // print_r($status_item);

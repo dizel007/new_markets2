@@ -23,7 +23,7 @@ echo "<pre>";
 
 foreach ($arr_parcels as $item) {
 $id_parcel = $item;
-$link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/documents/'.$id_parcel."?documentType=barcodeSticker";
+$link = 'https://api.lemanapro.ru/marketplace/merchants/v1/documents/'.$id_parcel."?documentType=barcodeSticker";
 
 $result_query = light_query_without_data ($token_lerua, $link, 'Запрос этикетки');
 

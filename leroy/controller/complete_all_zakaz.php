@@ -14,7 +14,7 @@ $new_array_packingStarted= get_create_spisok_with_need_date($array_packingStarte
 foreach ($new_array_packingStarted as $item) {
     $id_parcel = $item['id'];
     $dop_link = ':pack';
-    $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
+    $link = 'https://api.lemanapro.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
     $rrrr = light_query_without_data_with_post ($token_lerua, $link, 'Запрос на подтверждение Заказа');
     // echo $link."<br>";
     }

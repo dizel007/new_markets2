@@ -7,7 +7,8 @@ echo "ПЕРЕХОДИМ К Формированию Листа ЗАКАЗА и 
 $array_packingCompleted = get_create_spisok_from_lerua($token_lerua, $art_catalog, 'packingCompleted', $lerua_limit_items);
                                 // packingCompleted - нужно сделать , ЛИст подборки нужно после комплектации делать
                                 // packingStarted - Если посмотреть лист подборки до комплектации
-
+// echo "<pre>";
+// print_r($array_packingCompleted);
 // Смотрим была ли выбрана дата комплектации
 if (isset($_GET['date_complete_leroy'])) {
     $date_for_ship = $_GET['date_complete_leroy'];
@@ -26,7 +27,7 @@ echo "<a href=\"$link_list_podbora\">Cкачать лист подбора</a>";
 echo "<hr>";
 echo "<a href=\"$link_list_tovarov\">Cкачать лист для 1С</a>";
 echo "<hr>";
-echo "<a href=\"get_etiketku.php?date_ship=$date_for_ship\">Cкачать лист для 1С</a>";
+echo "<a href=\"get_etiketku.php?date_ship=$date_for_ship\">Сформировать ссылку для скачивания PDF наклееек</a>";
 echo "<hr>";
 } else {
     echo  "НЕТ ЗАКАЗОВ ДЛЯ КОМПЛЕКТАЦИИ";

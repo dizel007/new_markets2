@@ -64,11 +64,11 @@ foreach ($new_array_list_podbora as $items) {
     $sheet->getStyle("A".$i)->getFont()->setBold(true); // жирный текст
     $sheet->getStyle("A".$i)->getFont()->setSize(15); // размер текста
     $i++;
-    $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
+    $link = 'https://api.lemanapro.ru/marketplace/merchants/v1/parcels/'.$id_parcel.$dop_link;
 
 
 $array_s_item = light_query_without_data ($token_lerua, $link, 'Лист подбора с грузоместами');
-
+sleep(1);
         foreach ($array_s_item as $shiped_posts) {
     
                 

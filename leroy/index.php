@@ -36,6 +36,12 @@ HTML;
 
 $new_array_create_sends = get_create_spisok_from_lerua($token_lerua, $art_catalog, 'created' , $lerua_limit_items);
 
+
+// echo "<pre>";
+// print_r($new_array_create_sends);
+// die();
+
+
 if (isset($new_array_create_sends)) {
     echo "<h2>Неподтвержденные позиции (лимит ". $lerua_limit_items." заказов)</h2>";
     make_spisok_sendings ($new_array_create_sends);
