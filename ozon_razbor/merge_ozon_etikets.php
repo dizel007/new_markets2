@@ -80,7 +80,8 @@ unset ($pdf_ozom_merge);
   $zip_new->open($new_dir."/"."etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
   foreach ($arr_name_articles as $zips) {
     // echo $new_dir."/".$zips.'_MERGE.pdf'."<br>";
-  $zip_new->addFile($new_dir."/".$zips.'_MERGE.pdf', "$zips"); // Добавляем пдф файлы
+    $zip_file_name = $zips."_MERGE.pdf";
+  $zip_new->addFile($new_dir."/".$zips.'_MERGE.pdf', "$zip_file_name"); // Добавляем пдф файлы
 }
 $zip_new->addFile($path_excel_docs."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для НОВЫЙ 1С файл /// *****************
 if (isset($file_name_list_podbora)){ 
@@ -97,7 +98,7 @@ $merge_file_name = "etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zi
   
   
 // ссылка для перехода к созданию этикеток с фэйковыми размероами
-$link_for_fake_gabarits = "make_fake_parametrs?filepath=".$path_etiketki."/";
+$link_for_fake_gabarits = "make_fake_parametrs.php?filepath=".$filepath."";
   echo <<<HTML
   <head>
   <link rel="stylesheet" href="css/link_button.css">

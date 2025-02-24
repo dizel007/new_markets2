@@ -156,7 +156,7 @@ $file_size= round((filesize( $link_path_zip2)/1000000),2)." Mb";
 </head>
 <body>
   <div class="button">
-  <a href="$link_path_zip2">скачать архив со стикерамии (MERGE)</a>
+  <a href="$link_path_zip2">скачать архив с ФЕЙКОВЫМИ ГАБАРИТНЫМИ РАЗМЕРАМИ (MERGE)</a>
   <p class="top">$merge_file_name</p>
   <p class="bottom">$file_size</p>
   

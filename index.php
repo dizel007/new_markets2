@@ -40,9 +40,12 @@ echo "<div class=\"container\"><div class = \"zagolovok\">Сводные дан�
 echo "<div class=\"container\">";
 
 
-
+// Автосклад
 print_one_block ('table_element', "autosklad/start_mp.php", 'АВТОСКЛАД',
                 'Распределение складских остатков по всех маркетплэйсам', 'pics/main_screen/autosklad.jpg');
+// склад ЛЕРУА
+print_one_block ('table_element', "leroy/get_assortiment.php", 'Леруа Склад',
+                'Распределение складских остатков по всех маркетплэйсам', 'pics/main_screen/razbor_leroy.jpg');
 
 print_one_block ('table_element', "all_sell/all_sell_index.php", 'ПРОДАЖИ ВСЕ',
                 'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells.jpg');

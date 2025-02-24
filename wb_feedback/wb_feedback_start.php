@@ -71,7 +71,9 @@ $feedback_random = rand(1,7);
 $temp = 'feedback_answer_'.$feedback_random;
     $feedback_answer = $$temp;
 echo $feedback_answer."<br>";
-    $link_wb = 'https://feedbacks-api.wildberries.ru/api/v1/feedbacks';
+
+    // $link_wb = 'https://feedbacks-api.wildberries.ru/api/v1/feedbacks';
+    $link_wb = 'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer';
 
 
 $data = array(

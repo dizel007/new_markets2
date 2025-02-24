@@ -140,7 +140,12 @@ $arr_for_merge_pdf[$good_key]['value'] = count($posts);
   $zip_new = new ZipArchive();
   $zip_new->open($path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
   foreach ($Arr_filenames_for_zip as $zips) {
-  $zip_new->addFile($path_etiketki."/".$zips, "$zips"); // Добавляем пдф файлы
+
+    $zip_file_name = $zips.".pdf";
+  $zip_new->addFile($path_etiketki."/".$zips.".pdf", "$zip_file_name"); // Добавляем пдф файлы
+
+
+
 }
   $zip_new->addFile($path_excel_docs."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для НОВЫЙ 1С файл /// *****************
 if (isset($file_name_list_podbora)){ 
@@ -187,7 +192,7 @@ unlink('../../autosklad/uploads/priznak_razbora_net.txt');
  * *
  *****************************/
 
-header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/"."&ozon_shop =".$ozon_shop, true, 301);
+header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
 
 
  echo <<<HTML
