@@ -35,23 +35,32 @@ $ozon_catalog    = get_catalog_tovarov_v_mp($shop_name , $pdo, 'active'); // п�
 // print_r($ozon_catalog);
 
 // метод получает информацию о товаре по СКУ 
-$ozon_dop_url = "v2/product/info";
+// $ozon_dop_url = "v2/product/info";
+$ozon_dop_url = 'v3/product/info/list';
+
+
 foreach ($ozon_catalog as &$items) {
     if ($items['product_id'] == 0 ) {
         
-            $send_data = json_encode(array("offer_id" => "",
-                               "product_id" => 0,
-                               "sku" => $items['sku']));
+            // $send_data = json_encode(array("offer_id" => "",
+            //                    "product_id" => 0,
+            //                    "sku" => $items['sku']));
 
-
+          $send_data =  json_encode(array("sku" => array($items['sku'])));
             // $send_data = json_encode($send_data);
             
             $ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
-            $items['id_ozon'] = $ozcatalog['result']['id'];
+
+            // print_r($ozcatalog);
+
+            // $items['id_ozon'] = $ozcatalog['result']['id'];
+            $items['id_ozon'] = $ozcatalog['items'][0]['id'];
 
 
             $item_for_update['product_id'] =  $items['id_ozon'];
             $item_for_update['sku'] =  $items['sku'];
+
+            // print_r($items);
 
 // обновляем базу данных (Добавляем product_id (OZON))
 $info_update = update_catalog_mp_ozon($pdo, $shop_name, $item_for_update) ;

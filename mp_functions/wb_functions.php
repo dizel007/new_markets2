@@ -47,7 +47,7 @@ function get_ostatki_wb ($token_wb, $wb_catalog, $warehouseId) {
 *******************************************************************************************************/
 function get_new_zakazi_wb ($token_wb, $wb_catalog) {
 
-    $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/orders/new';
+    $link_wb = 'https://marketplace-api.wildberries.ru/api/v3/orders/new';
     $result = light_query_without_data($token_wb, $link_wb);
     
      // формируем массив ключ - артикул ; значение - количество элементов этого артикула

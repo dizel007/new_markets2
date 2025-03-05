@@ -74,8 +74,7 @@ update_ostatki_Yandex_fbs($arr_tokens,$pdo, $yandex_anmaks_fbs);
         foreach ($wb_update_items_quantity as $wb_item) {
             $data_wb["stocks"][] = $wb_item;
         }
-   
-        $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/stocks/'.$warehouseId; 
+        $link_wb = 'https://marketplace-api.wildberries.ru/api/v3/stocks/'.$warehouseId; 
         $res = wb_put_query_with_data($token_wb, $link_wb, $data_wb);
      }
 
