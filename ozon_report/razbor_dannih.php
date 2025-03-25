@@ -203,6 +203,12 @@ if (isset($arr_sum_data['amount_hranenie'])) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $arr_sum_data['amount_hranenie'], "Краткосрочное размещение возврата FBS + утилизацию возвратов");
 }
 
+//поздняя отгрузка
+if (isset($Summa_pozdniaia_otgruzka)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_pozdniaia_otgruzka, "Услуга за обработку операционных ошибок продавца: поздняя отгрузка");
+}
+
+
 // Приобретение отзывов на платформе
 if (isset($Summa_buy_otzivi)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_buy_otzivi, "Приобретение отзывов на платформе");
@@ -226,6 +232,16 @@ if (isset($Summa_reklami_poisk)) {
 // Реклама трафареты
 if (isset($Summa_reklami_trafareti)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_reklami_trafareti, "Реклама трафареты");
+}
+
+// Реклама вывод в ТОП
+if (isset($Summa_reklami_get_in_Top)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_reklami_get_in_Top, "Реклама вывод в ТОП");
+}
+
+// Баллы за отзывы
+if (isset($Summa_balli_za_otzivi)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_balli_za_otzivi, "Реклама Баллы за отзывы");
 }
 
 // Услуга размещения товаров на складе

@@ -57,18 +57,6 @@ elseif ($items['operation_type'] == 'OperationMarketplaceSupplyAdditional')
         $Summa_obrabotka_gruzomestFBO = @$Summa_obrabotka_gruzomestFBO  + $items['amount']; 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceStorage')
     {  //ФБО хранение
         $Summa_hranenia_FBO = @$Summa_hranenia_FBO  + $items['amount']; 
@@ -86,6 +74,14 @@ elseif ($items['operation_type'] == 'OperationElectronicServiceStencil')
     {  //Реклама Трафареты
              $Summa_reklami_trafareti = @$Summa_reklami_trafareti + $items['amount']; 
     }
+elseif ($items['operation_type'] == 'OperationGettingToTheTop')
+    {  //Реклама вывод в ТОП
+             $Summa_reklami_get_in_Top = @$Summa_reklami_get_in_Top + $items['amount']; 
+    }
+elseif ($items['operation_type'] == 'OperationPointsForReviews')
+    {  //Баллы за отзывы
+             $Summa_balli_za_otzivi = @$Summa_balli_za_otzivi + $items['amount']; 
+    }
 elseif ($items['operation_type'] == 'MarketplaceSaleReviewsOperation')
     {  //Приобретение отзывов на платформе
         $Summa_buy_otzivi = @$Summa_buy_otzivi  + $items['amount']; 
@@ -101,7 +97,15 @@ elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearc
 elseif ($items['operation_type'] == 'DefectRateCancellation'){
      //Услуга за обработку операционных ошибок продавца: отмена
             $Summa_oshibka_obrabotki = @$Summa_oshibka_obrabotki + $items['amount']; 
-        }         
+        } 
+
+        elseif ($items['operation_type'] == 'DefectRateDetailed'){
+            //Услуга за обработку операционных ошибок продавца: поздняя отгрузка
+                   $Summa_pozdniaia_otgruzka = @$Summa_pozdniaia_otgruzka + $items['amount']; 
+               }   
+
+
+
 elseif ($items['operation_type'] == 'MarketplaceServiceItemCrossdocking'){
     //Кросс-докинг
             $Summa_kross_doking = @$Summa_kross_doking + $items['amount']; 

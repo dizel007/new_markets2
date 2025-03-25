@@ -36,11 +36,12 @@ function create_marker_recover_file($new_path) {
     // $supplyId = 'WB-GI-53892210';
     // $orderId = '962057195';
     usleep(10000); // 10ms pause
-    $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/'.$supplyId.'/orders';
+    $link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/'.$supplyId.'/orders';
     $res =  light_query_without_data($token_wb, $link_wb);
+// ***********************************************************
     // echo "<pre>";
     // print_r($res['orders']);
-    
+// ***********************************************************
     if (!isset($res)) {
         output_print_comment("<b>СБОЙ</b> При запросе заказа в поставке ничего не вернулось в ответ"); // Вывод коммент-я на экран
 

@@ -289,6 +289,7 @@ require_once('wb_print_report_table_new.php');
 $file_name_report_excel = report_mp_make_excel_file_morzha($array_for_table, $name_mp_shop, $dateFrom, $dateTo);
 echo "<br> Сумма издержек по перевозке = ".$summa_izderzhik_po_perevozke;
 echo "<br> Возмещение издержек по перевозке/по складским операциям с товаром = ".$return_logistok;
+echo "<br> Возмещение за выдачу и возврат товаров на ПВЗ = ".$return_vidacha_o_vozvrat;
 echo "<br> Штрафы / Платная приемка МП на СЦ = ".$sum_shtafi_i_doplati;
 echo "<br> Корректировка эквайринга = ".$sum_korrectirovka_eqvairinga;
 echo "<br><br>";

@@ -147,6 +147,11 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
 } elseif($item['supplier_oper_name'] == 'Возмещение издержек по перевозке/по складским операциям с товаром') {
 $return_logistok = @$return_logistok + $item['rebill_logistic_cost'];
 
+// Возмещение за выдачу и возврат товаров на ПВЗ
+} elseif($item['supplier_oper_name'] == 'Возмещение за выдачу и возврат товаров на ПВЗ') {
+    $return_vidacha_o_vozvrat = @$return_vidacha_o_vozvrat + $item['ppvz_reward'];
+
+    
 } else {
     $array_neuchet[] = $item;
 }

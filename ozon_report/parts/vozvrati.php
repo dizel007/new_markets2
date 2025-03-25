@@ -38,6 +38,11 @@ foreach ($arr_returns as $items) {
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffSC') {
                                         $arr_article[$new_sku]['obrabotka_otpravlenii_v_SC'] = @$arr_article[$new_sku]['obrabotka_otpravlenii_v_SC'] + $return_dop_obrabotka['price'];
                                 }
+                                // обработка возврата,
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDelivToCustomer') {
+                                        $arr_article[$new_sku]['obrabotka_otpravlenii_v_SC'] = @$arr_article[$new_sku]['obrabotka_otpravlenii_v_SC'] + $return_dop_obrabotka['price'];
+                                }
+                                
                                 // обработка отправления в ПВЗ.
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffPVZ') {
                                         $arr_article[$new_sku]['obrabotka_otpravlenii_v_PVZ'] = @$arr_article[$new_sku]['obrabotka_otpravlenii_v_PVZ'] + $return_dop_obrabotka['price'];

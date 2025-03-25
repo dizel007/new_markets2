@@ -79,7 +79,7 @@ echo "<td></td>"; // арктикул
     print_one_string_in_table($arr_sum_data, 'real_price_minus_all');
     echo "<td></td>"; // хорошая цена
     echo "<td></td>"; // Себестоимость
-    if ($print_item['zarabotali_na_artikule']  >= 0) {
+    if ($arr_sum_data['zarabotali_na_artikule']  >= 0) {
         $color_desired_price = 'good_desired_price';
        }else {
         $color_desired_price = 'bad_desired_price';

@@ -93,6 +93,11 @@ $arr_need_ostatok = get_min_ostatok_tovarov($pdo); // массив с утвер
 
 // Вся продаваемая номенклатура
 $arr_all_nomenklatura = select_active_nomenklaturu($pdo);
+
+
+// echo "<pre>";
+// print_r($arr_all_nomenklatura);
+// die();
 // Получаем поартикульное распределние товаров на каждом складе 
 $raspredelenie_ostatkov = get_procent_tovarov_marketa($pdo);
 
