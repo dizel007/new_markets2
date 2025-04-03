@@ -1,4 +1,6 @@
 <?php
+$return_logistok = 0;
+$return_vidacha_o_vozvrat = 0;
 // $pp=0;
 foreach ($arr_result as $item) {
 

@@ -98,7 +98,7 @@ if (!isset($arr_for_zakaz)) {
 foreach ($arr_for_zakaz as $one_post) {
     set_time_limit(0);
     $result = make_packeges_for_one_post_2($token_ozon, $client_id_ozon,$one_post);
-    usleep(10000);
+    sleep(2); // 
     // $array_list_podbora[] = $result['list_podbora'];
     // $array_oben[] = $result['obmen'];
     // print_r($result['obmen']);
