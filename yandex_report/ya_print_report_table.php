@@ -23,81 +23,86 @@ echo <<<HTML
  <td>Хорошая <br> цена</td>
  <td>Себест</td>
  <td>Прибыль<br> с артикула</td>
-
-  <td>Прибыль </td>
  </tr>
  
  
 HTML;
 
-foreach ($arr_with_key as $key => $item) {
+foreach ($arr_article_data as $key => $item) {
     echo "<tr>";
     echo "<td>" . $key . "</td>";
-    echo "<td>" . @$item['count_sell'] . "</td>";
+    echo "<td>" . @$item['Кол-во товаров'] . "</td>";
     ///     Сумма выплат с ВБ до вычета 
-    $sum_count_sell = @$sum_count_sell + @$item['count_sell'];
-
-    $sum_nasha_viplata = @$sum_nasha_viplata + @$item['sum_nasha_viplata'];
-    $sum_raspred_komissii = @$sum_raspred_komissii + @$item['raspred_komissii'];
-    $sum_k_pererchisleniu = @$sum_k_pererchisleniu + @$item['sum_k_pererchisleniu'];
-
-
-// К перечислению за товар
-
-    if (isset($item['count_sell'])) {
-      if ($item['count_sell'] > 0) {
-        $price_one_shtuka_na_site = round(@$item['sum_k_pererchisleniu']/@$item['count_sell'],2);
-      } else {
-        $price_one_shtuka_na_site = "-"; 
-      }
-    } else {
-      $price_one_shtuka_na_site = "-"; 
-    }
+    $sum_count_sell = @$sum_count_sell + @$item['Кол-во товаров'];
+    $sum_nasha_viplata = @$sum_nasha_viplata + @$item['сумма_операций'];
+    $sum_raspred_komissii = @$sum_raspred_komissii + @$item['сумма_удержания_прочие'];
+    $sum_k_pererchisleniu = @$sum_k_pererchisleniu + @$item['сумма_за_артикул_после_всех_вычитов'];
+    $sum_proc_raspred = @$sum_proc_raspred + $item['процент_от_суммы'];      
+// цена продажи товара
+    echo "<td class=\"\">" . number_format(@$item['сумма_операций'], 2, ',', ' '). "</td>";
+// процент распредегты
+     echo "<td class=\"\">" . number_format(@$item['процент_от_суммы'], 2, ',', ' ') . "</td>";
+// Сумма удержаний
+     echo "<td class=\"minus\">" . number_format(@$item['сумма_удержания_прочие'], 2, ',', ' '). "</td>";
+// Сумма выплат нам за артикул
+    echo "<td class=\"plus\">" . number_format(@$item['сумма_за_артикул_после_всех_вычитов'], 2, ',', ' '). "</td>";
+// Получили за 1 шуткук
+    echo "<td class=\"\">" . number_format(@$item['получили_за_штуку'], 2, ',', ' ') ."</td>";
 
 
+ ///   Находим хорую цену, себестоимость и дельту между выплотой и ними 
+
+ foreach ($nomenclatura as $odin_tovar) {
+  if (mb_strtolower($key) == mb_strtolower($odin_tovar['main_article_1c'])) {
+      $main_price = $odin_tovar['main_price'];
+      $min_price = $odin_tovar['min_price'];
+      $delta_main_price = $item['получили_за_штуку'] - $main_price;
+      $delta_min_price = $item['получили_за_штуку'] - $min_price;
+    break;
+  } else {
+    $main_price = 0;
+    $min_price = 0;
+    $delta_main_price = 0;
+    $delta_min_price = 0;
+  }
 
 
-         
+ }
 
-    echo "<td class=\"\">" . number_format(@$item['sum_nasha_viplata'], 2, ',', ' '). "</td>";
 
-      // процент распредегты
-      echo "<td class=\"\">" . number_format(@$item['proc_raspred'], 2, ',', ' ') . "</td>";
-      $sum_proc_raspred = @$sum_proc_raspred + $item['proc_raspred'];
-
-    echo "<td class=\"minus\">" . number_format(@$item['raspred_komissii'], 2, ',', ' '). "</td>";
-
-    echo "<td class=\"plus\">" . number_format(@$item['sum_k_pererchisleniu'], 2, ',', ' '). "</td>";
-
-    
-    
-    echo "<td class=\"\">" . $price_one_shtuka_na_site ."</td>";
 
 // Хорошая цена товара и дельта
-      if ($item['delta_good_and_sell_prices'] >= 0 ) {
-        echo "<td class=\"plus\">" . number_format(@$item['main_price'], 2, ',', ' ') ."<br>".number_format(@$item['delta_good_and_sell_prices'], 2, ',', ' '). "</td>";
+
+
+      if ($delta_main_price >= 0 ) {
+        echo "<td class=\"plus\">" . number_format( $main_price, 2, ',', ' ') ."<br>".number_format($delta_main_price, 2, ',', ' '). "</td>";
       } else {
-        echo "<td class=\"minus\">" . number_format(@$item['main_price'], 2, ',', ' ') ."<br>".number_format(@$item['delta_good_and_sell_prices'], 2, ',', ' '). "</td>";
+        echo "<td class=\"minus\">" . number_format( $main_price, 2, ',', ' ') ."<br>".number_format($delta_main_price, 2, ',', ' '). "</td>";
       }
 
    
     ///     себестоимость и дельта
-    if ($item['delta_v_stoimosti'] >= 0 ) {
-      echo "<td class=\"plus\">" . @$item['sebes_str_item']."<br>".number_format(@$item['delta_v_stoimosti'], 2, ',', ' '). "</td>";
+    if ($delta_min_price >= 0 ) {
+      echo "<td class=\"plus\">" . $min_price."<br>".number_format($delta_min_price, 2, ',', ' '). "</td>";
      } else {
-      echo "<td class=\"minus\">" . @$item['sebes_str_item']."<br>".number_format(@$item['delta_v_stoimosti'], 2, ',', ' '). "</td>";
+      echo "<td class=\"minus\">" . $min_price."<br>".number_format($delta_min_price, 2, ',', ' '). "</td>";
      }
 
 
      // Прибыль с артикула 
-    echo "<td class=\"our_many\">" . number_format(@$item['delta_v_stoimosti'], 2, ',', ' ') . "</td>";
+     if (isset($item['Кол-во товаров'])) {
+     $pribil_s_one_article = $delta_min_price * $item['Кол-во товаров'];
+     } else {
+      $pribil_s_one_article = 0;
+     }
 
-    ///     Заработок с артикула 
-    $our_pribil = @$item['delta_v_stoimosti'] * @$item['count_sell'];
-$sum_our_pribil = @$sum_our_pribil  +   $our_pribil;
-    echo "<td class=\"our_many\"><b>" . number_format( $our_pribil, 2, ',', ' ') . "</b></td>"; // заработали на артикуле
-
- 
+      ///     себестоимость и дельта
+    if ($pribil_s_one_article >= 0 ) {
+      echo "<td class=\"plus\">" . number_format($pribil_s_one_article, 2, ',', ' '). "</td>";
+     } else {
+      echo "<td class=\"minus\">" . number_format($pribil_s_one_artivle, 2, ',', ' ')."</td>";
+     }
+     $sum_pribil_s_one_article = @$sum_pribil_s_one_article +@$pribil_s_one_article;
     echo "</tr>";
 }
 
@@ -118,36 +123,17 @@ echo "<td class=\"plus\"><b>" . number_format($sum_k_pererchisleniu, 2, ',', ' '
 echo "<td></td>";
 echo "<td></td>";
 echo "<td></td>";
-echo "<td></td>";
 
-echo "<td class=\"our_many\"><b>" . number_format($sum_our_pribil, 2, ',', ' ') . "</b></td>";
+if ($sum_pribil_s_one_article >= 0 ) {
+  echo "<td class=\"plus\"><b>" . number_format($sum_pribil_s_one_article, 2, ',', ' ') . "</b></td>";
+ } else {
+  echo "<td class=\"minus\"><b>" . number_format($sum_pribil_s_one_article, 2, ',', ' ') ."</b></td>";
+ }
+
+
+
+
 
 echo "</tr>";
-
-////////////////////////////////////////////////////////////////
-// echo "<tr>";
-// echo "<td></td>";
-// echo "<td></td>";
-// $summa_k_perechilseniu_za_tovar = $sum_k_pererchisleniu_po_wb + $sum_avance_po_wb + $sum_brak - $sum_vozvratov_po_wb;
-// echo "<td class=\"plus\"><b>" . number_format($summa_k_perechilseniu_za_tovar, 2, ',', ' ') . "</b></td>";
-// echo "<td> <-- </td>";
-// echo "<td> <-- </td>";
-// echo "<td></td>";
-// echo "<td class=\"plus\"><b>Выплата с<br>учетом штрафов</td>";
-// // Сумма итого у оплате За вычетов штрафов / Хранение / Удержания /
-// $summa_itogo_k_oplate = $sum_nasha_viplata_po_wb - $sum_storage - $sum_uderzhania - $sum_shtafi_i_doplati + $sum_brak - $sum_storage_correctirovka;
-// echo "<td class=\"plus\"><b>" . number_format($summa_itogo_k_oplate, 2, ',', ' ') . "</b></td>";
-
-
-// echo "<td></td>";
-
-
-
-
-
-// echo "</tr>";
-
-
-
 
 echo "</table>";

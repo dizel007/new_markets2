@@ -52,6 +52,19 @@ elseif ($items['operation_type'] == 'DefectRateShipmentDelay')
     {  //"Услуга за обработку операционных ошибок продавца: просроченная отгрузка
         $Summa_oshibok_prodavca = @$Summa_oshibok_prodavca  + $items['amount']; 
     }
+
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceVolumeWeightCharacsProcessing')
+    {  //Услуга по дополнительной обработке ОВХ
+        $Summa_izmerenii_OVX = @$Summa_izmerenii_OVX  + $items['amount']; 
+    }
+
+
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundCargoSurplus')
+    {  //Услуга по дополнительной обработке ОВХ
+        $Summa_obrabotka_opoznannih_izlishkov = @$Summa_obrabotka_opoznannih_izlishkov  + $items['amount']; 
+    }
+
+
 elseif ($items['operation_type'] == 'OperationMarketplaceSupplyAdditional')
     {  //Обработка товара в составе грузоместа на FBO
         $Summa_obrabotka_gruzomestFBO = @$Summa_obrabotka_gruzomestFBO  + $items['amount']; 
@@ -64,6 +77,15 @@ elseif ($items['operation_type'] == 'OperationMarketplaceServiceStorage')
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceStockDisposal')
     {  //Утилизацция
         $Summa_utilizacii_tovara = @$Summa_utilizacii_tovara  + $items['amount']; 
+    }
+elseif ($items['operation_type'] == 'DisposalReasonFailedToPickupOnTime')
+    {  //Утилизацция товара - не забрали в срок
+        $Summa_utilizacii_tovara = @$Summa_utilizacii_tovara  + $items['amount']; 
+    }
+    
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundCargoShortage')
+    {  //УУслуга по бронированию места и персонала для поставки с неполным составом в составе ГМ
+        $Summa_bronirovanie_mesta_i_personala = @$Summa_bronirovanie_mesta_i_personala  + $items['amount']; 
     }
 
 elseif ($items['operation_type'] == 'OperationMarketplacePremiumSubscribtion')
@@ -80,7 +102,7 @@ elseif ($items['operation_type'] == 'OperationGettingToTheTop')
     }
 elseif ($items['operation_type'] == 'OperationPointsForReviews')
     {  //Баллы за отзывы
-             $Summa_balli_za_otzivi = @$Summa_balli_za_otzivi + $items['amount']; 
+        $Summa_balli_za_otzivi = @$Summa_balli_za_otzivi + $items['amount']; 
     }
 elseif ($items['operation_type'] == 'MarketplaceSaleReviewsOperation')
     {  //Приобретение отзывов на платформе

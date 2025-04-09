@@ -271,12 +271,29 @@ if (isset($Summa_primiun_plus25000)) {
 }
 
 
-
-
-
 if (isset($Summa_utilizacii_tovara)) {
-    echo "Утилизация : $Summa_utilizacii_tovara<br>";
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_utilizacii_tovara, "Утилизация товара");
+    
 }
+
+if (isset($Summa_izmerenii_OVX)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_izmerenii_OVX, "Услуга по дополнительной обработке ОВХ");
+    
+}
+if (isset($Summa_obrabotka_opoznannih_izlishkov)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_opoznannih_izlishkov, "Услуга по обработке опознанных излишков в составе ГМ");
+    
+}
+if (isset($Summa_bronirovanie_mesta_i_personala)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_bronirovanie_mesta_i_personala, "Услуга по бронированию места и персонала для поставки с неполным составом в составе ГМ");
+    
+}
+
+
+
+
+
+
 
 $dop_uslugi += @$amount_hranenie;
 if (isset($dop_uslugi)) {

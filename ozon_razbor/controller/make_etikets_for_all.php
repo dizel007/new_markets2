@@ -98,13 +98,16 @@ foreach ($new_res as $posts_z) {
   $arr_article_tovar[$article][] = $posts_z;
 }
 
+set_time_limit(0); // неограниченное время ожидание ответа от сервера
+ob_start(); // включить буфер
 
 // перебираем поартикульный массив и формируем строку со списком заказов (поартикульно)
 foreach ($arr_article_tovar as $key=> $posts) {
-  
+  echo "Processing...<br>";
+  // ob_flush();
+  // flush();
   // $time_script = 300 + count($arr_article_tovar[$key]) * 50;
   // set_time_limit($time_script);
-  set_time_limit(0); // неограниченное время ожидание ответа от сервера
 
   $string_etiket = '';
   foreach ($posts as $post) {

@@ -1,0 +1,83 @@
+
+
+body{
+  font-family: Helvetica;
+  /* -webkit-font-smoothing: antialiased; */
+  background: rgb(213, 218, 228);
+}
+
+/* Table Styles */
+
+.table-wrapper{
+  margin: 20px 20px 30px;
+  /* box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ); */
+
+}
+
+.sell_mp_table {
+margin: 0 auto;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: normal;
+  border: none;
+  border-collapse: collapse;
+  width: 60%;
+  max-width: 90%;
+  white-space: nowrap;
+  background-color: white;
+box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
+}
+
+
+.sell_mp_table thead th {
+  color: #ffffff;
+  background: #da6826;
+}
+
+
+
+
+.sell_mp_table td, .sell_mp_table th {
+  text-align: center;
+  padding: 2px;
+  border: solid  #c9701d 1px;
+
+}
+
+.sell_mp_table td {
+  margin:0 auto;
+  border-right: 1px solid #da6826;
+  font-size: 14px;
+font-weight: 500;
+
+}
+
+
+
+.sell_mp_table tr:nth-child(even) {
+  background: #c9c9df;
+}
+
+.center {
+  text-align: center;
+}
+
+.V_mp_table {
+  margin: 0 auto;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+  box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
+  }
+
+  .V_mp_table thead th {
+    color: #ffffff;
+    background: #293cec;
+  }
+  
