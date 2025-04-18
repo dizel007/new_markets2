@@ -41,6 +41,9 @@ box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
   text-align: center;
   padding: 2px;
   border: solid  #c9701d 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
 
 }
 
@@ -62,22 +65,3 @@ font-weight: 500;
   text-align: center;
 }
 
-.V_mp_table {
-  margin: 0 auto;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: normal;
-    border: none;
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 100%;
-    white-space: nowrap;
-    background-color: white;
-  box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
-  }
-
-  .V_mp_table thead th {
-    color: #ffffff;
-    background: #293cec;
-  }
-  

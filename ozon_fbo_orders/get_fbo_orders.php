@@ -51,7 +51,10 @@ $i++;
 } while ($priznak_all_orders == 0);
 
 
-
+if (!isset($res)) {
+   echo "Нет даных для выдачи";
+   die();
+}
 
 foreach ($res as $item) {
 $arr_article[$item['products'][0]['offer_id']]['count'] = @$arr_article[$item['products'][0]['offer_id']]['count']  + 1;
@@ -63,11 +66,12 @@ $arr_warehouse[$item['products'][0]['offer_id']][$item['analytics_data']['wareho
 
 
 
-echo "<pre>";
-print_r($arr_warehouse);
+// echo "<pre>";
+// print_r($arr_warehouse);
 
 // вставляем таблицу всех продаж на выбранном озоне
-// require_once "print_all_sells.php";
-
+require_once "print_all_sells.php";
+echo "<br><br>";
 // вставляем таблицу всех продаж c разбивкой по городам 
 require_once "print_sell_po_gorodam.php";
+echo "<br><br>";

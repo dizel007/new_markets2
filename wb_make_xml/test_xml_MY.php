@@ -132,6 +132,8 @@ if ($oldElement) {
         }
     }
     
+    // Цена за штук
+    $price_one_item = round ($price_bez_NDS / $item['count'],2);
    
     // Считаем сумму и НДС
     $Summa = $Summa + $item['FullPrice'];
@@ -151,7 +153,7 @@ if ($oldElement) {
         $newRow_DopSved->setAttribute('ОКЕИ_Тов', '796');
         $newRow_DopSved->setAttribute('НаимЕдИзм', 'шт');
         $newRow_DopSved->setAttribute('КолТов', $item['count']);
-        $newRow_DopSved->setAttribute('ЦенаТов', $NDS);
+        $newRow_DopSved->setAttribute('ЦенаТов', $price_one_item);
         $newRow_DopSved->setAttribute('СтТовБезНДС', $price_bez_NDS);
         $newRow_DopSved->setAttribute('СтТовУчНал', $item['FullPrice']);
     $newElement->appendChild($newRow_DopSved);

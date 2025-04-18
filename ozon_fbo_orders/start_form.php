@@ -1,6 +1,11 @@
 <?php
 
-$ozon_shop = $_GET['ozon_shop'];
+if (!isset($_GET['ozon_shop'])) {
+   $_GET['ozon_shop'] = 'ozon_anmaks';
+} else {
+   $ozon_shop = $_GET['ozon_shop'];
+}
+
 if ($_GET['ozon_shop'] == 'ozon_anmaks') {
        $token =  $token_ozon;
        $client_id =  $client_id_ozon;
@@ -41,10 +46,19 @@ echo <<<HTML
 <head>
 <link rel="stylesheet" href="css/main_table.css">
 
+
+<!-- CSS -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
+<!-- JS -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+
+
+
+
 </head>
 <body>
 
-<form action="#" method="get">
+<form  action="#" method="get">
 <label>Магазин</label>
 <select required name="ozon_shop">
 HTML;
@@ -65,8 +79,28 @@ echo <<<HTML
 <input required type="date" name = "dateFrom" value="$date_from">
 <label>дата окончания</label>
 <input required type="date" name = "dateTo" value="$date_to">
-<input type="submit"  value="START">
+
+
+
+<!-- <label for="dateRange">Выберите диапазон дат:</label>
+    <input type="text" id="dateRange" name="date_range" placeholder="YYYY-MM-DD to YYYY-MM-DD" required>
+    <button type="submit">Отправить</button> -->
+
+  <input type="submit"  value="START">
+
+
+
+
 </form>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    flatpickr("#dateRange", {
+      mode: "range",
+      dateFormat: "Y-m-d"
+    });
+  </script> -->
+
 HTML;
 
 if (($date_from == false) or ($date_to == false)) {
@@ -74,3 +108,23 @@ if (($date_from == false) or ($date_to == false)) {
    } 
 
 
+
+//    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+//       if (!empty($_GET["date_range"])) {
+//           $range = $_GET["date_range"]; // формат: "2025-04-01 to 2025-04-10"
+  
+//           // Разделим на начальную и конечную дату
+//           $dates = explode(" to ", $range);
+//           $dateFdate_fromrom = $dates[0];
+//           $date_to = isset($dates[1]) ? $dates[1] : $dates[0]; // если выбрана только одна дата
+  
+//           echo "Вы выбрали диапазон с $date_from по $date_to";
+//       } else {
+//           echo "Диапазон дат не выбран.";
+//       }
+//   }
+
+
+// echo "<pre>";
+// print_r($_GET);
+// die();

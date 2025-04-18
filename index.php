@@ -50,6 +50,9 @@ print_one_block ('table_element', "leroy/get_assortiment.php", 'Леруа Ск�
 print_one_block ('table_element', "all_sell/all_sell_index.php", 'ПРОДАЖИ ВСЕ',
                 'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells.jpg');
 
+print_one_block ('table_element', "ozon_fbo_orders/get_fbo_orders.php", 'ПРОДАЖИ FBO озон',
+                'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells_fbo_ozon.jpg');
+
 print_one_block ('table_element', "all_sell/all_sell_one_day_index.php", 'ПРОДАЖИ ДЕНЬ',
                 'Список товаров, которые были проданы за один день', 'pics/main_screen/sell_one_day.jpg');
 
@@ -108,6 +111,9 @@ echo "<div class=\"container\">";
 
         print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel", 'WB ИП Зел отзывы',
         'Автоматический ответ на положительные отзывы с оценкой 5', 'pics/main_screen/otziv_wb_ip.jpg');
+
+        print_one_block ('table_element', "ozon_feedbacks/get_feedback.php", 'ОЗОНЫ отзывы',
+        'Автоматический ответ на положительные отзывы с оценкой 4 и 5', 'pics/main_screen/ikon_skidka_ozon.jpg');
 
         print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks", 'OZON Анмакс скидка',
         'Одобрение скидки от 4 до 7 процентов (по возрастающей)', 'pics/main_screen/ikon_skidka_ozon.jpg');

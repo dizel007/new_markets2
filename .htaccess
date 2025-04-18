@@ -1,3 +1,0 @@
-<IfModule mod_fcgid.c>
-  FcgidIOTimeout 600
-</IfModule>

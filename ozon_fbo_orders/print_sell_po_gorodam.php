@@ -37,7 +37,9 @@ echo "<tr>";
         foreach($item as $key_gorod_item=> $count_item) {
                                     
                         if (($city == $key_gorod_item))  {
-                            echo "<td>{$count_item}<br>$key_gorod_item</td>"; 
+                            // echo "<td>{$count_item}<br>$key_gorod_item</td>"; 
+                            echo "<td>{$count_item}</td>"; 
+
                             $fin_priz = 1;
                        } 
 
