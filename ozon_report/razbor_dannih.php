@@ -269,29 +269,27 @@ if (isset($Summa_primiun_5000)) {
 if (isset($Summa_primiun_plus25000)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_primiun_plus25000, "Подписка Premium Plus");
 }
-
-
 if (isset($Summa_utilizacii_tovara)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_utilizacii_tovara, "Утилизация товара");
-    
 }
-
 if (isset($Summa_izmerenii_OVX)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_izmerenii_OVX, "Услуга по дополнительной обработке ОВХ");
-    
 }
 if (isset($Summa_obrabotka_opoznannih_izlishkov)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_opoznannih_izlishkov, "Услуга по обработке опознанных излишков в составе ГМ");
-    
 }
 if (isset($Summa_bronirovanie_mesta_i_personala)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_bronirovanie_mesta_i_personala, "Услуга по бронированию места и персонала для поставки с неполным составом в составе ГМ");
-    
 }
-
-
-
-
+if (isset($Summa_vrenennoe_razmeshenie_tovara_v_SC)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_vrenennoe_razmeshenie_tovara_v_SC, "Временное размещение товара в СЦ/ПВЗ");
+}
+if (isset($Summa_usluga_po_bronirovaniu_mesta_dla_postavku)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_usluga_po_bronirovaniu_mesta_dla_postavku, "Услуга по бронированию места и персонала для поставки с неполным составом");
+}
+if (isset($Summa_obrabotka_braka_s_priemki)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_braka_s_priemki, "Обработка брака с приемки");
+}
 
 
 

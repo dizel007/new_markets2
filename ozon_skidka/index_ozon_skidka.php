@@ -34,7 +34,7 @@ $ozon_dop_url = 'v1/actions/discounts-task/list';
 
 
 /// перебираем скидку ////////////////////////////////////////////////////////////////
-for ($procent_skidki = 3; $procent_skidki <= 7; $procent_skidki++) {
+for ($procent_skidki = 3; $procent_skidki <= 6; $procent_skidki++) {
     $page_number = 1;
 
     echo "<br> * ПРОЦЕНТ СКИДКИ = ".$procent_skidki ."*";

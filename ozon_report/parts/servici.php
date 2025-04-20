@@ -53,23 +53,35 @@ elseif ($items['operation_type'] == 'DefectRateShipmentDelay')
         $Summa_oshibok_prodavca = @$Summa_oshibok_prodavca  + $items['amount']; 
     }
 
+
+    elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundSupplyShortage')
+    {  //"Услуга по бронированию места и персонала для поставки с неполным составом
+        $Summa_usluga_po_bronirovaniu_mesta_dla_postavku = @$Summa_usluga_po_bronirovaniu_mesta_dla_postavku  + $items['amount']; 
+    }
+
+
+
+
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceVolumeWeightCharacsProcessing')
     {  //Услуга по дополнительной обработке ОВХ
         $Summa_izmerenii_OVX = @$Summa_izmerenii_OVX  + $items['amount']; 
     }
-
-
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundCargoSurplus')
     {  //Услуга по дополнительной обработке ОВХ
         $Summa_obrabotka_opoznannih_izlishkov = @$Summa_obrabotka_opoznannih_izlishkov  + $items['amount']; 
     }
-
-
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceProcessingSpoilageSurplus')
+    {  //Обработка брака с приемки
+        $Summa_obrabotka_braka_s_priemki = @$Summa_obrabotka_braka_s_priemki  + $items['amount']; 
+    }
 elseif ($items['operation_type'] == 'OperationMarketplaceSupplyAdditional')
     {  //Обработка товара в составе грузоместа на FBO
         $Summa_obrabotka_gruzomestFBO = @$Summa_obrabotka_gruzomestFBO  + $items['amount']; 
     }
-
+elseif ($items['operation_type'] == 'TemporaryStorage')
+{  //Временное размещение товара в СЦ/ПВЗ
+       $Summa_vrenennoe_razmeshenie_tovara_v_SC = @$Summa_vrenennoe_razmeshenie_tovara_v_SC  + $items['amount']; 
+}
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceStorage')
     {  //ФБО хранение
         $Summa_hranenia_FBO = @$Summa_hranenia_FBO  + $items['amount']; 
@@ -82,12 +94,10 @@ elseif ($items['operation_type'] == 'DisposalReasonFailedToPickupOnTime')
     {  //Утилизацция товара - не забрали в срок
         $Summa_utilizacii_tovara = @$Summa_utilizacii_tovara  + $items['amount']; 
     }
-    
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundCargoShortage')
     {  //УУслуга по бронированию места и персонала для поставки с неполным составом в составе ГМ
         $Summa_bronirovanie_mesta_i_personala = @$Summa_bronirovanie_mesta_i_personala  + $items['amount']; 
     }
-
 elseif ($items['operation_type'] == 'OperationMarketplacePremiumSubscribtion')
     {  //Premium-подписка
         $Summa_premiaum_podpiska = @$Summa_premiaum_podpiska  + $items['amount']; 
@@ -115,19 +125,15 @@ elseif ($items['operation_type'] == 'MarketplaceServiceItemVideoCover')
 elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearch'){
        //Реклама Продвижение в поиске
             $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
-        }
+     }
 elseif ($items['operation_type'] == 'DefectRateCancellation'){
      //Услуга за обработку операционных ошибок продавца: отмена
             $Summa_oshibka_obrabotki = @$Summa_oshibka_obrabotki + $items['amount']; 
         } 
-
-        elseif ($items['operation_type'] == 'DefectRateDetailed'){
-            //Услуга за обработку операционных ошибок продавца: поздняя отгрузка
-                   $Summa_pozdniaia_otgruzka = @$Summa_pozdniaia_otgruzka + $items['amount']; 
-               }   
-
-
-
+elseif ($items['operation_type'] == 'DefectRateDetailed'){
+     //Услуга за обработку операционных ошибок продавца: поздняя отгрузка
+           $Summa_pozdniaia_otgruzka = @$Summa_pozdniaia_otgruzka + $items['amount']; 
+          }   
 elseif ($items['operation_type'] == 'MarketplaceServiceItemCrossdocking'){
     //Кросс-докинг
             $Summa_kross_doking = @$Summa_kross_doking + $items['amount']; 

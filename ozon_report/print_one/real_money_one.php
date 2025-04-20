@@ -45,8 +45,9 @@ $ALL_summa_obraboka_otpavlenii = 0;
 $ALL_summa_logistika = 0;
 $ALL_summa_last_mile = 0;
 $ALL_summa_our_pribil_s_zakaza = 0;
-
+// echo "<pre>";
 foreach ($arr_article as $key => $print_item) {
+
     $pp++;
 
     $summa_accruals_for_sale = 0;
