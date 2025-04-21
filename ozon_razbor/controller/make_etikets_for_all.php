@@ -13,7 +13,7 @@ insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order�
 
 sleep(5);
 
-// Получаем списoк заказов готовых к отправлению (Берем только на выбранное число)
+// Получаем списoк заказов готовых к отправлению ()
 // ***********************************************************************************************************************************
 $res_repeat = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 // сохраняем JSON всех заказов 
@@ -22,10 +22,6 @@ $temp_path_all_order = $path_excel_docs."/json_all_repeat_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
 
 // ***********************************************************************************************************************************
-
-
-// echo "<pre>";
-// print_r($res_reapeat);
 
 $arr_reapeat_numbers[]=''; // массив куда добавляем номера записанных в новый массив заказов, чтобы избежать дублирования заказов
 /// выбираем из всей пачки только те заказы, которые мы запросили ранее
@@ -55,17 +51,6 @@ $array_for_1C =  make_array_for_1c_file($new_res);
 // формируем массив для листа подборf
 $array_for_list_podbora = make_array_for_list_podbora($new_res);
 
-
-// echo "<pre>";
-// print_r($array_for_list_podbora);
-
-
-
-
-/// сохраняем обмен для этикеток 
-// $json_zapros_etiketok = json_encode($array_oben);
-// $temp_path_2 = $path_excel_docs."/json_zapros_etiketok.json";
-// file_put_contents($temp_path_2, $json_zapros_etiketok);
 sleep(2);
 /******************************************************************************************************************
 ******  формирование 1С файла 
@@ -75,22 +60,8 @@ sleep(2);
 /******************************************************************************************************************
 ****** формирование листа подбора (из обработанного массива)
 /******************************************************************************************************************/
-// echo "<br> ВЫШЛИ ИЗ формирования 1С файла <br>";
-// $temp_path = $path_excel_docs."/json_list_podbora.json";
-// if (file_exists($temp_path)) {
-// $json_arr_obmen = file_get_contents($temp_path);   
-// $array_oben = json_decode($json_arr_obmen, true);
-
-
-// echo "<br> Массив для создания Листа подбора  <br>";
-// echo "<pre>";
 $xls2 = new PHPExcel();
 $file_name_list_podbora = make_list_podbora_new ($array_for_list_podbora, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
-// $file_name_list_podbora = make_list_podbora_new2 ($res, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
-// } else { 
-//   echo "Нет файла для формирования листа подбора";
-//   // unset($file_name_list_podbora);
-// }
 
 // формируем массивы где заказы разбиты поартикульно 
 foreach ($new_res as $posts_z) {
@@ -98,16 +69,26 @@ foreach ($new_res as $posts_z) {
   $arr_article_tovar[$article][] = $posts_z;
 }
 
-set_time_limit(0); // неограниченное время ожидание ответа от сервера
-ob_start(); // включить буфер
 
+/// НАчинаем долгие разбор 
+$startTime = microtime(true);
+echo "Время начала скрипта : {$startTime} <br>"; ; 
+
+set_time_limit(0); // неограниченное время ожидание ответа от сервера
+// ob_start(); // включить буфер
+if (!isset($startTime)) {
+  $startTime = microtime(true);
+}
 // перебираем поартикульный массив и формируем строку со списком заказов (поартикульно)
 foreach ($arr_article_tovar as $key=> $posts) {
-  echo "Processing...<br>";
-  // ob_flush();
-  // flush();
-  // $time_script = 300 + count($arr_article_tovar[$key]) * 50;
-  // set_time_limit($time_script);
+  
+  /// Фиксируем время выполенинея скрипта и смотрим сколько он длится
+  // если долго длится то выводим информацию на экран, чтобы не оборвалось соедиенние с сервером
+  $endTime = microtime(true);
+  $rezultTime = $endTime - $startTime;
+  if ($rezultTime > 170) {
+     echo " Время выполнения скрипта {$rezultTime} секунд. Processing...<br>";
+  }
 
   $string_etiket = '';
   foreach ($posts as $post) {
@@ -119,9 +100,6 @@ foreach ($arr_article_tovar as $key=> $posts) {
     die('<br> ПОмерли без этикеток');
   }
 $string_etiket = substr($string_etiket, 0, -2); // удаляем последний разделитель из строки с заказами 
-// echo "<br>Разбираем артикул : $key<br>";
-// echo "Строка заказов артикула: $string_etiket<br>";
-
 
 /*****************************************************************************************************************
  ******  Формируем PDF файлы поартикульно
@@ -132,7 +110,6 @@ $pdf_file_name = $number_order." (".$good_key.") ".count($posts)."шт";
 get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket, $pdf_file_name, $path_etiketki);
 $Arr_filenames_for_zip[$good_key] = $pdf_file_name; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 
-// $arr_for_merge_pdf[$good_key]['fileName'] = $pdf_file_name.".pdf";
 $arr_for_merge_pdf[$good_key]['value'] = count($posts);
 }
 

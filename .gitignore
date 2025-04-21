@@ -7,6 +7,9 @@ login.php
 
 
 ozon_razbor/reports/
+ozon_parse_xml/reports/
+ozon_parse_xml/uploads/
+
 
 wb_new_razbor/reports/
 wb_new_razbor/functions/mail_pass.php

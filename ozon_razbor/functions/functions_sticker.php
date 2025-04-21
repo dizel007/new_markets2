@@ -5,10 +5,8 @@
  * Достаем штрих коды массива заказов (отправления)
  * РАБОЧАЯ ВЕРСИЯ 
  *************************************************************************/
-function get_all_barcodes_for_all_sending ($token, $client_id,   $string_etiket, $date_send, $path_etiketki) {
-    // echo "<pre>";
-    // echo "<br>***********************************************************************************<br>";
-    // print_r($string_etiket);
+function get_all_barcodes_for_all_sending ($token, $client_id, $string_etiket, $date_send, $path_etiketki) {
+
     // Данные запроса
     $send_data='
     {

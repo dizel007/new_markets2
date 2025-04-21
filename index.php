@@ -136,8 +136,14 @@ echo "</div>";//  Конец контейнера ПО Вспомогатель�
 echo "<div class=\"container\"><div class = \"zagolovok\">XML отчет</div></div>";
 
 echo "<div class=\"container\">";
-    print_one_block ('table_element', "wb_make_xml/take_data_wb.php", 'XML',
+    print_one_block ('table_element', "wb_make_xml/take_data_wb.php", 'XML WB',
     'Формирование УПД файла в формате XML на ВБ ООО', 'pics/main_screen/xml.jpg');
+
+ print_one_block ('table_element', "ozon_parse_xml/ozon_start_xml_parse.php", 'XML OZON',
+    'Формирование Excel файла для 1С отчета', 'pics/main_screen/xml.jpg');
+
+
+
 echo "</div>";// Конец контейнера XML отчет 
 
 
