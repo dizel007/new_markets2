@@ -92,7 +92,7 @@ if (!isset($arr_for_zakaz)) {
 // отсюда начинаем отсчитывавать время выполенния скрипта
  $startTime = microtime(true);
 
-echo "Время начала скрипта : { $startTime} <br>"; 
+// echo "Время начала скрипта : { $startTime} <br>"; 
 
 
 foreach ($arr_for_zakaz as $one_post) {

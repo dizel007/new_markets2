@@ -180,12 +180,10 @@ foreach ($wb_catalog as $wb_item) {
   $arr_key = array_unique($arr_key); //  оставляем только уникальные артикулы
 
 
-
-// print_r($arr_key_barcode);
-
-// die();
-
+// echo "<pre>";
+// print_r($arr_result);
 // die('5555555555555555555555555555555555');
+
 $sum_k_pererchisleniu = 0;
 $sum_logistiki = 0;
 $sum_shtraf = 0 ;
@@ -253,9 +251,12 @@ foreach ($arr_result as $item) {
         $stornoprodazh++;
         } elseif ($item['supplier_oper_name'] == 'Логистика') {
         // Сумма логистики ************************************************************************************************************
-        $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['delivery_rub'];
-        $sum_logistiki = $sum_logistiki  + $item['delivery_rub'];
-      
+
+              // учитываем только прямую логистку 
+            if ($item['bonus_type_name'] =='К клиенту при продаже') {
+                        $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['delivery_rub'];
+                        $sum_logistiki = $sum_logistiki  + $item['delivery_rub'];
+            }
         } elseif ($item['supplier_oper_name'] == 'Возмещение издержек по перевозке') {
         // Сумма логистики ИПЕШНИКАМ ************************************************************************************************************
         // $summa_izderzhik_po_perevozke = $summa_izderzhik_po_perevozke + $item['rebill_logistic_cost'];
@@ -291,18 +292,6 @@ foreach ($arr_result as $item) {
 
    
     }
-/*****************************************
-**************************************************
-*/
-
-
-
-
-/**
- * ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- */
-
-
 }
 
 
@@ -329,7 +318,7 @@ echo <<<HTML
 
 
 HTML;
-// print_r($arr_key);
+
 // print_r($arr_key_barcode);
 
     foreach ($arr_key as $key){
@@ -391,6 +380,13 @@ $array_for_xml[$key]['FullPrice'] = $temp[$key];
 }
 
 
+ // удаляем все строки где количество равно НУЛЮ
+foreach ($array_for_xml as $key=>&$xml_temp) {
+    if ($xml_temp['count'] == 0) {
+        unset($array_for_xml[$key]);
+    }
+}
+
 
 // echo "<pre>";
 // print_r($array_for_xml);
@@ -417,6 +413,14 @@ echo "</tr>";
 
 
 echo "</table>";
+
+
+
+// echo "<pre>";
+// print_r($array_for_xml);
+
+
+// die();
 
 
 require_once "test_xml_MY.php";

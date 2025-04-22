@@ -72,7 +72,7 @@ foreach ($new_res as $posts_z) {
 
 /// НАчинаем долгие разбор 
 $startTime = microtime(true);
-echo "Время начала скрипта : {$startTime} <br>"; ; 
+// echo "Время начала скрипта : {$startTime} <br>"; ; 
 
 set_time_limit(0); // неограниченное время ожидание ответа от сервера
 // ob_start(); // включить буфер
