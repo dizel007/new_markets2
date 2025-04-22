@@ -272,6 +272,9 @@ if (isset($Summa_primiun_plus25000)) {
 if (isset($Summa_utilizacii_tovara)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_utilizacii_tovara, "Утилизация товара");
 }
+if (isset($Summa_utilizacii_tovara_povrezhdenie_upakovki)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_utilizacii_tovara_povrezhdenie_upakovki, "Утилизация товара: Повреждённые из-за упаковки");
+}
 if (isset($Summa_izmerenii_OVX)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_izmerenii_OVX, "Услуга по дополнительной обработке ОВХ");
 }

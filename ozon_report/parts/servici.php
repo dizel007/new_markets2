@@ -94,6 +94,10 @@ elseif ($items['operation_type'] == 'DisposalReasonFailedToPickupOnTime')
     {  //Утилизацция товара - не забрали в срок
         $Summa_utilizacii_tovara = @$Summa_utilizacii_tovara  + $items['amount']; 
     }
+elseif ($items['operation_type'] == 'DisposalReasonDamagedPackaging')
+    {  //Утилизация товара: Повреждённые из-за упаковки
+        $Summa_utilizacii_tovara_povrezhdenie_upakovki = @$Summa_utilizacii_tovara_povrezhdenie_upakovki  + $items['amount']; 
+    }
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundCargoShortage')
     {  //УУслуга по бронированию места и персонала для поставки с неполным составом в составе ГМ
         $Summa_bronirovanie_mesta_i_personala = @$Summa_bronirovanie_mesta_i_personala  + $items['amount']; 
@@ -157,6 +161,6 @@ else {
 }
 
 }
-// echo "<pre>";
-// print_r($arr_nerazjbrannoe);
-// echo "</pre>";
+echo "<pre>";
+print_r($arr_nerazjbrannoe);
+echo "</pre>";
