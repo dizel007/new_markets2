@@ -52,16 +52,10 @@ elseif ($items['operation_type'] == 'DefectRateShipmentDelay')
     {  //"Услуга за обработку операционных ошибок продавца: просроченная отгрузка
         $Summa_oshibok_prodavca = @$Summa_oshibok_prodavca  + $items['amount']; 
     }
-
-
-    elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundSupplyShortage')
+elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundSupplyShortage')
     {  //"Услуга по бронированию места и персонала для поставки с неполным составом
         $Summa_usluga_po_bronirovaniu_mesta_dla_postavku = @$Summa_usluga_po_bronirovaniu_mesta_dla_postavku  + $items['amount']; 
     }
-
-
-
-
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceVolumeWeightCharacsProcessing')
     {  //Услуга по дополнительной обработке ОВХ
         $Summa_izmerenii_OVX = @$Summa_izmerenii_OVX  + $items['amount']; 
@@ -161,6 +155,6 @@ else {
 }
 
 }
-echo "<pre>";
-print_r($arr_nerazjbrannoe);
-echo "</pre>";
+// echo "<pre>";
+// print_r($arr_nerazjbrannoe);
+// echo "</pre>";

@@ -77,6 +77,9 @@ $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_ca
 
 
 
+// echo "<pre>";
+// print_r ($ya_fbs_catalog);
+// die();
 
 
 print_info_sell_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog, $ya_fbs_catalog);

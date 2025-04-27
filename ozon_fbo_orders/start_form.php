@@ -32,13 +32,13 @@ HTML;
 if (isset($_GET['dateFrom'])) {
    $date_from = $_GET['dateFrom'];
 } else {
-   $date_from = false;
+   $date_from = date('Y-m-d');
 }
 
 if (isset($_GET['dateTo'])) {
    $date_to = $_GET['dateTo'];
 } else {
-   $date_to = false;
+   $date_to = date('Y-m-d');
 }
 
 

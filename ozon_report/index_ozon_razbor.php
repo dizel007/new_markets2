@@ -37,18 +37,24 @@ echo <<<HTML
 </head>
 HTML;
 
-
+$priznak_date = 1; 
 
 if (isset($_GET['dateFrom'])) {
     $date_from = $_GET['dateFrom'];
 } else {
-    $date_from = false;
+    $date = date('Y-m-d');
+    $day = '01';
+    $month = date('m', strtotime($date));
+    $year = date('Y', strtotime($date));
+    $date_from = $year.'-'.$month.'-'.$day;
+    $priznak_date = 0; 
+    // echo "$date_from";
 }
 
 if (isset($_GET['dateTo'])) {
     $date_to = $_GET['dateTo'];
 } else {
-    $date_to = false;
+    $date_to = date('Y-m-d');
 }
 
 
@@ -76,7 +82,8 @@ echo <<<HTML
 </form>
 HTML;
 
-if (($date_from == false) or ($date_to == false)) {
+// if (($date_from == false) or ($date_to == false)) {
+if ($priznak_date == 0)  {
     die ('Нужно выбрать даты');
     } 
 

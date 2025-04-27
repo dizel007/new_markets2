@@ -118,8 +118,8 @@ $ozon_catalog    = get_catalog_tovarov_v_mp($ozon_anmaks,      $pdo, 'active'); 
 $ozon_ip_catalog = get_catalog_tovarov_v_mp($ozon_ip,          $pdo, 'active'); // получаем озон каталог
 $ya_fbs_catalog  = get_catalog_tovarov_v_mp($yandex_anmaks_fbs, $pdo, 'active'); // получаем yandex каталог
 
-
-// print_r ($ozon_catalog);
+// echo "<pre>";
+// print_r ($ya_fbs_catalog);
 // die();
 
 

@@ -1,4 +1,37 @@
 <?php
+
+
+/***************************************************************************************************************
+ ***************** GET запрос без даннхы 
+ **************************************************************************************************************/
+function get_query_without_data($ya_token, $ya_link){
+	
+	$ch = curl_init($ya_link); // ИНФОРМАЦИЯ О ЗАКАЗАХ FBS
+    
+
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		'Authorization: Bearer '.$ya_token,
+		'Content-Type:application/json'
+	));
+	// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE)); 
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	
+	$res = curl_exec($ch);
+	
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
+	curl_close($ch);
+	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
+		echo     '<br> Результат обмена (SELECT without Data): '.$http_code;
+	}
+	$res = json_decode($res, true);
+	
+	return $res;
+	}
+
+
+    
 /************************************************************************
  * Получаем остатки по всем артикулам
  ************************************************************************/
@@ -55,13 +88,27 @@ foreach ($ya_fbs_catalog as &$items) {
     function yandex_get_new_orders($ya_token, $campaignId) {
 
         $substatus = 'substatus=STARTED';
-        $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus ;
+        // $substatus = 'substatus=READY_TO_SHIP'; // Когда нужно обработатть товары которые уже готовы к отправке
+        $page=1;
+        $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ;
         
-        $result = yandex_get_query_without_data($ya_token, $ya_link);
+        $orders = get_query_without_data($ya_token, $ya_link);
         
-        return $result;
+        // перебираем все страницы заказов
+        for ($page=1; $page <= $orders['pager']['pagesCount']; $page++) {
+        
+            $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ; 
+             
+            $orders2 = get_query_without_data($ya_token, $ya_link);  
+            foreach ($orders2['orders'] as $order ) {
+                $result['orders'][] = $order;
+            }
+        
         }
         
+        // echo "КОЛИЧЕСТВО ЗАКАЗОВ ЗА ВСЕ ВРЕМЯ = ".count($result['orders'])." <br>";
+        return $result;
+        }
  /************************************************************************
  * Получаем даннные о новых заказах и обновляем каталог Яндекса
  ************************************************************************/       
@@ -79,6 +126,13 @@ function get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog){
           }
 
 }
+
+
+// echo "<pre>";
+// print_r ($arr_all_items);
+// die();
+
+
 
 
 // print_r($arr_all_items);

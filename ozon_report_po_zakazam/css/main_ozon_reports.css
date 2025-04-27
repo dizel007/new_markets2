@@ -1,0 +1,87 @@
+
+
+/* body{
+    font-family: Helvetica;
+    -webkit-font-smoothing: antialiased;
+    background: rgb(201, 213, 226);
+} */
+
+/* Table Styles */
+
+/* .table-wrapper{
+    margin: 20px 70px 30px;
+
+    /* box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ); */
+	
+/* } */ 
+.name_td_table {
+    width: 100px;
+}
+.fl-table {
+    width: 90%;
+	margin: 0 auto;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    
+    white-space: nowrap;
+    background-color: white;
+	box-shadow: 0px 10px 10px rgba( 0, 0, 0, 0.4 );
+}
+
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 5px;
+
+}
+
+.fl-table td {
+    margin:0 auto;
+    border: 1px solid #746c6c;
+    font-size: 12px;
+	font-weight: 500;
+
+}
+
+.fl-table th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Чтобы заголовки были четко видны против контента */
+    
+    color: #ffffff;
+    background: #55917f;
+    margin:0 auto;
+    border: 1px solid #746c6c;
+}
+
+
+
+
+.fl-table tr:nth-child(even) {
+    background: #d8cece;
+}
+
+.real_money th {
+    background: #dd9c39;
+   
+}
+
+.good_desired_price {
+    color:#55917f;
+    font-weight: 700;
+}
+.neutral_desired_price {
+    color:#3d2ec4;
+    font-weight: 900;
+}
+.bad_desired_price {
+    color:#ff1919;
+    font-weight: 300;
+}
+.instran {
+    background-color: #1db0c4;
+}
