@@ -62,6 +62,8 @@ $string_json_all_order = json_encode($res, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
 
+$file_name_OTLADKA = $path_excel_docs."/otladka.txt";
+
 $i=0;
 // Из полученного массива формируем массив данных, с которым убодно будет отправлять заказы на сборку
 // также тут формируем массив    $array_art   для создания Заказа в 1С.
@@ -86,11 +88,12 @@ if (!isset($arr_for_zakaz)) {
 // если есть Заказы на ОЗОН, то перебираем все отправления по одному и формируем JSON для отправки в ОЗОН
     // echo "<pre>";
     // echo "<br>==/ Количество заказов /==". count($arr_for_zakaz);
-
-
-
 // отсюда начинаем отсчитывавать время выполенния скрипта
- $startTime = microtime(true);
+$startTime = microtime(true);
+
+$text_otladka = $startTime." "."Начали перебор этикеток"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
 
 // echo "Время начала скрипта : { $startTime} <br>"; 
 
@@ -98,7 +101,12 @@ if (!isset($arr_for_zakaz)) {
 foreach ($arr_for_zakaz as $one_post) {
     set_time_limit(0);
     $result = make_packeges_for_one_post_2($token_ozon, $client_id_ozon,$one_post);
-    sleep(1); // 
+    usleep(200); // 
+
+    $realTime = microtime(true);
+    $text_otladka = $realTime." "."Разбиваем заказы по одному отправлению "."\n";
+    file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
     // $array_list_podbora[] = $result['list_podbora'];
     // $array_oben[] = $result['obmen'];
     // print_r($result['obmen']);

@@ -2,31 +2,31 @@
 /***************************************************************************************************************
  ***************** GET запрос без даннхы 
  **************************************************************************************************************/
-function get_query_without_data($ya_token, $ya_link){
+// function get_query_without_data($ya_token, $ya_link){
 	
-	$ch = curl_init($ya_link); // ИНФОРМАЦИЯ О ЗАКАЗАХ FBS
+// 	$ch = curl_init($ya_link); // ИНФОРМАЦИЯ О ЗАКАЗАХ FBS
     
 
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'Authorization: Bearer '.$ya_token,
-		'Content-Type:application/json'
-	));
-	// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE)); 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_HEADER, false);
+// 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+// 		'Authorization: Bearer '.$ya_token,
+// 		'Content-Type:application/json'
+// 	));
+// 	// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE)); 
+// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+// 	curl_setopt($ch, CURLOPT_HEADER, false);
 	
-	$res = curl_exec($ch);
+// 	$res = curl_exec($ch);
 	
-	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
-	curl_close($ch);
-	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
-		echo     '<br> Результат обмена (SELECT without Data): '.$http_code;
-	}
-	$res = json_decode($res, true);
+// 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
+// 	curl_close($ch);
+// 	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
+// 		echo     '<br> Результат обмена (SELECT without Data): '.$http_code;
+// 	}
+// 	$res = json_decode($res, true);
 	
-	return $res;
-	}
+// 	return $res;
+// 	}
 
 
 /****************************************************************************************************************

@@ -31,7 +31,7 @@ function get_all_barcodes_for_all_sending ($token, $client_id, $string_etiket, $
     // print_r($res);
 
 
-    sleep(5);
+    sleep(4);
     // Получаем task_id на скачивание файла с штрих кодами
     //  $task_id = $res['result']['task_id']; // Старый метод
     $task_id = $res['result']['tasks'][0]['task_id'];// маленькая этикетка (новый метод)

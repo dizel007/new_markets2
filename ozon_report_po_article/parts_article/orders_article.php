@@ -16,6 +16,9 @@ $new_post_number_full = $items['posting']['posting_number'];
 $arr_article[$new_post_number]['post_number'] = $new_post_number;
 $arr_article[$new_post_number]['SELL'] = 'SELL';
 $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
+
+$arr_article[$new_post_number]['warehouse_id'] = $items['posting']['warehouse_id'];
+
 $arr_article[$new_post_number]['delivery_schema'] = $items['posting']['delivery_schema'];
 if (($items['accruals_for_sale'] == 0) && ($items['accruals_for_sale'] == 0)) {
     $arr_article[$new_post_number]['kazahi'] = 'ino';

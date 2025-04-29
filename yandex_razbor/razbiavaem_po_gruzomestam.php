@@ -11,7 +11,7 @@ require_once '../libs/PDFMerger/PDFMerger.php';
 require_once "functions/functions_yandex.php";
 require_once "functions/functions.php";
 
-
+require_once "../mp_functions/yandex_functions.php";
 // Получаем токены ЯМ
 $ya_token =  get_token_yam($pdo);
 $campaignId =  get_id_company_yam($pdo);

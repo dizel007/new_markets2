@@ -71,7 +71,9 @@ foreach ($new_res as $posts_z) {
 
 
 /// НАчинаем долгие разбор 
-$startTime = microtime(true);
+$realTime = microtime(true);
+$text_otladka = $realTime." "."Перешли в make)etiketki_for... "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 // echo "Время начала скрипта : {$startTime} <br>"; ; 
 
 set_time_limit(0); // неограниченное время ожидание ответа от сервера
@@ -82,6 +84,10 @@ if (!isset($startTime)) {
 // перебираем поартикульный массив и формируем строку со списком заказов (поартикульно)
 foreach ($arr_article_tovar as $key=> $posts) {
   
+  $realTime = microtime(true);
+  $text_otladka = $realTime." "."(Начало) Создаем строки с номерами заказов для каждого артикула "."\n";
+  file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
   /// Фиксируем время выполенинея скрипта и смотрим сколько он длится
   // если долго длится то выводим информацию на экран, чтобы не оборвалось соедиенние с сервером
   $endTime = microtime(true);
@@ -111,6 +117,14 @@ get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket,
 $Arr_filenames_for_zip[$good_key] = $pdf_file_name; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 
 $arr_for_merge_pdf[$good_key]['value'] = count($posts);
+
+$realTime = microtime(true);
+$text_otladka = $realTime." "."(Конец-$good_key) Создаем строки с номерами заказов для каждого артикула "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+////////////////////////// DELETE //////////////////////////////////////////////////////////////////
+echo $text_otladka;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
 
@@ -171,6 +185,9 @@ unlink('../../autosklad/uploads/priznak_razbora_net.txt');
 /***********************
  * *
  *****************************/
+$realTime = microtime(true);
+$text_otladka = $realTime." "."(Закончили РАЗБОР уходим на объединение Этикеток "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
 

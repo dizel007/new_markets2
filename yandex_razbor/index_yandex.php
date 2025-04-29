@@ -5,6 +5,7 @@ require_once $offset."pdo_functions/pdo_functions.php";
 require_once $offset."mp_functions/yandex_api_functions.php";
 require_once $offset."mp_functions/yandex_functions.php";
 require_once "functions/functions_yandex.php";
+
 require_once "functions/functions.php";
 
 //  $ya_token =  get_token_yam($pdo);
@@ -16,7 +17,7 @@ require_once "functions/functions.php";
     $campaignId =  $arr_tokens['ya_anmaks_fbs']['id_market'];
     // print_r($campaignId);
 
-
+// die();
     if (isset($_GET['select_date'])) {
         $need_date_temp = $_GET['select_date'];
         $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
