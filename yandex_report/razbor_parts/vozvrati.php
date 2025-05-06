@@ -13,12 +13,15 @@ $summa_vseh_vozvratov = 0;
               break;
             }
 
-            $type_operation = $sheet->getCellByColumnAndRow(13, $j)->getValue();
+            $type_operation = mb_strtolower($sheet->getCellByColumnAndRow(12, $j)->getValue());
+            $count_return_items = $sheet->getCellByColumnAndRow(14, $j)->getValue();
             $order_price = $sheet->getCellByColumnAndRow(15, $j)->getValue();
             $dop_type = $sheet->getCellByColumnAndRow(16, $j)->getValue();
 
             $arr_vozvrati[$type_operation]['сумма_операций'] = @$arr_vozvrati[$type_operation]['сумма_операций']  + $order_price;
             $arr_vozvrati[$type_operation]['доп_описание'] = $dop_type;
+            $arr_vozvrati[$type_operation]['кол-во возвратов'] = $count_return_items;
+  
   
           $j++;
           // $str_number++;

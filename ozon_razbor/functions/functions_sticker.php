@@ -5,7 +5,7 @@
  * Достаем штрих коды массива заказов (отправления)
  * РАБОЧАЯ ВЕРСИЯ 
  *************************************************************************/
-function get_all_barcodes_for_all_sending ($token, $client_id, $string_etiket, $date_send, $path_etiketki) {
+function get_all_barcodes_for_all_sending ($token, $client_id, $string_etiket, $date_send, $path_etiketki,$wait_time_etikets) {
 
     // Данные запроса
     $send_data='
@@ -23,15 +23,14 @@ function get_all_barcodes_for_all_sending ($token, $client_id, $string_etiket, $
     // Метод запрос на подготовку этикетки 
     // $ozon_dop_url ="v1/posting/fbs/package-label/create"; // Старый метод
     $ozon_dop_url ="v2/posting/fbs/package-label/create"; // маленькая этикетка (новый метод)
-    
-
-    $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
+       $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
     
     // echo "<br>******* ID ЗАДАЧИ ***************************************************<br>";
     // print_r($res);
+// Если товаров много, то увеличиваем время ожидания формирования этикеток;
 
 
-    sleep(4);
+    sleep($wait_time_etikets);
     // Получаем task_id на скачивание файла с штрих кодами
     //  $task_id = $res['result']['task_id']; // Старый метод
     $task_id = $res['result']['tasks'][0]['task_id'];// маленькая этикетка (новый метод)

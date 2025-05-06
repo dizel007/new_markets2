@@ -62,10 +62,11 @@ do {
 } while ($empty_10 < 3);
 
 
+
 // начинаем разбирать все транзацкии 
 $all_tranzactions = razbor_all_tranzactions_yandex ($sheet, $type_array);
 
-$summa_all_orders = 0;
+
 foreach ($all_tranzactions as $key_orders=> $orders_items) {
     foreach ($orders_items as $key_article=> $items){
         // поартикульно складываем суммы
@@ -74,25 +75,50 @@ foreach ($all_tranzactions as $key_orders=> $orders_items) {
         $arr_article_data[$key_article]['Кол-во товаров']  = @ $arr_article_data[$key_article]['Кол-во товаров'] + $items['Кол-во товаров'];
         }
         // общая сумма товаров
-        $summa_all_orders += $items['сумма_операций'];
+       
 }    
 }
 
+$all_vozvrati = razbor_all_vozvrati_yandex ($sheet, $type_array);
+
+
+
+// перебираем массив продаж и вычитаем возвраты оттуда
+$summa_all_orders = 0;
+foreach ($arr_article_data as $key => &$item_sell) {
+  foreach ($all_vozvrati as $key_return => $item_return) {
+
+    if ($key == $key_return) {
+      $item_sell['сумма_операций'] = $item_sell['сумма_операций'] + $item_return['сумма_операций'];
+      $item_sell['Кол-во товаров'] = $item_sell['Кол-во товаров'] - $item_return['кол-во возвратов'];
+    }
+  }
+  $summa_all_orders += $item_sell['сумма_операций'];
+}
+
+
+
+
+
 // Добавим к каждому артикулу процент от полной суммы 
 foreach ($arr_article_data as &$article) {
-$one_procent_ot_summi = round($summa_all_orders/100,2);
-$procent_raspredelenia = round ($article['сумма_операций']/$one_procent_ot_summi,2);
+$one_procent_ot_summi = round($summa_all_orders/100,5);
+$procent_raspredelenia = round ($article['сумма_операций']/$one_procent_ot_summi,5);
 $article['процент_от_суммы'] = $procent_raspredelenia;
 
 }
 
-$all_vozvrati = razbor_all_vozvrati_yandex ($sheet, $type_array);
+// echo "<pre>";
+// print_r($arr_article_data);
+// die();
+
+
 $summa_vseh_vozvratov = $all_vozvrati['summa_vseh_vozvratov'];
 
 // теперь приложим сумму возвратов для каждого артикула 
-foreach ($arr_article_data as &$article) {
-  $article['сумма_удержания_возвраты'] = round(($summa_vseh_vozvratov/100 * $article['процент_от_суммы']  ),2);
-}
+// foreach ($arr_article_data as &$article) {
+//   $article['сумма_удержания_возвраты'] = round(($summa_vseh_vozvratov/100 * $article['процент_от_суммы']  ),2);
+// }
 
 
 $all_uderzania = razbor_all_uderzania_yandex ($sheet, $type_array);
@@ -108,7 +134,7 @@ foreach ($arr_article_data as &$article) {
 // теперь посчитаем сумму после всех вычетов 
 $summa_posle_vichitov = 0;
 foreach ($arr_article_data as &$article) {
-  $article['сумма_за_артикул_после_всех_вычитов'] = $article['сумма_операций']  + $article['сумма_удержания_возвраты'] + $article['сумма_удержания_прочие'] ;
+  $article['сумма_за_артикул_после_всех_вычитов'] = $article['сумма_операций']  + $article['сумма_удержания_прочие'] ;
   
   isset($article['Кол-во товаров'])?$price_for_one_item = round($article['сумма_за_артикул_после_всех_вычитов']/$article['Кол-во товаров'],2):$price_for_one_item = 0;
  
@@ -120,9 +146,9 @@ foreach ($arr_article_data as &$article) {
 
 
 
-echo "<pre>";
-print_r($arr_article_data);
-print_r($nomenclatura);
+// echo "<pre>";
+// print_r($arr_article_data);
+// print_r($nomenclatura);
 // print_r($all_vozvrati);
 
 // echo "<br> сумма = ".$summa_all_orders;

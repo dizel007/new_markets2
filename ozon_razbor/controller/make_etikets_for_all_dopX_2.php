@@ -56,7 +56,7 @@ $path_zip_archives = $new_path.'zip_archives';
 make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 
 // die('kmnfjbflkbfg');
-
+$file_name_OTLADKA = $path_excel_docs."/otladka.txt";
 // вычитываем все Заказы н эту дату
 $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 
@@ -76,7 +76,31 @@ file_put_contents($temp_path_all_order, $string_json_all_order);
 // file_put_contents($temp_path, $string_json_list_podbora);
 
 
-require_once "make_etikets_for_all.php";
+// require_once "make_etikets_for_all.php";
 
 
-die('ОТПРАВИЛИ МНОГО ЗАКАЗОВ');
+// Формируем ссылку на перенаправление на формирование этикеток
+
+// $link_for_make_etikets_for_all = 'make_etikets_for_all.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
+// $link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
+
+
+
+$link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
+$link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
+
+
+// header('Location: '.$link_for_make_etikets_for_all, true, 301);
+
+echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
+
+
+ echo <<<HTML
+ <br><br>
+ <a href="$link_for_make_etikets_for_all" target="_blank">Аварийный переход на формирование этикеток</a>
+ <br><br>
+ HTML;
+
+
+
+die('Далее тпереходим на получение ПДФ этикеток');

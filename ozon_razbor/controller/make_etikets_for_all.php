@@ -7,11 +7,65 @@ require_once 'make_1c_file.php';
 
 require_once '../../pdo_functions/pdo_functions.php'; // подключаем функцию записи в Таблицу действия пользователя
 
+
+
+
+// $ozon_shop = $_GET['ozon_shop'];
+// if ($_GET['ozon_shop'] == 'ozon_anmaks') {
+//        $token_ozon = $token_ozon;
+//        $client_id_ozon = $client_id_ozon;
+ 
+//    }
+       
+// elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
+//     //    echo "<br>Выбран магазин ИП Зел<br>";
+//        $token_ozon =  $token_ozon_ip;
+//        $client_id_ozon =  $client_id_ozon_ip;
+//  } else {
+//        die ('МАГАЗИН НЕ ВЫБРАН');
+//  }
+
+
+
+
+// // Формируем дополнительные переменные после разделения файла
+
+//  $path_excel_docs = $_GET['path_excel_docs'];
+//  $number_order = $_GET['number_order'];
+//  $path_etiketki = $_GET['path_etiketki'];
+//  $now_date_razbora = date('Y-m-d');
+//  $date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
+//  $dop_days_query = 10;
+//  $file_name_OTLADKA = $path_excel_docs."/otladka.txt";
+
+
+ 
+
+// // сохраняем JSON всех заказов 
+// $temp_path_all_order = $path_excel_docs."/json_all_order.json";
+// $res = json_decode(file_get_contents($temp_path_all_order),true);
+
+
+
+
+
+
+// echo "<pre>";
+// print_r($res);
+// die('cc');
+
+
+
+
+
+
+
+
 // Запись в таблицу Действия пользователя
 insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order№($number_order)");
 
 
-sleep(5);
+sleep(4);
 
 // Получаем списoк заказов готовых к отправлению ()
 // ***********************************************************************************************************************************
@@ -72,7 +126,7 @@ foreach ($new_res as $posts_z) {
 
 /// НАчинаем долгие разбор 
 $realTime = microtime(true);
-$text_otladka = $realTime." "."Перешли в make)etiketki_for... "."\n";
+$text_otladka = $realTime." "."Перешли в make_etiketki_for... "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 // echo "Время начала скрипта : {$startTime} <br>"; ; 
 
@@ -84,15 +138,18 @@ if (!isset($startTime)) {
 // перебираем поартикульный массив и формируем строку со списком заказов (поартикульно)
 foreach ($arr_article_tovar as $key=> $posts) {
   
-  $realTime = microtime(true);
-  $text_otladka = $realTime." "."(Начало) Создаем строки с номерами заказов для каждого артикула "."\n";
-  file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+  $count_items_in_order = count($posts);
 
+  $realTime = microtime(true);
+  $deltaTime = $realTime - $startTime;
+  $text_otladka = $deltaTime." "."(Начало)_Создаем_строки_с_номерами_заказов_для_каждого_артикула"."\n";
+  file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+  
   /// Фиксируем время выполенинея скрипта и смотрим сколько он длится
   // если долго длится то выводим информацию на экран, чтобы не оборвалось соедиенние с сервером
   $endTime = microtime(true);
   $rezultTime = $endTime - $startTime;
-  if ($rezultTime > 170) {
+  if ($rezultTime > 90) {
      echo " Время выполнения скрипта {$rezultTime} секунд. Processing...<br>";
   }
 
@@ -113,20 +170,42 @@ $string_etiket = substr($string_etiket, 0, -2); // удаляем последн
 $good_key = make_rigth_file_name($key); // убираем все запрещенные символы в наименовании файла
 
 $pdf_file_name = $number_order." (".$good_key.") ".count($posts)."шт";
-get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket, $pdf_file_name, $path_etiketki);
+
+// Задаем трату на формирование ПДФ этикеток в зависимости от количества товаров
+$wait_time_etikets = 3; // время ожидания этикеток в секундах
+  if ($count_items_in_order >= 40) {
+    $wait_time_etikets = 5;
+  } 
+  if ($count_items_in_order >= 80) {
+    $wait_time_etikets = 6;
+  } 
+  if ($count_items_in_order >= 120) {
+    $wait_time_etikets = 7;
+  } 
+  if ($count_items_in_order >= 140) {
+    $wait_time_etikets = 8;
+  } 
+  if ($count_items_in_order >= 170) {
+    $wait_time_etikets = 10;
+  } 
+  if ($count_items_in_order >= 200) {
+    $wait_time_etikets = 15;
+  } 
+
+get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket, $pdf_file_name, $path_etiketki, $wait_time_etikets);
 $Arr_filenames_for_zip[$good_key] = $pdf_file_name; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 
 $arr_for_merge_pdf[$good_key]['value'] = count($posts);
 
 $realTime = microtime(true);
-$text_otladka = $realTime." "."(Конец-$good_key) Создаем строки с номерами заказов для каждого артикула "."\n";
+$deltaTime = $realTime - $startTime;
+$text_otladka = $deltaTime." "."(Конец-$good_key) ($count_items_in_order шт) ($wait_time_etikets сек)Создаем строки с номерами заказов для каждого артикула "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 ////////////////////////// DELETE //////////////////////////////////////////////////////////////////
-echo $text_otladka;
+// echo $text_otladka."<br>";
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
-
 
 /*****************************************************************************************************************
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора

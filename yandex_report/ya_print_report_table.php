@@ -20,8 +20,10 @@ echo <<<HTML
  <td>К нам на счет </td>
  <td>На счет за 1 шт</td>
 
- <td>Хорошая <br> цена</td>
+ <td>Хорошая<br>цена</td>
+ <td>Дельта<br>от хор цена</td>
  <td>Себест</td>
+ <td>Дельта<br>Себест</td>
  <td>Прибыль<br> с артикула</td>
  </tr>
  
@@ -73,19 +75,20 @@ foreach ($arr_article_data as $key => $item) {
 
 // Хорошая цена товара и дельта
 
-
+      echo "<td class=\"plus\">" . number_format( $main_price, 2, ',', ' ')."</td>";
       if ($delta_main_price >= 0 ) {
-        echo "<td class=\"plus\">" . number_format( $main_price, 2, ',', ' ') ."<br>".number_format($delta_main_price, 2, ',', ' '). "</td>";
+        echo "<td class=\"plus\">". number_format($delta_main_price, 2, ',', ' '). "</td>";
       } else {
-        echo "<td class=\"minus\">" . number_format( $main_price, 2, ',', ' ') ."<br>".number_format($delta_main_price, 2, ',', ' '). "</td>";
+        echo "<td class=\"minus\">".number_format($delta_main_price, 2, ',', ' '). "</td>";
       }
 
    
     ///     себестоимость и дельта
+    echo "<td class=\"plus\">" . $min_price. "</td>";
     if ($delta_min_price >= 0 ) {
-      echo "<td class=\"plus\">" . $min_price."<br>".number_format($delta_min_price, 2, ',', ' '). "</td>";
+      echo "<td class=\"plus\">". number_format($delta_min_price, 2, ',', ' '). "</td>";
      } else {
-      echo "<td class=\"minus\">" . $min_price."<br>".number_format($delta_min_price, 2, ',', ' '). "</td>";
+      echo "<td class=\"minus\">".number_format($delta_min_price, 2, ',', ' '). "</td>";
      }
 
 
@@ -100,7 +103,7 @@ foreach ($arr_article_data as $key => $item) {
     if ($pribil_s_one_article >= 0 ) {
       echo "<td class=\"plus\">" . number_format($pribil_s_one_article, 2, ',', ' '). "</td>";
      } else {
-      echo "<td class=\"minus\">" . number_format($pribil_s_one_artivle, 2, ',', ' ')."</td>";
+      echo "<td class=\"minus\">" . number_format($pribil_s_one_article, 2, ',', ' ')."</td>";
      }
      $sum_pribil_s_one_article = @$sum_pribil_s_one_article +@$pribil_s_one_article;
     echo "</tr>";
@@ -120,6 +123,8 @@ echo "<td class=\"plus\"><b>" . number_format($sum_nasha_viplata, 2, ',', ' ') .
 echo "<td>$sum_proc_raspred</td>";
 echo "<td class=\"minus\"><b>" . number_format($sum_raspred_komissii, 2, ',', ' ') . "</b></td>";
 echo "<td class=\"plus\"><b>" . number_format($sum_k_pererchisleniu, 2, ',', ' ') . "</b></td>";
+echo "<td></td>";
+echo "<td></td>";
 echo "<td></td>";
 echo "<td></td>";
 echo "<td></td>";

@@ -25,7 +25,7 @@ function razbor_all_tranzactions_yandex ($sheet, $type_array) {
             $count_sell = $sheet->getCellByColumnAndRow(14, $j)->getValue();
             $order_price = $sheet->getCellByColumnAndRow(15, $j)->getValue();
             //41280145410
-            if ($count_sell<>'') {
+            if ($count_sell <> '') {
                 // Данные по продаже
                 $type_operation = "Продажа_покупателю";
                

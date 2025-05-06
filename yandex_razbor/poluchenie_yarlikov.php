@@ -30,7 +30,7 @@ $campaignId = get_id_company_yam($pdo);
 if  (isset($_GET['select_date'])) {
     $need_date_temp = $_GET['select_date'];
     $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
-    echo $need_date."*********************************<br>"; 
+    echo "ДАТА ОТГРУЗКИ: ".$need_date."<br>"; 
 } else {
     echo "<br>NET DATE DIE<br>";
     die('die without date');
@@ -41,7 +41,7 @@ $order_number = $_GET['order_number'];
 
 
 
-echo "<pre>";
+// echo "<pre>";
 $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
 // print_r($arr_all_new_orders);
 
@@ -53,7 +53,7 @@ $arr_dir = make_all_dir (date('Y-m-d'), $order_number) ;
 
 ///////////////////////////////// Формируем перечень заказов //////////////////////////////////////
 
-echo $need_date."<br>"; 
+// echo $need_date."<br>"; 
 
 // print_r($arr_all_new_orders['orders'][2]);
 
@@ -124,10 +124,12 @@ foreach ($arr_boxes_all as $razbor_article) {
 // Формируем папку с ярлыками 
 foreach ($new_box_array as $items) {
 
-   $arr_file_merge_pdf_name[] =  get_yarliki_odnogo_artikula ($ya_token, $campaignId, $items, $arr_dir['yarliki']);
+   $arr_file_merge_pdf_name[] =  get_yarliki_odnogo_artikula ($ya_token, $campaignId, $items, $arr_dir['yarliki'], $order_number);
    
 }
 
+// print_r($arr_file_merge_pdf_name);
+// die();
 // Формируем ексель файл 
 
 // echo "<pre>";
@@ -203,4 +205,4 @@ $json_file_link = $arr_dir['zip_archives']."/".$order_number.'.json';
  /// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
 unlink('../autosklad/uploads/priznak_razbora_net.txt'); 
 
-die ('<br> Дошли до финиша');
+die ('<br> *** РАЗБОР ОКОНЧЕН ***');

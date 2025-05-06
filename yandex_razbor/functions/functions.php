@@ -89,7 +89,7 @@ $res = put_query_with_data($ya_token, $ya_link, $arr_boxes_all) ;
 /********************************************************************************************
  ******************* Получаем все этикетки одного артикула 
  *************************************************************************************************/
-function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, $dir) {
+function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, $dir, $order_number) {
     // $campaignId = 22076999;
    
   $count_items=0; 
@@ -106,7 +106,7 @@ function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, 
         $boxId =  $items['boxe'];
 
     $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/'.$orderId.
-                '/delivery/shipments/'.$shipmentId.'/boxes/'.$boxId.'/label?PageFormatType=A4';
+                '/delivery/shipments/'.$shipmentId.'/boxes/'.$boxId.'/label?format=A9';
     
     $result = get_shrih_code($ya_token, $ya_link);
     

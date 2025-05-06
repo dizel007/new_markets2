@@ -97,11 +97,11 @@ file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 // echo "Время начала скрипта : { $startTime} <br>"; 
 
+set_time_limit(0);
 
 foreach ($arr_for_zakaz as $one_post) {
-    set_time_limit(0);
     $result = make_packeges_for_one_post_2($token_ozon, $client_id_ozon,$one_post);
-    usleep(200); // 
+    usleep(120); // 
 
     $realTime = microtime(true);
     $text_otladka = $realTime." "."Разбиваем заказы по одному отправлению "."\n";
@@ -126,7 +126,26 @@ foreach ($arr_for_zakaz as $one_post) {
  *****************************  Формируем штрих кода / 1с файл и лист подбора
  ******************************************************************************************************************/
 
-require_once "make_etikets_for_all.php";
+// require_once "make_etikets_for_all.php";
 
 
-die('ОТПРАВИЛИ МНОГО ЗАКАЗОВ');
+
+$link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
+$link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
+
+
+// header('Location: '.$link_for_make_etikets_for_all, true, 301);
+
+echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
+
+
+ echo <<<HTML
+ <br><br>
+ <a href="$link_for_make_etikets_for_all" target="_blank">Аварийный переход на формирование этикеток</a>
+ <br><br>
+ HTML;
+
+
+
+die('Далее тпереходим на получение ПДФ этикеток');
+

@@ -117,5 +117,11 @@ $stmt->execute(array('link2'       => $link2,
 delete_marker_recover_file($path_recovery); 
 
 
+// формируем файл объеденных QR кодов
+
+require_once "merge_qr_code_posts.php";
+
+
+
 die('<br><br><br>ПЕРЕДАНО В ДОСТАВКУ');
 

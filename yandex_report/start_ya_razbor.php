@@ -3,7 +3,10 @@
 require_once "../connect_db.php";
 
 echo <<<HTML
-<a href = "https://partner.market.yandex.ru/business/789064/payments-report?campaignId=22076999">ССылка для скачивания отчетов </a>
+<a target="_blank" href = "https://partner.market.yandex.ru/business/789064/payments-report?campaignId=22076999">Ссылка на отчеты в ЯМ</a>
+<br>
+<a target="_blank" href = "https://partner.market.yandex.ru/business/789064/finance-reports?campaignId=22076999&tab=payments&paymentFilterType=byOrderId&dateBase=BILLING_DATE&onlyActiveContract=true&bankOrderId=">Новая ccылка для скачивания EXCEL отчетов</a>
+<br><br><br>
 <form enctype="multipart/form-data" action="parce_excel_report.php" method="POST">
     
     <input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
