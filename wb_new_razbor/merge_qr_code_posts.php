@@ -2,13 +2,16 @@
 
 require_once "../vendor/autoload.php";
 
+// echo "<pre>";
+// print_r($app_qr_pdf_file_names);
+
 use setasign\Fpdi\Fpdi;
 
 $pdf = new FPDI();
 
 
 foreach ($app_qr_pdf_file_names as $pdf_file) {
-    $pageCount = $pdf->setSourceFile($pdf_file);
+    $pageCount = $pdf->setSourceFile($path_qr_supply."/".$pdf_file);
     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
         $templateId = $pdf->importPage($pageNo);
         $size = $pdf->getTemplateSize($templateId);
@@ -30,6 +33,6 @@ $pdf->Output('F', $link_downloads_PDF_QR_codes);
 
 
 echo <<<HTML
-<a href="$link_downloads_PDF_QR_codes"> MERGE QR code Posts</a>
+<a target="_blank" href="$link_downloads_PDF_QR_codes"> MERGE QR code Posts</a>
 
 HTML;
