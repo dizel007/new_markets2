@@ -175,7 +175,7 @@ foreach ($wb_catalog as $wb_item) {
   $arr_key = array_unique($arr_key); //  оставляем только уникальные артикулы
 
 
-echo "<pre>";
+// echo "<pre>";
 // print_r($arr_result);
 // die('5555555555555555555555555555555555');
 
@@ -314,7 +314,7 @@ foreach ( $ARR_all_data as $key=>$temp_data_2) {
 
 
 // print_r($arr_82400);
-print_r($ARR_all_data);
+// print_r($ARR_all_data);
 
 echo <<<HTML
 <table class="prod_table">
@@ -377,7 +377,9 @@ echo "<td class=\"our_many\">".number_format(@$item['summa_vikupa'],2, ',', ' ')
 if (isset($item['count_sell'])) {
 $price_for_shtuka = @$item['summa_vikupa']/$item['count_sell'];
 $kol_vo_for_xml = $item['count_sell'];
-$summa_vikupa = $item['summa_vikupa'];
+// $summa_vikupa = $item['summa_vikupa'];
+$summa_vikupa = number_format($item['summa_vikupa'],2,'.','');
+// echo "**$summa_vikupa <br>";
 } else {
     $price_for_shtuka = 0;
     $kol_vo_for_xml = 0;
@@ -391,9 +393,7 @@ echo "</tr>";
 // */
 $array_for_xml[$key]['key'] = $key;
 $array_for_xml[$key]['count'] = $kol_vo_for_xml;
-
 $array_for_xml[$key]['barcode'] = $arr_key_barcode[$key];
-
 $array_for_xml[$key]['FullPrice'] = $summa_vikupa;
 
 }

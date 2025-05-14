@@ -153,7 +153,7 @@ $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_ca
 // echo "<br>*****************************************************<br>";
 // echo "<pre>";
 // print_r ($ya_fbs_catalog);
-// die();
+// die('jjjjjjjjjjjjjjjj');
 
 
 $wb_catalog      = get_db_procent_tovara_v_magazine ($wb_catalog, $raspredelenie_ostatkov, $$wb_anmaks, $arr_new_ostatoki_MP);

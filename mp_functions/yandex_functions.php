@@ -45,11 +45,21 @@ function get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog) {
     $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId_FBS.'/offers/stocks';
     
     $arr_all_stocks = yandex_post_query_with_data($yam_token, $ya_link, $ya_data);
-    
-// Формируем массив с остатками товаров
+
+// перебираем склады и находим наш склад (какие то левые склады могут быть)
 if (isset($arr_all_stocks['result']['warehouses'][0]['offers'])) {
-    foreach ($arr_all_stocks['result']['warehouses'][0]['offers'] as $stocks) {
+    foreach ($arr_all_stocks['result']['warehouses'] as $warehouses_z) {
+        if ($warehouses_z['warehouseId'] == 339337) { // наш склад FBS
+            $our_FBS_warehouse = $warehouses_z;
+        }
+    }
     
+}
+
+
+// Формируем массив с остатками товаров
+if (isset($our_FBS_warehouse)) {
+    foreach ($our_FBS_warehouse['offers'] as $stocks) {
         // $arr_stocks_by_artickle[$stocks['offerId']] = $stocks['offerId'];
         foreach ($stocks['stocks'] as $type_stock) {
             if ($type_stock['type'] == 'AVAILABLE') {
