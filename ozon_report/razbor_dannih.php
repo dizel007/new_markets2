@@ -293,7 +293,9 @@ if (isset($Summa_usluga_po_bronirovaniu_mesta_dla_postavku)) {
 if (isset($Summa_obrabotka_braka_s_priemki)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_braka_s_priemki, "Обработка брака с приемки");
 }
-
+if (isset($Summa_korrektirovka_stoimosti_uslug)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_korrektirovka_stoimosti_uslug, "Корректировки стоимости услуг");
+}
 
 
 $dop_uslugi += @$amount_hranenie;

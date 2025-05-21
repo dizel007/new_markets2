@@ -136,6 +136,10 @@ elseif ($items['operation_type'] == 'MarketplaceServiceItemCrossdocking'){
     //Кросс-докинг
             $Summa_kross_doking = @$Summa_kross_doking + $items['amount']; 
         }  
+elseif ($items['operation_type'] == 'MarketplaceSellerCorrectionOperation'){
+     //Корректировки стоимости услуг
+            $Summa_korrektirovka_stoimosti_uslug = @$Summa_korrektirovka_stoimosti_uslug + $items['amount']; 
+         } 
 elseif ($items['operation_type'] == 'OperationSubscriptionPremium'){
     //Подписка Premium
             $Summa_primiun_5000 = @$Summa_primiun_5000 + $items['amount']; 
