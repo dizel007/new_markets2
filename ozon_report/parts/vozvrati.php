@@ -27,6 +27,11 @@ foreach ($arr_returns as $items) {
                                         $arr_article[$new_sku]['logistika_vozvrat_count'] = @$arr_article[$new_sku]['logistika_vozvrat_count'] + 1;
                                         $logistika_vozvrat_count = @$logistika_vozvrat_count + 1;
                                 }
+                                // логистика посленяя миля
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemRedistributionLastMileCourier') {
+                                        $arr_article[$new_sku]['logistika_vozvrat'] = @$arr_article[$new_sku]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
+                                }
+                                
                                 // обратная логистика
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowLogistic') {
 
@@ -75,7 +80,6 @@ foreach ($arr_returns as $items) {
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowTrans') {
                                         $arr_article[$new_sku]['logistika_obrat_magistral'] = @$arr_article[$new_sku]['logistika_obrat_magistral'] + $return_dop_obrabotka['price'];
                                 }
-
                                 /// обработка невыкупа.
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnPartGoodsCustomer') {
                                         $arr_article[$new_sku]['obtabotka_nevikupa'] = @$arr_article[$new_sku]['obtabotka_nevikupa'] + $return_dop_obrabotka['price'];

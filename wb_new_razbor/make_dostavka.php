@@ -123,5 +123,32 @@ require_once "merge_qr_code_posts.php";
 
 
 
+// запуск файлов на скачивание 
+
+downloadFile_WB($link_downloads_stikers);
+downloadFile_WB($link_downloads_qr_codes);
+downloadFile_WB($link_downloads_PDF_QR_codes);
+
+function downloadFile_WB($file_name) {
+if (file_exists($file_name)) {
+    // Устанавливаем заголовки
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file_name));
+    
+    // Очищаем буфер вывода, если нужно
+    flush();
+    
+    // Отправляем содержимое файла
+    readfile($file_name);
+    exit;
+} 
+
+}
+
 die('<br><br><br>ПЕРЕДАНО В ДОСТАВКУ');
 
