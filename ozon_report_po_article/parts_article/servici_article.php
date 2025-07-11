@@ -6,7 +6,9 @@ if (isset($arr_services)) {
         $i++;
         $service_obrabotan = 0;
         $our_item = $items['items'];
-
+     
+        
+        
        // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
   // В эТОМ ИФЕ перебираем элементы массива, где мы можем преципить СЕРВИСЫ к номеру заказа
   //
@@ -14,7 +16,10 @@ if (isset($arr_services)) {
             ($items['operation_type'] == 'OperationMarketplaceReturnDisposalServiceFbs'))
          {
             // Начисление за хранение/утилизацию возвратов
-            $new_post_number = make_posting_number($items['posting']['posting_number']);
+      $new_post_number = make_posting_number($items['posting']['posting_number']);
+           // техническая инфа 
+        $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
+     
             $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
             $arr_article[$new_post_number]['SERVICES'] = 'SERVICES';
             $arr_article[$new_post_number]['amount_hranenie'] = @$arr_article[$new_post_number]['amount_hranenie'] + $items['amount'];
@@ -25,6 +30,9 @@ if (isset($arr_services)) {
             // Услуга за обработку операционных ошибок продавца: поздняя отгрузка - отмена начисления
             // 
             $new_post_number = make_posting_number($items['posting']['posting_number']);
+                // техническая инфа 
+            $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
+     // 
             $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
             $arr_article[$new_post_number]['SERVICES'] = 'SERVICES';
             $arr_article[$new_post_number]['pozdniaa_otgruzka'] = @$arr_article[$new_post_number]['pozdniaa_otgruzka'] + $items['amount'];

@@ -51,6 +51,11 @@ foreach ($arr_returns as $big_key => $items) {
                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
                                                 @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
+                                // логистика посленяя миля
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemRedistributionLastMileCourier') {
+                                $arr_article[$new_sku]['logistika_vozvrat'] = @$arr_article[$new_sku]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
+                                }
+                        
                                 // последняя миля (возрат обратная логистика) 99999
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDelivToCustomer') {
                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['last_mile11'] =

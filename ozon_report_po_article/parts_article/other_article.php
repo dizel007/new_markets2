@@ -5,8 +5,13 @@
 foreach ($arr_other as $items) {
     $i++;
     $our_item = $items['items'];
+   $new_post_number = make_posting_number ($items['posting']['posting_number']);
+      // техническая инфа 
+        $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
+        
+        
 // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
-        $new_post_number = make_posting_number ($items['posting']['posting_number']);
+     
         $arr_article[$new_post_number]['ACQUIRING'] = 'ACQUIRING';
         $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
 

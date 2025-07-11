@@ -59,7 +59,7 @@ foreach ($arr_data as $key=>$supply) {
 echo "<br> ИНФОРМАЦИЯ ПО QR кодам Поставки (ДЛЯ ОТРАБОТКИ)<br>";  
 echo "<pre>";
 print_r($app_qr_pdf_file_names);
-
+echo "</pre>";
 
 /******************************************************************************************
  *  ***************   Формируем архив с QR кодам поставок ********************************
@@ -75,10 +75,8 @@ $zip_new->open($path_arhives."/".$zip_arhive_name, ZipArchive::CREATE|ZipArchive
     $link_downloads_qr_codes = $path_arhives."/".$zip_arhive_name;
 echo <<<HTML
 <a href="$link_downloads_stikers"> Стикеры заказов</a>
-<a href="$link_downloads_qr_codes"> QR коды поставки</a>
-
+<!-- <a href="$link_downloads_qr_codes"> QR коды поставки</a> -->
 HTML;
-
 
 
 // высылаем на почту письмо с данными
@@ -125,9 +123,11 @@ require_once "merge_qr_code_posts.php";
 
 // запуск файлов на скачивание 
 
-downloadFile_WB($link_downloads_stikers);
-downloadFile_WB($link_downloads_qr_codes);
-downloadFile_WB($link_downloads_PDF_QR_codes);
+// downloadFile_WB($link_downloads_stikers);
+// downloadFile_WB($link_downloads_qr_codes);
+// downloadFile_WB($link_downloads_PDF_QR_codes);
+// downloadFile_WB($link_downloads_qr_posts_2);
+
 
 function downloadFile_WB($file_name) {
 if (file_exists($file_name)) {

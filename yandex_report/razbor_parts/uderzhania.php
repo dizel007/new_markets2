@@ -13,8 +13,8 @@ function razbor_all_uderzania_yandex ($sheet, $type_array) {
               break;
             }
 
-            $type_operation = $sheet->getCellByColumnAndRow(15, $j)->getValue();
-            $order_price = $sheet->getCellByColumnAndRow(14, $j)->getValue();
+            $type_operation = $sheet->getCellByColumnAndRow(16, $j)->getValue();
+            $order_price = $sheet->getCellByColumnAndRow(15, $j)->getValue();
 
             $arr_uderzania[$type_operation]['сумма_операций_удержания'] =  @$arr_uderzania[$type_operation]['сумма_операций_удержания'] + $order_price;
   

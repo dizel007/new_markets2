@@ -125,7 +125,7 @@ $arr_result_temp = light_query_without_data($token_wb, $link_wb);
 if (isset($arr_result_temp['code'])) {
     if ($arr_result_temp['code'] == 429) {
     echo "<br>".$arr_result['message']."<br>";
-    die ('');
+    die ('zzzz......');
     }
 } 
 /**********************************************************
@@ -151,10 +151,10 @@ elseif  (isset($arr_result_temp[0])){
 sleep(1);
 }
 
+echo "<br> Вышли из цикла получения данных с сайта ВБ <br>";
 
-
-$text =  json_encode($arr_result, JSON_UNESCAPED_UNICODE);
-file_put_contents('array.json', $text);
+// $text =  json_encode($arr_result, JSON_UNESCAPED_UNICODE);
+// file_put_contents('array.json', $text);
 
 
 // $arr_result =  file_get_contents('array.json');
@@ -176,7 +176,7 @@ if (!isset($arr_result)) {
     } 
 
 // количество данных в массиве
-echo (count($arr_result));
+echo "Количество массивов :" .(count($arr_result))." - ";
 
 
 /*******************************************************************************************

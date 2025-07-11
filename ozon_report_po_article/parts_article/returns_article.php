@@ -8,16 +8,25 @@ foreach ($arr_returns as $big_key => $items) {
         $i++;
 
         $our_item = $items['items'];
+  $new_post_number = make_posting_number($items['posting']['posting_number']);
+        // техническая инфа 
+        $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
+        
+
         // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
 
         ///// ТУТ мы меняет SKU ФБО на СКУ ФБС, чтобы в таблице вывести их в одной строке
+        
+        
 
-        $new_post_number = make_posting_number($items['posting']['posting_number']);
+      
         $new_post_number_full = $items['posting']['posting_number'];
         $arr_article[$new_post_number]['post_number'] = $new_post_number;
         $arr_article[$new_post_number]['RETURN'] = 'RETURN';
         $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
         $arr_article[$new_post_number]['delivery_schema'] = $items['posting']['delivery_schema'];
+
+
 
         foreach ($our_item as $item) {
 
@@ -51,6 +60,13 @@ foreach ($arr_returns as $big_key => $items) {
                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
                                                 @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
+                                // логистика посленяя миля
+                                elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemRedistributionLastMileCourier') {
+                                       $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
+                                
+                                }
+                                
                                 // последняя миля (возрат обратная логистика) 99999
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDelivToCustomer') {
                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['last_mile11'] =
@@ -58,29 +74,29 @@ foreach ($arr_returns as $big_key => $items) {
                                 }
                                 // обратная логистика 77777
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemReturnFlowLogistic') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['back_logistika_vozvrat'] =
-                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['back_logistika_vozvrat'] + $return_dop_obrabotka['price'];
+                                         $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
                                 // обработка отправления.      77777 99999
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffSC') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_SC'] =
-                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_SC'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
                                 // обработка отправления в ПВЗ.
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemDropoffPVZ') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_PVZ'] =
-                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['obrabotka_otpravlenii_v_PVZ'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
 
                                 /// сборка заказа**************************************************************
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemFulfillment') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sborka_zakaza'] =
-                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['sborka_zakaza'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
                                 /// перевыставление возвратов на ПВЗ. 77777
                                 elseif ($return_dop_obrabotka['name'] == 'MarketplaceServiceItemRedistributionReturnsPVZ') {
-                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['return_obrabotka'] =
-                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['return_obrabotka'] + $return_dop_obrabotka['price'];
+                                        $arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] =
+                                                @$arr_article[$new_post_number]['items_returns'][$new_post_number_full]['logistika_vozvrat'] + $return_dop_obrabotka['price'];
                                 }
 
                                 /// Обработка отмен.

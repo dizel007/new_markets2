@@ -8,6 +8,20 @@ require_once "../mp_functions/ozon_api_functions.php";
 require_once "../pdo_functions/pdo_functions.php";
 require_once "libs_ozon/function_ozon_reports.php"; // массив с себестоимостью товаров
 require_once "libs_ozon/sku_fbo_na_fbs.php"; // массив с себестоимостью товаров
+// формируем признак принудительного обновления данных 
+
+if (isset($_GET['need_update'])) {
+    $need_update = $_GET['need_update'];
+} else {
+    $need_update = 0;
+}
+
+if (isset($_GET['article'])) {
+    $need_article = $_GET['article'];
+} else {
+    $need_article = '';
+}
+
 
 // выбираем магазин 
 if (isset($_GET['ozon_shop'])) {
@@ -16,6 +30,8 @@ if (isset($_GET['ozon_shop'])) {
         $token =  $token_ozon;
         $client_id =  $client_id_ozon;
         $name_mp_shop = 'OZON ООО АНМАКС';
+        $selected_shop_ozon_ooo = 'selected';
+        $selected_shop_ozon_ip = '';
   
     }
         
@@ -23,6 +39,8 @@ if (isset($_GET['ozon_shop'])) {
         $token =  $token_ozon_ip;
         $client_id =  $client_id_ozon_ip;
         $name_mp_shop = 'OZON ИП ЗЕЛ';
+        $selected_shop_ozon_ooo = '';
+        $selected_shop_ozon_ip = 'selected';
   }
 }
    
@@ -40,8 +58,6 @@ if (isset($_GET['dateTo'])) {
     $date_to = false;
 }
 
-
-
 echo <<<HTML
 <head>
 <link rel="stylesheet" href="../css/main_ozon.css">
@@ -50,22 +66,14 @@ echo <<<HTML
 HTML;
 
 
-
-
-
-
 echo <<<HTML
-<head>
-<link rel="stylesheet" href="css/main_table.css">
-
-</head>
 <body>
-
+<!-- Форма для ввода маагнина  дат   -->
 <form action="#" method="get">
 <label>Магазин </label>
 <select required name="ozon_shop">
-    <option value = "ozon_anmaks">Озон ООО</option>
-    <option value = "ozon_ip_zel">OZON_ИП</option>
+    <option {$selected_shop_ozon_ooo} value = "ozon_anmaks">Озон ООО</option>
+    <option {$selected_shop_ozon_ip} value = "ozon_ip_zel">OZON_ИП</option>
 </select>
 
 
@@ -73,93 +81,42 @@ echo <<<HTML
 <input required type="date" name = "dateFrom" value="$date_from">
 <label>дата окончания</label>
 <input required type="date" name = "dateTo" value="$date_to">
-
-
+<input hidden type="text" name = "need_update" value="1">
 <input type="submit"  value="START">
 </form>
 HTML;
 
-if (($date_from == false) or ($date_to == false)) {
-    die ('Нужно выбрать даты');
-    } 
 
-echo "Период запроса с ($date_from) по  ($date_to)<br>";
-$ozon_link = 'v3/finance/transaction/list';
-$send_data = array(
-    "filter" => array(
-        "date" => array (
-            "from" => $date_from."T00:00:00.000Z",
-            "to"=> $date_to."T00:00:00.000Z"
-    ),
-        "operation_type" => [],
-        "posting_number" => "",
-        "transaction_type" => "all"
-    ),
-    "page" => 1,
-    "page_size" => 1000
-);
-$send_data = json_encode($send_data);
+// Название КЭШ файлика (туда массив будем кидать при обработке вывода на экран )
+$cacheFile = "../!cache/ozon_data_(".$userdata['user_login'].").json";
+$cacheTTL = 1200; // 20 минут // время жизни файлика с данными
 
-$res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_link );
+// Проверяем можно ли использовать наши данные если они есть ( не старее 10 минут)
+if ((file_exists($cacheFile) && time() - filemtime($cacheFile) < $cacheTTL) && ($need_update != 1)) {
+    echo "<br>YES ** Берем данные из загруженного файла<br>";
+    $prod_array = json_decode(file_get_contents($cacheFile), true);
+} else {
+    echo "<br>NO  ** получаем данные через API <br><br>";
+require_once "form_for_article.php";
+// Записываем новые данные в файл CASHE 
+file_put_contents($cacheFile, json_encode($prod_array,JSON_UNESCAPED_UNICODE));
 
-
-// если ошибка при обмене то выводим е
-if (isset($res['message'])) {
-
-    echo "<pre>";
-    print_r($res);
-    die('ОШИБКА ПРИ ЗАПРОСЕ');
-    
 }
 
 
-$page_count = $res['result']['page_count'];
-$row_count = $res['result']['row_count'];
-echo $page_count ." ". $row_count."<br>";
-
-// Запрашиваем все страницы отчета
-for ($i=1; $i <=$page_count; $i ++) {
-    $send_data = array(
-        "filter" => array(
-            "date" => array (
-                "from" => $date_from."T00:00:00.000Z",
-                "to"=> $date_to."T00:00:00.000Z"
-        ),
-            "operation_type" => [],
-            "posting_number" => "",
-            "transaction_type" => "all"
-        ),
-        "page" => $i,
-        "page_size" => 1000
-    );
-    $send_data = json_encode($send_data);
-    $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_link );
-    $prod_array[] = $res['result']['operations'];
-}
-
-
-// Начинаем разбирать массив со всеми операциями 
-
-// file_put_contents('1.json', json_encode($prod_array,JSON_UNESCAPED_UNICODE));
-
-// $prod_array = json_decode(file_get_contents('1.json'), true);
-
+/*******************************************************************************************
+ *  ***** ДАННЫЕ ПОЛУЧЕНЫ ОТСЮДА НАЧИНАЕМ ИХ ОБРАБАТЫВАТЬ ******************************
+ *******************************************************************************************/
 foreach ($prod_array as $arr_temp) {
-    foreach ($arr_temp as $add) {
-
-        $array_MINI[] = $add;
-     
+    foreach ($arr_temp as $add) 
+    {
+        $array_MINI[] = $add;   
+    }
+  unset($prod_array);
 }
-
-unset($prod_array);
-
-}
-
-
 
 // echo "<pre>";
 // print_r($array_MINI);
-
 // die();
 
 foreach ($array_MINI as $item) {
@@ -174,10 +131,15 @@ foreach ($array_MINI as $item) {
 
 $prod_array = $prod_array_2;
 unset($prod_array_2);
-$our_array_ggg = $array_MINI;
+
+
+echo "<pre>";
+// print_r($array_MINI);
+// die();
+//62050202-0064-1
 echo "<br> Количество заказов ".count($array_MINI) ."<br>";
 $i=0;
-// 0164330337-0066-5
+
  // Разбиваем наш массив на массивы по ТИПУ
 foreach ($array_MINI as $item_element) {
    // Заказ товара и прямая логистика (ИНОСТРАННЫЕ ЗАКАЗЫ)
@@ -216,7 +178,10 @@ foreach ($array_MINI as $item_element) {
 }
 $i=0;
 
-echo "<br>Количество элементов массива --".count($array_MINI) ."<br>";
+
+
+
+echo "<br>Количество Неразобранных элементов массива --".count($array_MINI) ."<br>";
 if (isset($arr_orders) ) {
 echo "Количество элементов массива ZAKAZI RUS--".count($arr_orders) ."<br>";
 }
@@ -236,7 +201,9 @@ if (isset($arr_compensation) ) {
 echo "Количество элементов массива COMPENSATION --".count($arr_compensation) ."<br>";
 }
 if (isset($arr_unknows) ) {
-    echo "<br>Количество элементов массива UNKNOWS --".count($arr_unknows) ."<br>";
+    echo "<b>Количество элементов массива UNKNOWS --".count($arr_unknows) ."</b><br>";
+    echo "<pre>";
+    print_r($arr_unknows);
 } else {
     echo " НЕТ массива UNKNOWS <br>";
 }
@@ -244,6 +211,7 @@ if (isset($arr_unknows) ) {
 require_once "razbor_dannih_article.php";
 
 die();
+
 
 /***************** ФУНКЦИИ ПОШЛИ **********************************************************************************************
  **********************************************************************************************************************/

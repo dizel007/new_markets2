@@ -40,7 +40,9 @@ foreach ($arr_items_yandex as $key => $item) {
     $commission_one_item = @$item['commission']/@$item['count_sell'];
     echo "<td class=\"minus\">" . number_format(@$item['commission'], 2, ',', ' ') .
         "<br>" . number_format(@$commission_one_item, 2, ',', ' ') . "</td>";
-    ///     Цена за штуку
+    
+      
+        ///     Цена за штуку
     echo "<td>" . number_format(@$item['price_for_shtuka'], 2, ',', ' ') . "</td>";
 
 

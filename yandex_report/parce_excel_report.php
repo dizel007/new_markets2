@@ -79,6 +79,19 @@ foreach ($all_tranzactions as $key_orders=> $orders_items) {
 }    
 }
 
+
+// находим сумму всех строк без артикула
+$premii = 0;
+foreach ($arr_article_data as $key => &$iitem) {
+  if ($key == '') {
+      $premii += $iitem['сумма_операций'];
+      unset($arr_article_data[$key]);
+  }
+}
+
+echo "<pre>";
+print_r($premii);
+
 $all_vozvrati = razbor_all_vozvrati_yandex ($sheet, $type_array);
 
 
@@ -122,6 +135,13 @@ $summa_vseh_vozvratov = $all_vozvrati['summa_vseh_vozvratov'];
 
 
 $all_uderzania = razbor_all_uderzania_yandex ($sheet, $type_array);
+
+// echo "<pre>";
+// print_r($arr_premii);
+// die();
+
+
+
 $summa_vseh_uderzanii = $all_uderzania['summa_vseh_uderzanii'];
 
 // теперь приложим сумму удержания_прочие для каждого артикула 
@@ -129,12 +149,18 @@ foreach ($arr_article_data as &$article) {
   $article['сумма_удержания_прочие'] = round(($summa_vseh_uderzanii/100 * $article['процент_от_суммы']  ),2);
 }
 
+// теперь приложим сумму премирования для каждого артикула 
+foreach ($arr_article_data as &$article) {
+  $article['сумма_премирования'] = round(($premii/100 * $article['процент_от_суммы']  ),2);
+}
+
+
 
 
 // теперь посчитаем сумму после всех вычетов 
 $summa_posle_vichitov = 0;
 foreach ($arr_article_data as &$article) {
-  $article['сумма_за_артикул_после_всех_вычитов'] = $article['сумма_операций']  + $article['сумма_удержания_прочие'] ;
+  $article['сумма_за_артикул_после_всех_вычитов'] = $article['сумма_операций']  + $article['сумма_удержания_прочие'] + $article['сумма_премирования'];
   
   isset($article['Кол-во товаров'])?$price_for_one_item = round($article['сумма_за_артикул_после_всех_вычитов']/$article['Кол-во товаров'],2):$price_for_one_item = 0;
  
@@ -146,9 +172,9 @@ foreach ($arr_article_data as &$article) {
 
 
 
-// echo "<pre>";
-// print_r($arr_article_data);
-// print_r($nomenclatura);
+echo "<pre>";
+
+print_r($arr_article_data);
 // print_r($all_vozvrati);
 
 // echo "<br> сумма = ".$summa_all_orders;

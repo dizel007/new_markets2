@@ -87,24 +87,26 @@ foreach ($arr_razbor_orders as $orders) {
  $link2 = str_replace(DOMAIN_NAME.'/', DOMAIN_NAME,$link2);
 //  $link2 = str_replace('ow2/', 'ow2',$link2);
  $link2 = str_replace(' ', '%20',$link2);
-
+/// **********************************  ВБ ОООО *************************************
  if($orders['type_shop'] == 'wb_anmaks' )  {
     $shop_name = 'ВБ ООО';
-    $link1_name = "Download stickers OOO";
-    $link2_name = "Download QR code OOO";
-
+    $link1_name = "Скачать QR этикетки $shop_name";
+    $link2_name = "Скачать QR коды поставок $shop_name";
+/// **********************************  ВБ ИП *************************************
  } elseif ($orders['type_shop'] == 'wb_ip_zel'){
     $shop_name = 'ВБ ИП';
-    $link1_name = "Download stickers IP";
-    $link2_name = "Download QR code IP";
+    $link1_name = "Скачать QR этикетки $shop_name";
+    $link2_name = "Скачать QR коды поставок $shop_name";
+/// **********************************  ОЗОН ООО *************************************
  } elseif ($orders['type_shop'] == 'ozon_anmaks'){
     $shop_name = 'Озон ООО';
-    $link1_name = "Download barcode OOO";
-    $link2_name = "Download Merge arhive OOO";
+    $link1_name = "";
+    $link2_name = "Скачать ШТРИХКОДЫ $shop_name";
+/// **********************************  ОЗОН ИП *************************************
 } elseif ($orders['type_shop'] == 'ozon_ip_zel'){
      $shop_name = 'Озон ИП';
-     $link1_name = "Download barcode IP";
-     $link2_name = "Download Merge arhive IP";
+     $link1_name = "";
+     $link2_name = "Скачать ШТРИХКОДЫ $shop_name";
 } else {
      $shop_name = $orders['type_shop'];
      $link1_name = "XZ";

@@ -17,6 +17,7 @@ echo <<<HTML
  <td>К перечислению<br> за товар</td>
  <td>% распред</td>
  <td>Комиссия <br> Яндекса</td>
+ <td>Премии <br>за акции</td>
  <td>К нам на счет </td>
  <td>На счет за 1 шт</td>
 
@@ -38,6 +39,8 @@ foreach ($arr_article_data as $key => $item) {
     $sum_count_sell = @$sum_count_sell + @$item['Кол-во товаров'];
     $sum_nasha_viplata = @$sum_nasha_viplata + @$item['сумма_операций'];
     $sum_raspred_komissii = @$sum_raspred_komissii + @$item['сумма_удержания_прочие'];
+    $sum_premii = @$sum_premii + @$item['сумма_премирования'];
+
     $sum_k_pererchisleniu = @$sum_k_pererchisleniu + @$item['сумма_за_артикул_после_всех_вычитов'];
     $sum_proc_raspred = @$sum_proc_raspred + $item['процент_от_суммы'];      
 // цена продажи товара
@@ -46,6 +49,12 @@ foreach ($arr_article_data as $key => $item) {
      echo "<td class=\"\">" . number_format(@$item['процент_от_суммы'], 2, ',', ' ') . "</td>";
 // Сумма удержаний
      echo "<td class=\"minus\">" . number_format(@$item['сумма_удержания_прочие'], 2, ',', ' '). "</td>";
+
+// премии за акции 
+echo "<td class=\"plus\">" . number_format(@$item['сумма_премирования'], 2, ',', ' '). "</td>";
+
+
+
 // Сумма выплат нам за артикул
     echo "<td class=\"plus\">" . number_format(@$item['сумма_за_артикул_после_всех_вычитов'], 2, ',', ' '). "</td>";
 // Получили за 1 шуткук
@@ -117,11 +126,14 @@ foreach ($arr_article_data as $key => $item) {
 
 echo "<tr>";
 echo "<td></td>";
-echo "<td class=\"plus\"><b>" . number_format($sum_count_sell, 2, ',', ' ') . "</b></td>";
+echo "<td class=\"plus\"><b>" . number_format($sum_count_sell, 0, ',', ' ') . "</b></td>";
 
 echo "<td class=\"plus\"><b>" . number_format($sum_nasha_viplata, 2, ',', ' ') . "</b></td>";
 echo "<td>$sum_proc_raspred</td>";
 echo "<td class=\"minus\"><b>" . number_format($sum_raspred_komissii, 2, ',', ' ') . "</b></td>";
+echo "<td class=\"plus\"><b>" . number_format($sum_premii, 2, ',', ' ') . "</b></td>";
+
+
 echo "<td class=\"plus\"><b>" . number_format($sum_k_pererchisleniu, 2, ',', ' ') . "</b></td>";
 echo "<td></td>";
 echo "<td></td>";

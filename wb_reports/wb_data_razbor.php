@@ -1,4 +1,7 @@
 <?php
+
+// echo "<br>  вошли в ВБ дата разбор <br>";
+
 $return_logistok = 0;
 $return_vidacha_o_vozvrat = 0;
 // $pp=0;
@@ -163,3 +166,5 @@ $return_logistok = @$return_logistok + $item['rebill_logistic_cost'];
     $sum_voznagrazhdenie_wb = $sum_voznagrazhdenie_wb  + $item['ppvz_vw']  + $item['ppvz_vw_nds'];
 
 }
+
+// echo "<br>  вышли с ВБ дата разбор <br>";

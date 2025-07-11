@@ -8,10 +8,16 @@ foreach ($arr_orders as $items) {
     $i++;
     $our_item = $items['items'];
     // @$all_summa_tovarov_ += $items['accruals_for_sale'];
+$new_post_number = make_posting_number ($items['posting']['posting_number']);
+      // техническая инфа 
+        $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
+        
+
+        
 // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
 
 
-$new_post_number = make_posting_number ($items['posting']['posting_number']);
+
 $new_post_number_full = $items['posting']['posting_number'];
 $arr_article[$new_post_number]['post_number'] = $new_post_number;
 $arr_article[$new_post_number]['SELL'] = 'SELL';
@@ -52,21 +58,24 @@ $full_summa_sale_commission += $items['sale_commission'];
 /********************************************************************************************
  *  ОБРАБАТЫВАЕМ СЕРВИСЫ В ДОСТАВКЕ 
  *********************************************************************************************/
+// все что касается Логистики добавляем сюда. (УБРАЛИ ДРОБЛЕНИЕ ЛОГИСТИКИ)
 
  foreach ($items['services'] as $services) { // перебираем массив services 
-    if ($services['name'] == 'MarketplaceServiceItemDirectFlowLogistic') {
-//логистика
-    $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['logistika'] = $services['price'];
-    $full_summa_sale_logistika += $services['price']; 
-     } 
-    if ($services['name'] == 'MarketplaceServiceItemDropoffSC') {
-// обработка отправления
-   $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['obrabotka_otpravlenia'] = $services['price'];
-     }
-    if ($services['name'] == 'MarketplaceServiceItemDelivToCustomer') {
-//последняя миля.
-    $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['last_mile'] = $services['price'];
-      }
+    if (($services['name'] == 'MarketplaceServiceItemDirectFlowLogistic') OR 
+        ($services['name'] == 'MarketplaceServiceItemDropoffSC') OR 
+        ($services['name'] == 'MarketplaceServiceItemDelivToCustomer'))  {
+           $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['logistika'] = @$arr_article[$new_post_number]['items_buy'][$new_post_number_full]['logistika'] + $services['price'];
+           $full_summa_sale_logistika += $services['price']; 
+        } 
+//     if ($services['name'] == 'MarketplaceServiceItemDropoffSC') {
+// // обработка отправления
+//    $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['obrabotka_otpravlenia'] = $services['price'];
+//      }
+//     if ($services['name'] == 'MarketplaceServiceItemDelivToCustomer') {
+// //последняя миля.
+//     $arr_article[$new_post_number]['items_buy'][$new_post_number_full]['logistika'] = @$arr_article[$new_post_number]['items_buy'][$new_post_number_full]['logistika'] + $services['price'];
+//      $full_summa_sale_logistika += $services['price']; 
+//       }
     }
 
 }

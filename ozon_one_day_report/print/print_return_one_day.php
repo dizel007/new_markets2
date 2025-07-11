@@ -24,7 +24,7 @@ foreach ($arr_all_nomenklatura as $nomenklatura) {
 echo "<tr>";
 
 echo "<td><a href=\"?json_data_send=$str_data_send\">{$nomenklatura['main_article_1c']}</a></td>";
-    foreach ($arr_article as $key => $item) {
+    foreach ($arr_article_return as $key => $item) {
         $find_article = 0;
         if (mb_strtolower($key) == mb_strtolower($nomenklatura['main_article_1c'])) {
             $find_article = 1;
@@ -34,8 +34,9 @@ echo "<td><a href=\"?json_data_send=$str_data_send\">{$nomenklatura['main_articl
             echo "<td>{$item['standard_fee']}</td>";  
             echo "<td>{$item['total']}</td>";
             
-            echo "<td>{$item['bank_coinvestment']}</td>";   
-            echo "<td>{$item['commission_ratio']}</td>";   
+            echo "<td>{$item['bank_coinvestment']}</td>"; 
+              $commission_ratio = $item['commission_ratio']*100;
+            echo "<td>{$commission_ratio}</td>";   
             echo "<td>{$item['seller_price_per_instance']}</td>";   
          
             $summa_count += $item['count'];
