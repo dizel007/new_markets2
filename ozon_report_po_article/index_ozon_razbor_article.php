@@ -17,7 +17,7 @@ if (isset($_GET['need_update'])) {
 }
 
 if (isset($_GET['article'])) {
-    $need_article = $_GET['article'];
+    $need_article = mb_strtolower($_GET['article']);
 } else {
     $need_article = '';
 }
@@ -202,8 +202,8 @@ echo "Количество элементов массива COMPENSATION --".co
 }
 if (isset($arr_unknows) ) {
     echo "<b>Количество элементов массива UNKNOWS --".count($arr_unknows) ."</b><br>";
-    echo "<pre>";
-    print_r($arr_unknows);
+    // echo "<pre>";
+    // print_r($arr_unknows);
 } else {
     echo " НЕТ массива UNKNOWS <br>";
 }
