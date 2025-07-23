@@ -217,6 +217,8 @@ $link_wb = 'https://discounts-prices-api.wildberries.ru/api/v2/upload/task';
 $res = light_query_with_data($token_wb, $link_wb, $data);
 // print_r($res);
 usleep(200);
+
+
 }
 
 }

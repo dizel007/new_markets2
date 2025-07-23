@@ -196,13 +196,25 @@ $json_file_link = $arr_dir['zip_archives']."/".$order_number.'.json';
  
 
   echo <<<HTML
-  <br><br>
-  <a href="$link_zip_file"> скачать архив со стикерамии листом подбора</a>
-  <br><br>
+    <br><br>
+    <a href="$link_zip_file"> скачать архив со стикерамии листом подбора</a>
+    <br><br>
   HTML;
 
 
  /// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
 unlink('../autosklad/uploads/priznak_razbora_net.txt'); 
 
+
+
+ echo <<<HTML
+   <br><br>
+   <a href="change_status_for_ship.php?link_zip_file=$link_zip_file"> скачать архив со стикерамии листом подбора</a>
+   <br><br>
+ HTML;
+
+
+
 die ('<br> *** РАЗБОР ОКОНЧЕН ***');
+
+

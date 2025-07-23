@@ -57,6 +57,8 @@ function yandex_post_query_with_data($ya_token, $ya_link, $ya_data){
 
 	if (intdiv($http_code,100) > 2) {
 		echo     'Результат обмена YANDEX (with Data): '.$http_code. "<br>";
+		echo "<pre>";
+		print_r($res);
 	
 		}
 	
