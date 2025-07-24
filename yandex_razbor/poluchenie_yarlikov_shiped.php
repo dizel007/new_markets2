@@ -6,36 +6,65 @@ require_once "functions/functions_yandex.php";
 require_once "functions/functions.php";
 require_once "../mp_functions/yandex_functions.php";
 
+// выбираем бату и норме заказа 
+if  (!isset($_GET['order_number']) OR (!isset($_GET['select_date']))) {
+   $need_date_temp='';
+    echo <<<HTML
+
+    <form action="#" method= "get">
+        <label>Дата сбора заказа</label>
+        <input required type="date" name="select_date" value=$need_date_temp readonly>
+        <label>Введите номер заказа</label>
+        <input required type="text" name="order_number" value="">
+        <br><br>
+        <input type="submit" value="Получить Ярлыки">
+    </form>
+    
+    HTML;  
+    die();
+} else {
+    $order_number=$_GET['order_number'];
+    $need_date_temp = $_GET['select_date'];
+    $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
+}
+
 // Получаем токены ЯМ
 $ya_token =  get_token_yam($pdo);
 $campaignId = get_id_company_yam($pdo);
 
+// Вытаскиваем заказы переведенные в доставку на эту дату
+$arr_all_new_orders = get_new_orders($ya_token, $campaignId, 'READY_TO_SHIP');
 
-// получаем даты на которую нужно разобрать заказы по грузоместам
-if  (isset($_GET['select_date'])) {
-    $need_date_temp = $_GET['select_date'];
-    $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
-    // echo "ДАТА ОТГРУЗКИ: ".$need_date."<br>"; 
-} else {
-    echo "<br>NET DATE DIE<br>";
-    die('die without date');
+
+// сортируем заказы только для нашей даты 
+$count_zakazov = 0;
+$del_i = 0;
+foreach ($arr_all_new_orders['orders'] as $order) {
+     $need_ship_date = $order['delivery']['shipments'][0]['shipmentDate'];
+  
+        if (($need_date == $need_ship_date) &&($order['substatus'] == 'READY_TO_SHIP'))  {    /// выбор даты дня отгрузки
+            $count_zakazov++;
+        } else {
+            // все с другими датами отгрузки удаляем
+            unset($arr_all_new_orders['orders'][$del_i]);                
+        }
+$del_i++;
 }
 
-$select_date = $_GET['select_date'];
-$order_number = $_GET['order_number'];
+// если нет заказов на нашу дату то СТОП
+if (count($arr_all_new_orders['orders']) == 0) {
+    echo "Нет товаров к отгрузке на эту дату: $need_date";
+    die();
+}
 
-// echo "<pre>";
-$arr_all_new_orders = get_new_orders($ya_token, $campaignId);
 // print_r($arr_all_new_orders);
-
-
 // die();
+
 // Содаем все необходимы е дирректории
 $arr_dir = make_all_dir (date('Y-m-d'), $order_number) ;
 
 ///////////////////////////////// Формируем перечень заказов //////////////////////////////////////
 
-$count_zakazov = 0;
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
     
     $orderId = $order['id']; // ID  выбранного заказа
@@ -45,74 +74,59 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
     $id_shipment = $order['delivery']['shipments'][0]['id'];
   
         if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
-            $count_zakazov++;
-// print_r( $order);
+            
             foreach ($order['items'] as $items) { // перебираем все товары из выбранного заказа
 
-// echo "<br>*************************** =$orderId= ********************************************************************************<br>";
-          
                 for ($i = 0; $i < $items['count'] ; $i++) { // перебираем все количество этого артикула, и разбиваем по грузоместам
                     $box_number = $box_count + $i + $item_count_in_order_z;
-            
-            
-            
-                //     if ( $orderId  == 438253458){
-                //     echo "<br> BOX_NUMBAR = ".$box_number." items['count'] =".$items['count']."<br>";
-                //   }
-                    $id_box = $order['delivery']['shipments'][0]['boxes'][$box_number]['id']; // берем порядковый номер грузоместа
-                    // echo "<br>***********  id_box  =  $id_box = ********************************************************************************<br>";
 
-                    $arr_boxes_all[] =  
-                        array ( "id_order" => $orderId,
-                                "offerId" => mb_strtolower($items['offerId']),
-                                "itemsId" => $items['id'],
-                                "offerName" => $items['offerName'],
-                                "priceBeforeDiscount" => $items['priceBeforeDiscount'],
-                                "id_shipment" => $id_shipment,
-                                
-                                "boxe" => $id_box,
-                                "date_ship" => $need_ship_date,
-                                "fullCount"=> 1,
-                        );
-                        
+                    $id_box = $order['delivery']['shipments'][0]['boxes'][$box_number]['id']; // берем порядковый номер грузоместа
+                        $arr_boxes_all[] =  
+                            array ( "id_order" => $orderId,
+                                    "offerId" => mb_strtolower($items['offerId']),
+                                    "itemsId" => $items['id'],
+                                    "offerName" => $items['offerName'],
+                                    "priceBeforeDiscount" => $items['priceBeforeDiscount'],
+                                    "id_shipment" => $id_shipment,
+                                    
+                                    "boxe" => $id_box,
+                                    "date_ship" => $need_ship_date,
+                                    "fullCount"=> 1,
+                            );
+                            
                 }
                 $item_count_in_order_z = $item_count_in_order_z + $items['count'];
-                // $item_number ++; // добавляем следующий товар
+    
             }
         }
 
 }
 
-// echo "<br>****++++++++++******99999999999999999999*********************************************************<br>";
-
-// print_r($arr_boxes_all);
 
 // сохраняем JSON всех заказов для сборки
-$json_file_link_boxes = $arr_dir['zip_archives']."/".$order_number.'_boxes.json';
+$json_file_link_boxes = $arr_dir['zip_archives']."/".$order_number.'_boxes_shiped.json';
 file_put_contents($json_file_link_boxes, json_encode($arr_boxes_all, JSON_UNESCAPED_UNICODE));
 
 
-
+// формируем массив по артикулам для запроса этикетов
 foreach ($arr_boxes_all as $razbor_article) {
     $new_box_array [$razbor_article['offerId']][] = $razbor_article;
 }
 
-// print_r($new_box_array);
-
-// die();
 // Формируем папку с ярлыками 
 foreach ($new_box_array as $items) {
-
    $arr_file_merge_pdf_name[] =  get_yarliki_odnogo_artikula ($ya_token, $campaignId, $items, $arr_dir['yarliki'], $order_number);
-   
 }
 
 // print_r($arr_file_merge_pdf_name);
 // die();
-// Формируем ексель файл 
 
-// echo "<pre>";
+// Формируем ексель файл 
 $return_arrays = make_array_sell_items ($arr_all_new_orders , $need_date);
+
+// print_r($return_arrays);
+// die();
+
 $arr_mass_one_date_orders = $return_arrays['arr_mass_one_date_orders'];
 // формируем массив для 1С
 $sell_tovari = make_array_sell_items_for_1c ($arr_mass_one_date_orders);
@@ -159,7 +173,7 @@ $json_file_link = $arr_dir['zip_archives']."/".$order_number.'.json';
   $yarliki_merge = $arr_dir['yarliki_merge'];
 
 // ссылка где будет лежить ZIP файл /////////////////////////////////////
-  $zip_file_name = "YM_№(".$order_number.") от ".$select_date.".zip"; // название файла ZIP архива
+  $zip_file_name = "YM_dopXXX_№(".$order_number.") от ".$need_date.".zip"; // название файла ZIP архива
   $link_zip_file = $path_zip_archives."/".$zip_file_name;
  
   $zip_new = new ZipArchive();
@@ -174,10 +188,7 @@ $json_file_link = $arr_dir['zip_archives']."/".$order_number.'.json';
   $zip_new->close();  
  
 
-
-
-  /// отрисовываем форму для вывода
-
+/// отрисовываем форму для вывода
 
 echo <<<HTML
 
@@ -186,17 +197,12 @@ echo <<<HTML
 </head>
 <body>
   <div class="container">
-      <div class="title_up">Нужно скачать АРХИВ с ЯРЛЫКАМИ и перевести заказы в состояние "ГОТОВ к ОТГРУЗКЕ"</div>
+      <div class="title_up">скачать АРХИВ с ЯРЛЫКАМИ которые уже в статусе "ГОТОВ к ОТГРУЗКЕ"</div>
     <div class="title">Дата отгузки: $need_date</div>
-    <div class="title">Количество неподтвержденных заказов: $count_zakazov</div>
+    <div class="title">Количество отгружаемых заказов: $count_zakazov</div>
     <div class="buttons">
-      <a href="$link_zip_file"> <button class="button_download"> Cкачать архив со стикерамии листом подбора</button></a>
-
-      <a href="change_status_for_ship.php?link_zip_file=$link_zip_file&need_date=$need_date"> 
-        <button class="button_link"> Перевести заказы в "ГОТОВ К ОТГРУЗКЕ"</button>
-      </a>
-
-      
+      <a href="$link_zip_file"> <button class="button_download">Скачать архив со ярлыками</button></a>
+     
     </div>
     <div class="footer">Формирование архива я ярлыками завершено</div>
 </div>

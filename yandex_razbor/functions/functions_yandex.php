@@ -82,7 +82,10 @@ function put_query_with_data($ya_token, $ya_link, $ya_data) {
     curl_close($ch);
     
 	if (intdiv($http_code,100) > 2) {
-		echo     'Результат обмена PATCH: '.$http_code. "<br>";
+		echo     '<br>(YANDEX)Результат обмена PATCH: '.$http_code. "<br>";
+			echo "<pre>";
+				print_r($res);
+			echo "</pre>";
 	}
 
     

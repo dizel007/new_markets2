@@ -20,10 +20,11 @@ return $result;
 /********************************************************************************************
  * ****************** Вычитываем все новые заказы с ЯНДЕКСА
  *************************************************************************************************/
-function get_new_orders($ya_token, $campaignId) {
+function get_new_orders($ya_token, $campaignId, $substatus = 'substatus=STARTED') {
 
-$substatus = 'substatus=STARTED';
+// $substatus = 'substatus=STARTED';
 // $substatus = 'substatus=READY_TO_SHIP'; // Когда нужно обработатть товары которые уже готовы к отправке
+
 $page=1;
 $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ;
 

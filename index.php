@@ -191,6 +191,9 @@ print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon
 
 print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_ip_zel", 'ПОЛУЧИТЬ этикетки ОЗОН ИП Зел',
 'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/ozon_report_ip.jpg');
+// ЯНДЕКС до сбор
+print_one_block ('table_element', "yandex_razbor/poluchenie_yarlikov_shiped.php", 'ПОЛУЧИТЬ этикетки ЯМ',
+'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/razbor_yandex.jpg');
 
 print_one_block ('table_element', "ozon_returns/get_returns.php", 'Возвраты с двух ОЗОНов',
 'Модуль формирует список товаров по возвратам, для формирования актов оприходования', 'pics/main_screen/ozon_returns.jpg');
@@ -200,8 +203,6 @@ print_one_block ('table_element', "adminka/link_for_razbor/select_shop.php", 'С
 
 
 echo "</div>";//<!-- Конец контейнера Вспомогательные модули по работе с озоном-->
-
-
 
 
 // <!--**********************************************************************************************-->
