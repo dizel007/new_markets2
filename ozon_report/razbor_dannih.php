@@ -248,6 +248,27 @@ if (isset($Summa_balli_za_otzivi)) {
 if (isset($Summa_hranenia_FBO)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_hranenia_FBO, "Услуга размещения товаров на складе");
 }
+
+// Иные электронные услуги
+if (isset($Summa_electron_uslugi)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_electron_uslugi, "Иные электронные услуги");
+}
+
+// Упаковка товара партнёрами
+if (isset($Summa_upakovka_tovara_partnerami)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_upakovka_tovara_partnerami, "Упаковка товара партнёрами");
+}
+
+//
+
+// Обеспечение материалами для упаковки товара
+if (isset($Summa_obespechenie_materialami_dlia_upakovki)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obespechenie_materialami_dlia_upakovki, "Обеспечение материалами для упаковки товара");
+}
+
+
+
+
 // Обработка товара в составе грузоместа на FBO
 if (isset($Summa_obrabotka_gruzomestFBO)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_obrabotka_gruzomestFBO, "Обработка товара в составе грузоместа на FBO");

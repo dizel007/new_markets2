@@ -60,6 +60,10 @@ elseif ($items['operation_type'] == 'OperationMarketplaceServiceVolumeWeightChar
     {  //Услуга по дополнительной обработке ОВХ
         $Summa_izmerenii_OVX = @$Summa_izmerenii_OVX  + $items['amount']; 
     }
+elseif ($items['operation_type'] == 'OperationOtherElectronicServices')
+    {  //Иные электронные услуги
+        $Summa_electron_uslugi = @$Summa_electron_uslugi  + $items['amount']; 
+    }
 elseif ($items['operation_type'] == 'OperationMarketplaceServiceSupplyInboundCargoSurplus')
     {  //Услуга по дополнительной обработке ОВХ
         $Summa_obrabotka_opoznannih_izlishkov = @$Summa_obrabotka_opoznannih_izlishkov  + $items['amount']; 
@@ -68,6 +72,21 @@ elseif ($items['operation_type'] == 'OperationMarketplaceServiceProcessingSpoila
     {  //Обработка брака с приемки
         $Summa_obrabotka_braka_s_priemki = @$Summa_obrabotka_braka_s_priemki  + $items['amount']; 
     }
+
+
+elseif ($items['operation_type'] == 'OperationMarketplacePackageRedistribution')
+    {  //Упаковка товара партнёрами
+        $Summa_upakovka_tovara_partnerami = @$Summa_upakovka_tovara_partnerami  + $items['amount']; 
+    }
+
+elseif ($items['operation_type'] == 'OperationMarketplacePackageMaterialsProvision')
+    {  //Обеспечение материалами для упаковки товара
+        $Summa_obespechenie_materialami_dlia_upakovki = @$Summa_obespechenie_materialami_dlia_upakovki  + $items['amount']; 
+    }
+
+
+
+
 elseif ($items['operation_type'] == 'OperationMarketplaceSupplyAdditional')
     {  //Обработка товара в составе грузоместа на FBO
         $Summa_obrabotka_gruzomestFBO = @$Summa_obrabotka_gruzomestFBO  + $items['amount']; 
@@ -128,6 +147,7 @@ elseif ($items['operation_type'] == 'DefectRateCancellation'){
      //Услуга за обработку операционных ошибок продавца: отмена
             $Summa_oshibka_obrabotki = @$Summa_oshibka_obrabotki + $items['amount']; 
         } 
+
 elseif ($items['operation_type'] == 'DefectRateDetailed'){
      //Услуга за обработку операционных ошибок продавца: поздняя отгрузка
            $Summa_pozdniaia_otgruzka = @$Summa_pozdniaia_otgruzka + $items['amount']; 

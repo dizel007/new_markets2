@@ -192,6 +192,15 @@ elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearc
 
             // $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
      }
+
+elseif ($items['operation_type'] == 'OperationOtherElectronicServices'){
+       //Иные электронные услуги
+        $arr_services_without_postNumber['Иные электронные услуги'] = 
+        @$arr_services_without_postNumber['Иные электронные услуги'] + $items['amount'];
+
+            // $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
+     }
+
 elseif ($items['operation_type'] == 'MarketplaceServiceItemCrossdocking'){
     //Кросс-докинг
             $arr_services_without_postNumber['Кросс-докинг'] = 

@@ -59,6 +59,8 @@ $json_data_send = json_encode($send_data);
 $temp_res = send_injection_on_ozon($token_ozon, $client_id_ozon, $json_data_send, 'v1/review/list');
 // Записываем все продажи в массив 
 
+// print_r($temp_res);
+// die();
 echo "<br>******************************************************************************************<br>";
 
 
@@ -66,6 +68,7 @@ echo "<br>**********************************************************************
 foreach ($temp_res['reviews'] as $feedback) {
 
       if (($feedback['rating'] >= 4) && ($feedback['text'] == '')){
+      
          $number_answer = rand(0, count($answer)-1);
 
 
