@@ -44,9 +44,13 @@ echo "<div class=\"container\">";
 print_one_block ('table_element', "autosklad/start_mp.php", 'АВТОСКЛАД',
                 'Распределение складских остатков по всех маркетплэйсам', 'pics/main_screen/autosklad.jpg');
 // склад ЛЕРУА
-print_one_block ('table_element', "leroy/get_assortiment.php", 'Леруа Склад',
-                'Распределение складских остатков по всех маркетплэйсам', 'pics/main_screen/razbor_leroy.jpg');
+// print_one_block ('table_element', "leroy/get_assortiment.php", 'Леруа Склад',
+//                 'Распределение складских остатков по всех маркетплэйсам', 'pics/main_screen/razbor_leroy.jpg');
+// Остатки на складах ФБО
+print_one_block ('table_element', "ozon_ostatki_fbo/start_get_fbo_ostatki.php", 'Остатки FBO озон',
+                'Перечень товароы, который в данный момент на складах озона', 'pics/main_screen/all_sells_fbo_ozon.jpg');
 
+// Перечень всех проданных товаров
 print_one_block ('table_element', "all_sell/all_sell_index.php", 'ПРОДАЖИ ВСЕ',
                 'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells.jpg');
 
@@ -54,10 +58,10 @@ print_one_block ('table_element', "ozon_fbo_orders/get_fbo_orders.php", 'ПРО�
                 'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells_fbo_ozon.jpg');
 
 print_one_block ('table_element', "ozon_one_day_report/get_one_day_orders.php", 'ПРОДАЖИ ЗА ДЕНЬ',
-                'Список товаров, которые были проданы за день ', 'pics/main_screen/all_sells_fbo_ozon.jpg');
+                'Список товаров, которые были проданы за день ', 'pics/main_screen/one_day_sell.jpg');
 
-print_one_block ('table_element', "all_sell/all_sell_one_day_index.php", 'ПРОДАЖИ ДЕНЬ',
-                'Список товаров, которые были проданы за один день', 'pics/main_screen/sell_one_day.jpg');
+print_one_block ('table_element', "z_data_for_fbo_ozon/get_data_from_db.php", 'СТАТИСТИКА ФБО',
+                'Список товаров, которые были проданы за один день', 'pics/main_screen/all_sells_fbo_ozon.jpg');
 
   
 

@@ -127,6 +127,19 @@ elseif ($items['operation_type'] == 'OperationGettingToTheTop')
     {  //Реклама вывод в ТОП
              $Summa_reklami_get_in_Top = @$Summa_reklami_get_in_Top + $items['amount']; 
     }
+
+
+
+
+elseif ($items['operation_type'] == 'MarketplaceServiceBrandCommission')
+    {  //Продвижение бренда
+             $Summa_prodvizhenie_brenda = @$Summa_prodvizhenie_brenda + $items['amount']; 
+    }
+
+
+
+
+
 elseif ($items['operation_type'] == 'OperationPointsForReviews')
     {  //Баллы за отзывы
         $Summa_balli_za_otzivi = @$Summa_balli_za_otzivi + $items['amount']; 

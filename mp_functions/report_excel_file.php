@@ -150,8 +150,12 @@ $sheet->getStyle("A".$i_shapka.":J".$i_shapka)->applyFromArray($bg);
 $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
 // сохраняем Документ
+        $user_id_cook = $_COOKIE['id']; // id пользователя 
+        if (!file_exists("temp/". $user_id_cook)) {
+                mkdir("temp/". $user_id_cook) ;
+                 } 
         $objWriter = new PHPExcel_Writer_Excel2007($xls);
-        $file_name_report_excel =  "temp/report_.xlsx";
+        $file_name_report_excel =  "temp/". $user_id_cook."/report_".$name_mp_shop.".xlsx";
         $objWriter->save($file_name_report_excel);
         return    $file_name_report_excel;
 

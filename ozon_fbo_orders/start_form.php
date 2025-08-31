@@ -1,25 +1,35 @@
 <?php
 
-if (!isset($_GET['ozon_shop'])) {
-   $_GET['ozon_shop'] = 'ozon_anmaks';
-} else {
-   $ozon_shop = $_GET['ozon_shop'];
-}
+// if (!isset($_GET['ozon_shop'])) {
+//    $_GET['ozon_shop'] = 'ozon_anmaks';
+// } else {
+//    $ozon_shop = $_GET['ozon_shop'];
+// }
 
-if ($_GET['ozon_shop'] == 'ozon_anmaks') {
-       $token =  $token_ozon;
-       $client_id =  $client_id_ozon;
-       $name_mp_shop = 'OZON ООО АНМАКС';
+// if ($_GET['ozon_shop'] == 'ozon_anmaks') {
+//        $token =  $token_ozon;
+//        $client_id =  $client_id_ozon;
+//        $name_mp_shop = 'OZON ООО АНМАКС';
  
-   }
+//    }
        
-elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
-       $token =  $token_ozon_ip;
-       $client_id =  $client_id_ozon_ip;
-       $name_mp_shop = 'OZON ИП ЗЕЛ';
- } else {
-       die ('МАГАЗИН НЕ ВЫБРАН');
- }
+// elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
+//        $token =  $token_ozon_ip;
+//        $client_id =  $client_id_ozon_ip;
+//        $name_mp_shop = 'OZON ИП ЗЕЛ';
+//  } else {
+//        die ('МАГАЗИН НЕ ВЫБРАН');
+//  }
+
+// ООО АНМ
+       $token_anmaks =  $token_ozon;
+       $client_id_anmaks =  $client_id_ozon;
+       $name_mp_shop_anmaks = 'OZON ООО АНМАКС';
+// ИП ЗЕЛ
+       $token_ip_zel =  $token_ozon_ip;
+       $client_id_ip_zel =  $client_id_ozon_ip;
+       $name_mp_shop_ip_zel = 'OZON ИП ЗЕЛ';
+
 
 
 echo <<<HTML
@@ -59,20 +69,20 @@ echo <<<HTML
 <body>
 
 <form  action="#" method="get">
-<label>Магазин</label>
-<select required name="ozon_shop">
+<!-- <label>Магазин</label> -->
+<!-- <select required name="ozon_shop"> -->
 HTML;
-if ($_GET['ozon_shop'] == 'ozon_anmaks') {
-  echo "<option selected value = \"ozon_anmaks\">OZON</option>";
-  echo "<option value = \"ozon_ip_zel\">OZON ИП ЗЕЛ</option>";
-} else {
-   echo "<option  value = \"ozon_anmaks\">OZON</option>";
-   echo "<option selected value = \"ozon_ip_zel\">OZON ИП ЗЕЛ</option>";
-}
+// if ($_GET['ozon_shop'] == 'ozon_anmaks') {
+//   echo "<option selected value = \"ozon_anmaks\">OZON</option>";
+//   echo "<option value = \"ozon_ip_zel\">OZON ИП ЗЕЛ</option>";
+// } else {
+//    echo "<option  value = \"ozon_anmaks\">OZON</option>";
+//    echo "<option selected value = \"ozon_ip_zel\">OZON ИП ЗЕЛ</option>";
+// }
    
 
 echo <<<HTML
-</select>
+<!-- </select> -->
 
 
 <label>дата начала</label>

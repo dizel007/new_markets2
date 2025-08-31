@@ -27,6 +27,8 @@ function send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url ) 
   
    if (intdiv($http_code,100) > 2) {
 	echo     'Результат обмена : '.$http_code. "<br>";
+	echo "<pre>";
+    print_r($res);
 	}
    
     return($res);	

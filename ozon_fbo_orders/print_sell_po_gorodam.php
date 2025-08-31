@@ -1,38 +1,38 @@
 <?php
 
-$summa_count = 0;
-$summa_price = 0;
+
+
+
+function print_sell_po_gorodam ($arr_warehouse , $art_ar) {
+
 echo '<link rel="stylesheet" href="css/sell_table.css">';
-echo "<table class=\"sell_mp_table\">";
+echo "<table class=\"town_mp_table\">";
 
 echo "<thead>";
 echo "<tr>";
 echo "<th>Артикул</th>"; 
 foreach ($arr_warehouse as $gorod => $item) {
-
-
 foreach ($item as $gorod=>$z) {
     $arr_gorod[$gorod] = $gorod;
 }
 }; 
+
 foreach ($arr_gorod as $gorod=>$z) {
 echo "<th>$gorod</th>"; 
 }
 echo "</tr>";
 echo "</thead>";
 
-
-
-foreach ($arr_all_nomenklatura as $nomenklatura) {
+foreach ($art_ar as $nomenklatura=>$x) {
 echo "<tr>";
     // выводис артикул      
 
-    echo "<td>{$nomenklatura['main_article_1c']}</td>";
+    echo "<td>{$nomenklatura}</td>";
     foreach ($arr_gorod as $city) {
         $fin_priz = 0;
     foreach ($arr_warehouse as $key_art => $item) {
       
-        if ((mb_strtolower($key_art) == mb_strtolower($nomenklatura['main_article_1c'])) ) {
+        if ((mb_strtolower($key_art) == mb_strtolower($nomenklatura)) ) {
            
         foreach($item as $key_gorod_item=> $count_item) {
                                     
@@ -42,8 +42,6 @@ echo "<tr>";
 
                             $fin_priz = 1;
                        } 
-
-
                     
                 }
                 if ($fin_priz == 0) { echo "<td>-</td>";} 
@@ -51,10 +49,6 @@ echo "<tr>";
             }
          
         } 
-//    echo "$key_gorod_item<br>"; 
-  
-
-
     }
 
 echo "</tr>";
@@ -62,11 +56,6 @@ echo "</tr>";
 
 }
 
-// echo "<tr>";
-// echo "<td>ИТОГО</td>"; 
-// echo "<td>$summa_count</td>"; 
-// $summa_price = number_format($summa_price,0);
-// echo "<td>$summa_price</td>"; 
-// echo "</tr>";
-
 echo "</table>";
+
+}

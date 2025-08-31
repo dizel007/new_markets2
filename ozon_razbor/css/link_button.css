@@ -1,16 +1,79 @@
 
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.block {
+    flex: 1;
+    background: #88b6be;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 10px 14px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.block h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.block p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Цвета для разных блоков */
+.block-1 {
+    background: #78bb39;
+    border-top: 4px solid #ff6b6b;
+}
+
+.block-2 {
+    background: #b2bb39;
+    border-top: 4px solid #4ecdc4;
+}
+
+.block-3 {
+    background: #6e78cc;
+    border-top: 4px solid #45b7d1;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .block {
+        margin-bottom: 20px;
+    }
+}
+/* ************************************************************************* */
 body{
     background-color: #9eced6;
 }
 .button {
-    width: 600px;
+    width: 300px;
     margin: 22% auto;
 }
 
 .button a {
     display: block;
-    height: 50px;
-    width: 600px;
+    height: 100px;
+    width: 300;
     color: white;
     font: 17px/50px sans-serif,Helvetica;
     text-decoration: none;
@@ -23,7 +86,7 @@ body{
     background: #6C5B7B;
     display: block;
     height: 40px;
-    width: 580px;
+    width: 280px;
     margin: -50px 0 0 10px;
     text-align: center;
     font: 14px/45px sans-serif,Helvetica;
@@ -47,11 +110,5 @@ body{
     box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
 }
 
-.button:hover .bottom { 
-  margin: -10px 0 0 10px 
-}
 
-.button:hover .top {
-    margin: -80px 0 0 10px;
-    line-height: 35px;
-}
+

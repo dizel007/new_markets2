@@ -210,8 +210,21 @@ file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 /*****************************************************************************************************************
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
+
+// path_etiketki=../../!all_razbor/ozon/2025-08-21/444(dop)/etiketki
+
+  // $path_zip_archives = $_GET['path_etiketki'];
+
+  $path_zip_archives = $path_etiketki;
+
+  $path_zip_archives = str_replace('etiketki', 'zip_archives',  $path_zip_archives);
   $zip_new = new ZipArchive();
   $zip_new->open($path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+
+  // echo "$path_zip_archives<br>";
+  // echo "<pre>";
+  // print_r($Arr_filenames_for_zip);
+  // die();
   foreach ($Arr_filenames_for_zip as $zips) {
 
     $zip_file_name = $zips.".pdf";
@@ -229,7 +242,7 @@ if (isset($file_name_list_podbora)){
   $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
  /// Формируем ПДФ файл с анименованием артикула 
-make_pdf_file($arr_for_merge_pdf, $path_etiketki , $number_order);
+// make_pdf_file($arr_for_merge_pdf, $path_etiketki , $number_order);
 
 // Готовим информацию, чтобы сеодение файл с артикулом с файлом этикеток
 file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip, JSON_UNESCAPED_UNICODE));
@@ -258,8 +271,14 @@ $link_2_ = str_replace('.zip','', $link_path_zip2)."_MERGE.zip";
  insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $now_date_razbora,  $link_path_zip2, $link_2_test);
 
 /// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
-unlink('../../autosklad/uploads/priznak_razbora_net.txt');
-
+$file_priznak_razbora = '../../autosklad/uploads/priznak_razbora_net.txt';
+  if (file_exists($file_priznak_razbora)) {
+unlink($file_priznak_razbora);
+$message_file_priznak ="";
+  }
+   else {
+    $message_file_priznak ="Файл признак разбора отсутствует";
+  }
 // die ('<br> Дошли до финиша');
 /***********************
  * *
@@ -268,13 +287,44 @@ $realTime = microtime(true);
 $text_otladka = $realTime." "."(Закончили РАЗБОР уходим на объединение Этикеток "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
-header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
+// header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
 
 
- echo <<<HTML
- <br><br>
- <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
- <br><br>
- <a href="../merge_ozon_etikets.php?filepath=$path_etiketki/">MERGE</a>
- <br><br>
- HTML;
+// укорачиваем передаваемую информацию
+$filepath = str_replace( '../../!all_razbor/ozon/', '' , $path_etiketki );
+$filepath = str_replace( "/etiketki", '' , $filepath );
+
+// echo <<<HTML
+//  <br><br>
+//  <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
+//  <br><br>
+//  <!-- <a href="../dop_ozon_etikets.php?filepath=$filepath/">MERGE</a>
+//  <br> -->
+//  <a href="../dop_ozon_etikets.php?date_razbora=$now_date_razbora&number_order=$number_order">ОБЪЕДЕНИТЬ !!!</a>
+//  <br><br>
+//  HTML;
+
+
+echo <<<HTML
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/merge_file.css">
+    
+  </head>
+<body>
+    <div class="container">
+        <h1>Выберите действие</h1>
+        <div class="button-container">
+            <a href="$link_path_zip2" class="btn btn-primary">скачать архив со стикерамии листом подбора</a>
+            <a href="../dop_ozon_etikets.php?date_razbora=$now_date_razbora&number_order=$number_order" class="btn btn-secondary">
+                ОБЪЕДЕНИТЬ !!!</a>
+        </div>
+        <br><br><br>
+        <div>$message_file_priznak</div>
+    </div>
+
+    <!-- Font Awesome для иконок -->
+    <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+</body>
+HTML;

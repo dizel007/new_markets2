@@ -233,6 +233,10 @@ if (isset($Summa_reklami_poisk)) {
 if (isset($Summa_reklami_trafareti)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_reklami_trafareti, "Реклама трафареты");
 }
+// Продвижение бренда
+if (isset($Summa_prodvizhenie_brenda)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_prodvizhenie_brenda, "Продвижение бренда");
+}
 
 // Реклама вывод в ТОП
 if (isset($Summa_reklami_get_in_Top)) {

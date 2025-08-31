@@ -45,7 +45,8 @@ $new_path = '../../!all_razbor/ozon/'.$now_date_razbora.""; // переход в
 
 make_new_dir_z($new_path,0); // создаем папку с датой
 
-$new_path = $new_path.'/'.$number_order.'(dop)'.'/';
+$number_order = $number_order.'(dop)';
+$new_path = $new_path.'/'.$number_order.'/';
 make_new_dir_z($new_path,0); // создаем папку с датой
 
 $path_etiketki = $new_path.'etiketki';
@@ -85,11 +86,11 @@ file_put_contents($temp_path_all_order, $string_json_all_order);
 // $link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
 
 
+// было до 28.08.2025
+// $link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
+// $link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
 
-$link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
-$link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
-
-
+$link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$ozon_shop."&date_razbora=".$now_date_razbora."&number_order=$number_order";
 // header('Location: '.$link_for_make_etikets_for_all, true, 301);
 
 echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
@@ -103,4 +104,4 @@ echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>"
 
 
 
-die('Далее тпереходим на получение ПДФ этикеток');
+die('Далее переходим на получение ПДФ этикеток');

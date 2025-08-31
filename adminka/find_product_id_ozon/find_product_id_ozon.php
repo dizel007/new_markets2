@@ -59,9 +59,9 @@ foreach ($ozon_catalog as &$items) {
 
             $item_for_update['product_id'] =  $items['id_ozon'];
             $item_for_update['sku'] =  $items['sku'];
-
-            // print_r($items);
-
+// echo "<pre>";
+//             print_r($item_for_update);
+// die();
 // обновляем базу данных (Добавляем product_id (OZON))
 $info_update = update_catalog_mp_ozon($pdo, $shop_name, $item_for_update) ;
 // если обмен с ошибками, то ывозим сообщение 

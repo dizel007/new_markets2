@@ -114,26 +114,13 @@ foreach ($arr_for_zakaz as $one_post) {
 }
 
 
-/*****************************************************************************************************************
- ******  Формируем JSON файл поартикульно Для формирования Листа подбора ПОТОМ
- ******************************************************************************************************************/
-// $string_json_list_podbora = json_encode($array_oben);
-// $temp_path = $path_excel_docs."/json_list_podbora.json";
-
-// file_put_contents($temp_path, $string_json_list_podbora);
-
-/*****************************************************************************************************************
- *****************************  Формируем штрих кода / 1с файл и лист подбора
- ******************************************************************************************************************/
-
-// require_once "make_etikets_for_all.php";
+// было до 28.08.2025
+// $link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
+// $link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
 
 
 
-$link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
-$link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
-
-
+$link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$ozon_shop."&date_razbora=".$now_date_razbora."&number_order=$number_order";
 // header('Location: '.$link_for_make_etikets_for_all, true, 301);
 
 echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";

@@ -1,6 +1,9 @@
 {
     "require": {
+        "setasign/fpdf": "^1.8",
+        "tecnickcom/tcpdf": "^6.10",
         "setasign/fpdi": "^2.6",
-        "setasign/fpdf": "^1.8"
+        "smalot/pdfparser": "^2.12",
+        "picqer/php-barcode-generator": "^2.4"
     }
 }

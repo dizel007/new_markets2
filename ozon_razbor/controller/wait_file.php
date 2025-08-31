@@ -28,10 +28,14 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
 
 
 // Формируем дополнительные переменные после разделения файла
+$number_order = $_GET['number_order'];
+$date_razbora = $_GET['date_razbora'];
+$start_file_path = "../../!all_razbor/ozon/";
 
- $path_excel_docs = $_GET['path_excel_docs'];
- $number_order = $_GET['number_order'];
- $path_etiketki = $_GET['path_etiketki'];
+
+$path_excel_docs = $start_file_path.$date_razbora."/".$number_order."/excel_docs";
+$path_etiketki = $start_file_path.$date_razbora."/".$number_order."/etiketki";
+
  $now_date_razbora = date('Y-m-d');
  $date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
  $dop_days_query = 10;
