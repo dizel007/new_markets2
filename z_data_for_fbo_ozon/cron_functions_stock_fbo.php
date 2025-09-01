@@ -39,6 +39,8 @@ foreach ($arr_ozon_fbo_stocks as $key=>$count) {
    $fbo_in_stock = $count;
    insert_data_about_stock_fbo_ozon($pdo, $shop_name, $a_1c_article, $fbo_in_stock, $date);
 }
+unset($result_array);
+unset($arr_ozon_fbo_stocks);
 
 //**********************************************************************************
 //  для ИП
@@ -73,7 +75,8 @@ foreach ($arr_ozon_fbo_stocks as $key=>$count) {
    $fbo_in_stock = $count;
    insert_data_about_stock_fbo_ozon($pdo, $shop_name, $a_1c_article, $fbo_in_stock, $date);
 }
-
+unset($result_array);
+unset($arr_ozon_fbo_stocks);
 die();
 
 

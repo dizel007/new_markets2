@@ -1,7 +1,7 @@
 <?php
 require_once "../connect_db.php";
 require_once "index_start.php";
-$shop_name = 'ozon_anmaks';
+// $shop_name = 'ozon_anmaks';
 // $date_start = '2025-08-01';
 // $date_end = '2025-08-31';
 

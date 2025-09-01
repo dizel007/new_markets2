@@ -36,7 +36,7 @@ $shop_name = 'ozon_ip_zel';
 //         $j = $i;
 //     }
 // $date = date('2025-08-'.$j);
-    get_sell_item_for_one_date($pdo, $date_minus_one_day, $token_ozon, $client_id_ozon, $shop_name);
+    
 
 //  }
 
