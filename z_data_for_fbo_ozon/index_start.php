@@ -10,10 +10,20 @@ require_once "../mp_functions/ozon_api_functions.php";
 require_once "../pdo_functions/pdo_functions.php";
 
 
-if (!isset($_GET['date_start']) OR !isset($_GET['date_end'])) {
+if (!isset($_GET['date_start']) AND !isset($_GET['date_end'])) {
 
-$date_start = date('Y-m-d');
-$date_end = date('Y-m-d');
+$date = date("Y-m-d");
+$date = strtotime($date);
+$date = strtotime("-1 day", $date);
+$date_end =  date('Y-m-d', $date);
+// echo "$date_end";
+
+$date = date("Y-m-d");
+$date = strtotime($date);
+$date = strtotime("-14 day", $date);
+$date_start = date('Y-m-d', $date);
+// echo "<br>$date_start";
+
 } else {
 
 $date_start = $_GET['date_start'];
@@ -47,4 +57,5 @@ echo <<<HTML
 <input type="submit"  value="START">
 </form>
 HTML;
-echo "Период запроса с ($date_start) по  ($date_end)<br>";
+
+

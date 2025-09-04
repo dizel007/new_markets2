@@ -40,7 +40,7 @@ if (isset($_GET['dateQuery'])) {
 } else {
    $dateQuery = false;
 }
-
+echo $dateQuery ;
 
 echo <<<HTML
 <head>
@@ -84,8 +84,8 @@ $send_data = array(
    "year" => $yearQuery
 );
 // 
-
-$str_data_send = implode($send_data);
+// ссылка для перехода 
+$str_data_send = "ozon_shop=".$ozon_shop."&date=".$dateQuery."&";
 // echo "<pre>";
 // print_r($send_data);
 
@@ -106,8 +106,11 @@ if (!isset($temp_res['rows'])) {
    die();
 }
 // Если есть жанные, то сохраним их
-$file_name_one_day_json = "_arhive_all_data_days/".$_GET['ozon_shop']."/".$yearQuery.".".$monthQuery.".".$dayQuery.".json";
+// $file_name_one_day_json = "../!one_day_report/".$_GET['ozon_shop']."/".$yearQuery.".".$monthQuery.".".$dayQuery.".json";
+$file_name_one_day_json = "../!one_day_report/".$_GET['ozon_shop']."/".$dateQuery.".json";
+
 file_put_contents($file_name_one_day_json, json_encode($temp_res, JSON_UNESCAPED_UNICODE));
+
 
 $i=0;
 foreach ($temp_res['rows'] as $item) {

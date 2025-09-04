@@ -22,8 +22,8 @@ echo "</tr>";
 echo "</thead>";
 foreach ($arr_all_nomenklatura as $nomenklatura) {
 echo "<tr>";
-
-echo "<td><a href=\"?json_data_send=$str_data_send\">{$nomenklatura['main_article_1c']}</a></td>";
+$arti_for_get = mb_strtolower($nomenklatura['main_article_1c']);
+echo "<td><a href=\"get_one_day_orders_one_item.php?$str_data_send&article=$arti_for_get\">{$nomenklatura['main_article_1c']}</a></td>";
     foreach ($arr_article as $key => $item) {
         $find_article = 0;
         if (mb_strtolower($key) == mb_strtolower($nomenklatura['main_article_1c'])) {

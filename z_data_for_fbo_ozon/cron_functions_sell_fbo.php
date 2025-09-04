@@ -1,12 +1,48 @@
 <?php
 $offset = "";
-require_once $offset . "../connect_db.php";
+// require_once $offset . "../connect_db.php";
+require_once ("../main_info.php");
 require_once $offset . "../mp_functions/ozon_api_functions.php";
 require_once "../pdo_functions/pdo_functions.php";
+
+
+       try {  
+        $pdo = new PDO('mysql:host='.$host.';dbname='.$db.';charset=utf8', $user, $password);
+        $pdo->exec('SET NAMES utf8');
+
+        } catch (PDOException $e) {
+          print "Has errors: " . $e->getMessage();  die();
+        }
+
+
+
+
+
+
+   // Получаем все токены
+    $arr_tokens = get_tokens($pdo);
+    
+    // ОЗОН АНМКАС
+    $client_id_ozon = $arr_tokens['ozon_anmaks']['id_market'];
+    $token_ozon = $arr_tokens['ozon_anmaks']['token'];
+    // озон ИП зел
+    $client_id_ozon_ip = $arr_tokens['ozon_ip_zel']['id_market'];
+    $token_ozon_ip = $arr_tokens['ozon_ip_zel']['token'];
+
+    
+
+
+
+
 
 $date = date('Y-m-d');
 $date_minus_one_day = date('Y-m-d', strtotime('-1 day', strtotime($date)));
 // print('Next eeDate ' . $date_minus_one_day);
+
+
+
+
+
 
 // die();
 /*********************************************************************

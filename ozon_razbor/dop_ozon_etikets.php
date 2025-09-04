@@ -58,6 +58,7 @@ if (!is_dir($new_dir_fake)) {
 $arr_name_articles = json_decode(file_get_contents($filepath."art_etik.json"), true);
 
 foreach ($arr_name_articles as $key=>$filename) {
+      echo "название файла - $filename<br>";
     $array_one_article = parce_ozon_etiketki($filepath , $filename); // формируем свои новые этикетки
    // формируемданные для доп листа
       $array_dop_list['count_elements'] = count($array_one_article);

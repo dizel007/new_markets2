@@ -156,6 +156,10 @@ elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearc
        //Реклама Продвижение в поиске
             $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
      }
+elseif ($items['operation_type'] == 'OperationMarketplaceCostPerClick'){
+       //РОплата за клик
+            $Summa_oplata_za_click = @$Summa_oplata_za_click + $items['amount']; 
+     }
 elseif ($items['operation_type'] == 'DefectRateCancellation'){
      //Услуга за обработку операционных ошибок продавца: отмена
             $Summa_oshibka_obrabotki = @$Summa_oshibka_obrabotki + $items['amount']; 

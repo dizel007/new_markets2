@@ -20,25 +20,25 @@ try {
 // echo "<pre>";
 // print_r($text);
 // print_r($blocks);
+// 350538438068000
     foreach ($blocks as $string) {
         // echo "<pre>";
         // echo ($string);
         // echo "<br>";
+      
        
         $temp = explode("\n", $string);
 
  
 
         $count_items = count($temp);
-        $temp_t['fbs'] =  $temp[0]; 
-        $temp_22 = trim($temp[1]);
-        // $temp_t['number_zakaz'] =  substr($temp_22, 0 , -4);  // номер заказа
+        $temp_t['fbs'] =  $temp[0]; // номер склада ФБС
         $temp_t['number_zakaz'] =  trim($temp[1]); // номер заказа
-        $temp_t['PVZ'] = $temp[$count_items - 3];  // ПВЗ или КУР
-        // $temp_t['num_PVZ']      = substr($temp_22, (strlen($temp_22) - 4)); 
-        $temp_t['num_PVZ']      =  trim($temp[3]);  // номер ПВЗ / КУР
-        $temp_t['size'] = $temp[$count_items - 2]; 
-        $temp_t['code'] = $temp[$count_items - 1];
+        
+        $temp_t['num_PVZ'] =  trim($temp[$count_items - 4]);  // ПВЗ или КУР
+        $temp_t['PVZ']     =  trim($temp[$count_items - 3]);  // ПВЗ или КУР
+        $temp_t['size']    = trim($temp[$count_items - 2]);  // габариты - вес
+        $temp_t['code']    = trim($temp[$count_items - 1]); // дата и штрих код
 
         // Выделяем цифры штрих кода
            $position = strrpos($temp_t['code'], '/');
@@ -71,9 +71,10 @@ try {
 
 
 
-     
-//         print_r($temp_t);
-//  echo "<br>*********************************************************<br>";
+        // echo "<pre>";
+        // print_r($temp_t);
+        // $priznak = check_our_parce ($temp_t) ;
+        // echo "<br>************** $priznak ***************************<br>";
 
         $array_one_article[] =  $temp_t;
         unset ($temp_t);
@@ -90,6 +91,47 @@ try {
 
 return $array_one_article;
 }
+
+function check_our_parce ($temp_data) {
+    // проверяем номер FBS
+    $priznak = 0;
+    $length = strlen($temp_data['fbs']);
+    for ($i = 0; $i < $length; $i++) {
+        $char = $temp_data['fbs'][$i];
+        if (!(
+            ($char >= '0' && $char <= '9') ||
+             $char === ':' || $char === ' ' ||
+             $char === 'F' || $char === 'f' ||
+             $char === 'B' || $char === 'b' ||
+             $char === 'S' || $char === 's'
+        )) {
+            $priznak ++;
+            echo "<br> В номере ФБС ошибка <br>";
+            }
+    }
+    
+  // Проверяем номер ПВЗ  
+    $length = strlen($temp_data['num_PVZ']);
+    // если длина признака не равно 4-м символам, то выводим ошибку
+    if ($length != 4) {
+        $priznak ++;
+        echo "<br> В номере ПВЗ/КУР склада ошибка число символов не равно 4 <br>";
+    }
+
+    for ($i = 0; $i < $length; $i++) {
+        $char = $temp_data['num_PVZ'][$i];
+        if (!($char >= '0' && $char <= '9')) {
+            echo "<br>В номере ПВЗ/КУР склада ошибка - есть символы кроме цифр  {$char}<br>";
+    
+        }
+    }
+
+    return $priznak;
+
+}
+
+
+
 
 function format_ozon_etiketka ($filepath, $dop_file_dir ,$filename_old, $array_one_article, $array_dop_list)  {
 // Создаем PDF
@@ -172,20 +214,20 @@ $pdf->SetAutoPageBreak(false); // Отключаем автоматически�
 
 // Адерс
 if ($data_for_etiketka['PVZ'] == "ПВЗ") {   // если доставка в ПВЗ
-    $y_t = 16.5;   
-    $pdf->SetFont('TimesNRCyrMT','',11);
+    $y_t = 15.5;   
+    $pdf->SetFont('TimesNRCyrMT','',10);
        $pdf->  SetXY(1, $y_t);
 
        foreach ($data_for_etiketka['adress'] as $adress) {
          $pdf->  SetXY(1, $y_t);
-            $pdf->Cell(11.5 ,4, MakeUtf8Font($adress),0,0,'L');
-       $y_t = $y_t + 4;
+         $pdf->Cell(11.5 ,4, MakeUtf8Font($adress),0,0,'L');
+         $y_t = $y_t + 4;
 
        }
 
 } elseif($data_for_etiketka['PVZ'] == "КУР") {   // если курьрская доставка
        $y_t = 15.5;
-       $pdf->SetFont('TimesNRCyrMT','',6.2);
+       $pdf->SetFont('TimesNRCyrMT','',5.8);
        foreach ($data_for_etiketka['adress'] as $adress) {
          
             $pdf->  SetXY(1, $y_t);
@@ -301,20 +343,20 @@ $pdf->SetAutoPageBreak(false); // Отключаем автоматически�
 
 // Наносим текст 
 // Номер заказа
-        $pdf->SetFont('TimesNRCyrMT-Bold','',18);
+        $pdf->SetFont('TimesNRCyrMT-Bold','',14);
         $pdf->  SetXY(3, 5);
         $pdf->Cell(56 , 6, MakeUtf8Font("Заказ № ".$array_dop_list['number_order']), 0, 0,'L');
 // Номер артикул
-        $pdf->SetFont('TimesNRCyrMT-Bold','', 18);
+        $pdf->SetFont('TimesNRCyrMT-Bold','', 14);
         $pdf->  SetXY(3, 12);
         $pdf->Cell(56 ,6, MakeUtf8Font($array_dop_list['article']),0,0,'L');
 
 // Номер количество элементов
-        $pdf->SetFont('TimesNRCyrMT-Bold','',18);
+        $pdf->SetFont('TimesNRCyrMT-Bold','',14);
         $pdf->  SetXY(3, 19);
         $pdf->Cell(56 ,6, MakeUtf8Font($array_dop_list['count_elements']." шт"),0,0,'L');
 // Fake
-        $pdf->SetFont('TimesNRCyrMT-Bold','',18);
+        $pdf->SetFont('TimesNRCyrMT-Bold','',14);
         $pdf->  SetXY(3, 26);
         $pdf->Cell(56 ,6, MakeUtf8Font($array_dop_list['fake']),0,0,'L');
         return $pdf;

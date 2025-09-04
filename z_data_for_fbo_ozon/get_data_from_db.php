@@ -15,7 +15,9 @@ die();
 
 function print_fbo_table_XX($pdo, $shop_name, $date_start,$date_end ) {
 
-echo "<h1> FBO  $shop_name  </h1>";
+echo '<link rel="stylesheet" href="css/fbo_table_data.css">';
+echo "<h1 class=\"center\"> FBO  $shop_name  </h1>";
+echo "<h2 class=\"center\">Период запроса с ($date_start) по  ($date_end)</h2>";
 
 $sth = $pdo->prepare("SELECT * FROM `z_ozon_fbo_sell` WHERE `shop_name` = '$shop_name' AND `date` >= :date_start AND `date` <= :date_end");
 $sth->execute(array('date_start' => $date_start , 'date_end' => $date_end));
@@ -55,10 +57,9 @@ foreach ($array_stock  as $items) {
 // echo "</pre>";
 // die();
 
-echo '<link rel="stylesheet" href="css/fbo_table_data.css">';
 
 echo "<table class=\"sell_mp_table\">";
-echo "<thead>";
+echo "<thead class=\"color_orange\">";
 echo "<tr>";
 echo "<td>АРТИКУЛ</td>";
 foreach ($arr_dates as $dates) {

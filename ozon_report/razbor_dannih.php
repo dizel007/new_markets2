@@ -248,6 +248,15 @@ if (isset($Summa_balli_za_otzivi)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_balli_za_otzivi, "Реклама Баллы за отзывы");
 }
 
+
+// Оплата за клик
+if (isset($Summa_oplata_za_click)) {
+    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_oplata_za_click, "Оплата за клик");
+}
+
+
+
+
 // Услуга размещения товаров на складе
 if (isset($Summa_hranenia_FBO)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_hranenia_FBO, "Услуга размещения товаров на складе");

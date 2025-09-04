@@ -21,7 +21,7 @@ margin: 0 auto;
   font-weight: normal;
   border: none;
   border-collapse: collapse;
-  width: 60%;
+  width: 90%;
   max-width: 90%;
   white-space: nowrap;
   background-color: white;
@@ -29,29 +29,29 @@ box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
 }
 
 
-.sell_mp_table thead th {
+/* .sell_mp_table thead th {
   color: #ffffff;
   background: #da6826;
-}
+} */
 
-
-
-
-.sell_mp_table td, .sell_mp_table th {
-  text-align: center;
-  padding: 2px;
+.sell_mp_table th {
+   text-align: center;
+  padding: 5px;
   border: solid  #c9701d 1px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-
-
+ 
+}
+.sell_mp_table td {
+  text-align: center;
+  padding: 5px;
+  border: solid  #c9701d 1px;
+ 
 }
 
 .sell_mp_table td {
   margin:0 auto;
   border-right: 1px solid #da6826;
   font-size: 14px;
-font-weight: 500;
+
 
 }
 
@@ -65,60 +65,10 @@ font-weight: 500;
   text-align: center;
 }
 
-
+.color_orange {
+  background-color: #c79261;
+  font-weight: 700 ;
+  padding: 20px;
+}
 
 /**/
-
-.town_mp_table {
-margin: 0 auto;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: normal;
-  border: none;
-  border-collapse: collapse;
-  width: 60%;
-  max-width: 90%;
-  white-space: nowrap;
-  background-color: white;
-box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
-}
-
-
-.town_mp_table thead th {
-  color: #ffffff;
-  background: #387532;
-}
-
-
-
-
-.town_mp_table td, .town_mp_table th {
-  text-align: center;
-  padding: 2px;
-  border: solid  #387532 1px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-
-
-}
-
-.town_mp_table td {
-  margin:0 auto;
-  border-right: 1px solid #387532;
-  font-size: 14px;
-font-weight: 500;
-
-}
-
-
-
-.town_mp_table tr:nth-child(even) {
-  background: #c9c9df;
-}
-
-.blue_windows {
-   background: #3220cf !important;
-}
-.red_windows {
-   background: #07a147 !important;
-}
