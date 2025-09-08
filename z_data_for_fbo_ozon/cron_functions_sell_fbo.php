@@ -121,11 +121,12 @@ die();
  ****************************************************************************************/
 function insert_data_about_sell_fbo_ozon($pdo, $shop_name, $a_1c_article, $fbo_sell, $date) {
 $sth = $pdo->prepare("INSERT INTO `z_ozon_fbo_sell` SET `shop_name`= :shop_name, `1c_article` = :1c_article, 
-                                       `fbo_sell`= :fbo_sell, `date` =:date");
+                                       `fbo_sell`= :fbo_sell, `type_sklad`= :type_sklad, `date` =:date");
 
 $sth->execute(array('shop_name' => $shop_name, 
                     '1c_article' => $a_1c_article,
                     'fbo_sell' => $fbo_sell,
+                    'type_sklad' => 'fbo',
                     'date' => $date));
 
 }

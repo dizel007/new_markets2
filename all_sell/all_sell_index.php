@@ -78,13 +78,48 @@ $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_ca
 
 
 // echo "<pre>";
-// print_r ($ya_fbs_catalog);
+// print_r ($wb_catalog);
 // die();
 
 
 print_info_sell_market ($arr_all_nomenklatura, $wb_catalog, $wbip_catalog, $ozon_catalog , $ozon_ip_catalog, $ya_fbs_catalog);
+
 // print_r($ya_fbs_catalog);
 /**************************************************************************************
  ********************************** THE END **********************************************
  *****************************************************************************************/
+
+ // Формируем каталог проданных товаров по магащинам
+$summ_sell_arr[$wb_anmaks] = add_sells_in_sum_array ($wb_catalog) ;
+$summ_sell_arr[$wb_ip] = add_sells_in_sum_array ($wbip_catalog) ;
+$summ_sell_arr[$ozon_anmaks] = add_sells_in_sum_array ($ozon_catalog) ;
+$summ_sell_arr[$ozon_ip] = add_sells_in_sum_array ($ozon_ip_catalog) ;
+$summ_sell_arr[$yandex_anmaks_fbs] = add_sells_in_sum_array ($ya_fbs_catalog) ;
+
+echo "<pre>";
+print_r ($summ_sell_arr);
+// die();
+$send_data = json_encode($summ_sell_arr,  JSON_HEX_APOS | JSON_HEX_QUOT);
+echo "<br>";
+
+
+echo <<<HTML
+
+<form method="POST" action="fbs_sell_in_db.php">
+    <input type="hidden" name="send_data" value=$send_data>
+    
+    <button type="submit">Отправить Данные в БД(ТОЛЬКО ПЕРЕД РАЗБОРОМ)</button>
+</form>
+HTML;
+
 die('');
+
+
+function add_sells_in_sum_array ($mp_catalog) {
+   foreach ($mp_catalog as $wb_ooo_item) {
+    if (isset( $wb_ooo_item['sell_count'])){
+        $sell_arr [mb_strtolower($wb_ooo_item['main_article'])] = $wb_ooo_item['sell_count'];
+    }
+} 
+return $sell_arr;
+}
