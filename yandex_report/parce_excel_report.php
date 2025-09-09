@@ -89,8 +89,8 @@ foreach ($arr_article_data as $key => &$iitem) {
   }
 }
 
-echo "<pre>";
-print_r($premii);
+// echo "<pre>";
+// print_r($premii);
 
 $all_vozvrati = razbor_all_vozvrati_yandex ($sheet, $type_array);
 
@@ -168,14 +168,31 @@ foreach ($arr_article_data as &$article) {
 
 }
 
+// цепляем номер вывода артикула в списке 
+foreach ($arr_article_data as $key=>&$item_ff) {
+foreach ($nomenclatura as $nomen) {
+  if (mb_strtolower($nomen['main_article_1c']) == mb_strtolower($key)) {
+    $item_ff['number_in_spisok'] = $nomen['number_in_spisok'];
+  }
+
+}
 
 
+}
 
 
-echo "<pre>";
+// echo "<pre>";
+// print_r($arr_article_data);
 
-print_r($arr_article_data);
-// print_r($all_vozvrati);
+
+// Сортировка по возрастанию с сохранением ключей
+uasort($arr_article_data, function($a, $b) {
+    return $a['number_in_spisok'] <=> $b['number_in_spisok'];
+});
+
+
+// print_r($arr_article_data);
+
 
 // echo "<br> сумма = ".$summa_all_orders;
 // die();

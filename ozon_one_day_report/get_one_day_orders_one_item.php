@@ -62,6 +62,8 @@ $arr_one_article[] = $item;
 
 $summa_count = 0;
 $summa_price = 0;
+
+if (isset($arr_one_article)) {
 echo '<link rel="stylesheet" href="css/sell_table.css">';
 echo "<table class=\"sell_mp_table\">";
 
@@ -118,3 +120,6 @@ echo "<td>-</td>";
 echo "</tr>";
 
 echo "</table>";
+} else {
+   echo "Нет данных для вывода";
+}
