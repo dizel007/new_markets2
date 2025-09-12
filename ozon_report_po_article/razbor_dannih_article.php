@@ -94,14 +94,21 @@ foreach ($_GET as $key => &$value) {
 }
 $queryString = http_build_query($get_array);
 
-echo "<br>";
-// Выводим все артикулы для тыкания 
-foreach ($arr_real_article as $real_article) {
-    echo "<a href=\"?$queryString&article=$real_article\">$real_article</a><br>";
-}
 
-
-echo  "<br> ************** $need_article *****************<br>";
+///**************************  Формируем перечень артикулов для вывода ******************************************/
+/************************************************************************************************************* */
+echo "<div class=\"checkbox-flex\">"; 
+echo "<link rel=\"stylesheet\" href=\"css/filtr_article.css\">";
+    foreach ($arr_real_article as $real_article) {
+        if ($real_article == $need_article) {
+    // Выделяем Ячейку с выбранным артикулом
+        echo "<label class=\"checkes\"><a href=\"?$queryString&article=$real_article\">$real_article</a><br></label>";
+        } else {
+        echo "<label><a href=\"?$queryString&article=$real_article\">$real_article</a><br></label>";      
+        }
+    }
+echo "</div>";
+/*******************************************************************************/
 
 // Оставляем только нужный артикул
 foreach ($arr_article as $key => &$item) {

@@ -1,0 +1,39 @@
+
+/* фильтр с артикулами */
+.checkbox-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  padding-bottom: 0px;
+}
+
+.checkbox-flex label {
+  display: flex;
+  align-items: center;
+   justify-content: center; /* Добавьте это свойство */
+  gap: 5px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 100px;
+  border: #007bff solid 1px;
+ 
+
+}
+.checkbox-flex label a{
+      text-decoration: none; /* убираем подчеркивание сссылок */
+      text-decoration-color: aqua;
+      font-size: 20px;
+      color: brown;
+}
+.checkbox-flex label:hover {
+  background-color: #599ddd;
+  border-color: #007bff;
+}
+.checkes {
+  background-color: #a0d490;
+}
+

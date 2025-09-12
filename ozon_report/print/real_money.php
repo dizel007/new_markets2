@@ -30,7 +30,7 @@ echo "</tr>";
 
 
 foreach ($arr_article as $key=>$print_item) {   
-$link_for_report_article = "../ozon_report_po_article/index_ozon_razbor_article.php?ozon_shop=$ozon_shop&dateFrom=$date_from&dateTo=$date_to&need_update=1&article=".$print_item['article'];
+$link_for_report_article = "../ozon_report_po_article/index_ozon_razbor_article.php?file_name_ozon=$file_name_ozon&dateFrom=$date_from&dateTo=$date_to&need_update=1&article=".$print_item['article'];
 echo "<tr>";
    echo "<td>"." <a href =\"$link_for_report_article\" target=\"_blank\">". $print_item['article']. "</td>";
    print_one_string_in_table($print_item,  'count');

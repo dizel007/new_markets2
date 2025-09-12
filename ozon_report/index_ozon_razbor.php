@@ -15,6 +15,7 @@ require_once "../pdo_functions/pdo_functions.php";
         $token =  $token_ozon;
         $client_id =  $client_id_ozon;
         $name_mp_shop = 'OZON ООО АНМАКС';
+        $file_name_ozon = 'ozon_anmaks';
   
     }
         
@@ -22,6 +23,7 @@ require_once "../pdo_functions/pdo_functions.php";
         $token =  $token_ozon_ip;
         $client_id =  $client_id_ozon_ip;
         $name_mp_shop = 'OZON ИП ЗЕЛ';
+        $file_name_ozon = 'ozon_ip_zel';
   } else {
         die ('МАГАЗИН НЕ ВЫБРАН');
   }
@@ -146,8 +148,9 @@ for ($i=1; $i <=$page_count; $i ++) {
 
 }
 
-
-// file_put_contents('ozon_est.json',json_encode($prod_array, JSON_UNESCAPED_UNICODE));
+// echo "<pre>";
+// print_r($userdata);
+file_put_contents('../!cache/'."ozon_report_".$file_name_ozon."_(".$userdata['user_login'].")".".json",json_encode($prod_array, JSON_UNESCAPED_UNICODE));
 
 // echo "<pre>";
 // print_r ($prod_array);

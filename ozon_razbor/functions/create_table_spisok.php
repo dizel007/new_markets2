@@ -76,8 +76,8 @@ function make_spisok_sendings_ozon_1С ($array_prods){
    echo "<tr>
    <td>пп</td>
    <td>Артикул</td>
-   <td>Кол-во</td>
    <td>Наименование</td>
+   <td>Кол-во</td>
    <td>Цена за шт</td>
    
    </tr>";
@@ -89,8 +89,8 @@ function make_spisok_sendings_ozon_1С ($array_prods){
    echo "
    <td>$i</td>
    <td>".$key."</td>
-   <td>".$item['quantity']."</td>
    <td>".$item['name']."</td>
+   <td>".$item['quantity']."</td>
    <td>".number_format($item['price'],2)."</td>";
 
    echo "</tr>";

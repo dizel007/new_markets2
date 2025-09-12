@@ -25,28 +25,23 @@ if ($get_shop_name == 'ozon_anmaks' ) {
     die('Магазин не нашли');
 }
 
-
-
-
-// if (isset($_GET['date_query_ozon'])) {
-//     $date_query_ozon = $_GET['date_query_ozon'];
-// } else {
-//     // $date_query_ozon =''; 
-//     $date_query_ozon = date('Y-m-d');
-// }
-
-
+/*****************************************************************************************************************
+ *****   НАстраиваем дату начала сбора и количество дней 
+ **************************************************************************************************************** */
 $now_date_razbora = date('Y-m-d');
-$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
-$dop_days_query = 10;
+$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -15 day'));
+$dop_days_query = 20;
 
+/*****************************************************************************************************************
+ *****   Форма для вводы данных 
+ **************************************************************************************************************** */
 
 echo <<<HTML
 <h1>Данные по ОЗОН : $get_shop_name</h1>
 <h1>ДОПОЛНИТЕЛЬНО</h1>
-<hr><hr>
-
-<h2>Получить этикетки сформированных заказов на Дату: </h2>
+<hr>
+   <h1>Все заказы в статусе ОЖИДАЮТ ОТГУЗКИ начиная с $date_query_ozon</h1>
+<!-- <h2>Получить этикетки сформированных заказов на Дату: </h2>
 <div>
     <form method="get" action="#">
     <div id="up_input" class="LockOff">
@@ -58,18 +53,14 @@ echo <<<HTML
 
 </form>    
 </div>
-<hr>
+<hr> -->
 HTML;
 
 
-$now_date_razbora = date('Y-m-d');
-$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
-$dop_days_query = 10;
+/*****************************************************************************************************************
+ *****  если есть Дата поиска, то начинаем вычитывать данные с сайта ОЗОН
+ **************************************************************************************************************** */
 
-
-
-
-// если есть Дата поиска, то начинаем вычитывать данные с сайта ОЗОН
 if (isset($date_query_ozon)) {
     if ($date_query_ozon <> '') {
         // получаем массив всех отправления на эту дату
@@ -96,16 +87,10 @@ if (isset($date_query_ozon)) {
 
         //  Выводим таблицу с Количество купленно
         if (isset($array_art_price)) {
-
-            echo "<h3>Сумма купленных товаров : $summa_tovarov руб. </h3>";
-
-
             echo "<h3>Список купленных товаров</h3>";
-            make_spisok_sendings_ozon_1С($array_art_price);
-
-
+               make_spisok_sendings_ozon_1С($array_art_price);
+            echo "<h3>Сумма купленных товаров : $summa_tovarov руб. </h3>";
             echo "<h3>Количество  товаров : $kolvo_tovarov шт. </h3>";
-
             //  Выводим таблицу с Заказами
             echo "<h2>Перечень заказов</h2>";
             make_spisok_sendings_ozon($res['result']['postings']);
@@ -113,7 +98,7 @@ if (isset($date_query_ozon)) {
             $link = "controller/make_etikets_for_all_dopX_2.php";
 
             echo <<<HTML
-
+<h1>ДОПОЛНИТЕЛЬНО</h1>
         <form action="$link" method="get">
         
         <label>Все заказы в статусе ОЖИДАЮТ ОТГУЗКИ начиная с $date_query_ozon<label>
@@ -122,6 +107,9 @@ if (isset($date_query_ozon)) {
         <input required type="text" name="number_order" value="">
         
         <input hidden type="text" name="ozon_shop" value="$get_shop_name">
+        <input hidden type="text" name="date_query_ozon" value="$date_query_ozon">
+        <input hidden type="text" name="dop_days_query" value="$dop_days_query">
+        <input hidden type="text" name="now_date_razbora" value="$now_date_razbora">
 
         <br><br>
         <div id="down_input" class="LockOff">

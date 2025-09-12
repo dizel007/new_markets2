@@ -4,67 +4,12 @@ require_once '../../connect_db.php';
 require_once '../include_funcs.php';
 require_once 'make_1c_file.php';
 
-
 require_once '../../pdo_functions/pdo_functions.php'; // подключаем функцию записи в Таблицу действия пользователя
-
-
-
-
-// $ozon_shop = $_GET['ozon_shop'];
-// if ($_GET['ozon_shop'] == 'ozon_anmaks') {
-//        $token_ozon = $token_ozon;
-//        $client_id_ozon = $client_id_ozon;
- 
-//    }
-       
-// elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
-//     //    echo "<br>Выбран магазин ИП Зел<br>";
-//        $token_ozon =  $token_ozon_ip;
-//        $client_id_ozon =  $client_id_ozon_ip;
-//  } else {
-//        die ('МАГАЗИН НЕ ВЫБРАН');
-//  }
-
-
-
-
-// // Формируем дополнительные переменные после разделения файла
-
-//  $path_excel_docs = $_GET['path_excel_docs'];
-//  $number_order = $_GET['number_order'];
-//  $path_etiketki = $_GET['path_etiketki'];
-//  $now_date_razbora = date('Y-m-d');
-//  $date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
-//  $dop_days_query = 10;
-//  $file_name_OTLADKA = $path_excel_docs."/otladka.txt";
-
-
- 
-
-// // сохраняем JSON всех заказов 
-// $temp_path_all_order = $path_excel_docs."/json_all_order.json";
-// $res = json_decode(file_get_contents($temp_path_all_order),true);
-
-
-
-
-
-
-// echo "<pre>";
-// print_r($res);
-// die('cc');
-
-
-
-
-
-
-
 
 // Запись в таблицу Действия пользователя
 insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order№($number_order)");
 
-
+// трата на формирование этикеток
 sleep(4);
 
 // Получаем списoк заказов готовых к отправлению ()
@@ -201,49 +146,32 @@ $realTime = microtime(true);
 $deltaTime = $realTime - $startTime;
 $text_otladka = $deltaTime." "."(Конец-$good_key) ($count_items_in_order шт) ($wait_time_etikets сек)Создаем строки с номерами заказов для каждого артикула "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
-////////////////////////// DELETE //////////////////////////////////////////////////////////////////
-// echo $text_otladka."<br>";
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 }
 
 /*****************************************************************************************************************
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
-
-// path_etiketki=../../!all_razbor/ozon/2025-08-21/444(dop)/etiketki
-
-  // $path_zip_archives = $_GET['path_etiketki'];
-
   $path_zip_archives = $path_etiketki;
 
   $path_zip_archives = str_replace('etiketki', 'zip_archives',  $path_zip_archives);
   $zip_new = new ZipArchive();
   $zip_new->open($path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
 
-  // echo "$path_zip_archives<br>";
-  // echo "<pre>";
-  // print_r($Arr_filenames_for_zip);
-  // die();
   foreach ($Arr_filenames_for_zip as $zips) {
-
     $zip_file_name = $zips.".pdf";
-  $zip_new->addFile($path_etiketki."/".$zips.".pdf", "$zip_file_name"); // Добавляем пдф файлы
+    $zip_new->addFile($path_etiketki."/".$zips.".pdf", "$zip_file_name"); // Добавляем пдф файлы
+  }
 
-
-
-}
   $zip_new->addFile($path_excel_docs."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для НОВЫЙ 1С файл /// *****************
-if (isset($file_name_list_podbora)){ 
-  $zip_new->addFile($path_excel_docs."/".$file_name_list_podbora, "$file_name_list_podbora"); // добавляем для НОВЫЙ 1С файл /// *****************
-}
+
+    if (isset($file_name_list_podbora)){ 
+      $zip_new->addFile($path_excel_docs."/".$file_name_list_podbora, "$file_name_list_podbora"); // добавляем лист подбора *****************
+    }
   $zip_new->close();  
 
   $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
- /// Формируем ПДФ файл с анименованием артикула 
-// make_pdf_file($arr_for_merge_pdf, $path_etiketki , $number_order);
-
+ 
 // Готовим информацию, чтобы сеодение файл с артикулом с файлом этикеток
 file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip, JSON_UNESCAPED_UNICODE));
   $array_dop_files['number_order'] = $number_order;
@@ -257,18 +185,14 @@ file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_fo
 file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_files, JSON_UNESCAPED_UNICODE));
 
 
-
-
-
 /**************************************************************************************************************
  **********************************     Запись о разборе в БД     ********************************************
  ******************************************************************************************************************/
 $link_2_test = $path_etiketki."/merge_pdf/"."etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zip";
 
-// file_put_contents('../gg.txt', $link_2_test );
-
 $link_2_ = str_replace('.zip','', $link_path_zip2)."_MERGE.zip";
- insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $now_date_razbora,  $link_path_zip2, $link_2_test);
+
+insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $now_date_razbora,  $link_path_zip2, $link_2_test);
 
 /// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
 $file_priznak_razbora = '../../autosklad/uploads/priznak_razbora_net.txt';
@@ -279,30 +203,16 @@ $message_file_priznak ="";
    else {
     $message_file_priznak ="Файл признак разбора отсутствует";
   }
-// die ('<br> Дошли до финиша');
-/***********************
- * *
- *****************************/
+
 $realTime = microtime(true);
 $text_otladka = $realTime." "."(Закончили РАЗБОР уходим на объединение Этикеток "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 // header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
 
-
 // укорачиваем передаваемую информацию
 $filepath = str_replace( '../../!all_razbor/ozon/', '' , $path_etiketki );
 $filepath = str_replace( "/etiketki", '' , $filepath );
-
-// echo <<<HTML
-//  <br><br>
-//  <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
-//  <br><br>
-//  <!-- <a href="../dop_ozon_etikets.php?filepath=$filepath/">MERGE</a>
-//  <br> -->
-//  <a href="../dop_ozon_etikets.php?date_razbora=$now_date_razbora&number_order=$number_order">ОБЪЕДЕНИТЬ !!!</a>
-//  <br><br>
-//  HTML;
 
 
 echo <<<HTML
@@ -323,8 +233,5 @@ echo <<<HTML
         <br><br><br>
         <div>$message_file_priznak</div>
     </div>
-
-    <!-- Font Awesome для иконок -->
-    <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
 </body>
 HTML;
