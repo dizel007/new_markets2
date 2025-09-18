@@ -49,6 +49,13 @@ $file_name_OTLADKA = $path_excel_docs."/otladka.txt";
 // вычитываем все Заказы н эту дату
 $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 
+
+/// НАчинаем долгие разбор 
+$realTime = microtime(true);
+$text_otladka = $realTime." "."сохраняем JSON всех заказов "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
 // сохраняем JSON всех заказов 
 $string_json_all_order = json_encode($res, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";

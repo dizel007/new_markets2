@@ -6,19 +6,35 @@ require_once 'make_1c_file.php';
 
 require_once '../../pdo_functions/pdo_functions.php'; // подключаем функцию записи в Таблицу действия пользователя
 
+
+$file_name_OTLADKA = $path_excel_docs."/otladka.txt";
+$startTime = microtime(true);
+$text_otladka = $startTime." "."***************************   Зашли в файл wait_etikets.. *************************"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
 // Запись в таблицу Действия пользователя
 insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order№($number_order)");
 
 // трата на формирование этикеток
 sleep(4);
 
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Получаем данные по заказам awaiting_deliver "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
 // Получаем списoк заказов готовых к отправлению ()
 // ***********************************************************************************************************************************
 $res_repeat = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
+
 // сохраняем JSON всех заказов 
 $string_json_all_order = json_encode($res_repeat, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_repeat_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Закончили получение данных по заказам awaiting_deliver "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
 
 // ***********************************************************************************************************************************
 
@@ -45,6 +61,12 @@ foreach ($res['result']['postings'] as $old_order) {
   }
 }
 
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Начинаем формировать файл для 1с и лист подбора "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
+
 // формируем массив для 1с файла
 $array_for_1C =  make_array_for_1c_file($new_res);
 // формируем массив для листа подборf
@@ -63,6 +85,12 @@ $xls2 = new PHPExcel();
 $file_name_list_podbora = make_list_podbora_new ($array_for_list_podbora, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
 
 // формируем массивы где заказы разбиты поартикульно 
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Начинаем формировать массивы где заказы разбиты поартикульно"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
 foreach ($new_res as $posts_z) {
   $article = $posts_z['products'][0]['offer_id'];
   $arr_article_tovar[$article][] = $posts_z;
@@ -137,6 +165,10 @@ $wait_time_etikets = 3; // время ожидания этикеток в се�
     $wait_time_etikets = 15;
   } 
 
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Время ожидания артикула : $wait_time_etikets"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
 get_all_barcodes_for_all_sending ($token_ozon, $client_id_ozon,  $string_etiket, $pdf_file_name, $path_etiketki, $wait_time_etikets);
 $Arr_filenames_for_zip[$good_key] = $pdf_file_name; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 
@@ -172,6 +204,13 @@ file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
   $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
  
+// 
+$realTime = microtime(true);
+$deltaTime = $realTime - $startTime;
+$text_otladka = $deltaTime." "."Создали архивы с этикетками по каждому артикулу "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
 // Готовим информацию, чтобы сеодение файл с артикулом с файлом этикеток
 file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip, JSON_UNESCAPED_UNICODE));
   $array_dop_files['number_order'] = $number_order;
@@ -205,7 +244,8 @@ $message_file_priznak ="";
   }
 
 $realTime = microtime(true);
-$text_otladka = $realTime." "."(Закончили РАЗБОР уходим на объединение Этикеток "."\n";
+$deltaTime = $realTime - $startTime;
+$text_otladka = $deltaTime." "."Закончили РАЗБОР уходим на объединение Этикеток "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 // header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);

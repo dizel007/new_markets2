@@ -194,7 +194,7 @@ return $res;
 
  function make_packeges_for_one_post_2($token, $client_id,$one_post_arr_for_zakaz) {
 
-    $posting_number =$one_post_arr_for_zakaz["posting_number"];
+    $posting_number = $one_post_arr_for_zakaz["posting_number"];
     
     $send_data_arr  = array  (
         "packages"=> array(

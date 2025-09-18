@@ -65,27 +65,6 @@ echo <<<HTML
 </head>
 HTML;
 
-
-// echo <<<HTML
-// <body>
-// <!-- Форма для ввода маагнина  дат   -->
-// <form action="#" method="get">
-// <label>Магазин </label>
-// <select required name="ozon_shop">
-//     <option {$selected_shop_ozon_ooo} value = "ozon_anmaks">Озон ООО</option>
-//     <option {$selected_shop_ozon_ip} value = "ozon_ip_zel">OZON_ИП</option>
-// </select>
-
-
-// <label>дата начала</label>
-// <input required type="date" name = "dateFrom" value="$date_from">
-// <label>дата окончания</label>
-// <input required type="date" name = "dateTo" value="$date_to">
-// <input hidden type="text" name = "need_update" value="1">
-// <input type="submit"  value="START">
-// </form>
-// HTML;
-
 // Название КЭШ файлика (туда массив будем кидать при обработке вывода на экран )
 $cacheFile = '../!cache/'."ozon_report_".$ozon_shop."_(".$userdata['user_login'].")".".json";
 
@@ -95,22 +74,8 @@ if (file_exists($cacheFile)) {
     $prod_array = json_decode(file_get_contents($cacheFile), true);
 } 
 
-// Название КЭШ файлика (туда массив будем кидать при обработке вывода на экран )
-// $cacheFile = "../!cache/ozon_data_(".$userdata['user_login'].").json";
-// $cacheTTL = 1200; // 20 минут // время жизни файлика с данными
-
-// // Проверяем можно ли использовать наши данные если они есть ( не старее 10 минут)
-// if ((file_exists($cacheFile) && time() - filemtime($cacheFile) < $cacheTTL) && ($need_update != 1)) {
-//     echo "<br>YES ** Берем данные из загруженного файла<br>";
-//     $prod_array = json_decode(file_get_contents($cacheFile), true);
-// } else {
-//     echo "<br>NO  ** получаем данные через API <br><br>";
-// require_once "form_for_article.php";
-// // Записываем новые данные в файл CASHE 
-// file_put_contents($cacheFile, json_encode($prod_array,JSON_UNESCAPED_UNICODE));
-
-// }
-
+// echo "<pre>";
+// print_r($prod_array);
 
 /*******************************************************************************************
  *  ***** ДАННЫЕ ПОЛУЧЕНЫ ОТСЮДА НАЧИНАЕМ ИХ ОБРАБАТЫВАТЬ ******************************
@@ -151,11 +116,13 @@ $i=0;
  // Разбиваем наш массив на массивы по ТИПУ
 foreach ($array_MINI as $item_element) {
    // Заказ товара и прямая логистика (ИНОСТРАННЫЕ ЗАКАЗЫ)
-    if (($item_element['type'] == 'orders') && ($item_element['accruals_for_sale'] == 0)) {
-        $arr_orders_ino[] = $item_element;
-        unset($array_MINI[$i]);
-    // Заказ товара и прямая логистика (РОССИЙСКИЕ ЗАКАЗЫ)
-    } elseif (($item_element['type'] == 'orders') && ($item_element['accruals_for_sale'] <> 0)) {
+    // if (($item_element['type'] == 'orders') && ($item_element['accruals_for_sale'] == 0)) {
+    //     $arr_orders_ino[] = $item_element;
+    //     unset($array_MINI[$i]);
+    
+    // } 
+    // Заказ товара и прямая логистика (РОССИЙСКИЕ ЗАКАЗЫ + СНГ)
+    if (($item_element['type'] == 'orders') ) {
         $arr_orders[] = $item_element;
         unset($array_MINI[$i]);
     }elseif ($item_element['type'] == 'other') {
@@ -191,11 +158,11 @@ $i=0;
 
 echo "<br>Количество Неразобранных элементов массива --".count($array_MINI) ."<br>";
 if (isset($arr_orders) ) {
-echo "Количество элементов массива ZAKAZI RUS--".count($arr_orders) ."<br>";
+echo "Количество элементов массива ORDERS --".count($arr_orders) ."<br>";
 }
-if (isset($arr_orders_ino) ) {
-    echo "Количество элементов массива ZAKAZI INO--".count($arr_orders_ino) ."<br>";
-    }
+// if (isset($arr_orders_ino) ) {
+//     echo "Количество элементов массива ZAKAZI INO--".count($arr_orders_ino) ."<br>";
+//     }
 if (isset($arr_other) ) {
 echo "Количество элементов массива OTHER --".count($arr_other) ."<br>";
 }
@@ -209,11 +176,11 @@ if (isset($arr_compensation) ) {
 echo "Количество элементов массива COMPENSATION --".count($arr_compensation) ."<br>";
 }
 if (isset($arr_unknows) ) {
-    echo "<b>Количество элементов массива UNKNOWS --".count($arr_unknows) ."</b><br>";
+    echo "<b>Количество элементов массива UNKNOWS --".count($arr_unknows) ." (ПЛОХО нужно смотреть что не разобрано)</b><br>";
     // echo "<pre>";
     // print_r($arr_unknows);
 } else {
-    echo " НЕТ массива UNKNOWS <br>";
+    echo "!!!!!!!!!!!!!!!!!!  НЕТ массива UNKNOWS !!!!!!!!!!!!!!!!!!!!!!!!!!!<br>";
 }
 
 require_once "razbor_dannih_article.php";

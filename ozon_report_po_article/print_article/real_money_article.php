@@ -22,6 +22,7 @@ echo "<th>Комиссия<br>озон</th>";
 echo "<th>Лог-ка</th>";
 echo "<th>Обр<br>лог-ка</th>";
 echo "<th>Поздняя<br>отгрузка</th>";
+echo "<th>Продвижение<br>брэнда</th>";
 
 echo "<th>Эк-г</th>";
 echo "<th>Затраты <br>по заказу</th>";
@@ -112,6 +113,12 @@ if (isset($print_item['pozdniaa_otgruzka'])) {
     echo "<td>" . "0" . "</td>";   
 }
 
+// Поздняя отгрузка
+if (isset($print_item['prodvizenie_branda'])) {
+     echo "<td class= \"bad_desired_price\">" .  $print_item['prodvizenie_branda'] . "</td>";
+} else {
+    echo "<td>" . "-" . "</td>";   
+}
 
 
 
@@ -125,7 +132,7 @@ if (isset($print_item['pozdniaa_otgruzka'])) {
 
  // Затраты по заказу
  $zartati_po_zakazu = @$print_item['sale_commission'] + @$print_item['logistika'] + 
-                      @$print_item['logistika_vozvrat'] + @$print_item['pozdniaa_otgruzka'] + 
+                      @$print_item['logistika_vozvrat'] + @$print_item['pozdniaa_otgruzka'] + @$print_item['prodvizenie_branda'] + 
                       @$print_item['acquiring'];
 
   echo "<td>" .  $zartati_po_zakazu . "</td>";

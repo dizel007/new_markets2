@@ -19,9 +19,9 @@ require_once "parts_article/orders_article.php";
 /**************************************************************************************************************
  **************************************  ЗАКАЗЫ ЗА ГРАНИЦУ ************************************************************
  *************************************************************************************************************/
-// if (isset($arr_orders_ino)) {
-//     require_once "parts_article/orders_ino_article.php";
-//     }
+if (isset($arr_orders_ino)) {
+    require_once "parts_article/orders_ino_article.php";
+    }
 
     
 /**************************************************************************************************************
@@ -170,7 +170,7 @@ if (isset($arr_nerazjbrannoe_222)) {
 echo "<br><br>";
 
 /*******************************************************************************************
- ******************************* ДОПОЛНИТЕЛЬНЫЙ РАЗБОР ДАННЫХ *******************************
+ ******************************* ДОПОЛНИТЕЛЬНЫЙ РАЗБОР ДАННЫХ
  *****************************************************************************************/
 // доставаем всю номенклатуру
 $arr_all_nomenklatura = select_all_nomenklaturu($pdo);
@@ -185,54 +185,48 @@ foreach ($arr_all_nomenklatura as $nomenklatura) {
 // print_r($arr_article);
 // die();
 
-//*****************************************************************************************************
-// Получеам список всех складов ФБО по РОССИИ
-//*****************************************************************************************************
+// Получеам список всех складов ФБО
 $ozon_link = 'v1/cluster/list';
 $send_data = array("cluster_type" => "CLUSTER_TYPE_OZON");
-$send_data = json_encode($send_data);
-$warehouse_clusters = send_injection_on_ozon($token, $client_id, $send_data, $ozon_link );
-
-foreach ($warehouse_clusters['clusters'] as $clusters) {
-    foreach ($clusters['logistic_clusters'] as $logistic_clusters) {
-        foreach ($logistic_clusters['warehouses'] as $warehouses) {
-          $arr_warehouses[$warehouses['warehouse_id']] = $warehouses['name'];
-        }
-    }
-}
-//*****************************************************************************************************
-// Получеам список всех складов ФБО по СНГ
-//*****************************************************************************************************
-
-$ozon_link = 'v1/cluster/list';
 $send_data = array("cluster_type" => "CLUSTER_TYPE_CIS");
+
 $send_data = json_encode($send_data);
 $warehouse_clusters = send_injection_on_ozon($token, $client_id, $send_data, $ozon_link );
-
+echo "<br> ***************************************************************************************** <br>";
+// print_r($warehouse_clusters);
+echo "<br> ***************************************************************************************** <br>";
 foreach ($warehouse_clusters['clusters'] as $clusters) {
     foreach ($clusters['logistic_clusters'] as $logistic_clusters) {
         foreach ($logistic_clusters['warehouses'] as $warehouses) {
-          $arr_warehouses[$warehouses['warehouse_id']] = "_ИНО_".$warehouses['name'];
+        
+            $arr_warehouses[$warehouses['warehouse_id']] = $warehouses['name'];
         }
+
     }
+
 }
 
-//*****************************************************************************************************
-// Добавляем наши склады по ФБС 
-//*****************************************************************************************************
 
+print_r($arr_warehouses);
+
+
+// Добавляем наши склады по ФБС 
 $ozon_link = 'v1/warehouse/list';
 $our_FBS_warehouse = send_injection_on_ozon($token, $client_id, '', $ozon_link );
 foreach ($our_FBS_warehouse['result'] as $warehouses) {
        $arr_warehouses[$warehouses['warehouse_id']] = 'НАШ СКЛАД_'.$warehouses['name'];
+      
 }
 
+// **********************************************************************************die();
+// **********************************************************************************die();
+// **********************************************************************************die();
+// **********************************************************************************die();
 
-//*****************************************************************************************************
+
+// die();
 // перебираем все заказы, и перебираем все проданные товары по штукчно и
 // и будем формировать все расходы по каждому товару в заказе 
-//*****************************************************************************************************
-
 foreach ($arr_article as $items_in_order) {
     // если есть проданные товары 
     if (isset($items_in_order['items_buy'])) {
@@ -241,7 +235,10 @@ foreach ($arr_article as $items_in_order) {
 
 
  // находим себестоимость и хорошую цену для нашего артикула
+ // *************************************************************
         if (isset($arr_prices[$article_good_format])) {
+           
+
             $one_tovar['min_price'] = $arr_prices[mb_strtolower($one_tovar['c_1c_article'])]['min_price'];
             $one_tovar['main_price'] = $arr_prices[mb_strtolower($one_tovar['c_1c_article'])]['main_price'];
         } else {
@@ -249,6 +246,7 @@ foreach ($arr_article as $items_in_order) {
             $one_tovar['min_price'] = 0;
             $one_tovar['main_price'] = 0;
         }
+
 // Цепояем какие типы операций были в этом заказе 
             if (isset($items_in_order['SELL'])) {
                 $one_tovar['SELL'] = $items_in_order['SELL'];
@@ -276,8 +274,8 @@ foreach ($arr_article as $items_in_order) {
                 $one_tovar['warehouse_name'] = 'Не нашли склад';
             }
         } else {
-            $one_tovar['warehouse_id'] = 'Non_sklad';
-            $one_tovar['warehouse_name'] = 'НЕ НАШЛИ СКЛАД(ПРОДАЖА)';
+            $one_tovar['warehouse_id'] = 'za_graznica';
+            $one_tovar['warehouse_name'] = 'ЗАГРАНИЦА';
         }
 // цепляем дату заказа и номер грузоместа        
         $one_tovar['order_date'] = $items_in_order['order_date'];
@@ -289,10 +287,8 @@ $one_tovar['acquiring'] = - round(($one_tovar['accruals_for_sale']/100) * 1.1,2)
 if (isset($items_in_order['pozdniaa_otgruzka'])) {
 $one_tovar['pozdniaa_otgruzka'] =  $items_in_order['pozdniaa_otgruzka']/$items_in_order['count']; 
 }
-// цепляем затраты на рекламу_ продвижение брэнда
-if (isset($items_in_order['pozdniaa_otgruzka'])) {
-    $one_tovar['prodvizenie_branda'] =  $items_in_order['prodvizenie_branda']/$items_in_order['count']; 
-}
+
+
 // Формируем новый массив
         $article_strTolower = mb_strtolower($one_tovar['c_1c_article']); // артикул в нижнем регитсре
         $one_tovar_reestr[$article_strTolower][$items_in_order['delivery_schema']][] = $one_tovar;
@@ -349,11 +345,9 @@ if (isset($items_in_order['pozdniaa_otgruzka'])) {
                 $one_tovar['warehouse_name'] = 'Не нашли склад';
             }
         } else {
-            $one_tovar['warehouse_id'] = 'Non_sklad_return';
-            $one_tovar['warehouse_name'] = 'НЕ НАШЛИ СКЛАД(ВОЗВРАТ)';
+            $one_tovar['warehouse_id'] = 'za_graznica';
+            $one_tovar['warehouse_name'] = 'ЗАГРАНИЦА';
         }
-
-
         $one_tovar['order_date'] = $items_in_order['order_date'];
         $one_tovar['post_number_gruzomesto'] = $gruz_key;
 // цепляем эквайринг 1,1%
@@ -378,7 +372,7 @@ if (isset($one_tovar['accruals_for_sale'])) {
 // die();
 
 ///  Выводим таблицу с дополнительными сервисами, которые не смогли привязать к заказам
-require_once "print_article/table_services_without_postnumbers.php";
+// require_once "print_article/table_services_without_postnumbers.php";
 
 // Выводим таблицу со всеми заказами 
 require_once "print_article/real_money_article.php";

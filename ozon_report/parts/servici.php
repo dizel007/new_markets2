@@ -1,7 +1,7 @@
 <?php
 
 
-echo "<pre>";
+// echo "<pre>";
 // print_r($arr_nerazjbrannoe);
 // echo "</pre>";
 

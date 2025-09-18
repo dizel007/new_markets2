@@ -21,16 +21,10 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
  }
 
 
-
-// $date_query_ozon = $_GET['date_query_ozon'];
 $number_order = $_GET['number_order'];
-// $dop_days_query = 0; // Всегда собираем за один день
-
-$now_date_razbora = date('Y-m-d');
-$date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -5 day'));
-$dop_days_query = 10;
-
-
+$now_date_razbora = $_GET['now_date_razbora'];
+$date_query_ozon = $_GET['date_query_ozon'];
+$dop_days_query = $_GET['dop_days_query'];
 
 
 
@@ -39,8 +33,7 @@ $dop_days_query = 10;
 /*****************************************************************************************************************
  ******  Формируем папки для разнесения информации 
  ******************************************************************************************************************/
-// $new_date = date('Y-m-d');
-// $new_path = '../reports/'.$date_query_ozon."";
+
 $new_path = '../../!all_razbor/ozon/'.$now_date_razbora.""; // переход в новую папку 
 make_new_dir_z($new_path,0); // создаем папку с датой
 
@@ -86,11 +79,10 @@ if (!isset($arr_for_zakaz)) {
     die();
 }
 // если есть Заказы на ОЗОН, то перебираем все отправления по одному и формируем JSON для отправки в ОЗОН
-    // echo "<pre>";
-    // echo "<br>==/ Количество заказов /==". count($arr_for_zakaz);
-// отсюда начинаем отсчитывавать время выполенния скрипта
-$startTime = microtime(true);
 
+// отсюда начинаем отсчитывавать время выполенния скрипта
+
+$startTime = microtime(true);
 $text_otladka = $startTime." "."Начали перебор этикеток"."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
@@ -104,7 +96,7 @@ foreach ($arr_for_zakaz as $one_post) {
     usleep(120); // 
 
     $realTime = microtime(true);
-    $text_otladka = $realTime." "."Разбиваем заказы по одному отправлению "."\n";
+    $text_otladka = $realTime." "."Разбиваем заказы по одному отправлению {$one_post["posting_number"]}"."\n";
     file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
     // $array_list_podbora[] = $result['list_podbora'];
@@ -118,10 +110,16 @@ foreach ($arr_for_zakaz as $one_post) {
 // $link_for_make_etikets_for_all = 'wait_file.php?ozon_shop='.$ozon_shop."&path_excel_docs=".$path_excel_docs."&number_order=".$number_order;
 // $link_for_make_etikets_for_all .="&path_etiketki=".$path_etiketki;
 
-
-
-$link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$ozon_shop."&date_razbora=".$now_date_razbora."&number_order=$number_order";
+// $link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$ozon_shop."&date_razbora=".$now_date_razbora."&number_order=$number_order";
 // header('Location: '.$link_for_make_etikets_for_all, true, 301);
+
+$link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$ozon_shop.
+                                 "&now_date_razbora=".$now_date_razbora.
+                                 "&date_query_ozon=".$date_query_ozon.
+                                 "&dop_days_query=".$dop_days_query.
+                                 "&number_order=$number_order";
+
+
 
 echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
 

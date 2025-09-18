@@ -2,7 +2,7 @@
 
 
 <head>
-<img src="../pics/ozon.jpg">
+<img src="../pics/ozon_banner.png">
 <link rel="stylesheet" href="css/main_ozon.css">
 
 

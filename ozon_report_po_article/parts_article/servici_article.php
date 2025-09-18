@@ -1,6 +1,6 @@
 <?php
 
-
+echo "<pre>";
 if (isset($arr_services)) {
     foreach ($arr_services as $items) {
         $i++;
@@ -16,10 +16,9 @@ if (isset($arr_services)) {
             ($items['operation_type'] == 'OperationMarketplaceReturnDisposalServiceFbs'))
          {
             // Начисление за хранение/утилизацию возвратов
-      $new_post_number = make_posting_number($items['posting']['posting_number']);
+          $new_post_number = make_posting_number($items['posting']['posting_number']);
            // техническая инфа 
-        $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
-     
+            $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
             $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
             $arr_article[$new_post_number]['SERVICES'] = 'SERVICES';
             $arr_article[$new_post_number]['amount_hranenie'] = @$arr_article[$new_post_number]['amount_hranenie'] + $items['amount'];
@@ -28,15 +27,24 @@ if (isset($arr_services)) {
             // Услуга за обработку операционных ошибок продавца: поздняя отгрузка
             // ИЛИ 
             // Услуга за обработку операционных ошибок продавца: поздняя отгрузка - отмена начисления
-            // 
+           
             $new_post_number = make_posting_number($items['posting']['posting_number']);
                 // техническая инфа 
             $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
-     // 
             $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
             $arr_article[$new_post_number]['SERVICES'] = 'SERVICES';
             $arr_article[$new_post_number]['pozdniaa_otgruzka'] = @$arr_article[$new_post_number]['pozdniaa_otgruzka'] + $items['amount'];
             $service_obrabotan = 1;
+        } elseif ($items['operation_type'] === 'MarketplaceServiceBrandCommission'){
+            // Услуга за обработку операционных ошибок продавца: поздняя отгрузка - отмена начисления
+            $new_post_number = make_posting_number($items['posting']['posting_number']);
+                // техническая инфа 
+            $arr_article[$new_post_number]['operation_id'][] = $items['operation_id'];
+            $arr_article[$new_post_number]['order_date'] = $items['posting']['order_date'];
+            $arr_article[$new_post_number]['SERVICES'] = 'SERVICES';
+            $arr_article[$new_post_number]['prodvizenie_branda'] = @$arr_article[$new_post_number]['prodvizenie_branda'] + $items['amount'];
+            $service_obrabotan = 1;
+
         }
         if ($service_obrabotan == 1) {
             continue;
@@ -242,7 +250,16 @@ else {
 if (isset($arr_nerazjbrannoe)) {
 echo "<br> ЕСТЬ неразобранные сервисыы <br>";    
 }
-// echo "<pre>";
-// print_r($arr_nerazjbrannoe);
-// echo "</pre>";
+echo "<pre>";
+print_r($arr_nerazjbrannoe);
+echo "</pre>";
 
+
+foreach ($arr_nerazjbrannoe as $popo) {
+    $jojo[$popo['operation_type_name']]= $popo['operation_type_name'];
+
+}
+echo "<br> ЕСТЬ неразобранныvvvе сервисыы <br>"; 
+echo "<pre>";
+print_r($jojo);
+echo "</pre>";
