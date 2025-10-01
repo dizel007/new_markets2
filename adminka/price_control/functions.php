@@ -454,9 +454,9 @@ echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
 
   // Кнопки checkBboxi
     if ($check_box == 1) {
-    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"need_update{$p}\" value=\"$priznak_update\"></td>";
+    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"need_update{$p}\" value=\"\"></td>";
     } else {
-      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"need_update{$p}\" value=\"$priznak_update\"></td>";
+      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"need_update{$p}\" value=\"\"></td>";
     }
     $p++;
 
