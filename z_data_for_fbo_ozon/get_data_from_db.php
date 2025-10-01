@@ -56,9 +56,11 @@ foreach ($array_sell_fbo as $items) {
         $arr_summ_sell_fbo[$items['1c_article']] = @$arr_summ_sell_fbo[$items['1c_article']] + $items['fbo_sell'];
 }
 
+
 // Формруем массив проданных товаровпо датам / артикулам по ФБС
 foreach ($array_sell_fbs as $items) {
-        $arr_for_print_fbs_sell [$items['date']][$items['1c_article']]['fbo_sell'] = $items['fbo_sell'];
+        $arr_for_print_fbs_sell[$items['date']][$items['1c_article']]['fbo_sell'] = 
+        @$arr_for_print_fbs_sell[$items['date']][$items['1c_article']]['fbo_sell'] + $items['fbo_sell'];
         $arr_article[$items['1c_article']] = $items['1c_article']; // массив авртикуло
         $arr_dates[$items['date']] = $items['date']; // массив дат
         $arr_summ_sell_fbs[$items['1c_article']] = @$arr_summ_sell_fbs[$items['1c_article']] + $items['fbo_sell'];

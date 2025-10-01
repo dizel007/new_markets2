@@ -206,17 +206,29 @@ $pdf->SetAutoPageBreak(false); // Отключаем автоматически�
         if ($data_for_etiketka['PVZ'] == "ПВЗ") {
             $pdf->  SetXY(44.5, 9.3);
             $pdf->Cell(11.5 ,4, MakeUtf8Font($data_for_etiketka['PVZ']),0,0,'L');
-        } elseif ($data_for_etiketka['PVZ'] == "КУР") {
+        } elseif ($data_for_etiketka['PVZ'] == "ЮПВЗ") {
+            $pdf->  SetXY(41.5, 9.3);
+            $pdf->Cell(11.5 ,4, MakeUtf8Font("Ю  ПВЗ"),0,0,'L');
+            $pdf->Rect(47, 1, 10, 13, 'D'); // черта отделяющая Ю
+        }  elseif ($data_for_etiketka['PVZ'] == "КУР") {
             $pdf->  SetXY(44.5, 9.3);
             $pdf->Cell(11.5 ,4, MakeUtf8Font($data_for_etiketka['PVZ']),0,0,'L');
+
+        } elseif ($data_for_etiketka['PVZ'] == "ЮКУР") {
+            $pdf->  SetXY(41.5, 9.3);
+            $pdf->Cell(11.5 ,4, MakeUtf8Font("Ю  КУР"),0,0,'L');
+            $pdf->Rect(47, 1, 10, 13, 'D');  // черта отделяющая Ю
         } elseif ($data_for_etiketka['PVZ'] == "ПОЧТА") {
             $pdf->  SetXY(41.5, 9.3);
+            $pdf->Cell(11.5 ,4, MakeUtf8Font($data_for_etiketka['PVZ']),0,0,'L');
+        } elseif ($data_for_etiketka['PVZ'] == "ПСТ") {
+            $pdf->  SetXY(44.5, 9.3);
             $pdf->Cell(11.5 ,4, MakeUtf8Font($data_for_etiketka['PVZ']),0,0,'L');
 
         } else {
             $pdf->  SetXY(44.5, 9.3);
             $pdf->Cell(11.5 ,4, MakeUtf8Font('XXX'),0,0,'L'); 
-            echo "<br>************************** ALARM ПВЗ/КУР/ПОЧТА ****************************<br>";
+            echo "<br>************************** ALARM ПВЗ/КУР/ПОЧТА/ПСТ ****************************<br>";
         }
 
 
@@ -240,6 +252,18 @@ if ($data_for_etiketka['PVZ'] == "ПВЗ") {   // если доставка в �
 
        }
 
+} elseif ($data_for_etiketka['PVZ'] == "ЮПВЗ") {   // если доставка в Ю ПВЗ
+    $y_t = 15.5;   
+    $pdf->SetFont('TimesNRCyrMT','',10);
+       $pdf->  SetXY(1, $y_t);
+
+       foreach ($data_for_etiketka['adress'] as $adress) {
+         $pdf->  SetXY(1, $y_t);
+         $pdf->Cell(11.5 ,4, MakeUtf8Font($adress),0,0,'L');
+         $y_t = $y_t + 4;
+
+       }
+
 } elseif($data_for_etiketka['PVZ'] == "КУР") {   // если курьрская доставка
        $y_t = 15.5;
        $pdf->SetFont('TimesNRCyrMT','',5.8);
@@ -249,7 +273,25 @@ if ($data_for_etiketka['PVZ'] == "ПВЗ") {   // если доставка в �
             $pdf->Cell(30 ,4, MakeUtf8Font($adress), 0, 0,'L');
             $y_t = $y_t + 2.5;
        }
+} elseif($data_for_etiketka['PVZ'] == "ЮКУР") {   // если курьрская доставка
+       $y_t = 15.5;
+       $pdf->SetFont('TimesNRCyrMT','',5.8);
+       foreach ($data_for_etiketka['adress'] as $adress) {
+         
+            $pdf->  SetXY(1, $y_t);
+            $pdf->Cell(30 ,4, MakeUtf8Font($adress), 0, 0,'L');
+            $y_t = $y_t + 2.5;
+       }
 } elseif($data_for_etiketka['PVZ'] == "ПОЧТА") {   // если курьрская доставка
+       $y_t = 15.5;
+       $pdf->SetFont('TimesNRCyrMT','',5.8);
+       foreach ($data_for_etiketka['adress'] as $adress) {
+         
+            $pdf->  SetXY(1, $y_t);
+            $pdf->Cell(30 ,4, MakeUtf8Font($adress), 0, 0,'L');
+            $y_t = $y_t + 2.5;
+       }
+} elseif ($data_for_etiketka['PVZ'] == "ПСТ") {   // если постомат 
        $y_t = 15.5;
        $pdf->SetFont('TimesNRCyrMT','',5.8);
        foreach ($data_for_etiketka['adress'] as $adress) {

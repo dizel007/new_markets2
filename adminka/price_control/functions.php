@@ -4,12 +4,12 @@
 /************************************************************************************************
  ******  Отрисовываем таблицу с ценами для ВБ************************************************
  ************************************************************************************************/
-function print_table_with_prices_WB($wb_catalog, $token_wb, $wb_shop)
+function print_table_with_prices_WB($wb_catalog, $token_wb, $wb_shop, $priznak_update)
 {
 
 echo <<<HTML
 <link rel="stylesheet" href="css/print_table.css">
-<h1 class="text-center">Таблица корректировка цен для : $wb_shop</h1>
+<h1 class="text-center">Таблица корректировка цен для : $wb_shop (<a href="get_price_table_wb_old_price.php?shop_name=$wb_shop"> ###</a>)</h1>
   <form action="update_data_wb.php" method="POST">
     <table class="table-fill">
 
@@ -104,9 +104,9 @@ echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
 
   // Кнопки checkBboxi
     if ($check_box == 1) {
-    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"_need_update_{$p}\" value=\"\"></td>";
+    echo  "<td class=\"$bolshe100 text-center\"><input $priznak_update checked type=\"checkbox\" name=\"_need_update_{$p}\" value=\"\"></td>";
     } else {
-      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"_need_update_{$p}\" value=\"\"></td>";
+      echo  "<td class=\"$bolshe100 text-center\"><input $priznak_update type=\"checkbox\" name=\"_need_update_{$p}\" value=\"\"></td>";
     }
     $p++;
 
@@ -206,20 +206,26 @@ function get_wb_prices($pdo, $token_wb, $shop_name)
 function update_prices_and_discount_inWB_and_inDB($token_wb, $arr_for_update)
 {
 foreach ($arr_for_update as $item) {
-	$data = array("data"=> array(array(
+	$arr_all_prices_for_update[] = array(
 		"nmID" => (int)$item['sku'],
 		"price"=> (int)$item['pricenowWB'],
 		"discount"=> (int)$item['discountnowWB']
-	))
-);
+	);
 
+}
+
+
+	$data = array("data"=> $arr_all_prices_for_update);
+
+//  echo "<pre>";
+// print_r($data);
+
+// die(); 
 $link_wb = 'https://discounts-prices-api.wildberries.ru/api/v2/upload/task';
 $res = light_query_with_data($token_wb, $link_wb, $data);
 // print_r($res);
-usleep(200);
+usleep(600);
 
-
-}
 
 }
 
@@ -448,9 +454,9 @@ echo "<td class=\"$bolshe100 text-center\">" . $item['main_article'] . "</td>";
 
   // Кнопки checkBboxi
     if ($check_box == 1) {
-    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"need_update{$p}\" value=\"\"></td>";
+    echo  "<td class=\"$bolshe100 text-center\"><input checked type=\"checkbox\" name=\"need_update{$p}\" value=\"$priznak_update\"></td>";
     } else {
-      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"need_update{$p}\" value=\"\"></td>";
+      echo  "<td class=\"$bolshe100 text-center\"><input  type=\"checkbox\" name=\"need_update{$p}\" value=\"$priznak_update\"></td>";
     }
     $p++;
 

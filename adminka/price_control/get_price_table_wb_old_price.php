@@ -42,6 +42,12 @@ foreach ($wb_catalog as &$item) {
 		$item['dis_price_now_DB'] = $gtemp[0]['dis_price_now'];
 		$item['discount_now_DB'] = $gtemp[0]['discount_now'];
 		$item['date_now_DB'] = $gtemp[0]['date_now'];
+      
+        // ставим значения из БД
+      
+        $item['price_now_WB'] =   $item['price_now_DB'] ;
+        $item['discount_now_WB'] =   $item['discount_now_DB'] ;
+        $item['dis_price_now_WB'] =   $item['dis_price_now_DB'] ;
 	} else { // 
 // если НЕ нашли данных , то добавляем первые значения
 		$data_for_input['main_article'] = $item['main_article'];
@@ -66,12 +72,12 @@ foreach ($wb_catalog as &$item) {
 		}
 	}
 }
-
+//price_old_DB
 // echo "<pre>";
 // print_r($wb_catalog);
 
 
 
-print_table_with_prices_WB($wb_catalog, $token_wb, $wb_shop, '');
+print_table_with_prices_WB($wb_catalog, $token_wb, $wb_shop, 'checked');
 
 die();

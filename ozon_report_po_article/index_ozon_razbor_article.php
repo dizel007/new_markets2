@@ -74,8 +74,8 @@ if (file_exists($cacheFile)) {
     $prod_array = json_decode(file_get_contents($cacheFile), true);
 } 
 
-// echo "<pre>";
-// print_r($prod_array);
+echo "<pre>";
+print_r($prod_array);
 
 /*******************************************************************************************
  *  ***** ДАННЫЕ ПОЛУЧЕНЫ ОТСЮДА НАЧИНАЕМ ИХ ОБРАБАТЫВАТЬ ******************************

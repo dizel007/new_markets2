@@ -36,7 +36,7 @@ send_answer_for_feedback ($token_ozon, $client_id_ozon, $answer);
 
 // Оставляем отзывы по ИП
 echo "<br>**************** Оставляем отзывы по ИП  ***************************************************<br>";
-send_answer_for_feedback ($token_ozon_ip, $client_id_ozon_ip, $answer);
+// send_answer_for_feedback ($token_ozon_ip, $client_id_ozon_ip, $answer);
 
 
 function send_answer_for_feedback ($token_ozon, $client_id_ozon, $answer) {
@@ -67,7 +67,8 @@ echo "<br>**********************************************************************
 // Оставить комментарий на отзыв
 foreach ($temp_res['reviews'] as $feedback) {
 
-      if (($feedback['rating'] >= 4) && ($feedback['text'] == '')){
+      // if (($feedback['rating'] >= 4) && ($feedback['text'] == '')) {
+     if (($feedback['rating'] >= 5) ) {
       
          $number_answer = rand(0, count($answer)-1);
 

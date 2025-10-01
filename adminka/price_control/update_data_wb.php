@@ -95,8 +95,11 @@ foreach ($wb_catalog as $wb_data) {
 
 }
 
+// echo "<pre>";
+// print_r($arr_for_update);
 
-// print_r($arr_for_db);
+
+// die('');
 // Вставляем новую строку в БД с обновленными ценами
 foreach ($arr_for_db as $data_for_input) {
 	insert_data_in_prices_table_db_wb($pdo, $wb_shop, $data_for_input);
