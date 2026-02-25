@@ -80,16 +80,14 @@ function patch_query_with_data($token_wb, $link_wb, $data)
 
 	$res = curl_exec($ch);
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
-	curl_close($ch);
-
 
 	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
-		echo     '<br>Результат обмена (PATCH): ' . $http_code;
+		echo     '<br>Результат обмена (PATCH) WB: ' . $http_code;
 	}
 // *****************************************************************************
 // ******* сделаем повтор обмена , если код обмена равен 404
 	if ($http_code == 404) {
-		echo     '<br>Результат обмена (PATCH): ' . $http_code;
+		echo     '<br>Результат обмена (PATCH) WB reapet: ' . $http_code;
 		echo     '<br>Ждем 5 секунд ... ';
 		$ch = curl_init($link_wb);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -104,22 +102,14 @@ function patch_query_with_data($token_wb, $link_wb, $data)
 
 		$res = curl_exec($ch);
 		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
-		curl_close($ch);
 		if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
-			echo     '<br>Результат повтора обмена (PATCH): ' . $http_code;
+			echo     '<br>Результат повтора обмена (PATCH) WB reapet: ' . $http_code;
 		}
 	}
 
-
-
-
-	$res = json_decode($res, true);
-
+		$res = json_decode($res, true);
 	return $res;
 }
-
-
-
 
 
 /****************************************************************************************************************
@@ -153,22 +143,13 @@ function get_all_old_zakaz($token_wb)
 /****************************************************************************************************************
  ******************  Функция готовить информацию и запускает добавление товара в поставку *****************************
  ****************************************************************************************************************/
-function make_sborku_one_article_one_zakaz($token_wb, $supplyId, $orderId)
+function make_sborku_one_article_one_zakaz($token_wb, $supplyId, $orderIds)
+
 {
-	$data = array(
-		'supplyId' => $supplyId,
-		'orderId' => $orderId
-	);
-	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/' . $supplyId . "/orders/" . $orderId;
-
-	// echo "<br>$link_wb<br>"; // выводим ссылку на экран
-
-	//  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/marketplace/v3/supplies/'.$supplyId.'/orders';
+	//  Запуск добавления заказов (до 100 штук)в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
 	// раскоментировать при работе
-	$res =  patch_query_with_data($token_wb, $link_wb, $data);
-
-	// echo "<pre>";
-	// print_r($res);
+	$res = patch_query_with_data($token_wb, $link_wb, $orderIds);
 	return $res;
 }
 
@@ -180,7 +161,7 @@ function make_sborku_one_article_one_zakaz($token_wb, $supplyId, $orderId)
 function make_postavka($token_wb, $name_postavka)
 {
 	$data = array('name' => $name_postavka);
-	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies';
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies';			   
 	$res = light_query_with_data($token_wb, $link_wb, $data);
 
 	return $res; // Возвращаем номер поставки
@@ -194,7 +175,7 @@ function get_info_by_postavka($token_wb, $supply_id)
 	usleep(20000);
 	// Запрос информации о поставке 
 	// echo "<br>Запрос информации о поставке <br>";
-	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/' . $supply_id;
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/'. $supply_id;	            
 	$res = light_query_without_data($token_wb, $link_wb);
 
 	return $res; // Возвращаем номер поставки
@@ -206,11 +187,13 @@ function get_info_by_postavka($token_wb, $supply_id)
  ****************************************************************************************************************/
 function get_orders_from_supply($token_wb, $supplyId)
 {
-	$link_wb = 'https://marketplace-api.wildberries.ru/api/v3/supplies/' . $supplyId . '/orders';
+	
+	$link_wb = 'https://marketplace-api.wildberries.ru/api/marketplace/v3/supplies/'. $supplyId .'/order-ids';
+
 	$res =  light_query_without_data($token_wb, $link_wb);
 	// echo "<pre>";
 	// print_r($res['orders']);
-	return $res['orders']; // 
+	return $res['orderIds']; // 
 }
 
 
@@ -334,6 +317,7 @@ function get_stiker_from_supply($token_wb, $arr_orders, $N_1C_zakaz, $article, $
 		// Если ВБ не вернулнам массив со стикерами
 		if (!isset($res_stikers['stickers'])) {
 			for ($gg = 0; $gg < 20; $gg++) {
+				usleep(100000);
 				output_print_comment("<b>(СБОЙ)</b> Массив со стикерами ВБ не вернул. Повторный запрос №$gg");
 				$res_stikers = light_query_with_data($token_wb, $link_wb, $data);
 				if (isset($res_stikers['stickers'])) { // если получили массив, то ыфходим из цикла

@@ -22,7 +22,7 @@ echo "<th>Комиссия<br>озон</th>";
 echo "<th>Лог-ка</th>";
 echo "<th>Обр<br>лог-ка</th>";
 echo "<th>Поздняя<br>отгрузка</th>";
-echo "<th>Продвижение<br>брэнда</th>";
+echo "<th>Продвиж.<br>брэнда</th>";
 
 echo "<th>Эк-г</th>";
 echo "<th>Затраты <br>по заказу</th>";
@@ -108,14 +108,14 @@ if (isset( $print_item['logistika_vozvrat'] )) {
 
 // Поздняя отгрузка
 if (isset($print_item['pozdniaa_otgruzka'])) {
-     echo "<td class= \"bad_desired_price\">" .  $print_item['pozdniaa_otgruzka'] . "</td>";
+     echo "<td class= \"bad_desired_price\">" .  number_format($print_item['pozdniaa_otgruzka'], 2, '.', ' ') . "</td>";
 } else {
     echo "<td>" . "0" . "</td>";   
 }
 
 // Поздняя отгрузка
 if (isset($print_item['prodvizenie_branda'])) {
-     echo "<td class= \"bad_desired_price\">" .  $print_item['prodvizenie_branda'] . "</td>";
+     echo "<td class= \"bad_desired_price\">" .  number_format($print_item['prodvizenie_branda'], 2, '.', ' ')  . "</td>";
 } else {
     echo "<td>" . "-" . "</td>";   
 }
@@ -131,9 +131,9 @@ if (isset($print_item['prodvizenie_branda'])) {
 }
 
  // Затраты по заказу
- $zartati_po_zakazu = @$print_item['sale_commission'] + @$print_item['logistika'] + 
+ $zartati_po_zakazu = round(@$print_item['sale_commission'] + @$print_item['logistika'] + 
                       @$print_item['logistika_vozvrat'] + @$print_item['pozdniaa_otgruzka'] + @$print_item['prodvizenie_branda'] + 
-                      @$print_item['acquiring'];
+                      @$print_item['acquiring'],2);
 
   echo "<td>" .  $zartati_po_zakazu . "</td>";
 
@@ -154,9 +154,9 @@ echo "<td class= \"\">" . $print_item['min_price']. "</td>";
 // Заработали на артикула
 
 if ($print_item['accruals_for_sale'] == 0) {
-    $our_pribil_with_min_price = $price_with_all_commisions ;
+    $our_pribil_with_min_price = round ($price_with_all_commisions,2) ;
 } else {
-    $our_pribil_with_min_price = $price_with_all_commisions - $print_item['min_price'];
+    $our_pribil_with_min_price = round ($price_with_all_commisions - $print_item['min_price'],2);
 }
 
 

@@ -112,6 +112,15 @@ elseif (($item['supplier_oper_name'] == 'Частичная компенсаци
             $sum_paid_priemka = $sum_paid_priemka + $item['acceptance'];
             // echo $item['acceptance']."****"."<br>";
 
+            
+} elseif (($item['supplier_oper_name'] == 'Обработка товара')){
+        // Сумма платной приемки ***********************************************************************************************************
+            // $arr_sum_k_pererchisleniu[$article_new] = @$arr_sum_k_pererchisleniu[$article_new] - $item['acceptance'];
+            $arr_sum_paid_priemka[$article_new] = @$arr_sum_paid_priemka[$article_new] + $item['acceptance'];
+            $sum_paid_priemka = $sum_paid_priemka + $item['acceptance'];
+            // echo $item['acceptance']."****"."<br>";
+
+
 } elseif ($item['supplier_oper_name'] == 'Возмещение издержек по перевозке') {
     // Сумма логистики ИПЕШНИКАМ ************************************************************************************************************
     // $summa_izderzhik_po_perevozke = $summa_izderzhik_po_perevozke + $item['rebill_logistic_cost'];

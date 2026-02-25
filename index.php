@@ -255,12 +255,12 @@ if ($access_level >=7 ) { //*** ВИДИМ тольео админоам с ур
     
     echo "<div class=\"container\">";
     
-    print_one_block ('table_element_admin', "ozon_report_po_zakazam/index_ozon_razbor_orders.php", 'Обзор заказов озон ООО ',
-        'Выводим информацию по каждому заказу ', 'pics/main_screen/ozon_report_ooo.jpg');
+    // print_one_block ('table_element_admin', "ozon_report_po_zakazam/index_ozon_razbor_orders.php", 'Обзор заказов озон ООО ',
+    //     'Выводим информацию по каждому заказу ', 'pics/main_screen/ozon_report_ooo.jpg');
     
     
-        print_one_block ('table_element_admin', "ozon_report_po_article/index_ozon_razbor_article.php", 'Обзор заказов озон ООО ',
-        'Выводим информацию по каждому заказу ', 'pics/main_screen/ozon_report_ip.jpg');
+    //     print_one_block ('table_element_admin', "ozon_report_po_article/index_ozon_razbor_article.php", 'Обзор заказов озон ООО ',
+    //     'Выводим информацию по каждому заказу ', 'pics/main_screen/ozon_report_ip.jpg');
     
     
     echo "</div>"; // Конец контейнера Дополнительные Функции  (Второй) 

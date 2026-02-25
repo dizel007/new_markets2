@@ -14,11 +14,6 @@ require_once "../pdo_functions/pdo_functions.php";
           print "Has errors: " . $e->getMessage();  die();
         }
 
-
-
-
-
-
    // Получаем все токены
     $arr_tokens = get_tokens($pdo);
     
@@ -29,24 +24,11 @@ require_once "../pdo_functions/pdo_functions.php";
     $client_id_ozon_ip = $arr_tokens['ozon_ip_zel']['id_market'];
     $token_ozon_ip = $arr_tokens['ozon_ip_zel']['token'];
 
-    
-
-
-
-
-
 $date = date('Y-m-d');
 $date_minus_one_day = date('Y-m-d', strtotime('-1 day', strtotime($date)));
-// print('Next eeDate ' . $date_minus_one_day);
 
-
-
-
-
-
-// die();
 /*********************************************************************
- ********           ПОЛУЧАЕМ ПРОДАЖИ ФБО
+ ********           ПОЛУЧАЕМ ПРОДАЖИ ФБО для предыдущий день ********
  *********************************************************************/
 
 //// для ООО
@@ -56,26 +38,22 @@ $shop_name = 'ozon_anmaks';
 
     get_sell_item_for_one_date($pdo, $date_minus_one_day, $token_ozon, $client_id_ozon, $shop_name);
 
-
-
 //  для ИП
 $token_ozon =  $token_ozon_ip;
 $client_id_ozon = $client_id_ozon_ip;
 $shop_name = 'ozon_ip_zel';
     get_sell_item_for_one_date($pdo, $date_minus_one_day, $token_ozon, $client_id_ozon, $shop_name);
 
-    
-//  for ($i=1; $i<31; $i++) {
-//     if (strlen($i) == 1)  {
-//         $j = "0".$i;
-//     } else {
-//         $j = $i;
-//     }
-// $date = date('2025-08-'.$j);
-    
+ 
+  
+// ******************************************************************************************** 
+// *** Еще делаем запросы на сохранинеи информации продаж за каждый день
+// ******************************************************************************************** 
 
-//  }
-
+// для ООО
+save_sell_data_for_one_day($token_ozon, $client_id_ozon, 'ozon_anmaks'); 
+// для ИП
+save_sell_data_for_one_day($token_ozon_ip, $client_id_ozon_ip, 'ozon_ip_zel'); 
 
 die();
 
@@ -174,3 +152,28 @@ return $arr;
 }
 
 
+/***********************************************************************************
+ * Функкция для сохранения данных по продажаам озон в файлики
+ ***********************************************************************************/
+function save_sell_data_for_one_day($token, $client_id,$ozon_shop) {
+ 
+$date = date('Y-m-d');
+$dateQuery = date('Y-m-d', strtotime('-1 day', strtotime($date)));
+
+$yearQuery = (int) (substr($dateQuery, 0, 4));
+$monthQuery = (int) substr($dateQuery, 5, 2);
+$dayQuery = (int) substr($dateQuery, 8, 2);
+
+$send_data = array(
+   "day" => $dayQuery,
+   "month" => $monthQuery,
+   "year" => $yearQuery
+);
+
+$json_data_send = json_encode($send_data);
+$temp_res = send_injection_on_ozon($token, $client_id, $json_data_send, 'v1/finance/realization/by-day');
+
+// Если есть данные, то сохраним их
+$file_name_one_day_json = "../!one_day_report/".$ozon_shop."/".$dateQuery.".json";
+file_put_contents($file_name_one_day_json, json_encode($temp_res, JSON_UNESCAPED_UNICODE));
+ }

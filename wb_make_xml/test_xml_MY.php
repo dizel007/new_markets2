@@ -112,7 +112,7 @@ if ($oldElement) {
     
         $StrNumber++;
     
-    $NDS = round($item['FullPrice'] * 20 / 120, 2);
+    $NDS = round($item['FullPrice'] * 22 / 122, 2);
     $price_bez_NDS = $item['FullPrice'] - $NDS;
     
     
@@ -148,7 +148,7 @@ if ($oldElement) {
     $newRow_DopSved = $dom->createElement('СведТов', '&#xA;');
        // Добавляем атрибуты
         $newRow_DopSved->setAttribute('НомСтр', $StrNumber);
-        $newRow_DopSved->setAttribute('НалСт', '20%');
+        $newRow_DopSved->setAttribute('НалСт', '22%');
         $newRow_DopSved->setAttribute('НаимТов', $real_name);
         $newRow_DopSved->setAttribute('ОКЕИ_Тов', '796');
         $newRow_DopSved->setAttribute('НаимЕдИзм', 'шт');

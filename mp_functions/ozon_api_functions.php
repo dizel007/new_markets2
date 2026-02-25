@@ -41,6 +41,7 @@ function send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url ) 
 
 function post_with_data_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url ) {
 
+
 	$link = 'https://api-seller.ozon.ru/'.$ozon_dop_url;
 
 	// echo "<br>$link";

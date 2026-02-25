@@ -1,28 +1,20 @@
 <?php
 
-function make_1c_file ($arr_for_1C_file_temp, $new_arr_new_zakaz, $Zakaz_v_1c, $new_path){
+function make_1c_file ($arr_for_1C_file_temp, $Zakaz_v_1c, $new_path){
 
 $xls = new PHPExcel();
 $xls->setActiveSheetIndex(0);
 $sheet = $xls->getActiveSheet();
 
 $next_i = 1;
+$midlle_price_q = 0;
 foreach ($arr_for_1C_file_temp  as $key => $q_items) {
-    $right_article = make_right_articl($key);
-     $sheet->setCellValue("A".$next_i, $right_article);
-     $sheet->setCellValue("C".$next_i, count($new_arr_new_zakaz[$key]));
-     // высчитываем среднюю цену за товар
-     $sum_q=0;
-     foreach ($q_items as $q_item) {
-         $sum_q = $sum_q + $q_item['convertedPrice'];
-         }
-      if (count($q_items) > 0) {   
-     $midlle_price_q= ($sum_q/count($q_items))/100;
-     $sheet->setCellValue("D".$next_i, $midlle_price_q); // цена за 1 шт товара
-      } else {
-         $sheet->setCellValue("D".$next_i, "no data"); // цена за 1 шт товара
-      }
 
+     $sheet->setCellValue("A".$next_i, $key);
+     $sheet->setCellValue("C".$next_i, $q_items['count']);
+     // высчитываем среднюю цену за товар
+     $midlle_price_q = $q_items['price']/$q_items['count'];
+     $sheet->setCellValue("D".$next_i, $midlle_price_q); // цена за 1 шт товара
      $next_i++; // смешение по строкам
  
 }

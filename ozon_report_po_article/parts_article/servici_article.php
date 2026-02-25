@@ -201,6 +201,17 @@ elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearc
             // $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
      }
 
+
+
+
+elseif ($items['operation_type'] == 'OperationMarketplaceCostPerClick'){
+       //Оплата за клик
+               $arr_services_without_postNumber['Оплата за клик'] = 
+        @$arr_services_without_postNumber['Оплата за клик'] + $items['amount'];
+
+            // $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
+     }
+
 elseif ($items['operation_type'] == 'OperationOtherElectronicServices'){
        //Иные электронные услуги
         $arr_services_without_postNumber['Иные электронные услуги'] = 
@@ -250,16 +261,16 @@ else {
 if (isset($arr_nerazjbrannoe)) {
 echo "<br> ЕСТЬ неразобранные сервисыы <br>";    
 }
-echo "<pre>";
-print_r($arr_nerazjbrannoe);
-echo "</pre>";
+// echo "<pre>";
+// print_r($arr_nerazjbrannoe);
+// echo "</pre>";
 
 
-foreach ($arr_nerazjbrannoe as $popo) {
-    $jojo[$popo['operation_type_name']]= $popo['operation_type_name'];
+// foreach ($arr_nerazjbrannoe as $popo) {
+//     $jojo[$popo['operation_type_name']]= $popo['operation_type_name'];
 
-}
-echo "<br> ЕСТЬ неразобранныvvvе сервисыы <br>"; 
-echo "<pre>";
-print_r($jojo);
-echo "</pre>";
+// }
+// echo "<br> ЕСТЬ неразобранныvvvе сервисыы <br>"; 
+// echo "<pre>";
+// print_r($jojo);
+// echo "</pre>";

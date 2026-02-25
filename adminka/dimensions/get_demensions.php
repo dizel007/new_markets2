@@ -37,6 +37,9 @@ foreach ($ozon_catalog as $items_ozon) {
 
     $array_from_ozon = get_dimensions_from_SITE_ozon($token_ozon, $client_id, $items_ozon);
     
+// print_r($array_from_ozon);
+
+
     $arr_from_db = get_dimensions_from_db_ozon($pdo, $items_ozon['sku']);
     if (isset($arr_from_db[0])) {
         $new_arr_from_db = $arr_from_db[0];

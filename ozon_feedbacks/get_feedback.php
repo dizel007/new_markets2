@@ -13,8 +13,8 @@ require_once "../pdo_functions/pdo_functions.php";
 
 
 // для ИП
-// $token_ozon = $token_ozon_ip;
-// $client_id_ozon = $client_id_ozon_ip;
+$token_ozon = $token_ozon_ip;
+$client_id_ozon = $client_id_ozon_ip;
 
 // Вставляем форму для ввода
 $answer[] = 'Здравствуйте! Большое спасибо за то, что нашли время для обратной связи. Нам очень приятно, что у нас есть такие отзывчивые и благодарные клиенты. Будем рады видеть вас снова!';

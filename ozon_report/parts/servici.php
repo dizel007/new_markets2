@@ -156,6 +156,33 @@ elseif ($items['operation_type'] == 'OperationElectronicServicesPromotionInSearc
        //Реклама Продвижение в поиске
             $Summa_reklami_poisk = @$Summa_reklami_poisk + $items['amount']; 
      }
+elseif ($items['operation_type'] == 'OperationPromotionWithCostPerOrder'){
+       //Продвижение с оплатой за заказ
+            $Summa_reklami_prodvizenie_s_oplatoi_za_zakaz = @$Summa_reklami_prodvizenie_s_oplatoi_za_zakaz + $items['amount']; 
+     }
+
+
+
+elseif ($items['operation_type'] == 'OperationMarketplaceItemTemporaryStorageRedistribution'){
+       //Временное размещение товара партнерами
+            $Summa_vremennoe_razmeshenie_tovara_parnerami = @$Summa_vremennoe_razmeshenie_tovara_parnerami + $items['amount']; 
+     }
+
+elseif ($items['operation_type'] == 'DefectFineCancellation'){
+       //Превышение индекса ошибок: отмена
+            $Summa_previshenie_indexa_oshibok_otmena = @$Summa_previshenie_indexa_oshibok_otmena + $items['amount']; 
+     }
+
+elseif ($items['operation_type'] == 'DefectFineShipmentDelay'){
+       //Превышение индекса ошибок: отмена
+            $Summa_previshenie_indexa_oshibok_dolgay_otgruzka = @$Summa_previshenie_indexa_oshibok_dolgay_otgruzka + $items['amount']; 
+     }
+
+elseif ($items['operation_type'] == 'OperationSellerReturnsCargoAssortmentValid'){
+       //Подготовка товара к вывозу: Валид
+            $Summa_podgotovka_tovara_k_vivizu = @$Summa_podgotovka_tovara_k_vivizu + $items['amount']; 
+    }
+
 elseif ($items['operation_type'] == 'OperationMarketplaceCostPerClick'){
        //РОплата за клик
             $Summa_oplata_za_click = @$Summa_oplata_za_click + $items['amount']; 
@@ -196,6 +223,6 @@ else {
 }
 
 }
-// echo "<pre>";
-// print_r($arr_nerazjbrannoe);
-// echo "</pre>";
+echo "<pre>";
+print_r($arr_nerazjbrannoe);
+echo "</pre>";

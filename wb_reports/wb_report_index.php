@@ -153,8 +153,8 @@ sleep(1);
 
 echo "<br> Вышли из цикла получения данных с сайта ВБ <br>";
 
-// $text =  json_encode($arr_result, JSON_UNESCAPED_UNICODE);
-// file_put_contents('array.json', $text);
+$text =  json_encode($arr_result, JSON_UNESCAPED_UNICODE);
+file_put_contents('array.json', $text);
 
 
 // $arr_result =  file_get_contents('array.json');
@@ -223,8 +223,10 @@ $sum_korrectirovka_eqvairinga = 0;
 $sum_paid_priemka = 0;
 
 // echo "<pre>";
+// print_r($arr_result);
 
 
+// die();
 
 require_once "wb_data_razbor.php";
 

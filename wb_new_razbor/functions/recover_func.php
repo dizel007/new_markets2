@@ -66,20 +66,18 @@ function make_recovery_json_orders_file($path_recovery, $orderId, $supplyId, $ar
     echo "<br> Функция записи в файл восстновления Заказ: $orderId ; Поставка :$supplyId";
     $temp_path = $path_recovery."/".$supplyId;
     make_new_dir_z($temp_path,0); // создаем папку с номером заказа
-
-    // $article =  make_rigth_file_name($article);
-    // $article =  make_right_articl($article);
     file_put_contents($temp_path."/article.txt", $article);
+    
 // Если существует файл поставки, то открываем его 
     if (file_exists($temp_path."/".$supplyId.".txt")) {
         $str_file = file_get_contents($temp_path."/".$supplyId.".txt");
         $arr_file = json_decode($str_file);
-        $sigh_order=0;
+        $sigh_order = 0;
 
  //  перебираем все заказы из файла
         foreach ($arr_file as $order) {
             if ($order == $orderId) {
-                $sigh_order=1;
+                $sigh_order = 1;
             }
         }
         if ($sigh_order == 0) {

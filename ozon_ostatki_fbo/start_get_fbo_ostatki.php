@@ -10,19 +10,33 @@ foreach ($arr_all_nomenklatura as $zzz) {
    $arr_poriadkovii_number[mb_strtolower($zzz['main_article_1c'])] = $zzz['number_in_spisok'];
 }
 
+$shop_name = 'ozon_anmaks';
+$ozon_catalog    = get_catalog_tovarov_v_mp($shop_name, $pdo ,'active'); // получаем озон каталог
+
+foreach ($ozon_catalog as $ozon_items) {
+    $ozon_sku_items[] = $ozon_items['sku'];
+}
+
+$ozon_dop_url = "v1/analytics/stocks";
+$json_data = json_encode(array("skus" => $ozon_sku_items));
+$result_array_ooo = post_with_data_ozon($token_ozon, $client_id_ozon, $json_data, $ozon_dop_url ) ;
 
 
+
+echo "<pre>";
+
+print_r($result_array_ooo);
 
 /********************************
  * ПОЛУЧАЕМ остатки ФБО ООО
  ****************************/
-$filename = 'file_ostatki_fbo_ozon_ooo.json';
- $result_array_ooo = get_data_ostatkov_fbo_ozon ($token_ozon, $client_id_ozon, $filename , 750);
- if (!isset($result_array_ooo['code'])) {
+
 // Формируем массивы для вывода данных на экран
 foreach ($result_array_ooo['items'] as $item ){
-  $arr_ostatok_fbo_ooo[mb_strtolower($item['offer_id'])][$item['warehouse_name']] = $item['valid_stock_count'];
-  $arr_count_in_city_ooo[mb_strtolower($item['offer_id'])] = @$arr_count_in_city_ooo[mb_strtolower($item['offer_id'])] + $item['valid_stock_count'];
+    if ($item['available_stock_count'] > 5) {
+  $arr_ostatok_fbo_ooo[mb_strtolower($item['offer_id'])][$item['warehouse_name']] = $item['available_stock_count'];
+  $arr_count_in_city_ooo[mb_strtolower($item['offer_id'])] = @$arr_count_in_city_ooo[mb_strtolower($item['offer_id'])] + $item['available_stock_count'];
+    }
 }
 // Привем массив артикулов в порядок (согласно порядковому нормеру)
 foreach ($arr_poriadkovii_number as $key=>$z) {
@@ -30,18 +44,20 @@ foreach ($arr_poriadkovii_number as $key=>$z) {
 }
 // Сортировка по возрастанию с сохранением ключей
 asort($arr_sort_ar_ooo);
+
 echo "<h1> Остатики ФБО на озон ООО</h1>";
 print_fbo_ostatki_table ($arr_sort_ar_ooo, $arr_ostatok_fbo_ooo, $arr_count_in_city_ooo);
- } else {
-    echo "<br> Запросить данные можно будет через 120 секунд <br>";
- }
 
+
+
+
+
+die();
 /********************************
  * ПОЛУЧАЕМ остатки ФБО ИП
  ****************************/
 $filename = 'file_ostatki_fbo_ozon_ip.json';
- $result_array_ip = get_data_ostatkov_fbo_ozon ($token_ozon_ip, $client_id_ozon_ip, $filename, 750);
-  if (!isset($result_array_ip['code'])) {
+
 // Формируем массивы для вывода данных на экран
 foreach ($result_array_ip['items'] as $item ){
   $arr_ostatok_fbo_ip[mb_strtolower($item['offer_id'])][$item['warehouse_name']] = $item['valid_stock_count'];
@@ -55,10 +71,6 @@ foreach ($arr_poriadkovii_number as $key=>$z) {
 asort($arr_sort_ar_ooo);
 echo "<h1> Остатики ФБО на озон ИП</h1>";
 print_fbo_ostatki_table ($arr_sort_ar_ip, $arr_ostatok_fbo_ip, $arr_count_in_city_ip);
-} else {
-    echo "<br> Запросить данные можно будет через 120 секунд <br>";
- }
-
 
 
 /************************************************************************
@@ -97,65 +109,3 @@ foreach ($arr_sort_ar_ooo as $atricle=>$z) {
 echo "</table>";
 }
 
-
-
-function get_data_ostatkov_fbo_ozon ($token_ozon, $client_id_ozon, $filename, $fileTime = 600){
-    $filename_s = $filename;
-    $filename = '../!cache/'.$filename;
-    if (file_exists($filename)) {
-
-    $creationTime = filectime($filename);
-    $difftime = Time() - $creationTime;
-        echo "Время создания файла $filename_s - $difftime сек<br>";
-
-    if ($difftime >= $fileTime) { 
-        echo "Время создания файла более $fileTime секунд<br>";
-        // если время создания айла более 10 минут, то снова остатки берем
-         unlink($filename);
-         // ОЧИСТКА КЕША - это важно!
-       // Многократная очистка кеша для Windows
-        for ($i = 0; $i < 5; $i++) {
-         clearstatcache(true, $filename);
-        usleep(200000); // 100ms
-    }
-         echo "Удаляем старый файл<br>";
-         sleep(1);
-         $ozon_dop_url = "v1/analytics/manage/stocks";
-         $data_for_send = '{ "limit": 1000, "offset": 0 }';
-          echo "Запрашиваем Новые данные для файла $filename_s ******************<br>";
-         $result_array = post_with_data_ozon($token_ozon, $client_id_ozon, $data_for_send, $ozon_dop_url ) ;
-           if (!isset($result_array['code'])) {
-                file_put_contents($filename, json_encode($result_array, JSON_UNESCAPED_UNICODE));
-                   // Снова очищаем кеш
-               for ($i = 0; $i < 5; $i++) {
-                    clearstatcache(true, $filename);
-                    usleep(50000); // 100ms
-                }
-           } else {
-            echo "<br>Не получили данные для файла $filename_s <br>";
-           }
-     
-    } else {
-        // если файл у менее 10 минут то брем с него данные
-        echo "Время создания файла менее $fileTime секунд<br>";
-        $result_array = json_decode(file_get_contents($filename) , true);
-
-    }
-} else { 
-    // если файла нет то просим данные
-    echo "Файла нет<br>";
-    $ozon_dop_url = "v1/analytics/manage/stocks";
-    $data_for_send = '{ "limit": 1000, "offset": 0 }';
-    echo "Запрашиваем Новые данные для файла $filename_s ******************<br>";
-    $result_array = post_with_data_ozon($token_ozon, $client_id_ozon, $data_for_send, $ozon_dop_url ) ;
-           if (!isset($result_array['code'])) {
-                file_put_contents($filename, json_encode($result_array, JSON_UNESCAPED_UNICODE));
-                   // Снова очищаем кеш
-               clearstatcache(true, $filename);
-           } else {
-            echo "<br>Не получили данные для файла $filename_s <br>";
-           }
-  
-}
-return  $result_array;
-}

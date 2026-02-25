@@ -14,7 +14,7 @@ if (!isset($_GET['date_start']) AND !isset($_GET['date_end'])) {
 
 $date = date("Y-m-d");
 $date = strtotime($date);
-$date = strtotime("-1 day", $date);
+$date = strtotime("-0 day", $date);
 $date_end =  date('Y-m-d', $date);
 // echo "$date_end";
 
@@ -73,7 +73,7 @@ if (isset($_GET['need_article'])) {
     // echo "<pre>";
     // print_r($need_article);
 
-} else {
+} else { // артикулы которые выводятся по умолчанию, если нет выбранных артикулов 
     $need_article = array ('6210', '6211', '85400-ч');
 }
 
