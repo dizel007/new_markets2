@@ -1,0 +1,123 @@
+/* styles.css – светлая таблица с горизонтальными линиями и акцентами */
+
+/* Контейнер для горизонтальной прокрутки (для 30 дат) */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+}
+
+/* Основная таблица */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.85rem;
+  background-color: #ffffff;
+  color: #1e293b;
+  min-width: 800px;
+}
+
+/* Все ячейки – базовые отступы и границы */
+.inventory-table th,
+.inventory-table td {
+  padding: 3px 10px;
+  border-bottom: 1px solid #e2e8f0; /* Горизонтальные линии для всех строк */
+  text-align: right;                /* числа и даты – по умолчанию вправо */
+  white-space: nowrap;
+}
+
+/* Заголовки – чуть ярче, с мягким градиентом */
+.inventory-table th {
+  background: linear-gradient(135deg, #f1f5f9 0%, #eef2ff 100%);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #1e40af;
+  border-bottom: 2px solid #cbd5e1;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(2px);
+}
+
+/* Первый столбец (Артикул) и четвёртый (Маркет) – выравнивание влево */
+.inventory-table th:first-child,
+.inventory-table td:first-child,
+.inventory-table th:nth-child(4),
+.inventory-table td:nth-child(4) {
+  text-align: left;
+}
+
+/* Числовые столбцы: остаток, итого, даты – вправо */
+.inventory-table td:nth-child(2),
+.inventory-table td:nth-child(3),
+.inventory-table td:nth-child(n+5) {
+  text-align: right;
+}
+
+/* Чередование строк – мягкое, но заметное */
+.inventory-table tbody tr:nth-child(even) {
+  background-color: #fafcff;
+}
+.inventory-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+/* Эффект при наведении – добавляем лёгкую тень */
+.inventory-table tbody tr:hover {
+  background-color: #fef9e3;
+  transition: all 0.2s ease;
+}
+
+/* Строка "Итого за день" – более яркая, полужирная, с серым фоном */
+.inventory-table tbody tr:has(td:first-child:contains("Итого за день")),
+.inventory-table tbody tr:last-of-type {
+  background-color: #f1f5f9 !important;
+  font-weight: 600;
+  border-top: 2px solid #cbd5e1;
+}
+/* Альтернативный селектор для старых браузеров – используем класс, если можете добавить */
+.inventory-table .total-row {
+  background-color: #eef2ff;
+  font-weight: 700;
+  border-top: 2px solid #94a3b8;
+  border-bottom: 2px solid #94a3b8;
+}
+
+/* Артикул – чуть жирнее */
+.inventory-table td:first-child {
+  font-weight: 500;
+  color: #0f172a;
+}
+
+/* Значения "–" или пустые – делаем серыми */
+.inventory-table td:empty::before,
+.inventory-table td:contains("–") {
+  color: #94a3b8;
+  font-weight: normal;
+}
+
+/* Стилизация скроллбара (для .table-wrapper) */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #a5b4fc;
+  border-radius: 10px;
+}
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #818cf8;
+}
+
+/* Адаптивность: чуть меньше отступы на узких экранах */
+@media (max-width: 768px) {
+  .inventory-table th,
+  .inventory-table td {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+}
