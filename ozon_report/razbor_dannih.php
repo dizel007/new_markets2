@@ -255,20 +255,6 @@ if (isset($Summa_oplata_za_click)) {
 }
 
 
-// Превышение индекса ошибок: отмена
-if (isset($Summa_previshenie_indexa_oshibok_otmena)) {
-    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_previshenie_indexa_oshibok_otmena, "Превышение индекса ошибок: отмена");
-}
-
-
-// Превышение индекса ошибок: просроченная отгрузка
-if (isset($Summa_previshenie_indexa_oshibok_dolgay_otgruzka)) {
-    $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_previshenie_indexa_oshibok_dolgay_otgruzka, "Превышение индекса ошибок: просроченная отгрузка");
-}
-
-
-
-
 // Продвижение с оплатой за заказ
 if (isset($Summa_reklami_prodvizenie_s_oplatoi_za_zakaz)) {
     $dop_uslugi = print_on_screen_one_string_and_return_summ($dop_uslugi, $Summa_reklami_prodvizenie_s_oplatoi_za_zakaz, "Продвижение с оплатой за заказ");

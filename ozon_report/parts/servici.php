@@ -168,16 +168,6 @@ elseif ($items['operation_type'] == 'OperationMarketplaceItemTemporaryStorageRed
             $Summa_vremennoe_razmeshenie_tovara_parnerami = @$Summa_vremennoe_razmeshenie_tovara_parnerami + $items['amount']; 
      }
 
-elseif ($items['operation_type'] == 'DefectFineCancellation'){
-       //Превышение индекса ошибок: отмена
-            $Summa_previshenie_indexa_oshibok_otmena = @$Summa_previshenie_indexa_oshibok_otmena + $items['amount']; 
-     }
-
-elseif ($items['operation_type'] == 'DefectFineShipmentDelay'){
-       //Превышение индекса ошибок: отмена
-            $Summa_previshenie_indexa_oshibok_dolgay_otgruzka = @$Summa_previshenie_indexa_oshibok_dolgay_otgruzka + $items['amount']; 
-     }
-
 elseif ($items['operation_type'] == 'OperationSellerReturnsCargoAssortmentValid'){
        //Подготовка товара к вывозу: Валид
             $Summa_podgotovka_tovara_k_vivizu = @$Summa_podgotovka_tovara_k_vivizu + $items['amount']; 
@@ -223,6 +213,6 @@ else {
 }
 
 }
-echo "<pre>";
-print_r($arr_nerazjbrannoe);
-echo "</pre>";
+// echo "<pre>";
+// print_r($arr_nerazjbrannoe);
+// echo "</pre>";

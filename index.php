@@ -177,6 +177,11 @@ echo "<div class=\"container\">";
         print_one_block ('table_element_razbor', "yandex_report/start_ya_razbor.php", 'ОТЧЕТЫ ЯМ АНМАКС',
         'Формирование отчетов на основании ексель отчетов с ЯМ. Ссылка на скачивания отчетов внутри', 'pics/main_screen/razbor_yandex.jpg');
 
+        print_one_block ('table_element_razbor', "ozon_report_2/ozon_report/index_report.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
+        'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');
+
+        print_one_block ('table_element_razbor', "ozon_report_2/ozon_report/index_report.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
+        'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
 
 echo "</div>";//Конец контейнера ОТЧЕТЫ
 
@@ -229,7 +234,7 @@ echo "<div class=\"container\">";
 
     print_one_block ('table_element_admin', "adminka/insert_new_admin/form_for_insert_new_admin.php", 'Новый юзер',
     'Добавляем нового пользователя с правами нулевого админа', 'pics/main_screen/new_user.png');
-    print_one_block ('table_element_admin', "adminka/find_product_id_ozon/select_shop_find_product.php", 'Insert product_id в БД Ozon',
+    print_one_block ('table_element_admin', "adminka/add_tovar/start_page.php", 'Добавить товар в БД маркета',
     'Добавляем параметр product_id для каталога товаров озон', 'pics/main_screen/product_id.jpg');
     
 

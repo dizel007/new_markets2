@@ -116,9 +116,9 @@ die('');
 
 
 function add_sells_in_sum_array ($mp_catalog) {
-   foreach ($mp_catalog as $wb_ooo_item) {
-    if (isset( $wb_ooo_item['sell_count'])){
-        $sell_arr [mb_strtolower($wb_ooo_item['main_article'])] = $wb_ooo_item['sell_count'];
+   foreach ($mp_catalog as $select_shop) {
+    if (isset( $select_shop['sell_count'])){
+        $sell_arr[mb_strtolower($select_shop['main_article'])] = @$sell_arr[mb_strtolower($select_shop['main_article'])] +  $select_shop['sell_count'];
     }
 } 
 return $sell_arr;

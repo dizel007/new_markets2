@@ -3,7 +3,7 @@ include_once "../../connect_db.php";
 
 
 
-$shop_name = "ozon_ip_zel";
+$shop_name  = $_POST['_shop_name_'];
 $stmt = $pdo->prepare("SELECT * FROM `$shop_name`");
 $stmt->execute([]);
 $array_db_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -12,7 +12,7 @@ $array_db_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // echo "<pre>";
 
 
-$shop_name  = $_POST['_shop_name_'];
+// $shop_name  = $_POST['_shop_name_'];
 unset($_POST['_shop_name_']);
 
 
@@ -60,7 +60,7 @@ foreach ($array_db_items as &$item_db) {
 
 
 
-
+// echo "<pre>";
 // print_r($array_db_items);
 
 
@@ -72,15 +72,15 @@ $sql = "UPDATE `$shop_name` SET `fbs` = :fbs,
                                 `fake_count` = :fake_count, 
                                 `active_tovar` = :active_tovar
                                 
-                        WHERE `sku` = :sku";
+                            WHERE `id` = :id";
 
 $stmt = $pdo->prepare($sql);
 
-$stmt->execute(array('fbs'     => $item_for_update['fbs'],
+$stmt->execute(array('fbs'            => $item_for_update['fbs'],
                      'fake_count'     => $item_for_update['fake_count'],
                      'active_tovar'   => $item_for_update['active_tovar'],
                                       
-                     'sku' => $item_for_update['sku']));
+                     'id' => $item_for_update['id']));
 
 $info = $stmt->errorInfo();
 // print_r($info);

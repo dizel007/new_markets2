@@ -9,12 +9,6 @@ require_once $offset . "pdo_functions/pdo_functions.php";
 require_once $offset . "mp_functions/ozon_api_functions.php";
 require_once $offset . "mp_functions/ozon_functions.php";
 
-
-
-$shop_name = $_POST['ozon_shop'];
-// $shop_name = 'ozon_ip_zel';
-// unset($_POST['ozon_shop']);
-
 if ($shop_name == 'ozon_anmaks') {
   // ОЗОН АНМКАС
   $client_id = $arr_tokens['ozon_anmaks']['id_market'];
@@ -41,27 +35,14 @@ $ozon_dop_url = 'v3/product/info/list';
 
 foreach ($ozon_catalog as &$items) {
     if ($items['product_id'] == 0 ) {
-        
-            // $send_data = json_encode(array("offer_id" => "",
-            //                    "product_id" => 0,
-            //                    "sku" => $items['sku']));
-
+      
           $send_data =  json_encode(array("sku" => array($items['sku'])));
-            // $send_data = json_encode($send_data);
-            
-            $ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
+          $ozcatalog = post_with_data_ozon($token_ozon, $client_id, $send_data, $ozon_dop_url);
+          $items['id_ozon'] = $ozcatalog['items'][0]['id'];
 
-            // print_r($ozcatalog);
+           $item_for_update['product_id'] =  $items['id_ozon'];
+           $item_for_update['sku'] =  $items['sku'];
 
-            // $items['id_ozon'] = $ozcatalog['result']['id'];
-            $items['id_ozon'] = $ozcatalog['items'][0]['id'];
-
-
-            $item_for_update['product_id'] =  $items['id_ozon'];
-            $item_for_update['sku'] =  $items['sku'];
-// echo "<pre>";
-//             print_r($item_for_update);
-// die();
 // обновляем базу данных (Добавляем product_id (OZON))
 $info_update = update_catalog_mp_ozon($pdo, $shop_name, $item_for_update) ;
 // если обмен с ошибками, то ывозим сообщение 
@@ -72,13 +53,7 @@ $info_update = update_catalog_mp_ozon($pdo, $shop_name, $item_for_update) ;
    }
 }
 
-// echo "<pre>";
-// print_r($ozon_catalog);
-echo "ОБНОВИЛИ ВСЕ ЧТО НУЖНО (БЕЗ ОШИБОК)";
-
-die();
-
-
+// echo "ОБНОВИЛИ ВСЕ ЧТО НУЖНО (БЕЗ ОШИБОК)";
 
 function update_catalog_mp_ozon($pdo, $shop_name, $item_for_update) {
     
@@ -87,8 +62,8 @@ function update_catalog_mp_ozon($pdo, $shop_name, $item_for_update) {
     $stmt->execute(array('product_id' => $item_for_update['product_id'],
                          'sku'        => $item_for_update['sku']));
 
-$info = $stmt->errorInfo();
-return $info;
+// $info = $stmt->errorInfo();
+// return $info;
 
 
 }

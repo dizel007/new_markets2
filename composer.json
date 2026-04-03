@@ -4,6 +4,7 @@
         "tecnickcom/tcpdf": "^6.10",
         "setasign/fpdi": "^2.6",
         "smalot/pdfparser": "^2.12",
-        "picqer/php-barcode-generator": "^2.4"
+        "picqer/php-barcode-generator": "^2.4",
+        "endroid/qr-code": "^4.6"
     }
 }

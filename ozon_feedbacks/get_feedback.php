@@ -10,12 +10,6 @@ require_once "../pdo_functions/pdo_functions.php";
 
 
 
-
-
-// для ИП
-$token_ozon = $token_ozon_ip;
-$client_id_ozon = $client_id_ozon_ip;
-
 // Вставляем форму для ввода
 $answer[] = 'Здравствуйте! Большое спасибо за то, что нашли время для обратной связи. Нам очень приятно, что у нас есть такие отзывчивые и благодарные клиенты. Будем рады видеть вас снова!';
 $answer[] = 'Здравствуйте, Спасибо за положительный отзыв. Будем рады снова увидеть Вас в нашем магазине.';
@@ -32,13 +26,20 @@ echo "<pre>";
 print_r($answer);
 // Оставляем отзывы по ООО
 echo "<br>**************** Оставляем отзывы по ООО ***************************************************<br>";
+$token_ozon = $token_ozon;
+$client_id_ozon = $client_id_ozon;
 send_answer_for_feedback ($token_ozon, $client_id_ozon, $answer);
 
 // Оставляем отзывы по ИП
 echo "<br>**************** Оставляем отзывы по ИП  ***************************************************<br>";
-// send_answer_for_feedback ($token_ozon_ip, $client_id_ozon_ip, $answer);
+$token_ozon = $token_ozon_ip;
+$client_id_ozon = $client_id_ozon_ip;
+send_answer_for_feedback ($token_ozon_ip, $client_id_ozon_ip, $answer);
 
-
+/** ****************************************************************************************
+ *  ****************************************************************************************
+ * 
+ *******************************************************************************************/
 function send_answer_for_feedback ($token_ozon, $client_id_ozon, $answer) {
 // Запрашивает еоличество всех отзывов 
 $count_feedback = send_injection_on_ozon($token_ozon, $client_id_ozon, '', 'v1/review/count');
@@ -67,10 +68,10 @@ echo "<br>**********************************************************************
 // Оставить комментарий на отзыв
 foreach ($temp_res['reviews'] as $feedback) {
 
-      // if (($feedback['rating'] >= 4) && ($feedback['text'] == '')) {
-     if (($feedback['rating'] >= 5) ) {
+      if ( (($feedback['rating'] >= 4) && ($feedback['text'] == '')) OR ($feedback['rating'] >= 5) ) {
+//      if (($feedback['rating'] >= 5) ) {
       
-         $number_answer = rand(0, count($answer)-1);
+         $number_answer = rand(0, count($answer)-1);  // выбираем номер ответа
 
 
          $send_data = array(

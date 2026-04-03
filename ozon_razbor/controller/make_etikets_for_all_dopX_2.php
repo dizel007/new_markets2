@@ -1,6 +1,4 @@
 <?php
-
-
 require_once '../../connect_db.php';
 require_once '../include_funcs.php';
 require_once 'make_1c_file.php';

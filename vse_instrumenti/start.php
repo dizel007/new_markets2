@@ -49,8 +49,7 @@ if (!is_dir($temp_dir)) {
 	mkdir($temp_dir, 0777, True);
 }
 
-echo "<pre>";
-// print_r($array['ORDER']['OrderDetail']);
+
 if (isset($array['ORDER']['OrderDetail'][0])) {
 $our_array = $array['ORDER']['OrderDetail'];
 } else {
@@ -59,10 +58,13 @@ $our_array = $array['ORDER']['OrderDetail'];
 }
 
 
+
   // перебираем массив из ВИ
 foreach ($our_array as &$item) {
 
-    $item['price'] = get_price_for_1C ($arr_catalog, $item['SenderPrdCode']);
+    // $item['price'] = get_price_for_1C ($arr_catalog, $item['SenderPrdCode']);
+    $item['price'] = $item['Price2'];
+
     $barnumber=$item['EAN'];
     $file=$item['SenderPrdCode'];
     	require("barcode/barcode.php");
@@ -70,6 +72,10 @@ foreach ($our_array as &$item) {
    $arr_file_names[] = get_shtrih_code ($item , $DocNumber, $file_name);
     unlink($file_name);
 }
+
+// echo "<pre>";
+// print_r($our_array);
+// die();
 
 // echo count($array['ORDER']['OrderDetail'])."<br>";
 // print_r($array['ORDER']['OrderDetail']);
@@ -81,7 +87,7 @@ foreach ($our_array as &$item) {
 
 // var_dump($arr_file_names);
 // die('ffffffffffffffff');
-
+echo "<pre>";
 print_r($our_array);
 
 //// Формируем файл для 1С

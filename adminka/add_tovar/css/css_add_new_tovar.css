@@ -1,0 +1,220 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f6f9;  /* нейтральный фон, как у Ozon */
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* Карточка формы — как на ozon.ru */
+        .ozon-card {
+            max-width: 640px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* Заголовок формы */
+        .form-header {
+            padding: 1.75rem 2rem 0.5rem 2rem;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .form-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: #001a34;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-header p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Тело формы */
+        .form-body {
+            padding: 1.5rem 2rem 2rem 2rem;
+        }
+
+        /* Стили для полей */
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .required-star {
+            color: #e53e3e;
+            font-size: 0.9rem;
+        }
+
+        /* Селект и инпуты в стиле Ozon */
+        select, input, textarea {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background-color: #fff;
+            transition: all 0.2s ease;
+            outline: none;
+            color: #1a202c;
+            width: 100%;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            cursor: pointer;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #005bff;
+            box-shadow: 0 0 0 3px rgba(0, 91, 255, 0.15);
+        }
+
+        /* placeholder стиль */
+        input::placeholder, textarea::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        /* текстовая область */
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        /* чекбокс/политика (доп эл-т для стиля) */
+        .policy-checkbox {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .policy-checkbox input {
+            width: 18px;
+            height: 18px;
+            accent-color: #005bff;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .policy-checkbox label {
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            color: #4b5563;
+            font-weight: 400;
+        }
+
+        .policy-checkbox a {
+            color: #005bff;
+            text-decoration: none;
+        }
+
+        .policy-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        /* Кнопка отправки */
+        .submit-btn {
+            width: 100%;
+            background-color: #005bff;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.9rem 1rem;
+            border: none;
+            border-radius: 56px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.75rem;
+            letter-spacing: -0.2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .submit-btn:hover {
+            background-color: #0047cc;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* дополнительный отступ для последней группы */
+        .last-group {
+            margin-bottom: 0.25rem;
+        }
+
+        /* подпись для полей телефона */
+        .hint-text {
+            font-size: 0.7rem;
+            color: #8a99aa;
+            margin-top: 0.4rem;
+        }
+
+        /* адаптивность */
+        @media (max-width: 550px) {
+            .form-body {
+                padding: 1.25rem 1.25rem 1.75rem;
+            }
+            .form-header {
+                padding: 1.25rem 1.25rem 0.25rem;
+            }
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+            .submit-btn {
+                padding: 0.8rem;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* небольшая иконка для секции */
+        .section-icon {
+            display: inline-block;
+            margin-right: 6px;
+        }

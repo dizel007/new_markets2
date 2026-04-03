@@ -53,7 +53,7 @@ return $res;
 *******************************************************************************************************/
 function  get_ostatki_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
     // FПолучаем фактическое количество товаров указанное на складе ОЗОН
-    $ozon_dop_url = 'v1/product/info/stocks-by-warehouse/fbs';
+    $ozon_dop_url = 'v2/product/info/stocks-by-warehouse/fbs';
     $data = '';
     
     foreach ($ozon_catalog as $item)
@@ -61,7 +61,7 @@ function  get_ostatki_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
          $data .="\"".$item['sku']."\",";
     }
     $data = substr($data, 0, -1);
-    $send_data ='{"sku": ['.$data.']}';
+    $send_data ='{"sku": ['.$data.'], "limit": 1000}';
     
     $res = send_injection_on_ozon($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
     
@@ -69,7 +69,7 @@ function  get_ostatki_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
 // print_r($res) ;
 // die();
 
-    foreach ($res['result'] as $items) {
+    foreach ($res['products'] as $items) {
     foreach ($ozon_catalog as &$prods) {
         if ($prods['sku'] == $items['sku']) {
             $prods['quantity'] = $items['present'] - $items['reserved'];

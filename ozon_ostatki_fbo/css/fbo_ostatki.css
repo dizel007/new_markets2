@@ -89,8 +89,12 @@ box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
   background: #387532;
 }
 
-
-
+.t_ever {
+   background: #ccdfd5; 
+}
+.t_not_ever {
+  background: #faecf7;  
+}
 
 .town_mp_table td, .town_mp_table th {
   text-align: center;
