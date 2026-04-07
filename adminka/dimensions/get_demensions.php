@@ -6,7 +6,7 @@ require_once $offset . "mp_functions/ozon_api_functions.php";
 require_once $offset . "mp_functions/ozon_functions.php";
 
 
-require_once "functions_dimensions.php"; // функции по работе с БД
+// require_once "functions_dimensions.php"; // функции по работе с БД
 require_once "print_table_dimentions.php"; // функции по работе с БД
 
 $shop_name = $_POST['ozon_shop'];

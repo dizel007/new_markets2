@@ -13,7 +13,7 @@ echo "<table class=\"inventory-table\">";
 echo "<thead class=\"color_orange\">";
 echo "<tr>";
 echo "<td>АРТИКУЛ</td>";
-echo "<td>ФБО остаок</td>";
+
 echo "<td>Итого</td>";
 echo "<td>Маркет</td>";
 // Выводим в шапке все даты
@@ -52,12 +52,11 @@ $count_string = 8;
 $count_long_table = 4 + count($arr_dates);
     echo "<tr>";
     echo "<td class = \"sticky\" rowspan = \"$count_string\">{$article}</td>";
-    echo "<td class = \"sticky\" rowspan = \"$count_string\">ФБО Остаток</td>";
 
     if (isset ($arr_sum_all_date[$article])) {
-    echo "<td class = \"sticky\" rowspan = \"$count_string\">$arr_sum_all_date[$article]</td>";
+    echo "<td class = \"\" rowspan = \"$count_string\">$arr_sum_all_date[$article]</td>";
     } else {
-        echo "<td class = \"sticky\" rowspan = \"$count_string\">XER</td>";
+        echo "<td class = \"\" rowspan = \"$count_string\">-</td>";
     }
 
 
@@ -160,7 +159,7 @@ $count_long_table = 4 + count($arr_dates);
   echo "<td class = \"fbs_sell_tovari\">Итого за день</td>";
     foreach ($arr_dates as $date) {
         if (isset($arr_sells_for_print[$date][$article]['summa'])) {
-            echo "<td class = \"fbs_sell_tovari\">{$arr_sells_for_print[$date][$article]['summa']}</td>";
+            echo "<td class = \"fbs_sell_tovari\"><b>{$arr_sells_for_print[$date][$article]['summa']}</b></td>";
             
         } else {
             echo "<td class = \"fbs_sell_tovari\"> - </td>";

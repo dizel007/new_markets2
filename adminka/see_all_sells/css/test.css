@@ -24,7 +24,7 @@
 .inventory-table td {
   padding: 3px 10px;
   border-bottom: 1px solid #e2e8f0; /* Горизонтальные линии для всех строк */
-  text-align: right;                /* числа и даты – по умолчанию вправо */
+  text-align: center;                /* числа и даты – по умолчанию вправо */
   white-space: nowrap;
 }
 
@@ -42,19 +42,29 @@
   backdrop-filter: blur(2px);
 }
 
+
+
+.inventory-table td {
+border-right: #d5d8e0 solid 1px;
+}
 /* Первый столбец (Артикул) и четвёртый (Маркет) – выравнивание влево */
 .inventory-table th:first-child,
 .inventory-table td:first-child,
 .inventory-table th:nth-child(4),
-.inventory-table td:nth-child(4) {
+.inventory-table td:nth-child(n+5) {
+  
+
   text-align: left;
 }
 
 /* Числовые столбцы: остаток, итого, даты – вправо */
+.inventory-table td:nth-child(1),
 .inventory-table td:nth-child(2),
 .inventory-table td:nth-child(3),
-.inventory-table td:nth-child(n+5) {
-  text-align: right;
+.inventory-table th:nth-child(4),
+.inventory-table td:nth-child(n+5) 
+{
+  text-align: center;
 }
 
 /* Чередование строк – мягкое, но заметное */

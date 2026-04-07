@@ -7,6 +7,7 @@ require_once $offset ."pdo_functions/pdo_functions.php";
 require_once "get_article_and_date.php"; // Форма по выбору даты и артикулов
 
 
+
 try {
     // Используйте подготовленный запрос для безопасности
         $sth = $pdo->prepare("SELECT * FROM `z_ozon_fbo_sell` WHERE `date` >= :date_start AND `date` <= :date_end");
@@ -20,10 +21,6 @@ try {
     http_response_code(500);
     echo json_encode(['error' => "Ошибка базы данных"]);
 }
-
-
-
-
 
 
 // Формруем массив проданных товаровпо датам / артикулам
@@ -42,6 +39,13 @@ foreach ($array_sell as $items) {
         $arr_dates[$items['date']] = $items['date']; // массив дат
 
         
+}
+if (!isset($arr_dates)) {
+        echo '<link rel="stylesheet" href="css/see_all_sells.css">';
+echo '<link rel="stylesheet" href="css/test.css">';
+
+        echo "Нет данных для вывода";
+        die();
 }
 // сортируем даты по возрастанию
 sort($arr_dates);

@@ -236,7 +236,7 @@ echo "<tr data-article=\"" . htmlspecialchars($item_for_print['sku']) . "\" data
 
 //  $Article_for_instruction = 'артикул-'.$temp_per_test;
 //    "<a href=\"../ozon_data_one_item/?clt=$secret_client_id&art=".$Article_for_instruction."\" target=\"_blank\">".$Article_for_instruction."</a> </td>";
- "<a href=\"../ozon_data_one_item/index_one_item.php?ozon_shop=$shop_name&art=".$item_for_print['mp_article']."\" target=\"_blank\">"
+ "<a href=\"../ozon_data_one_item/index_one_item.php?ozon_shop=$shop_name&art=".$item_for_print['mp_article']."&product_id=".$item_for_print['product_id']."\" target=\"_blank\">"
     .$item_for_print['mp_article'].
    "</a> </td>";
 
