@@ -12,7 +12,14 @@ $body_Email = json_encode($alarm_index_array, JSON_UNESCAPED_UNICODE);
 
 
 // Отправляем себе письмо
-send_many_emails('dizel007@yandex.ru', 'TradeStorm новые статьи затрат', $body_Email, $mail_for_send_letter, $mail_pass);
+
+try {
+    send_many_emails('dizel007@yandex.ru', 'TradeStorm новые статьи затрат', $body_Email, $mail_for_send_letter, $mail_pass);
+} catch (Exception $e) {
+    echo "Произошла ошибка: " . $e->getMessage();
+}
+
+
 
 
 
