@@ -36,8 +36,6 @@ elseif ($items['operation_type'] == 'OperationClaim')
 */
 elseif ($items['operation_type'] == 'PremiumMembership') 
    {
-    // echo "<br>jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj<br>";
-    // print_r($items);
 
             foreach ($our_item as $item) 
             {

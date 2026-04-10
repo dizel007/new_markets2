@@ -1,6 +1,6 @@
 <?PHP
 
-echo "<br>START TRAZBOR DANNIH<br>";
+// echo "<br>START TRAZBOR DANNIH<br>";
 // print_r($arr_type_items_WITH_POSTING_NUMBER);
 // die();
 $folder_razbor = "_parts_razbor_article";
@@ -12,7 +12,7 @@ if (isset($arr_type_items_WITH_POSTING_NUMBER['orders']))
     {
         require_once "$folder_razbor/zakazi_article.php";
     }
-echo "i_orders = $i_orders. <br>";
+// echo "i_orders = $i_orders. <br>";
 
 /**************************************************************************************************************
  **************************************  ВОЗВРАТЫ
@@ -22,7 +22,7 @@ $i_returns = 0;
 if (isset($arr_type_items_WITH_POSTING_NUMBER['returns'])) {
     require_once "$folder_razbor/vozvrati_article.php";
 }
-echo "i_returns = $i_returns. <br>";
+// echo "i_returns = $i_returns. <br>";
 
 /**************************************************************************************************************
  **************************************  Эквайринг 
@@ -31,7 +31,7 @@ $i_other = 0;
 if (isset($arr_type_items_WITH_POSTING_NUMBER['other'])) {
 require_once "$folder_razbor/ecvairing_article.php";
 }
-echo "i_other = $i_other. <br>";
+// echo "i_other = $i_other. <br>";
 
 
  /***********************  Сервисы ******************************************************
@@ -68,7 +68,7 @@ echo "i_other = $i_other. <br>";
 if (!isset($arr_article)) { echo "<br>ДАННЫХ ДЛЯ ВЫВОДА"; die();}
 
 // die();
-echo "количество элементов WORK(нужного артикула) = ". count($arr_article). "<br>";
+// echo "количество элементов WORK(нужного артикула) = ". count($arr_article). "<br>";
 
 
 // die();
@@ -80,7 +80,7 @@ echo "количество элементов WORK(нужного артикул
 // и будем формировать все расходы по каждому товару в заказе 
 //*****************************************************************************************************
 // print_r($arr_article_WORK);
-
+// echo "dddddd<br><br><br>";
 require_once "make_array_for_print.php";
 
 

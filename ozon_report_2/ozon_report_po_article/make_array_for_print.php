@@ -1,24 +1,27 @@
 <?php
-
+// echo "<pre>";
+// print_r($arr_type_find_servives);
+// die();
   
-    $arr_type_find_servives['Услуги доставки'] = array(
-                                'MarketplaceServiceItemDirectFlowLogistic' => 'Прямая логистика',
-                                'MarketplaceServiceItemReturnFlowLogistic' => 'Обратная логистика',
-                                'MarketplaceServiceItemDropoffSC' => 'Обработка отправления Drop-off',
-                                );
+//     $arr_type_find_servives['Услуги доставки'] = array(
+//                                 'MarketplaceServiceItemDirectFlowLogistic' => 'Прямая логистика',
+//                                 'MarketplaceServiceItemReturnFlowLogistic' => 'Обратная логистика',
+//                                 'MarketplaceServiceItemDropoffSC' => 'Обработка отправления Drop-off',
+//                                 'MarketplaceServiceItemDeliveryToHandoverPlaceOzon' => 'Доставка до места выдачи силами Ozon',
+//                                 );
 
 
-    $arr_type_find_servives['Услуги агентов'] = array(
-                                'MarketplaceServiceItemRedistributionLastMileCourier' => 'Доставка до места выдачи',
-                                'MarketplaceServiceItemRedistributionReturnsPVZ' => 'Обработка возвратов, отмен и невыкупов партнёрами',
-                                'MarketplaceServiceItemDelivToCustomer' => 'Выдача товара',
-                                'MarketplaceServiceItemRedistributionLastMilePVZ' => 'Выдача товара_'
-                                ) ;
+//     $arr_type_find_servives['Услуги агентов'] = array(
+//                                 'MarketplaceServiceItemRedistributionLastMileCourier' => 'Доставка до места выдачи',
+//                                 'MarketplaceServiceItemRedistributionReturnsPVZ' => 'Обработка возвратов, отмен и невыкупов партнёрами',
+//                                 'MarketplaceServiceItemDelivToCustomer' => 'Выдача товара',
+//                                 'MarketplaceServiceItemRedistributionLastMilePVZ' => 'Выдача товара_'
+//                                 ) ;
 
-  // добавляем эту трату вручную, потому что в озон она в типе операуии и в типах сервисах разные  
-  // MarketplaceReturnStorageServiceAtThePickupPointFbsItem -> OperationMarketplaceReturnStorageServiceAtThePickupPointFbs  
-    $arr_services_types['MarketplaceReturnStorageServiceAtThePickupPointFbsItem'] = 'Начисление за хранение/утилизацию возвратов';       
-    $arr_type_find_servives['сервисы'] =  $arr_services_types;
+//   // добавляем эту трату вручную, потому что в озон она в типе операуии и в типах сервисах разные  
+//    $arr_services_types['MarketplaceReturnStorageServiceAtThePickupPointFbsItem'] = 'Начисление за хранение/утилизацию возвратов';       
+
+//     $arr_type_find_servives['сервисы'] =  $arr_services_types;
      
   
 

@@ -117,23 +117,23 @@ foreach ($array_MINI as $item) {
 // echo "<pre>";
 // print_r($array_without_posting_number);
 
-echo "<br>ВСЕГО = " . count($array_MINI) . "<br>";
+// echo "<br>ВСЕГО = " . count($array_MINI) . "<br>";
 // Выводм количество элементво каждого массивы
-if (isset($array_without_posting_number)) {
-    foreach ($array_without_posting_number as $key => $temp_3) {
-        echo "Количество элементов по тратам (БЕЗ НОМЕРА ЗАКАЗА) $key = " . count($temp_3) . "<br>";
-    }
-}
+// if (isset($array_without_posting_number)) {
+    // foreach ($array_without_posting_number as $key => $temp_3) {
+        // echo "Количество элементов по тратам (БЕЗ НОМЕРА ЗАКАЗА) $key = " . count($temp_3) . "<br>";
+    // }
+// }
 // Выводм количество элементво каждого массивы
-foreach ($arr_type_items_WITH_POSTING_NUMBER as $key => $temp_3) {
-    echo "Количество элементов по тратам (С НОМЕРОМ ЗАКАЗА) $key = " . count($temp_3) . "<br>";
-}
+// foreach ($arr_type_items_WITH_POSTING_NUMBER as $key => $temp_3) {
+    // echo "Количество элементов по тратам (С НОМЕРОМ ЗАКАЗА) $key = " . count($temp_3) . "<br>";
+// }
 
 // print_r($array_without_posting_number);
 // print_r($arr_type_items_WITH_POSTING_NUMBER);
 // die();
 
-echo "****************************************** ZZZZZZZZZZZZZZZZZZZZZZZZZZZ  <br>";
+// echo "****************************************** ZZZZZZZZZZZZZZZZZZZZZZZZZZZ  <br>";
 require_once "razbor_dannih_article.php";
 
 die();
