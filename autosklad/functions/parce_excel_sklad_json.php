@@ -21,6 +21,11 @@ $quantity = 10; // значения по умолчания
 
 for ($j=0; $j<30;$j++) {
     $poisk_perem = $sheet->getCellByColumnAndRow($j,$name_string)->getValue(); // артикул
+
+        // echo "Нашли столбец с  $j номенклатурой - ".$poisk_perem."<br>";
+
+
+
     if ($poisk_perem == 'Номенклатура' ){
         $nomenklatura = $j;
         // echo "Нашли столбец с номенклатурой - ".$nomenklatura."<br>";
@@ -38,7 +43,7 @@ for ($j=0; $j<30;$j++) {
     $poisk_tovarov = $sheet->getCellByColumnAndRow(0,$str)->getValue(); // артикул
     if ($poisk_tovarov == 'Итого' ){
         $i = $str+1;
-        // echo "Нашли начало таблицы товаров - i = ".$i."<br>";
+        echo "Нашли начало таблицы товаров - i = ".$i."<br>";
         break;
      }
    
@@ -47,7 +52,8 @@ for ($j=0; $j<30;$j++) {
 // $i=14;
 
 $stop =0;
-while ($stop <> 1 ) {
+// while ($stop <> 1 ) {
+for ($i = 0;$i < 1000; $i++) {
 
     $temp_zero_cell = $sheet->getCellByColumnAndRow(0,$i)->getValue(); // артикул 
     // echo "temp_zero_cell = $temp_zero_cell<br>";
@@ -77,11 +83,12 @@ if ($temp_zero_cell == 'ЛЕРУА' ) {
     $arr_article_items[$real_article]['MP'] = $temp_qty ;
 }
 
-    if ($temp_zero_cell == ''){
-        // echo "закончили анализ EXCEL файла с остатками товаров<br>";
-        break;
-    }
-    $i++;
+    // if ($temp_zero_cell == ''){
+//    if ($temp_zero_cell == '' && $temp_name == '' && $temp_qty == '') {     
+//         // echo "закончили анализ EXCEL файла с остатками товаров<br>";
+//         break;
+//     }
+    // $i++;
 }
 
 $json_array_ozon = json_encode($arr_article_items, JSON_UNESCAPED_UNICODE);

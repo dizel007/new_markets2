@@ -9,14 +9,17 @@ $shop_name = $_POST['shop'];
 $main_article  = $_POST['existing_article'];
 $mp_article    =  $_POST['mp_article'];
 
+
+
 // проверяем может уже есть такие данные , то уходит
 try {
-$stmt = $pdo->prepare("SELECT * FROM ozon_ip_zel WHERE `main_article` = :main_article AND `mp_article` = :mp_article");
+$stmt = $pdo->prepare("SELECT * FROM `$shop_name` WHERE `main_article` = :main_article AND `mp_article` = :mp_article");
 $stmt->execute(['main_article' => $main_article,
                 'mp_article' => $mp_article]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-   
+
+  
     if (count($products) > 0 ) {
             // print_r($products);
       // echo "<br>";
@@ -64,7 +67,7 @@ if (($shop_name == 'ozon_anmaks') OR ($shop_name =='ozon_ip_zel') )
 
 elseif(($shop_name == 'wb_anmaks') OR ($shop_name =='wb_ip_zel') ) {
 
-        $date_razbora = date('Y-m-d H:m:s+0300');
+       $date_razbora = date('Y-m-d H:m:s+0300');
        $sql = "INSERT INTO `$shop_name` SET `main_article` = :main_article, 
                                              `mp_article` = :mp_article,
                                              `sku` = :sku, 
@@ -85,5 +88,6 @@ elseif(($shop_name == 'wb_anmaks') OR ($shop_name =='wb_ip_zel') ) {
 
 }
 
-
+//   print_r($products); 
+// die('yyyyyyyyyyyyyyyy');
 header ("Location: ../setup_shop_tables/start_shop_tables.php?shop_name=$shop_name");
