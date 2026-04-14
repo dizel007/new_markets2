@@ -28,8 +28,9 @@ try {
  /***********************************************************************************************
  ********************************* Проверяем нужно ли тянуть данные с сайта озона *************** 
  ***********************************************************************************************/
-// if (isset($_GET['data_from_site'])) {
-//     $data_from_site = $_GET['data_from_site'];
+ $real_date = date('Y-m-d');
+ $date_fbo = date('Y-m-d', strtotime('-2 day', strtotime($real_date)));
+if ($date_fbo < $date_end) {
 
     if ($date_start == $date_end) {
     $date_from = $date_start;    
@@ -38,20 +39,27 @@ try {
     }
     require_once "get_fbo_last_days.php";
 
-// } else {
-//     $data_from_site = "no";
-// }
-
-$i=0;
-foreach ($array_sell as &$items) {
-        $test_article = $items['1c_article'];
-            if (!in_array($test_article, $need_article, true)) {
-               unset($array_sell[$i]);
-             }
-       $i++;
 }
-// Формруем массив проданных товаровпо датам / артикулам
+
+// echo "<pre>";
+// var_dump($need_article);
+
+
 foreach ($array_sell as $items) {
+        $test_article = $items['1c_article'];
+        $test_date = $items['date'];
+            if (in_array($test_article, $need_article, true)) {
+                
+               $new_array_sell[] = $items;
+             }
+       
+}
+
+
+unset ($array_sell);
+
+// Формруем массив проданных товаровпо датам / артикулам
+foreach ($new_array_sell as $items) {
         
        $arr_sells_for_print [$items['date']][$items['1c_article']][$items['type_sklad']][$items['shop_name']][] =  $items['fbo_sell'];
  // добавляем сумму товаров артикула за один день
@@ -90,7 +98,7 @@ sort($arr_dates);
 
 
 // echo "<pre>";
-// print_r($array_sell);
+// var_dump($new_array_sell);
 // die();
 
 

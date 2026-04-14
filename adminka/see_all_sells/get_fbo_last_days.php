@@ -22,7 +22,7 @@ $arr_ip = make_array_for_print ($token_ozon_ip, $client_id_ozon_ip,$send_data);
 
 // уберем лишние артикулы 
 // echo "<pre>";
-// print_r($arr_ip);
+// var_dump($arr_ip);
 // выбирем из общего массива только то, куда мы можем вставить данные 
 
 $number_arr_sell_count = count($array_sell);
@@ -34,7 +34,7 @@ foreach ($arr_ooo as $date_fbo=>$items) {
           (@$array_sell['date'] != $date_fbo) AND 
           (@$array_sell['type_sklad'] != 'fbo')) {
             $array_sell[$number_arr_sell_count]['shop_name'] = 'ozon_anmaks';
-            $array_sell[$number_arr_sell_count]['1c_article'] = $article;
+            $array_sell[$number_arr_sell_count]['1c_article'] = (string)$article;
             $array_sell[$number_arr_sell_count]['fbo_sell'] = $item_count;
             $array_sell[$number_arr_sell_count]['date'] = $date_fbo;
             $array_sell[$number_arr_sell_count]['type_sklad'] = 'fbo';
