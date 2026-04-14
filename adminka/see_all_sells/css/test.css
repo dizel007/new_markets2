@@ -1,4 +1,7 @@
 /* styles.css – светлая таблица с горизонтальными линиями и акцентами */
+hr {
+  margin: 0;
+}
 
 /* Контейнер для горизонтальной прокрутки (для 30 дат) */
 .table-wrapper {
@@ -22,7 +25,7 @@
 /* Все ячейки – базовые отступы и границы */
 .inventory-table th,
 .inventory-table td {
-  padding: 3px 10px;
+  padding: 0px 5px;
   border-bottom: 1px solid #e2e8f0; /* Горизонтальные линии для всех строк */
   text-align: center;                /* числа и даты – по умолчанию вправо */
   white-space: nowrap;

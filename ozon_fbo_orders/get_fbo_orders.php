@@ -38,12 +38,12 @@ $send_data = array("dir"=> "ASC",
 
 // echo "<pre>";
 // print_r($send_data);
-// Получаем массив продаж и сортируем по количеству и метсу
+// Получаем массив продаж и сортируем по количеству и месту
 $arr_ooo = make_array_for_print ($token_anmaks, $client_id_anmaks,$send_data);
 $arr_article_ooo = $arr_ooo['art'];
 $arr_warehouse_ooo = $arr_ooo['warehouse'];
 
-// Получаем массив продаж и сортируем по количеству и метсу для второй организации
+// Получаем массив продаж и сортируем по количеству и месту для второй организации
 $arr_ip = make_array_for_print ($token_ip_zel, $client_id_ip_zel,$send_data);
 $arr_article_ip = $arr_ip['art'];
 $arr_warehouse_ip = $arr_ip['warehouse'];

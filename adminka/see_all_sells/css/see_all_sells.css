@@ -55,13 +55,13 @@ box-shadow: 0px 30px 50px rgba( 0, 0, 0, 0.4 );
 
 }
 
-/* .fbo_sell_tovari {
-    background: #cae67f;
-}
-
-.fbs_sell_tovari {
- background: #7c9de4; 
+ /* .fbs_sell_tovari {
+    background: #f8ffe6;
 } */
+
+ .fbo_sell_tovari {
+ background: #c4cfe4; 
+} 
 /* .sell_mp_table tr:nth-child(even) {
   background: #c9c9df;
 } */

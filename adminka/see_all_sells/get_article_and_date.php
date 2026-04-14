@@ -1,11 +1,7 @@
 <?php
 /**********************************************************************************************************
- *     ***************    Получаем массив всех транзакций
+ *     ***************    Формируем форму ввода дат 
 *********************************************************************************************************/
-
-
-
-
 
 if (!isset($_GET['date_start']) AND !isset($_GET['date_end'])) {
 
@@ -17,7 +13,7 @@ $date_end =  date('Y-m-d', $date);
 
 $date = date("Y-m-d");
 $date = strtotime($date);
-$date = strtotime("-14 day", $date);
+$date = strtotime("-7 day", $date);
 $date_start = date('Y-m-d', $date);
 // echo "<br>$date_start";
 
@@ -51,6 +47,7 @@ echo <<<HTML
 HTML;
 $check_ = "";
 
+
 if (isset($_GET['need_article'])) {
     $need_article = $_GET['need_article'];
     
@@ -58,7 +55,7 @@ if (isset($_GET['need_article'])) {
     // print_r($need_article);
 
 } else { // артикулы которые выводятся по умолчанию, если нет выбранных артикулов 
-    $need_article = array ('6210', '6211', '85400-ч');
+    $need_article = array ('6210-15', '6211-15', '85400-ч');
 }
 
 
@@ -67,7 +64,7 @@ echo "<div class=\"checkbox-flex\">";
 ///  Формируем перечень артикулов для вывода 
 foreach ($arr_all_activ_article as $art_) {
     if (!isset($_GET['need_article'])) {
-        if (($art_ == "6210") || ($art_ == "6211") || ($art_ == "85400-ч") ) {
+        if (($art_ == "6210-15") || ($art_ == "6211-15") || ($art_ == "85400-ч") ) {
             $check_ = "checked";
         } else {
             $check_ = "";
@@ -94,11 +91,15 @@ foreach ($arr_all_activ_article as $art_) {
 
 }
 echo "</div>";
+
 echo "<br>";
 echo <<<HTML
 <div class="button-container">
-  <button class="btn-center" type="submit">Применить фильтр</button>
+     <!-- <div class="checkbox-flex">
+   <label><input type="checkbox" checked name = "data_from_site" value="yes">Подтягивать данные с озона за последние дни</label>
+    </div> -->
+  <button class="btn-center" type="submit">Получить данные с БД</button>
 </div>
-<!-- <input class="btn-modern" type="submit"  value="START"> -->
+
 </form>
 HTML;

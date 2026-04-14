@@ -63,7 +63,10 @@ print_one_block ('table_element', "ozon_one_day_report/get_one_day_orders.php", 
 print_one_block ('table_element', "z_data_for_fbo_ozon/get_data_from_db.php", 'СТАТИСТИКА ФБО',
                 'Список товаров, которые были проданы за один день', 'pics/main_screen/all_sells_fbo_ozon.jpg');
 
-  
+print_one_block ('table_element_admin', "adminka/see_all_sells/get_data_from_db.php", 'Заказы (ФБО-ФБС)',
+        'Заказы по всем МП(ФБО-ФБС)', 'pics/main_screen/ozon_report_ooo.jpg');
+    
+     
 
 
 
@@ -260,8 +263,8 @@ if ($access_level >=7 ) { //*** ВИДИМ тольео админоам с ур
     
     echo "<div class=\"container\">";
     
-    print_one_block ('table_element_admin', "adminka/see_all_sells/get_data_from_db.php", 'Дневные заказы по всем МП',
-        'Дневные заказы по всем МП', 'pics/main_screen/ozon_report_ooo.jpg');
+    // print_one_block ('table_element_admin', "adminka/see_all_sells/get_data_from_db.php", 'Дневные заказы по всем МП',
+    //     'Дневные заказы по всем МП', 'pics/main_screen/ozon_report_ooo.jpg');
     
     
     //     print_one_block ('table_element_admin', "ozon_report_po_article/index_ozon_razbor_article.php", 'Обзор заказов озон ООО ',
