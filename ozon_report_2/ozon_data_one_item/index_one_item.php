@@ -83,11 +83,11 @@ $stmt->execute([
     ':claster_send' => 'Москва, МО и Дальние регионы'
 ]);
 $data_by_our_volme = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$data_by_our_volme_fbo = $data_by_our_volme;
 
-
-
-// готовим данные для таблички 
-
+/*******************************************************************************************************
+******************************  готовим данные для таблички FBS
+*******************************************************************************************************/
 $acquiring = $data['items'][0]['acquiring'];
 $sales_percent_fbs = $data['items'][0]['commissions']['sales_percent_fbs'];
 $marketing_seller_price = $data['items'][0]['price']['marketing_seller_price'];
@@ -98,19 +98,82 @@ $fbs_first_mile_max_amount = $data['items'][0]['commissions']['fbs_first_mile_ma
 // рассчетные данные
 $commissionFBS = $marketing_seller_price * $sales_percent_fbs / 100;
 $dop_sbori_krome_logistiki = $acquiring + $fbs_deliv_to_customer_amount + $fbs_first_mile_max_amount;
-
 $cost_krome_logistiki = $marketing_seller_price - $commissionFBS - $dop_sbori_krome_logistiki ;
-
 
 /// Добавляем в массив данные по затратам
 
 foreach ($data_by_our_volme as &$item_log) {
-$item_log['s_logistikoi'] = $cost_krome_logistiki - $item_log['cost_norm'];
-$item_log['profit'] = $item_log['s_logistikoi'] - $net_price;
+    $item_log['s_logistikoi'] = $cost_krome_logistiki - $item_log['cost_norm'];
+    $item_log['profit'] = $item_log['s_logistikoi'] - $net_price;
 }
 
+/*******************************************************************************************************
+******************************  готовим данные для таблички FBO
+*******************************************************************************************************/
+// временка
+$array_clasters_fbo = [
+'Оренбург' => 8,
+'Пермь'=> 8,
+'Омск' => 8,
+'Саратов' =>8,
+'Москва, МО и Дальние регионы' => 8,
+'Санкт-Петербург и СЗО' => 8,
+'Самара' => 8,
+'Ярославль' => 0,
+'Махачкала' => 8,
+'Невинномысск' => 8,
+'Красноярск' => 0,
+'Краснодар' => 8,
+'Тверь' => 8,
+'Воронеж' => 4,
+'Екатеринбург' => 8,
+'Уфа' => 8,
+'Тюмень' => 8,
+'Ростов' => 0,
+'Казань' => 8,
+'Калининград' => 8,
+'Новосибирск' => 0,
+'Дальний Восток' => 8,
+'Алматы' => 6,
+'Астана' => 6,
+'Беларусь' => 6,
+'Армения' => 0,
+'Азербайджан' => 0,
+'Грузия' => 0,
+'Кыргызстан' => 0,
+'Узбекистан' => 0,
+];
+
+// у н ас товар в Мск
+$array_clasters_fbo['Москва, МО и Дальние регионы'] = 0;
+
+$sales_percent_fbo = $data['items'][0]['commissions']['sales_percent_fbo'];
+$fbo_deliv_to_customer_amount = $data['items'][0]['commissions']['fbo_deliv_to_customer_amount'];
+// рассчетные данные
+$commissionFBO = $marketing_seller_price * $sales_percent_fbo / 100;
+$dop_sbori_krome_logistiki_fbo = $acquiring + $fbo_deliv_to_customer_amount;
+$cost_krome_logistiki_fbo = $marketing_seller_price - $commissionFBO - $dop_sbori_krome_logistiki_fbo ;
+
+
+
+foreach ($data_by_our_volme_fbo as &$item_log) {
+    $item_log['proc_k_dop_cost_k_logistike'] = $array_clasters_fbo[$item_log['claster_get']];
+    $item_log['dop_cost_k_logistike'] = $array_clasters_fbo[$item_log['claster_get']] * $marketing_seller_price/100;
+    $item_log['s_logistikoi'] = $cost_krome_logistiki_fbo - $item_log['cost_norm'] - $item_log['dop_cost_k_logistike'];
+    $item_log['profit'] = $item_log['s_logistikoi'] - $net_price;
+}
+
+
+$profits = array_column($data_by_our_volme_fbo, 'profit');
+
+// Сортируем массив по убыванию profit (сохраняя ключи)
+array_multisort($profits, SORT_ASC, $data_by_our_volme_fbo);
+
+
 //   echo "<pre>";  
-//   print_r($data_by_our_volme);
+    // print_r($data_by_our_volme);
+
+//   print_r($data_by_our_volme_fbo);
 // die();
 
 // $sql = "SELECT DISTINCT claster_send FROM ozon_logistika_price";
@@ -126,9 +189,9 @@ $item_log['profit'] = $item_log['s_logistikoi'] - $net_price;
 
 
 // echo "<pre>";
-// print_r($data_by_article);
+// print_r($data_by_our_volme_fbo);
 // die();
 
 
 
-require_once "print_fbs_table.php";
+require_once "print_fbs_fbo_table.php";
