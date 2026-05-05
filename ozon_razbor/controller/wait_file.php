@@ -54,7 +54,7 @@ $res = json_decode(file_get_contents($temp_path_all_order),true);
  ******************************************************************************************************************/
 
 $startTime = microtime(true);
-$text_otladka = $startTime." "."Уходим в файл makr_etikets "."\n";
+$text_otladka = $startTime." "."Уходим в файл makeer_etikets "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 require_once "make_etikets_for_all.php";

@@ -1,0 +1,209 @@
+/* style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 40px;
+    background: #f5f7fa;
+}
+.container {
+    max-width: 99%;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+h1, h2 {
+    color: #2c3e50;
+}
+form {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fc;
+    border-radius: 8px;
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background: #2980b9;
+}
+.error-message {
+    background: #fee;
+    color: #c0392b;
+    padding: 15px;
+    border-left: 5px solid #e74c3c;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+.file-result {
+    margin-bottom: 40px;
+    border-top: 2px solid #ecf0f1;
+    padding-top: 20px;
+}
+.file-title {
+    font-size: 1.4rem;
+    background: #ecf0f1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.sheet-info {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+.table-wrapper {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+th, td {
+    border: 1px solid #bdc3c7;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background: #34495e;
+    color: white;
+    font-weight: 600;
+}
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+.merged-info {
+    font-size: 12px;
+    color: #e67e22;
+    margin-top: 8px;
+}
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #7f8c8d;
+    font-size: 13px;
+}
+
+/* Общие стили для таблицы */
+.prod_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+/* Заголовки */
+.prod_table th {
+    background: #2c3e50;
+    color: white;
+    font-weight: 600;
+    padding: 12px 10px;
+    border: 1px solid #3e5a6b;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+/* Ячейки */
+.prod_table td {
+    border: 1px solid #ddd;
+    padding: 10px 8px;
+    text-align: right;
+    vertical-align: middle;
+    font-size: 13px;
+}
+
+/* Левая колонка (артикул) – выравнивание по левому краю */
+.prod_table td:first-child,
+.prod_table th:first-child {
+    text-align: left;
+    font-weight: 500;
+    background-color: #fafbfc;
+}
+
+/* Чётные строки – лёгкая «зебра» для удобства чтения */
+.prod_table tr:nth-child(even) {
+    background-color: #f8f9fc;
+}
+
+/* Оформление положительных сумм (доход, прибыль) */
+.prod_table td.plus {
+    color: #27ae60;
+    font-weight: 600;
+    background-color: #e9f7ef;
+}
+
+/* Оформление отрицательных сумм (убыток, переплата) */
+.prod_table td.minus {
+    color: #e74c3c;
+    font-weight: 600;
+    background-color: #fee9e8;
+}
+
+/* Дополнительно – для ячеек с числами, чтобы было моноширинно и аккуратно */
+.prod_table td {
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+}
+
+/* Горизонтальная прокрутка для маленьких экранов */
+.table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+
+/* КНОПКА СКАЧАТЬ */
+.download {
+    display: inline-block;
+    background: linear-gradient(135deg, #75ea66 0%, #419c45 100%);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.download:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #d8735a 0%, #bb3930 100%);
+}
+
+.download:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}

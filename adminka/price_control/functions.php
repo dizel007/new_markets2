@@ -179,9 +179,13 @@ function get_wb_prices($pdo, $token_wb, $shop_name)
 	// Получаем из БД каталог ВБ (для )
 	$wb_catalog = get_catalog_tovarov_v_mp($shop_name, $pdo, 'active');
 
+
+
 	// Достаем с ВБ фактические цены  
-	$link_wb = "https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter?limit=100";
+	$link_wb = "https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter?limit=1000";
 	$res = light_query_without_data($token_wb, $link_wb);
+
+
 	// Цепляем эти цены к нашему каталогу
 	foreach ($res['data']['listGoods'] as $item) {
 		foreach ($wb_catalog as &$our_item) {

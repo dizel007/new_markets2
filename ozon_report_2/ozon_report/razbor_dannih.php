@@ -249,7 +249,6 @@ if ($summa_ne_naidennih_statei != 0) {
 }
 
 
-// print_r($arr_sum_services_payment);
 // $summa_servoceov_bez_sku = array_sum($arr_sum_services_payment_with_SKU);
 
 /************************************************************************************************************ */
@@ -262,7 +261,10 @@ foreach ($arr_article as $key => $print_item) {
 }
 // Если количество  больше нуля то выводим таблицу 
 if ($sell_count_summa > 0) {
+    
     require_once "_make_data_/make_data_for_table_real_ozon.php";
+    require_once "_make_data_/make_excel_report.php";           //// созадется excel файл
+
     require_once "_print_/3_print_table_po_artikulam_ozon.php";
     require_once "_print_/4_print_rashozhdenia_table.php";
 }

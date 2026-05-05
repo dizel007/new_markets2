@@ -65,7 +65,7 @@ echo <<<HTML
 <table id="ancor_table" class="real_money fl-table">
 <thead>
 <tr>
-    <th class ="name_row">Наименование</th>
+    <th class ="name_row">Наименование </th>
     <th>SKU<br>Артикул</th>
     
     <th>К-во<br>Заказ<br>(шт)</th>
@@ -113,7 +113,7 @@ echo <<<HTML
         </div>
       
     </td>
-    <td class="numbers_th"></td>
+    <td class=""><a href="$filename_link_excel"><img src="../../pics/excel.jpg" alt="скачать Excel"></a></td>
     <td class="numbers_th">(1)<br>\xE2\x80\x8B</td>
     <td class="numbers_th">(2)<br>\xE2\x80\x8B</td>
     <td class="numbers_th">(3)=1-2<br>\xE2\x80\x8B</td>
@@ -193,6 +193,11 @@ foreach ($arr_real_ozon_data as $sku_ozon=>$item_for_print) {
 if (!isset($item_for_print['mp_article'])) {
    $item_for_print['mp_article'] = '';
 }
+if (!isset($item_for_print['product_id'])) {
+   $item_for_print['product_id'] = '';
+}
+
+
 
 // echo "<pre>";
 // print_r($item_for_print);

@@ -85,6 +85,38 @@ require_once "make_array_for_print.php";
 
 
 
+/********************************************************************************************
+ * посчитает тут среднюю прибыль от FBO b FBS заказов
+ ********************************************************************************************/
+foreach ($arr_article as $one_zakaz) {
+    if (isset ($one_zakaz['type_operation']['direct'])) {
+        $delivery_array[$one_zakaz['delivery_schema']]['count'] = @$delivery_array[$one_zakaz['delivery_schema']]['count'] + 1; 
+    } elseif (isset ($one_zakaz['type_operation']['return'])) {
+        $delivery_array[$one_zakaz['delivery_schema']]['count'] = @$delivery_array[$one_zakaz['delivery_schema']]['count'] - 1; 
+    }
+        $delivery_array[$one_zakaz['delivery_schema']]['summa'] = @$delivery_array[$one_zakaz['delivery_schema']]['summa'] + $one_zakaz['pribil']; 
+}
+
+if (isset($delivery_array['FBO'])) {
+      $delivery_array['FBO']['srednee'] = round (@$delivery_array['FBO']['summa'] /  @$delivery_array['FBO']['count'] ,0); 
+}
+if (isset($delivery_array['FBS'])) {
+      $delivery_array['FBS']['srednee'] = round (@$delivery_array['FBS']['summa'] /  @$delivery_array['FBS']['count'] ,0); 
+}
+
+echo "<pre>";
+// print_r($arr_article);
+
+print_r($delivery_array);
+
+uasort($arr_article, function($a, $b) {
+    return $a['order_date'] <=> $b['order_date'];
+});
+
+
+// die();
+
+
 ///  Выводим таблицу с дополнительными сервисами, которые не смогли привязать к заказам
 // require_once "print_article/table_services_without_postnumbers.php";
 
@@ -95,9 +127,4 @@ require_once "print_article/real_money_article.php";
 // require_once "print_article/returns_items_article.php";
 
 
-
-
-
-
 die();
-// 0153247992-0053

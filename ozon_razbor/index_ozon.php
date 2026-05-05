@@ -20,6 +20,7 @@ if ($get_shop_name == 'ozon_anmaks' ) {
  **************************************************************************************************************** */
 $now_date_razbora = date('Y-m-d');
 $date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' -15 day'));
+// $date_query_ozon = date('Y-m-d', strtotime($now_date_razbora . ' +1 day'));
 $dop_days_query = 20;
 
 echo "<h1>ПЕРВИЧНЫЙ РАЗБОР ТОВАРОВ</h1>";

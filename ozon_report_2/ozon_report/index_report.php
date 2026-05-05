@@ -6,6 +6,7 @@ require_once "../../mp_functions/ozon_api_functions.php";
 
 require_once "../../pdo_functions/pdo_functions.php";
 
+require '../../vendor/autoload.php';
 
 /**********************************************************************************************************
  *     ***************    Получаем массив всех транзакций

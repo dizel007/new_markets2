@@ -115,8 +115,7 @@ foreach ($arr_article as $key => $one_string_data) {
     // Итого на р/с
 
     echo "<td>";
-    echo "<p class= \"\" >".$one_string_data['amount_na_rs'].
-    "<hr>" .$article_sebest."</p>";
+    echo $one_string_data['amount_na_rs']."<hr>" .$article_sebest;
     echo "</td>";
 
 

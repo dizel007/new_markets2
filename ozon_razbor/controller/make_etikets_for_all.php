@@ -9,7 +9,7 @@ require_once '../../pdo_functions/pdo_functions.php'; // подключаем ф
 
 $file_name_OTLADKA = $path_excel_docs."/otladka.txt";
 $startTime = microtime(true);
-$text_otladka = $startTime." "."***************************   Зашли в файл wait_etikets.. *************************"."\n";
+$text_otladka = $startTime." "."***************************   Зашли в файл make_t_etikets.. *************************"."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 // Запись в таблицу Действия пользователя

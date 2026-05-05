@@ -184,7 +184,7 @@ function print_table_with_orders ($array_orders, $date_orders) {
 // print_r($array_orders);
 foreach ($array_orders as $items)  {
     $new_article = change_sku_for_1c_article($items['offerId']);
-    $new_array_orders[$new_article]['summa'] = round(@$new_array_orders[$new_article]['summa'] + ($items['buyerPrice'] + $items['subsidy'])*$items['count'],0);
+    $new_array_orders[$new_article]['summa'] = round(@$new_array_orders[$new_article]['summa'] + ($items['buyerPrice'] + @$items['subsidy'])*$items['count'],0);
     $new_array_orders[$new_article]['count'] = @$new_array_orders[$new_article]['count'] + $items['count'];
     $new_array_orders[$new_article]['offerName'] = $items['offerName'];
     $new_array_orders[$new_article]['buyerPrice'] =  round($new_array_orders[$new_article]['summa'] /  $new_array_orders[$new_article]['count'],0); 
@@ -350,7 +350,7 @@ function make_array_sell_items_for_1c ($array_mass_orders) {
     foreach ($array_mass_orders as $key=>$items) {
         // print_r($items);
         foreach ($items['data'] as $prods) {
-                $sell_tovari[$prods['offerId']]['price'] =  @$sell_tovari[$prods['offerId']]['price'] + ($prods['price'] + $prods['subsidy'])*$prods['count'];
+                $sell_tovari[$prods['offerId']]['price'] =  @$sell_tovari[$prods['offerId']]['price'] + ($prods['price'] + @$prods['subsidy'])*$prods['count'];
                 $sell_tovari[$prods['offerId']]['count'] =  @$sell_tovari[$prods['offerId']]['count'] + $prods['count'];
         }
     }  

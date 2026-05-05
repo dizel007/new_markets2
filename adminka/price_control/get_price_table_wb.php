@@ -24,8 +24,6 @@ if ($_GET['shop_name'] == 'wb_ip_zel') {
 $sklads = select_info_about_sklads($pdo); // ОБщая Информация по складам
 // Названия магазинов
 $wb_catalog = get_wb_prices($pdo, $token_wb, $wb_shop);
-// echo "<pre>";
-// print_r($wb_catalog[20]);
 
 
 foreach ($wb_catalog as &$item) {

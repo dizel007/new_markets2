@@ -1,0 +1,257 @@
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #eef3ec;
+            margin: 0;
+            padding: 24px 20px;
+            color: #1e2a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 800px;
+        }
+
+        .product-table thead tr {
+            background: #2c5e3f;
+            color: white;
+        }
+
+        .product-table th, .product-table td {
+            padding: 2px 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee6df;
+            vertical-align: middle;
+        }
+
+        .product-table th {
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .product-table tbody tr:hover {
+            background-color: #f8fbf5;
+        }
+
+        /* Стили для индекса и артикула */
+        .index-cell {
+            font-weight: 600;
+            color: #2c3e2f;
+            text-align: center;
+            width: 60px;
+        }
+
+        .article-cell {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-weight: 500;
+            color: #1f543a;
+            background: #f0f7ef;
+            border-radius: 20px;
+            white-space: nowrap;
+            padding: 6px 12px;
+            display: inline-block;
+        }
+
+        .name-cell {
+            line-height: 1.4;
+            word-break: break-word;
+            min-width: 240px;
+        }
+
+        .qty-stock-cell {
+            text-align: center;
+            font-weight: 700;
+            background: #f9fdf8;
+            width: 85px;
+        }
+
+        /* Новые колонки (справа) */
+        .new-qty-cell {
+            min-width: 140px;
+        }
+
+        .new-qty-input {
+            width: 70px;
+            padding: 2px 6px;
+            border-radius: 20px;
+            border: 1.5px solid #cbdcd0;
+            text-align: center;
+            font-weight: 500;
+            font-family: monospace;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .number_order_label {
+            margin-left: 80px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-weight: 900;
+            font-size: 20px;
+            color: #1506e0;
+            /* background: #c9cadf; */
+            border-radius: 20px;
+            white-space: nowrap;
+            padding: 10px 12px;
+            display: inline-block;   
+        }
+.number_order {
+            width: 150px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+            border: 1.5px solid #1506e0;
+            text-align: center;
+            font-weight: 900;
+            font-family: monospace;
+            font-size: 20px;
+            transition: 0.2s;
+
+}
+        .new-qty-input:focus {
+            border-color: #2c5e3f;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(44, 94, 63, 0.2);
+        }
+
+        .new-qty-input.invalid {
+            border-color: #dc3545;
+            background-color: #fff5f5;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+            width: 60px;
+        }
+
+        .row-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2c5e3f;
+            transform: scale(1.05);
+        }
+
+        /* Сообщения и кнопки */
+        .message-area {
+            padding: 16px 24px;
+            background: #fefcf5;
+            border-bottom: 1px solid #e2eadc;
+        }
+
+        .alert {
+            padding: 12px 18px;
+            border-radius: 40px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .alert-error {
+            background: #ffe6e5;
+            color: #b12e2e;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-success {
+            background: #e0f3e3;
+            color: #1d6f2c;
+            border-left: 4px solid #28a745;
+        }
+
+        .action-bar {
+            padding: 20px 24px;
+            background: white;
+            border-top: 1px solid #e2eadc;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #ecf3ef;
+            color: #1f422f;
+        }
+
+        .btn-primary {
+            background: #2c5e3f;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary:hover {
+            background: #1f4d33;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #c2d3c2;
+        }
+
+        .btn-outline:hover {
+            background: #eef3ea;
+            border-color: #8fbc8f;
+        }
+
+        .select-all-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            background: #f3f8f1;
+            padding: 5px 12px;
+            border-radius: 40px;
+        }
+
+        #selectAllCheckbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #ffb347;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 16px 12px;
+            }
+            .new-qty-input {
+                width: 85px;
+                font-size: 0.8rem;
+            }
+            .btn {
+                padding: 8px 16px;
+            }
+        }

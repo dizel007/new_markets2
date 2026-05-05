@@ -1,18 +1,25 @@
 <?php
+/**
+ *   суть работы такая же как и make_all_zakaz.php 
+ *   только здесь мы получаем не все отправления а только выбранное количество
+ *  (один артикул  или часть товаров одного артикула)
+ *  
+ */
+
 
 require_once '../../connect_db.php';
 require_once '../include_funcs.php';
 require_once 'make_1c_file.php';
 
 
-$ozon_shop = $_GET['ozon_shop'];
-if ($_GET['ozon_shop'] == 'ozon_anmaks') {
+$ozon_shop = $_POST['ozon_shop'];
+if ($_POST['ozon_shop'] == 'ozon_anmaks') {
        $token_ozon = $token_ozon;
        $client_id_ozon = $client_id_ozon;
  
    }
        
-elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
+elseif ($_POST['ozon_shop'] == 'ozon_ip_zel') {
     //    echo "<br>Выбран магазин ИП Зел<br>";
        $token_ozon =  $token_ozon_ip;
        $client_id_ozon =  $client_id_ozon_ip;
@@ -21,11 +28,12 @@ elseif ($_GET['ozon_shop'] == 'ozon_ip_zel') {
  }
 
 
-$number_order = $_GET['number_order'];
-$now_date_razbora = $_GET['now_date_razbora'];
-$date_query_ozon = $_GET['date_query_ozon'];
-$dop_days_query = $_GET['dop_days_query'];
+$number_order = $_POST['number_order'];
+$now_date_razbora = $_POST['now_date_razbora'];
+$date_query_ozon = $_POST['date_query_ozon'];
+$dop_days_query = $_POST['dop_days_query'];
 
+echo $now_date_razbora;
 
 
 
@@ -50,6 +58,23 @@ make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 // вычитываем все Заказы в состоянии ОЖИДАЮТ ОТГУЗКИ *******************************************
 $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging", $dop_days_query);
 
+/***
+ * Тут уже нужно порезать лишние заказы 
+ */
+die();
+   
+echo "<pre>";
+print_r($_POST);
+
+print_r($arr_for_zakaz);
+
+
+die('<br> * * * * * * *  make_parts_zakaz.php  * * * * * * * ** * <br>');
+
+
+
+
+
 // сохраняем JSON всех заказов 
 $string_json_all_order = json_encode($res, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";
@@ -73,6 +98,13 @@ $i=0;
 
     $i++;
    }
+
+
+
+
+
+
+
 
 if (!isset($arr_for_zakaz)) {
     echo "<br><h2> Нет массива данных на дату <b>[".$date_query_ozon."]</b> в состоянии <b>[ОЖИДАЮТ СБОРКИ]</b> DIE </h2><br>";
@@ -121,12 +153,12 @@ $link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$ozon_shop.
 
 
 
-echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
+// echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
 
 
  echo <<<HTML
  <br><br>
- <a href="$link_for_make_etikets_for_all" target="_blank">Аварийный переход на формирование этикеток</a>
+ <!-- <a href="$link_for_make_etikets_for_all" target="_blank">Аварийный переход на формирование этикеток</a> -->
  <br><br>
  HTML;
 

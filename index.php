@@ -99,8 +99,7 @@ print_one_block ('table_element_razbor', "yandex_razbor/index_yandex.php", 'Yand
 print_one_block ('table_element_razbor', "leroy/", 'LEROY Анмакс',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_leroy.jpg');
 
-print_one_block ('table_element_razbor', "vse_instrumenti/start.php", 'Все ИНСТР',
-'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/vse_instrumrnti.jpg');
+
 
 
 
@@ -148,6 +147,14 @@ echo "<div class=\"container\"><div class = \"zagolovok\">XML отчет</div></
 echo "<div class=\"container\">";
     print_one_block ('table_element', "wb_make_xml/take_data_wb.php", 'XML WB',
     'Формирование УПД файла в формате XML на ВБ ООО', 'pics/main_screen/xml.jpg');
+
+
+    print_one_block ('table_element_razbor', "vse_instrumenti/start.php", 'Все ИНСТР',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/vse_instrumrnti.jpg');
+
+    print_one_block ('table_element_razbor', "darvin/index__.php", 'Дарвин',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/darvin.jpg');
+
 
  print_one_block ('table_element', "ozon_parse_xml/ozon_start_xml_parse.php", 'XML OZON',
     'Формирование Excel файла для 1С отчета', 'pics/main_screen/xml.jpg');
