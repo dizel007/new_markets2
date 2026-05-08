@@ -6,6 +6,25 @@ use Com\Tecnick\Barcode\Barcode;
 
 
  $folder = "temp_darvin_pdf";
+ $folder_2 = "temp_archive_zip";
+
+ $files = glob($folder_2 . '/*'); // также можно использовать '/*.*'
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file);
+    }
+}
+
+
+ // Получаем список только файлов (исключая . и ..)
+$files = glob($folder . '/*'); // также можно использовать '/*.*'
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file);
+    }
+}
+
+
 $data_for_shtrihCode = razbor_all_tranzactions_yandex($uploadedData);
 
 
@@ -69,7 +88,8 @@ $text_1 = ($i+1)." DARVIN";
 
 ///////////////////////////////////////////////////////////////
 // После создания всех PDF-файлов и перед zip:
-$zipFileName = "temp_archive_zip/darvin_blya.zip";
+$zipFileName = "temp_archive_zip/darvin_blya(".rand(0,20000).").zip";
+@unlink($zipFileName);
 
 // Удаляем все PDF из папки temp_darvin/
     array_map('unlink', glob($folder . '*.pdf'));
