@@ -61,6 +61,11 @@ foreach ($res['result']['postings'] as $old_order) {
   }
 }
 
+
+// echo "<pre>";
+// print_r( $new_res);
+
+
 $startTime = microtime(true);
 $text_otladka = $startTime." "."Начинаем формировать файл для 1с и лист подбора "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
@@ -267,7 +272,7 @@ echo <<<HTML
         <h1>Выберите действие</h1>
         <div class="button-container">
             <a href="$link_path_zip2" class="btn btn-primary">скачать архив со стикерамии листом подбора</a>
-            <a href="../dop_ozon_etikets.php?date_razbora=$now_date_razbora&number_order=$number_order" class="btn btn-secondary">
+            <a href="../merge_pdf_files_etikets.php?date_razbora=$now_date_razbora&number_order=$number_order" class="btn btn-secondary">
                 ОБЪЕДЕНИТЬ !!!</a>
         </div>
         <br><br><br>

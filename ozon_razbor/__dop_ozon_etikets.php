@@ -4,7 +4,7 @@ require_once '../vendor/autoload.php';
 require_once '../libs/PDFMerger/PDFMerger.php';
 require_once '../pdo_functions/pdo_functions.php';
 require_once 'function_for_merge_pdf.php';
-require_once 'fake_sizes.php'; // массив с левыми габаритами 
+// require_once 'fake_sizes.php'; // массив с левыми габаритами 
 
 // error_reporting(E_ERROR | E_PARSE | E_NOTICE);
 

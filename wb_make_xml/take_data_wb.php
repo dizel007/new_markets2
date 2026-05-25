@@ -339,7 +339,8 @@ echo <<<HTML
 
 HTML;
 
-// print_r($arr_key_barcode);
+echo "<pre>";
+print_r($arr_key_barcode);
 
     foreach ($ARR_all_data as $key=>$item){
      echo "<tr>";

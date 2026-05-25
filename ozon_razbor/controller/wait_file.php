@@ -57,4 +57,7 @@ $startTime = microtime(true);
 $text_otladka = $startTime." "."Уходим в файл makeer_etikets "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
+
+
+
 require_once "make_etikets_for_all.php";
