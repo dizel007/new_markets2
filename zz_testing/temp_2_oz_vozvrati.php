@@ -28,7 +28,7 @@ $ozon_dop_url = "v1/returns/list";
 $send_data = array(
     "filter"=>array(
             "logistic_return_date" =>  array(
-            "time_from"  => "2026-04-01T14:15:22Z",
+            "time_from"  => "2026-05-01T14:15:22Z",
             "time_to"    => "2026-05-31T14:15:22Z"
 ),
 ),
