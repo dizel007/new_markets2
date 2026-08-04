@@ -140,7 +140,7 @@ $prod_array = json_decode(file_get_contents($file_name_ozon) ,true);
 
 // echo "<pre>";
 // print_r ($prod_array);
-
+// die();
 require_once "razbor_dannih.php";
 
 die();

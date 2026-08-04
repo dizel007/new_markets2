@@ -53,9 +53,15 @@ elseif ($items['operation_type'] == 'PremiumMembership')
             // $arr_article[$new_sku]['procent_za_premiumPro'] = @$arr_article[$new_sku]['procent_za_premiumPro'] + $items['amount'];
    }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Страхование товаров
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+elseif ($items['operation_type'] == 'InsuranceServiceSellerItem') 
+        {
+            $arr_sum_services_payment[$items['operation_type_name']] = @$arr_sum_services_payment[$items['operation_type_name']] + $items['amount'];
+        }
 
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 else {
         $arr_nerazjbrannoe['ecvairing'][]=$items;
     }
