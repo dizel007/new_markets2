@@ -141,6 +141,11 @@ $prod_array = json_decode(file_get_contents($file_name_ozon) ,true);
 // echo "<pre>";
 // print_r ($prod_array);
 // die();
+
+echo "<pre>";
+print_R($prod_array);
+
+
 require_once "razbor_dannih.php";
 
 die();
@@ -197,6 +202,9 @@ for ($i=1; $i <=$page_count; $i ++) {
 if (isset($prod_array)) {return  $prod_array;}
 else {return false;}
 }
+
+
+
 
 
 /*****************************************************************************************************************

@@ -64,21 +64,21 @@ HTML;
 if (isset($date_query_ozon)) {
     if ($date_query_ozon <> '') {
         // получаем массив всех отправления на эту дату
-        $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
+        $ArrayOrders = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 
 
         // Из полученного массива формируем массив данных,$array_art   для создания Заказа в 1С.
         $kolvo_tovarov = 0;
         $summa_tovarov = 0;
 
-        foreach ($res['result']['postings'] as $posts) {
+        foreach ($ArrayOrders as $posts) {
             foreach ($posts['products'] as $prods) {
                 $array_art[$prods['offer_id']] = @$array_art[$prods['offer_id']] + $prods['quantity'];
                 $kolvo_tovarov = $kolvo_tovarov + $prods['quantity'];
-                $summa_tovarov = $summa_tovarov + $prods['price'] * $prods['quantity'];
+                $summa_tovarov = $summa_tovarov + $prods['price']['amount'] * $prods['quantity'];
                 //    echo $prods['price']."<br>";
                 $array_art_price[$prods['offer_id']] = array(
-                    "price"    => $prods['price'],
+                    "price"    => $prods['price']['amount'],
                     "quantity" => $array_art[$prods['offer_id']],
                     "name"    => $prods['name']
                 );
@@ -93,7 +93,7 @@ if (isset($date_query_ozon)) {
             echo "<h3>Количество  товаров : $kolvo_tovarov шт. </h3>";
             //  Выводим таблицу с Заказами
             echo "<h2>Перечень заказов</h2>";
-            make_spisok_sendings_ozon($res['result']['postings']);
+            make_spisok_sendings_ozon($ArrayOrders);
             // Ссылка для запуска сбора всех заказов
             $link = "controller/make_etikets_for_all_dopX_2.php";
 

@@ -27,7 +27,7 @@ echo "<h1>ПЕРВИЧНЫЙ РАЗБОР ТОВАРОВ</h1>";
 // ****************************************************************************************************************
 // Запрашиваем данные по отправлениям за несколько дней
 // ****************************************************************************************************************
-   $ArrayOrders = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging" , $dop_days_query);
+   $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging" , $dop_days_query);
 
 // Из полученного массива формируем массив данных,$array_art   для создания Заказа в 1С.
 $kolvo_tovarov = 0;
@@ -35,24 +35,23 @@ $summa_tovarov = 0;
 
 
 // echo "<pre>";
-// print_r($ArrayOrders);
-// die();
+// print_r($res);
 
-   foreach ($ArrayOrders as $posts) {
-      // print_r($posts);
-      // echo "<br>****************************************";
+
+   foreach ($res['result']['postings'] as $posts) {
+
       foreach ($posts['products'] as $prods) 
         {
            $array_art[$prods['offer_id']]= @$array_art[$prods['offer_id']] + $prods['quantity'];
            $kolvo_tovarov = $kolvo_tovarov + $prods['quantity'];
-           $summa_tovarov= $summa_tovarov + $prods['price']['amount'] * $prods['quantity'];
+           $summa_tovarov= $summa_tovarov + $prods['price'] * $prods['quantity'];
         //    echo $prods['price']."<br>";
-          $array_art_price[$prods['offer_id']] = array("price"    => $prods['price']['amount'],
+          $array_art_price[$prods['offer_id']] = array("price"    => $prods['price'],
                                                        "quantity" => $array_art[$prods['offer_id']],
                                                         "name"    => $prods['name']);
         }
  }
-// die();
+
 // echo "<pre>";
 // print_r($array_art_price);
 
@@ -62,15 +61,13 @@ $summa_tovarov = 0;
 
  if (isset($array_art_price)){
        echo "<h2>Сумма купленных товаров : $summa_tovarov руб. </h2>";
-      echo "<h3>Количество  товаров : $kolvo_tovarov шт. </h3>";
        echo "<h2>Список купленных товаров</h2>";
-      
-    
+
         make_spisok_sendings_ozon_1С ($array_art_price);
 
    //  Выводим таблицу с Заказами
         echo "<h2>Перечень заказов</h2>";
-        make_spisok_sendings_ozon ($ArrayOrders);
+        make_spisok_sendings_ozon ($res['result']['postings']);
    // Ссылка для запуска сбора всех заказов
         $link ="controller/make_all_zakaz.php";
 

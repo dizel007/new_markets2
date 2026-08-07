@@ -76,7 +76,7 @@ function make_array_for_1c_file($res) {
             $array_art[$artick_temp2] = @$array_art[$artick_temp2] + $prods['quantity'];
             $kolvo_tovarov = $kolvo_tovarov + $prods['quantity'];
          //    echo $prods['price']."<br>";
-           $array_art_price[$artick_temp2] = array("price"    => $prods['price'],
+           $array_art_price[$artick_temp2] = array("price"    => $prods['price']['amount'],
                                                    "quantity" => $array_art[$artick_temp2],
                                                    "name"     => $prods['name']);
         
@@ -103,7 +103,7 @@ function make_array_for_list_podbora($res) {
                                'offer_id' =>$prods['offer_id'],
                                'sku' =>$prods['sku'],
                                'name' =>$prods['name'],
-                               'price' => round($prods['price'],2)
+                               'price' => round($prods['price']['amount'],2)
 
 
             );

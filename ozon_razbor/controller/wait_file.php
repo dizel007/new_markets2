@@ -46,7 +46,7 @@ file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
  ******  Берем данные из ДЖЕСОН файла
  ******************************************************************************************************************/
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";
-$res = json_decode(file_get_contents($temp_path_all_order),true);
+$ArrayOrders = json_decode(file_get_contents($temp_path_all_order),true);
 
 
 /*****************************************************************************************************************

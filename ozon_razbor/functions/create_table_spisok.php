@@ -25,7 +25,7 @@
     </tr>";
     $i=1;
     foreach ($new_array_create_sends as $item) {
-    //  print_r($item);
+   //   print_r($item);
     $count_td = count($item['products']);
     $j1=0;
     echo "<tr>";
@@ -45,7 +45,7 @@
         echo "<td>".$prods['offer_id']."</td>";
         echo "<td>".$prods['name']."</td>";
         echo "<td>".$prods['quantity']."</td>";
-        echo "<td>".number_format($prods['price'],2)."</td>";
+        echo "<td>".number_format($prods['price']['amount'],2)."</td>";
         if ($j1 >1) {
             echo "</tr>"; 
          }

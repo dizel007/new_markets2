@@ -26,12 +26,83 @@ function send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url ) 
 
 }
 
-/* * ********
+
+
+
+
+/* *****************************************************************************************************
 Выводим список заказов ОЗОН на определенную дату 
 РАБОЧАЯ ВЕРСИЯ 
-*** ожидает упаковки ****
-*** */
+******************************************************************************************************** */
+
 function get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
+    // awaiting_packaging - заказы ожидают сборку
+    // awaiting_deliver   - заказы ожидают отгрузку 
+// echo "<br>";
+// echo $token."<br>";
+// echo $client_id."<br>";
+// echo $date_query_ozon."<br>";
+// $send_status = 'awaiting_deliver';
+$temp_dop_day = "+".$dop_days_query.' day';
+$date_query_ozon_end = date('Y-m-d', strtotime($temp_dop_day, strtotime($date_query_ozon)));
+
+                        
+// echo "<br>";
+
+
+$send_data_array=  array(
+    "sort_dir" => "ASC",
+    "filter" => array(
+            "cutoff_from" => $date_query_ozon."T00:00:00Z",
+            "cutoff_to" =>   $date_query_ozon_end."T23:59:59Z",
+            "delivery_method_id" => [ ],
+             "statuses" => [$send_status],
+            "provider_id" => [ ],
+            "warehouse_id" => [ ]
+    ),
+   
+    "limit" => 100,
+    "cursor" => '',
+    "offset" => 0,
+    "translit" => false,
+    "with" => array(
+            "analytics_data"  => true,
+            "barcodes"  => true,
+            "financial_data" => true,
+            "legal_info" => true
+    )
+    );
+
+$send_data = json_encode($send_data_array, JSON_UNESCAPED_UNICODE)  ;  
+
+
+$ozon_dop_url = "v4/posting/fbs/unfulfilled/list";
+
+
+// запустили запрос на озона
+do {
+    
+    $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
+    $summ_data[]=$res['postings']; // положили первый массив и смотрим нужно ли еще искать
+    $send_data_array['cursor'] = $res['cursor'];
+    $send_data = json_encode($send_data_array, JSON_UNESCAPED_UNICODE)  ;  
+} while ($res['has_next']);
+
+// делаем сплошной массив с заказами
+foreach ($summ_data as $oneQueryData) {
+    foreach ($oneQueryData as $oneData) {
+        $ArrayOrders[]=$oneData;
+    }
+}
+
+// echo "<pre>";
+// print_r($ArrayOrders);
+// die();
+return $ArrayOrders;
+}
+
+
+function get_all_waiting_posts_for_need_date_old($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
     // awaiting_packaging - заказы ожидают сборку
     // awaiting_deliver   - заказы ожидают отгрузку 
 // echo "<br>";
@@ -74,6 +145,9 @@ $ozon_dop_url = "v3/posting/fbs/unfulfilled/list";
 
 // запустили запрос на озона
 $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
+
+
+// die('ccccccccccccccccccc');
 return $res;
 }
 

@@ -18,16 +18,26 @@ insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order�
 // трата на формирование этикеток
 sleep(4);
 
+
+
+
 $startTime = microtime(true);
 $text_otladka = $startTime." "."Получаем данные по заказам awaiting_deliver "."\n";
 file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 // Получаем списoк заказов готовых к отправлению ()
 // ***********************************************************************************************************************************
-$res_repeat = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
+$ArrayOrders_repeat = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
+
+
+// echo "<pre>";
+// print_r($ArrayOrders_repeat);
+
+// die();
+
 
 // сохраняем JSON всех заказов 
-$string_json_all_order = json_encode($res_repeat, JSON_UNESCAPED_UNICODE);
+$string_json_all_order = json_encode($ArrayOrders_repeat, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_repeat_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
 
@@ -40,8 +50,8 @@ file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 
 $arr_reapeat_numbers[]=''; // массив куда добавляем номера записанных в новый массив заказов, чтобы избежать дублирования заказов
 /// выбираем из всей пачки только те заказы, которые мы запросили ранее
-foreach ($res['result']['postings'] as $old_order) {
-  foreach ($res_repeat['result']['postings'] as $new_order) {
+foreach ($ArrayOrders as $old_order) {
+  foreach ($ArrayOrders_repeat as $new_order) {
     $priz_reapeat = 0;
       if ($old_order['order_number'] == $new_order['order_number']) {
         // проверяем нет ли уже этого отправлния яв новом массиве
