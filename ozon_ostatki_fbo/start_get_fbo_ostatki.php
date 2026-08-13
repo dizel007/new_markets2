@@ -36,6 +36,7 @@ $result_array_ooo = post_with_data_ozon($token_ozon, $client_id_ozon, $json_data
 // print_r($result_array_ooo);
 
 // Формируем массивы для вывода данных на экран
+if (isset($result_array_ooo['items'] )) {
 foreach ($result_array_ooo['items'] as $item ){
     if ($item['available_stock_count'] > 5) {
   $arr_ostatok_fbo_ooo[mb_strtolower($item['offer_id'])][$item['warehouse_name']] = $item['available_stock_count'];
@@ -51,7 +52,9 @@ asort($arr_sort_ar_ooo);
 
 echo "<h1> Остатики ФБО на озон ООО</h1>";
 print_fbo_ostatki_table ($arr_sort_ar_ooo, $arr_ostatok_fbo_ooo, $arr_count_in_city_ooo);
-
+} else {
+echo "<h1> OZON не вернул остатики ФБО по ООО</h1>";
+}
 
 
 
@@ -60,7 +63,7 @@ print_fbo_ostatki_table ($arr_sort_ar_ooo, $arr_ostatok_fbo_ooo, $arr_count_in_c
 /********************************
  * ПОЛУЧАЕМ остатки ФБО ИП
  ****************************/
-
+sleep(1);
 // озон ИП зел
     $client_id_ozon_ip = $arr_tokens['ozon_ip_zel']['id_market'];
     $token_ozon_ip = $arr_tokens['ozon_ip_zel']['token'];

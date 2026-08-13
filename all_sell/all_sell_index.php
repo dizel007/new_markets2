@@ -29,6 +29,7 @@ $arr_need_ostatok = get_min_ostatok_tovarov($pdo); // массив с утвер
 // $arr_all_nomenklatura = select_all_nomenklaturu($pdo);
 $arr_all_nomenklatura = select_active_nomenklaturu($pdo);
 
+// echo "<ore>";
 // print_r($arr_all_nomenklatura);
 
 
@@ -118,8 +119,9 @@ die('');
 function add_sells_in_sum_array ($mp_catalog) {
    foreach ($mp_catalog as $select_shop) {
     if (isset( $select_shop['sell_count'])){
-        $sell_arr[mb_strtolower($select_shop['main_article'])] = @$sell_arr[mb_strtolower($select_shop['main_article'])] +  $select_shop['sell_count'];
+        $sell_arr[mb_strtolower($select_shop['main_article'])] = @$sell_arr[mb_strtolower($select_shop['main_article'])] + $select_shop['sell_count'];
     }
 } 
-return $sell_arr;
+
+return $sell_arr ?? false;
 }

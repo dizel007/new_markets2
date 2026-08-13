@@ -48,10 +48,10 @@ $path_zip_archives = $new_path.'zip_archives';
 make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 
 // вычитываем все Заказы в состоянии ОЖИДАЮТ ОТГУЗКИ *******************************************
-$$ArrayOrders = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging", $dop_days_query);
+$ArrayOrders = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_packaging", $dop_days_query);
 
 // сохраняем JSON всех заказов 
-$string_json_all_order = json_encode($$ArrayOrders, JSON_UNESCAPED_UNICODE);
+$string_json_all_order = json_encode($ArrayOrders, JSON_UNESCAPED_UNICODE);
 $temp_path_all_order = $path_excel_docs."/json_all_order.json";
 file_put_contents($temp_path_all_order, $string_json_all_order);
 

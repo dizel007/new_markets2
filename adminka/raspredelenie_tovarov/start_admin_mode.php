@@ -44,7 +44,9 @@ array_multisort(array_column($tovar_table_data, 'number_in_spisok'), SORT_ASC, $
 
 
 echo <<<HTML
- <link rel="stylesheet" href="css/main_table.css">
+ <link rel="stylesheet" href="css/raspredelenie_tovarov.css">
+<h1>Распределения остатоков товаров по магазинам </h1>
+
 HTML;
 
 echo "<form action=\"update_new_ostatki.php\" method=\"post\">";
@@ -69,7 +71,13 @@ foreach ($tovar_table_data as $item) {
 // Проверяем сумму процентов распределния товаров во всех магазинах
         $summa100procentov = $item['wb_anmaks'] +$item['wb_ip_zel'] +$item['ozon_anmaks']+$item['ozon_ip_zel']+$item['ya_anmaks_fbs'];
 // если больше 100% то подкрашиваем цветмо
-       ($summa100procentov > 100)? $bolshe100 = 'bolshe100': $bolshe100 = '' ;
+       if ($summa100procentov > 100) { 
+        $bolshe100 = 'bolshe100';
+       } elseif ($summa100procentov < 100 ){
+        $bolshe100 = 'menshe100';
+       } else {
+        $bolshe100 = 'rovno100' ;
+       }
 
         
         echo "<tr class=\"rovnay_table  $bolshe100 \">";

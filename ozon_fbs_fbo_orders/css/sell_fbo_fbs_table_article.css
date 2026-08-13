@@ -1,0 +1,166 @@
+/* Общие стили */
+body {
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #f5f6fa;
+  margin: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  text-align: center ;
+}
+
+
+/* ---------- Таблица продаж ---------- */
+.sell_mp_table {
+  width: 90%;
+  /* max-width: 1200px; */
+  margin: 0 auto 40px;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  font-size: 14px;
+  border: 1px solid #131416;
+}
+
+/* Заголовок */
+.sell_mp_table thead tr {
+  background: #005bff;
+  color: #ffffff;
+}
+
+.sell_mp_table thead th {
+  padding: 14px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sell_mp_table thead th:last-child {
+  border-right: none;
+}
+
+/* Ячейки */
+.sell_mp_table td {
+  padding: 5px 8px;
+  text-align: center;
+  border-bottom: 1px solid #17191d6c;
+  font-weight: 500;
+  color: #1f2a3a;
+  background: #ffffff;
+  transition: background 0.15s ease;
+}
+
+/* Чередование строк */
+.sell_mp_table tbody tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+.sell_mp_table tbody tr:hover td {
+  background: #c5667ebd; /* ваш цвет, теперь работает для всех столбцов */
+}
+
+
+/* Для заголовков итоговых колонок оставляем синий фон */
+.sell_mp_table thead th:nth-last-child(2),
+.sell_mp_table thead th:nth-last-child(1) {
+  background: #005bff !important; /* только для заголовков, чтобы сохранить синий */
+  border-left: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Итоговая строка (tfoot) */
+.sell_mp_table tfoot tr {
+  background: #f0f3f8;
+  border-top: 2px solid #005bff;
+}
+
+.sell_mp_table tfoot td {
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 8px;
+  background: #f0f3f8;
+  color: #1f2a3a;
+}
+
+.sell_mp_table tfoot td:first-child {
+  text-align: right;
+  padding-right: 20px;
+}
+
+/* Спецклассы для выделения колонок (если используются) */
+.red_windows {
+  background: #005bff !important;
+}
+
+.blue_windows {
+  background: #1a73e8 !important;
+}
+
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 768px) {
+  .sell_mp_table,
+  .town_mp_table {
+    font-size: 12px;
+    width: 100%;
+  }
+  .sell_mp_table thead th,
+  .sell_mp_table td,
+  .town_mp_table thead th,
+  .town_mp_table td {
+    padding: 6px 4px;
+  }
+  form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+  form label {
+    margin-right: 0;
+  }
+  form input[type="date"] {
+    width: 100%;
+  }
+  form input[type="submit"] {
+    width: 100%;
+    margin-left: 0; /* на мобильных кнопка на всю ширину */
+  }
+}
+
+
+/* Статусные цвета для строк */
+.status-cancelled {
+  background-color: #fde8e8 !important; /* светло-красный */
+}
+.status-cancelled td {
+  background-color: #fde8e8 !important;
+}
+
+.status-delivered {
+  background-color: #e6f7e6 !important; /* светло-зелёный */
+}
+.status-delivered td {
+  background-color: #e6f7e6 !important;
+}
+
+.status-delivering {
+  background-color: #fff8e6 !important; /* светло-жёлтый */
+}
+.status-delivering td {
+  background-color: #fff8e6 !important;
+}
+
+/* Чтобы сохранить эффект ховера (если нужен), можно добавить */
+.sell_mp_table tbody tr.status-cancelled:hover td {
+  background: #fccccc !important;
+}
+.sell_mp_table tbody tr.status-delivered:hover td {
+  background: #c8e6c8 !important;
+}
+.sell_mp_table tbody tr.status-delivering:hover td {
+  background: #f5e6b0 !important;
+}

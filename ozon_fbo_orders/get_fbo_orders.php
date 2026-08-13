@@ -73,8 +73,8 @@ foreach ($arr_poriadkovii_number as $key=>$z) {
 
 // Сортировка по возрастанию с сохранением ключей
 asort($arr_sort_ar);
-asort($arr_sort_ar_ooo);
-asort($arr_sort_ar_ip);
+// asort($arr_sort_ar_ooo);
+// asort($arr_sort_ar_ip);
 
 
 // вставляем таблицу всех продаж на выбранном озоне

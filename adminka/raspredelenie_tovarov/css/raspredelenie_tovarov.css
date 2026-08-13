@@ -1,0 +1,155 @@
+/* Общий сброс и шрифты */
+body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+}
+/* Центрируем таблицу */
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* чтобы было по вертикали не вплотную */
+}
+
+/* Таблица в стиле Ozon */
+.prods_table {
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  font-size: 14px;
+  width: auto;
+  min-width: 700px;
+  margin: 0 auto;
+}
+
+.prods_table td,
+.prods_table th {
+  padding: 2px 12px;
+  border-bottom: 1px solid #e9ecef;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Заголовок (шапка) */
+.rovnay_table_shapka {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #1c1c1c;
+  border-bottom: 2px solid #dee2e6;
+}
+.rovnay_table_shapka td {
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  padding: 14px 10px;
+}
+
+/* Строки таблицы */
+.rovnay_table {
+  background: #ffffff;
+  transition: background 0.2s;
+}
+.rovnay_table:nth-child(even) {
+  background: #fafafa;
+}
+.rovnay_table:hover {
+  background: #b4cde2;
+}
+
+/* Поля ввода (остатки) */
+.future_ostatok {
+  width: 60px;
+  padding: 2px 4px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  background-color: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.future_ostatok:focus {
+  outline: none;
+  border-color: #ff6b00; /* акцент Ozon */
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+}
+.future_ostatok:hover {
+  border-color: #a0c5d6;
+}
+
+/* Чекбокс "Блок" */
+.rovnay_table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff6b00;
+  cursor: pointer;
+}
+
+/* Кнопка "ОБНОВИТЬ ДАННЫЕ" – в стиле Ozon */
+.btn {
+  display: block;
+  margin: 30px auto 0;
+  padding: 12px 40px;
+  background: #ff6b00;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
+}
+.btn:hover {
+  background: #e55e00;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+.btn:focus-visible {
+  outline: 2px solid #ff6b00;
+  outline-offset: 2px;
+}
+
+/* Специальные классы для подсветки */
+.bolshe100 {
+  background-color: #ecb1b1 !important;
+}
+.bolshe100 td {
+  color: #cc0000;
+  font-weight: 600;
+}
+
+/* Специальные классы для подсветки */
+.rovno100 {
+  background-color: #bff8c9 !important;
+}
+.rovno100 td {
+  color: #050505;
+  
+}
+/* Специальные классы для подсветки */
+.menshe100 {
+  background-color: #fdfde1 !important;
+}
+.menshe100 td {
+  color: #050505;
+  
+}
+
+
+/* Убираем стрелки в input[type=number] (оставляем как было) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

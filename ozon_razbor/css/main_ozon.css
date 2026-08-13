@@ -23,6 +23,7 @@
 /* Таблица для 1С закза*/
 .prod_table_2 {
 	width: 80%;
+	align-items: center;
 	margin-bottom: 20px;
 	border: 1px solid #000000;
 	border-collapse: collapse; 
@@ -36,10 +37,10 @@
 }
 
 .prod_table_2 tr:nth-child(odd){
-	background: #e9e8c5;
+	background: #e9dcc5;
 }
 .prod_table_2 tr:nth-child(even){
-	background: #9dee9d;
+	background: #9deeea;
 }
 
 

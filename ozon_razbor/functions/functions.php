@@ -102,7 +102,7 @@ return $ArrayOrders;
 }
 
 
-function get_all_waiting_posts_for_need_date_old($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
+function _DELETE__get_all_waiting_posts_for_need_date_old($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
     // awaiting_packaging - заказы ожидают сборку
     // awaiting_deliver   - заказы ожидают отгрузку 
 // echo "<br>";
