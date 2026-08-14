@@ -1,3 +1,4 @@
+
 /* Общие стили */
 body {
   font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -7,14 +8,14 @@ body {
 }
 
 h1 {
-  text-align: center ;
+  text-align: center;
 }
 
 /* ---------- Стили для формы ---------- */
 form {
-  max-width: 800px;
+  max-width: 900px;          /* чуть шире, чтобы всё помещалось */
   margin: 0 auto 30px;
-  padding: 25px 30px;
+  padding: 20px 25px;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
@@ -22,7 +23,7 @@ form {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px 20px;
+  gap: 10px 15px;
   border: 1px solid #e9edf2;
 }
 
@@ -30,10 +31,13 @@ form label {
   font-weight: 500;
   font-size: 14px;
   color: #1f2a3a;
-  margin-right: 4px;
+  margin-right: 2px;
+  flex-shrink: 0;
 }
 
-form input[type="date"] {
+/* Единый стиль для полей ввода (дата) и выпадающего списка */
+form input[type="date"],
+form select {
   padding: 8px 12px;
   border: 1px solid #d0d5dd;
   border-radius: 8px;
@@ -43,14 +47,17 @@ form input[type="date"] {
   color: #1f2a3a;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
-  flex: 0 0 auto;
+  flex: 0 1 auto;            /* разрешаем сжатие, если не хватает места */
+  min-width: 120px;          /* минимальная ширина для читаемости */
 }
 
-form input[type="date"]:focus {
+form input[type="date"]:focus,
+form select:focus {
   border-color: #005bff;
   box-shadow: 0 0 0 3px rgba(0, 91, 255, 0.15);
 }
 
+/* Кнопка */
 form input[type="submit"] {
   background: #005bff;
   color: #ffffff;
@@ -63,8 +70,8 @@ form input[type="submit"] {
   transition: background 0.2s, transform 0.1s;
   letter-spacing: 0.3px;
   box-shadow: 0 2px 6px rgba(0, 91, 255, 0.3);
-  margin-left: auto;   /* ← кнопка справа */
-  flex-shrink: 0;
+  margin-left: auto;          /* прижимаем к правому краю */
+  flex-shrink: 0;             /* кнопка не сжимается */
 }
 
 form input[type="submit"]:hover {
@@ -76,7 +83,37 @@ form input[type="submit"]:active {
   transform: translateY(0);
 }
 
-/* ---------- Таблица продаж ---------- */
+/* Для очень широких экранов – всё в одну строку без переноса */
+@media (min-width: 992px) {
+  form {
+    flex-wrap: nowrap;
+  }
+}
+
+/* Адаптив для мобильных – элементы переносятся и растягиваются */
+@media (max-width: 768px) {
+  form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    max-width: 100%;
+  }
+  form label {
+    margin-right: 0;
+  }
+  form input[type="date"],
+  form select {
+    width: 100%;
+    flex: 1 1 auto;
+    min-width: unset;
+  }
+  form input[type="submit"] {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* ---------- Остальные стили (таблица) без изменений ---------- */
 .sell_mp_table {
   width: 90%;
   max-width: 1200px;
@@ -90,7 +127,6 @@ form input[type="submit"]:active {
   border: 1px solid #131416;
 }
 
-/* Заголовок */
 .sell_mp_table thead tr {
   background: #005bff;
   color: #ffffff;
@@ -109,7 +145,6 @@ form input[type="submit"]:active {
   border-right: none;
 }
 
-/* Ячейки */
 .sell_mp_table td {
   padding: 5px 8px;
   text-align: center;
@@ -120,33 +155,29 @@ form input[type="submit"]:active {
   transition: background 0.15s ease;
 }
 
-/* Чередование строк */
 .sell_mp_table tbody tr:nth-child(even) td {
   background: #fafbfc;
 }
 
 .sell_mp_table tbody tr:hover td {
-  background: #c5667ebd; /* ваш цвет, теперь работает для всех столбцов */
+  background: #c5667ebd;
 }
 
-/* ===== ВЫДЕЛЕНИЕ ПОСЛЕДНИХ ДВУХ КОЛОНОК (ИТОГОВЫЕ) ===== */
 .sell_mp_table td:nth-last-child(2),
 .sell_mp_table td:nth-last-child(1),
 .sell_mp_table th:nth-last-child(2),
 .sell_mp_table th:nth-last-child(1) {
-  background: #e6f7e6; /* убрал !important, теперь hover работает */
+  background: #e6f7e6;
   font-weight: 600;
   border-left: 1px solid #b8d9b8;
 }
 
-/* Для заголовков итоговых колонок оставляем синий фон */
 .sell_mp_table thead th:nth-last-child(2),
 .sell_mp_table thead th:nth-last-child(1) {
-  background: #005bff !important; /* только для заголовков, чтобы сохранить синий */
-  border-left: 1px solid rgba(255,255,255,0.15);
+  background: #005bff !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Итоговая строка (tfoot) */
 .sell_mp_table tfoot tr {
   background: #f0f3f8;
   border-top: 2px solid #005bff;
@@ -165,7 +196,6 @@ form input[type="submit"]:active {
   padding-right: 20px;
 }
 
-/* Спецклассы для выделения колонок (если используются) */
 .red_windows {
   background: #005bff !important;
 }
@@ -175,32 +205,45 @@ form input[type="submit"]:active {
 }
 
 
-/* Адаптив для маленьких экранов */
-@media (max-width: 768px) {
-  .sell_mp_table,
-  .town_mp_table {
-    font-size: 12px;
-    width: 100%;
-  }
-  .sell_mp_table thead th,
-  .sell_mp_table td,
-  .town_mp_table thead th,
-  .town_mp_table td {
-    padding: 6px 4px;
-  }
-  form {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 20px;
-  }
-  form label {
-    margin-right: 0;
-  }
-  form input[type="date"] {
-    width: 100%;
-  }
-  form input[type="submit"] {
-    width: 100%;
-    margin-left: 0; /* на мобильных кнопка на всю ширину */
-  }
+
+
+
+
+.w90 {
+  width: 100% ;
+  max-width: 1600px;
 }
+
+/* Статусные цвета для строк */
+.status-cancelled {
+  background-color: #fde8e8 !important; /* светло-красный */
+}
+.status-cancelled td {
+  background-color: #fde8e8 !important;
+}
+
+.status-delivered {
+  background-color: #e6f7e6 !important; /* светло-зелёный */
+}
+.status-delivered td {
+  background-color: #e6f7e6 !important;
+}
+
+.status-delivering {
+  background-color: #fff8e6 !important; /* светло-жёлтый */
+}
+.status-delivering td {
+  background-color: #fff8e6 !important;
+}
+
+/* Чтобы сохранить эффект ховера (если нужен), можно добавить */
+.sell_mp_table tbody tr.status-cancelled:hover td {
+  background: #fccccc !important;
+}
+.sell_mp_table tbody tr.status-delivered:hover td {
+  background: #c8e6c8 !important;
+}
+.sell_mp_table tbody tr.status-delivering:hover td {
+  background: #f5e6b0 !important;
+}
+

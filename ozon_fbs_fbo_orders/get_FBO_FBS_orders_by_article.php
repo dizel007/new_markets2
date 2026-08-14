@@ -118,8 +118,10 @@ usort($array_for_print, function($a, $b) {
 
 ?>
 
-<link rel="stylesheet" href="css/sell_fbo_fbs_table_article.css">
-<table class="sell_mp_table">
+<!-- <link rel="stylesheet" href="css/sell_fbo_fbs_table_article.css"> -->
+<link rel="stylesheet" href="css/sell_fbo_fbs_table.css">
+
+<table class="sell_mp_table w90">
   <thead>
     <tr>
        <th>пп</th>

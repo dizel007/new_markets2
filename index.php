@@ -57,8 +57,8 @@ print_one_block ('table_element', "all_sell/all_sell_index.php", 'ПРОДАЖИ
 print_one_block ('table_element', "ozon_fbo_orders/get_fbo_orders.php", 'ПРОДАЖИ FBO озон',
                 'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells_fbo_ozon.jpg');
 
-print_one_block ('table_element', "ozon_one_day_report/get_one_day_orders.php", 'ПРОДАЖИ ЗА ДЕНЬ',
-                'Список товаров, которые были проданы за день ', 'pics/main_screen/one_day_sell.jpg');
+print_one_block ('table_element', "ozon_fbs_fbo_orders/getFboFbsOrders.php", 'Заказы ФБС/ФБО',
+                'Список заказов, за выбранный промежуток времени ', 'pics/main_screen/fbo_fbs_orders_100.png');
 
 print_one_block ('table_element', "z_data_for_fbo_ozon/get_data_from_db.php", 'СТАТИСТИКА ФБО',
                 'Список товаров, которые были проданы за один день', 'pics/main_screen/all_sells_fbo_ozon.jpg');
