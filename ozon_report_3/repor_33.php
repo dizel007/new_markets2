@@ -173,6 +173,7 @@ foreach ($data as $orderId => $items) {
         $item['order_id']    = $orderId;
         $item['shipment_id'] = $shipmentId;
         $item['is_return']   = array_key_exists('_return_', $item);
+        $item['is_ino']      = array_key_exists('ino', $item); // ключ 'ino' из index_one_article.php
         $rows[] = $item;
     }
 }
@@ -366,8 +367,24 @@ $cssExists = is_file($cssFile);
                 </tr>
             <?php else: ?>
                 <?php foreach ($rows as $i => $r): ?>
-                    <?php $isReturn = !empty($r['is_return']); ?>
-                    <tr class="<?= $isReturn ? 'return' : '' ?>">
+                    <?php
+                        $isReturn = !empty($r['is_return']);
+                        $isIno    = !empty($r['is_ino']);
+
+                        /* Приоритет: возврат > ино.
+                           Если строка одновременно return и ino — считаем её возвратом. */
+                        if ($isReturn) {
+                            $rowClass = 'return';
+                            $statuses = ['Возврат'];
+                        } elseif ($isIno) {
+                            $rowClass = 'ino';
+                            $statuses = ['Иностр'];
+                        } else {
+                            $rowClass = '';
+                            $statuses = [];
+                        }
+                    ?>
+                    <tr class="<?= $rowClass ?>">
 
                         <?php if ($showRowNumber): ?>
                             <td class="text"><?= $i + 1 ?></td>
@@ -386,7 +403,7 @@ $cssExists = is_file($cssFile);
 
                         <?php if ($showStatus): ?>
                             <td class="text status<?= $statusHide ? ' hide-' . $statusHide : '' ?>">
-                                <?= $isReturn ? 'Возврат' : '—' ?>
+                                <?= $statuses ? implode(' / ', $statuses) : '—' ?>
                             </td>
                         <?php endif; ?>
                     </tr>

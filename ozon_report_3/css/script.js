@@ -18,7 +18,7 @@ document.getElementById('dateForm').addEventListener('submit', function(e) {
         
         let message = `Период может быть не более 31 дня. Выбранный период: ${diffDays} дней`;
     
-        if (diffDays > 61) {
+        if (diffDays > 31) {
             alert(message);
             return;
          }

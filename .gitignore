@@ -11,6 +11,8 @@ vendor/
 autosklad/uploads
 alarm_message/
 
+ozon_report_3/_cache/
+
 
 # OZON
 ozon_razbor/reports/

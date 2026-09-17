@@ -43,16 +43,23 @@ if ($shop_name == 'ozon_anmaks') {
 $arr_article_products = get_sebestoimost_tovarov($token, $client_id);
 //****************************************************************************************************** 
 //****************************************************************************************************** 
-// echo "<pre>";
-// print_r($arr_article_products );
 
-
+//****************************************************************************************************** 
+// ВЫчитываем основные продажи
+//****************************************************************************************************** 
 $file_name_ozon = '_cache/' . $client_id . "_main_data" . ".json";
 $data_by_days = json_decode(file_get_contents($file_name_ozon), true);
 
+//****************************************************************************************************** 
+// ВЫчитываем иностранные  продажи
+//****************************************************************************************************** 
+$file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
+$ino_prodazhi = json_decode(file_get_contents($file_name_ozon_inostran_prodazhi), true);
 
 
+//****************************************************************************************************** 
 /// Разбиваем массив по категориям расходов ///////////////////////////////
+//****************************************************************************************************** 
 foreach ($data_by_days as $one_data) {
     $category[$one_data['accrued_category']] = $one_data['accrued_category'];
     if (isset($one_data['accrued_category'])) {
@@ -61,7 +68,10 @@ foreach ($data_by_days as $one_data) {
         $arr_other[] = $one_data;  // или любой другой массив
     }
 }
-////////////////////////////////////////////////////////////////////
+
+//****************************************************************************************************** 
+// Если есть категории какие то то сообщим об этом 
+//****************************************************************************************************** 
 if (isset($arr_other)) {
     echo "<br>НАйден массив без категории<br>";
 }
@@ -70,15 +80,13 @@ if (isset($arr_other)) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // берем из JSON файла статьи всех расходов с ID и названием и описанием 
 // https://api-seller.ozon.ru/v1/finance/accrual/types  
-// полученные через этот метод 
+// полученные через этот метод  (Он хренова работает поэтому данные сохраниили )
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 $type_fees = json_decode(file_get_contents('types_spend.json'), true);
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 $sku_ozon = $_GET['sku_ozon'];
 
-
-// echo "<pre>";
 //==========================================================================================================
 //  Разбираем массив POSTING
 //==========================================================================================================
@@ -89,14 +97,9 @@ $arr_posting_orders = razbor_POSTING_by_posting_numbers($arr_posting_orders, $ar
 //==========================================================================================================
 [$arr_posting_orders, $summa_unset_for_orders] = razbor_NON_ITEM_by_posting_numbers($arr_posting_orders, $arr_by_accrued_category['NON_ITEM'], $type_fees, $sku_ozon);
 
-
-
 //==========================================================================================================
 //  Разбираем массив ITEM 
 //==========================================================================================================
-
-// echo "<pre>";
-
 [$arr_posting_orders, $arr_item_orders] = razbor_ITEM_by_posting_numbers($arr_posting_orders, $arr_by_accrued_category['ITEM'], $type_fees, $sku_ozon);
 
 // $arr_item_orders  - массив без СКУ и номеров заказа
@@ -109,8 +112,6 @@ foreach ($arr_item_orders[$sku_ozon] as $key => $amount_arr) {
 }
 unset($arr_item_orders[$sku_ozon]);
 
-// echo "summa_nerazobrannogo_iz_massiva_ITEM = ".$summa_nerazobrannogo_iz_massiva_ITEM;
-// die();
 //==========================================================================================================
 
 $Arr[$sku_ozon] = $arr_posting_orders[$sku_ozon];
@@ -139,7 +140,7 @@ $summa_non_item_dlia_sku = $summa_non_item_bez_viborki_po_postingam * $porc_koto
 // print_R($Arr[$sku_ozon]);
 foreach ($Arr[$sku_ozon] as $g) {
     foreach ($g as $posting_number => $d) {
-        $j[$posting_number] = $posting_number;
+        @$j[$posting_number] = $posting_number;
     }
 }
 $count_posting  = count($j);
@@ -217,10 +218,36 @@ foreach ($Arr as $sku => &$item_order) {
  if (isset($posting['_return_'])) {
    $posting['sebestoimost'] = 0; 
  } 
+
+
+//  echo "<br> ************* $post **************";
+//================================================================================================
+//                            Добавляем иностанные продажи 
+//================================================================================================
+
+foreach ($ino_prodazhi['products'] as $jh=>&$ino_items ) {
+    if (($ino_items['posting_number'] == $post)) {
+        @$posting['seller_price'] += $ino_items['amount'];
+        @$posting['article']  = $posting['article'].'(ino)';
+        @$posting['ino']  = '_ino_';
+        unset ($ino_prodazhi['products'][$jh]); // удаляем то ч 
+    }
+
+}
+
+//================================================================================================
+//                            Считаем прибыль на Р/С 
+//================================================================================================
+
      $posting['pribil'] =  @$posting['deneg_na_rs'] +
-                                  @$posting['dop_rashod'] - 
-                                  @$posting['sebestoimost']; 
- 
+                           @$posting['dop_rashod'] - 
+                           @$posting['sebestoimost']; 
+// если иностранные продажи и ЮЛ продажи, то добавляем сумму из отчета по иностранным продажам 
+    if (isset($posting['ino'])) {
+        @$posting['pribil'] += $posting['seller_price'];
+     }
+
+
 
             foreach ($posting as $key_posting => $summa_dop_log) {
                 $ggg[$key_posting] = $key_posting;
@@ -232,10 +259,11 @@ foreach ($Arr as $sku => &$item_order) {
 
 
 
-
-
 $data = $Arr[$sku_ozon];
 
+// echo "<pre>";
+// print_r($ino_prodazhi['products']);
+// print_r($data );
 
 // die();
 

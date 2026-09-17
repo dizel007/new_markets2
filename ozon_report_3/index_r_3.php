@@ -18,8 +18,6 @@ require_once "function_report_3/get_sebestoimost.php";
 
 $shop_name = $_GET['ozon_shop'];
 
-
-
 // $shop_name = 'ozon_ip_zel';
 
 if ($shop_name == 'ozon_anmaks') {
@@ -33,7 +31,7 @@ if ($shop_name == 'ozon_anmaks') {
 }
 
 /**********************************************************************************************************
- *     *************** Получаем список товаров с себестоимсотью 
+ *     *************** Получаем список товаров с себестоимсотью
  *       [article] => 82401-з
          [product_id] => 875165455
          [sebestoimost] => 350
@@ -41,12 +39,8 @@ if ($shop_name == 'ozon_anmaks') {
          [name] => Пластиковый садовый бордюр Кантри зеленый, длина 10 м, высота 110 мм
  *********************************************************************************************************/
 $arr_article_products = get_sebestoimost_tovarov($token, $client_id);
-//****************************************************************************************************** 
-//****************************************************************************************************** 
-// echo "<pre>";
-// print_r($arr_article_products );
-
-// die();
+//******************************************************************************************************
+//******************************************************************************************************
 
 $priznak_date = 1;
 // Настраиваем дату начала отпроса
@@ -68,7 +62,7 @@ if (isset($_GET['dateTo'])) {
     $date_to = date('Y-m-d');
 }
 
-// Настраиваем тип сортировки если он есть 
+// Настраиваем тип сортировки если он есть
 if (isset($_GET['type_sort'])) {
     $type_sort = base64_decode(($_GET['type_sort']));
 } else {
@@ -76,7 +70,7 @@ if (isset($_GET['type_sort'])) {
 }
 
 $queryString  =  "ozon_shop=" . $shop_name . "&dateFrom=" . $date_from . "&dateTo=" . $date_to;
-// ."&type_sort=".$type_sort;
+
 //// Отрисовываем форму вводы ДАТ
 echo <<<HTML
 
@@ -86,13 +80,12 @@ echo <<<HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/form_dates.css">
     <title>OZON - аналитика</title>
-    
 </head>
 <body>
     <div class="table-container">
     <div class="form-container">
         <form id="dateForm" method="get">
-   
+
             <div class="form-content">
                 <div class="date-fields">
                     <div class="date-group">
@@ -103,56 +96,44 @@ echo <<<HTML
                         <label for="endDate" class="date-label">Конечная дата</label>
                         <input type="date" id="endDate" class="date-input" value="$date_to" required>
                   </div>
-           
                 </div>
-                
+
                  <div class="date-group">
                         <button type="submit" class="submit-btn">Запросить данные</button>
                  </div>
              </div>
-            <input hidden type="text" id = "ozon_shop" value="$shop_name">
-              
-          
+            <input hidden type="text" id="ozon_shop" value="$shop_name">
 
         </form>
        </div>
     </div>
+
  <script src="css/script.js" type="text/javascript"></script>
 
 HTML;
-
-
 
 if (!isset($_GET['dateFrom'], $_GET['dateTo'])) {
     die();
 }
 
-
-
-
-$file_name_ozon_mainSell = '_cache/'.$client_id . "_main_data" . ".json";
-
-get_data_sell_in_mainSEll ($token, $client_id, $date_from, $date_to, $file_name_ozon_mainSell);
-
-
-/// 
-$file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
-$ino_prodazhi = get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, $file_name_ozon_inostran_prodazhi);
-
-// echo "<pre>";
-// print_r($ino_prodazhi);
-
 /******************************************************************************
- * КОНЕЦ  ***************   ЗАПРОС ДАННЫХ С ОЗОНА (ВСЕ ДАТЫ)
+ *  ЗАПРОС ДАННЫХ С ОЗОНА (ВСЕ ДАТЫ)
  ******************************************************************************/
 
-// echo "<pre>";
-// print_r($data_by_days);
+$file_name_ozon_mainSell = '_cache/'.$client_id . "_main_data" . ".json";
+get_data_sell_in_mainSEll ($token, $client_id, $date_from, $date_to, $file_name_ozon_mainSell);
 
-$file_name_ozon = '_cache/'.$client_id . "_main_data" . ".json";
-$data_by_days = json_decode(file_get_contents($file_name_ozon), true);
+$data_by_days = json_decode(file_get_contents($file_name_ozon_mainSell), true);
 
+//====================================================
+//  Запрос инстранных товаров
+//====================================================
+$file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
+$arr_sell_v_strani_EAES = get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, $file_name_ozon_inostran_prodazhi);
 
+/******************************************************************************
+ * КОНЕЦ запроса данных с озона (ВСЕ ДАТЫ)
+ ******************************************************************************/
 
  /// Разбиваем массив по категориям расходов ///////////////////////////////
 foreach ($data_by_days as $one_data) {
@@ -168,22 +149,11 @@ if (isset($arr_other)) {
     echo "<br>НАйден массив без категории<br>";
 }
 
-
-// 04398351-0221
-// echo "<pre>";
-// print_r($category);
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// берем из JSON файла статьи всех расходов с ID и названием и описанием 
-// https://api-seller.ozon.ru/v1/finance/accrual/types  
-// полученные через этот метод 
+// берем из JSON файла статьи всех расходов с ID и названием и описанием
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 $type_fees = json_decode(file_get_contents('types_spend.json'), true);
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //  Разбираем массив по категориям затрат
@@ -199,30 +169,29 @@ foreach ($sum_array as $item_sum) {
    }
 }
 
-
-
-// echo "<pre>";
-// print_r($sum_array);
-
-// die();
+//===============================================================================================
+// цепляем иностарнные продажи *************************
+//===============================================================================================
+$ino_summa = 0;
+foreach ($arr_sell_v_strani_EAES['products'] as $ino_sku=>$ino_tovar) {
+    foreach ($sum_array as $sku=>&$tovar) {
+        if ($ino_sku == $sku) {
+            $tovar['ino_prodazhi'] = $ino_tovar['amount'];
+            $ino_summa += $ino_tovar['amount'];
+            break 1;
+        }
+    }
+}
 
 $sum_array_to_redakt = $sum_array;
+
+
 require_once "function_report_3/print_sku_table.php";
-
-
-
-// print_r( $sum_array_to_redakt);
-
-// print_r($sum_array);
-
-
 
 die();
 
-
-
 /*****************************************************************************************************************
- * Функция получения данных о продажах товаров в страны ЕАЭС 
+ * Функция получения данных о продажах товаров (ежедневные начисления)
  *****************************************************************************************************************/
 function get_data_sell_in_mainSEll ($token, $client_id, $date_from, $date_to, $file_name_ozon_mainSell) {
 
@@ -231,7 +200,6 @@ $last_id = '';
 
 $current = strtotime($date_from);
 $end_ts  = strtotime($date_to);
-
 
 while ($current <= $end_ts) {
     $query_date = date('Y-m-d', $current);
@@ -247,27 +215,18 @@ while ($current <= $end_ts) {
         foreach ($data_by_day_temp['accruals'] as $t_data) {
             $data_by_days[] = $t_data;
         }
-        // echo "<br>$last_id<br>";
-
     } while ($last_id  <> '');
     $current = strtotime('+1 day', $current);
 }
 
-
 // сырые данные складываем в файл
-
 $json_types = json_encode($data_by_days, JSON_UNESCAPED_UNICODE);
 file_put_contents($file_name_ozon_mainSell, $json_types);
 }
 
-
-
-
-
 /*****************************************************************************************************************
- * Функция получения данных о продажах товаров в страны ЕАЭС 
+ * Функция получения данных о продажах товаров в страны ЕАЭС
  *****************************************************************************************************************/
-
 function get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, $file_name_ozon_inostran_prodazhi)
 {
     $ozon_dop_url = "v1/finance/products/buyout";
@@ -277,12 +236,6 @@ function get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, 
             "date_to": "' . $date_to . '"
             }';
     $arr_sell_v_strani_EAES = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url);
-
-
-//     echo "<pre>";
-// print_r($arr_sell_v_strani_EAES);
-
-
 
     if (isset($arr_sell_v_strani_EAES)) {
            file_put_contents($file_name_ozon_inostran_prodazhi,json_encode($arr_sell_v_strani_EAES, JSON_UNESCAPED_UNICODE));
@@ -304,5 +257,5 @@ $summa_prodazh = 0;
 
     unset ($arr_sell_v_strani_EAES);
 
-    return [$new_arr_sell_v_strani_EAES, $arr_sell_v_strani_EAES['products']];
+    return $new_arr_sell_v_strani_EAES;
 }

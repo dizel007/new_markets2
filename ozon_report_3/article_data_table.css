@@ -120,6 +120,14 @@ tbody tr:hover td {
     background: #f0f6ff !important;
 }
 
+/* Иностранные продажи — жёлтая подсветка.
+   ВАЖНО: правило .ino идёт ПЕРЕД .return, чтобы при одновременном
+   наличии _return_ и ino побеждал красный (возврат). */
+tbody tr.ino td {
+    background: #fff9e0 !important;
+}
+
+/* Возврат — красная подсветка (перекрывает ino, т.к. идёт позже) */
 tbody tr.return td {
     background: #ffe5e5 !important;
 }
@@ -143,6 +151,13 @@ tbody tr.return td {
     border-bottom-color: #0045cc;
 }
 
+/* Ино — ссылка золотистая */
+tbody tr.ino .shipment-link {
+    color: #8b7500;
+    border-bottom-color: rgba(139, 117, 0, .4);
+}
+
+/* Возврат — ссылка тёмно-красная (перекрывает ino) */
 tbody tr.return .shipment-link {
     color: #8b0000;
     border-bottom-color: rgba(139, 0, 0, .4);
@@ -152,6 +167,9 @@ tbody tr.return .shipment-link {
 td.status {
     font-weight: 600;
     color: #888;
+}
+tbody tr.ino td.status {
+    color: #b8860b;
 }
 tbody tr.return td.status {
     color: #c00;

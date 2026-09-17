@@ -4,9 +4,10 @@
 // print_r($arr_real_ozon_data);
 // die();
 
-/**
- * Достаёт значение из массива и удаляет ключ.
- */
+//==========================================================
+//     Достаёт значение из массива и удаляет ключ.
+//==========================================================
+
 if (!function_exists('getUnitNumber')) {
     function getUnitNumber(array &$array, string $key = 'unit_number')
     {
@@ -19,10 +20,10 @@ if (!function_exists('getUnitNumber')) {
     }
 }
 
-/**
+/**********************************************************************************************
  * Оборачивает число в <span> с классом positive / negative в зависимости от знака.
  * Без разделителей разрядов — для количеств (шт).
- */
+ *************************************************************************************************/
 if (!function_exists('colorNum')) {
     function colorNum($value)
     {
@@ -39,11 +40,12 @@ if (!function_exists('colorNum')) {
     }
 }
 
-/**
+/**********************************************************************************************
  * Форматирует денежную сумму: разделитель разрядов — пробел,
  * целые без копеек, дробные — 2 знака после запятой.
  * Оборачивает в <span> по знаку.
- */
+ *************************************************************************************************/
+
 if (!function_exists('moneyNum')) {
     function moneyNum($value)
     {
@@ -105,6 +107,7 @@ echo <<<HTML
   <th class="sortable" data-sort="no-sku" data-order="none" title="Кликните для сортировки">доп.услуги<br>(руб) <span class="sort-icon">↕</span></th>
 <!-- Цена за вычетом всего где есть артикул -->
     <th class="sortable" data-sort="viplata" data-order="none" title="Кликните для сортировки">Выплаты<br>(руб) <span class="sort-icon">↕</span></th>
+    <th class="sortable" data-sort="ino_prodazhi" data-order="none" title="Кликните для сортировки">Ино_продажи<br>(руб) <span class="sort-icon">↕</span></th>
     <th class="sortable" data-sort="sebestoimost" data-order="none" title="Кликните для сортировки">Себестсть<br>(руб) <span class="sort-icon">↕</span></th>
     <th class="sortable" data-sort="profit" data-order="none" title="Кликните для сортировки">Прибыль<br>(руб) <span class="sort-icon">↕</span></th>
     
@@ -114,7 +117,7 @@ HTML;
 
 echo "<tbody id=\"filterable-table-body\">";
 
-$url_encoded = 'ssss';
+$url_encoded = '#';
 
 // Денежные суммы
 $sum_seller_price                    = 0;
@@ -125,6 +128,7 @@ $sum_equairing                       = 0;
 $sum_service                         = 0;
 $sum_no_sku_trati_raschet            = 0;
 $sum_viplata_na_rs                   = 0;
+$sum_ino_prodazh                     = 0;
 $sum_article_sebestoimost            = 0;
 $sum_pribil                          = 0;
 
@@ -208,6 +212,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
                   + getUnitNumber($item_for_print, "Обратная логистика")
                   + getUnitNumber($item_for_print, "Доставка до места выдачи силами Ozon");
     $equairing    = getUnitNumber($item_for_print, "Эквайринг");
+    $ino_prodazhi  = getUnitNumber($item_for_print, "ino_prodazhi");
 
     // Считаем всё, что осталось из отчёта (СЕРВИСЫ)
     $service = 0;
@@ -227,7 +232,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
 
     $article_sebestoimost = $sebestoimost * $count_for_raschet;
 
-    $pribil = round($viplata_na_rs - $article_sebestoimost, 2);
+    $pribil = round($viplata_na_rs - $article_sebestoimost + $ino_prodazhi, 2);
 
     if ($count_for_raschet > 0) {
         $sthuka_pribil = round($pribil / $count_for_raschet, 2);
@@ -246,6 +251,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     $sum_price_without_comm_and_logist += $price_without_comm_and_logist;
     $sum_no_sku_trati_raschet          += $summa_raspredelenia_no_sku_trat;
     $sum_viplata_na_rs                 += $viplata_na_rs;
+    $sum_ino_prodazh                   += $ino_prodazhi;
     $sum_article_sebestoimost          += $article_sebestoimost;
     $sum_pribil                        += $pribil;
 
@@ -273,6 +279,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
         . " data-price-without=\"" . (float)$price_without_comm_and_logist . "\""
         . " data-no-sku=\"" . (float)$summa_raspredelenia_no_sku_trat . "\""
         . " data-viplata=\"" . (float)$viplata_na_rs . "\""
+        . " data-ino_prodazhi=\"" . (float)$ino_prodazhi . "\""
         . " data-sebestoimost=\"" . (float)$article_sebestoimost . "\""
         . " data-profit=\"" . (float)$pribil . "\""
         . " data-search=\"" . $search_blob_safe . "\""
@@ -324,6 +331,10 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     // Цена за вычетом всех расходов
     echo "<td>" . moneyNum($viplata_na_rs) . "</td>";
 
+
+    // Выплаты по иностранным продажам
+    echo "<td>" . moneyNum($ino_prodazhi) . "</td>";
+
     // Себестоимость: цена за штуку и общая
     echo "<td>" . moneyNum($sebestoimost) . "<br>" . moneyNum($article_sebestoimost) . "</td>";
 
@@ -351,6 +362,7 @@ echo "<tr class=\"total-row\">";
     echo "<td data-total-key=\"price-without\"><b>"  . moneyNum($sum_price_without_comm_and_logist) . "</b></td>";
     echo "<td data-total-key=\"no-sku\"><b>"         . moneyNum($sum_no_sku_trati_raschet) . "</b></td>";
     echo "<td data-total-key=\"viplata\"><b>"        . moneyNum($sum_viplata_na_rs) . "</b></td>";
+    echo "<td data-total-key=\"ino_prodazhi\"><b>"   . moneyNum($sum_ino_prodazh) . "</b></td>";
     echo "<td data-total-key=\"sebestoimost\"><b>"   . moneyNum($sum_article_sebestoimost) . "</b></td>";
     echo "<td data-total-key=\"profit\"><b>"         . moneyNum($sum_pribil) . "</b></td>";
 echo "</tr>";
@@ -361,11 +373,23 @@ echo <<<HTML
 
 </div>
 
+<!-- ================== Кнопка «Скачать Excel» под таблицей ================== -->
+<div class="export-bar">
+    <button type="button" class="submit-btn export-btn" id="exportExcelBtn">
+        📥 Скачать Excel
+    </button>
+    <span class="export-hint" id="exportHint"></span>
+</div>
+
+<!-- SheetJS для клиентского экспорта (никаких запросов к серверу) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <script>
 /**
  * 1) Клиентская сортировка таблицы по столбцам с классом .sortable.
  * 2) Поиск по столбцу «Наименование» (название + SKU + артикул).
  * 3) Пересчёт строки ИТОГО (включая количества) после фильтрации.
+ * 4) Экспорт всей таблицы в Excel (xlsx) на клиенте — БЕЗ запросов к серверу.
  */
 (function () {
     var table = document.getElementById('ancor_table');
@@ -394,7 +418,6 @@ echo <<<HTML
         return '<span class="' + cls + '">' + formatted + '</span>';
     }
 
-    /* ---------- Форматирование количеств (шт): просто с разрядами, без копеек ---------- */
     function countSpan(num) {
         var rounded = Math.round(num);
         var s = String(rounded).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -407,13 +430,11 @@ echo <<<HTML
         var totalCells = tbody.querySelectorAll('.total-row [data-total-key]');
         if (!totalCells.length) return;
 
-        // Обнуляем суммы по всем ключам
         var totals = {};
         totalCells.forEach(function (cell) {
             totals[cell.dataset.totalKey] = 0;
         });
 
-        // Складываем значения только по видимым строкам (не total-row)
         var rows = tbody.querySelectorAll('tr:not(.total-row)');
         rows.forEach(function (row) {
             if (row.style.display === 'none') return;
@@ -424,10 +445,17 @@ echo <<<HTML
             });
         });
 
-        // Обновляем содержимое ячеек итоговой строки с учётом типа
         totalCells.forEach(function (cell) {
             var key  = cell.dataset.totalKey;
             var type = cell.dataset.totalType || 'money';
+
+            var anyFound = false;
+            tbody.querySelectorAll('tr:not(.total-row)').forEach(function (r) {
+                if (r.style.display === 'none') return;
+                if (r.hasAttribute('data-' + key)) anyFound = true;
+            });
+            if (!anyFound) return;
+
             var html = (type === 'count') ? countSpan(totals[key]) : moneySpan(totals[key]);
             cell.innerHTML = '<b>' + html + '</b>';
         });
@@ -492,8 +520,166 @@ echo <<<HTML
                 }
             });
 
-            // Пересчитываем ИТОГО по видимым строкам
             recalcTotals();
+        });
+    }
+
+    /* =========================================================================
+     * ЭКСПОРТ В EXCEL (клиентский, SheetJS)
+     * Данные берём прямо из таблицы. К серверу НЕ обращаемся.
+     * ========================================================================= */
+    var exportBtn  = document.getElementById('exportExcelBtn');
+    var exportHint = document.getElementById('exportHint');
+
+    // Заголовки листа (жёстко, чтобы не тащить иконки сортировки)
+    var XLS_HEADERS = [
+        'Наименование',
+        'Артикул',
+        'SKU',
+        'К-во Заказ (шт)',
+        'К-во Возвр (шт)',
+        'К-во проданных (шт)',
+        'Стоимость товара в ЛК (руб)',
+        'Комиссия озон (руб)',
+        'Стоимость логистики (руб)',
+        'Стоимость сервисов (руб)',
+        'Эквайринг (руб)',
+        'Сумма продаж без комис и логис (руб)',
+        'доп.услуги (руб)',
+        'Выплаты (руб)',
+        'Ино_продажи (руб)',
+        'Себестоимость (руб)',
+        'Прибыль (руб)'
+    ];
+
+    // Соответствие: data-атрибут строки  →  столбец в Excel
+    var XLS_KEYS = [
+        'count-direct', 'count-return', 'count-buy',
+        'seller-price', 'commission', 'logistika', 'service', 'equairing',
+        'price-without', 'no-sku', 'viplata', 'ino_prodazhi',
+        'sebestoimost', 'profit'
+    ];
+
+    function buildExcelRows() {
+        var rows = [XLS_HEADERS.slice()];
+
+        // Экспортируем ВСЕ строки таблицы (не только видимые) — «полная таблица»
+        tbody.querySelectorAll('tr:not(.total-row)').forEach(function (tr) {
+            var nameEl = tr.querySelector('.tovar_name');
+            var name   = nameEl ? (nameEl.getAttribute('title') || nameEl.textContent).trim() : '';
+
+            var artTd  = tr.children[1];
+            var links  = artTd ? artTd.querySelectorAll('a') : [];
+            var article = links[0] ? links[0].textContent.trim() : '';
+            var sku     = links[1] ? links[1].textContent.trim() : '';
+
+            var row = [name, article, sku];
+
+            XLS_KEYS.forEach(function (k) {
+                var v = parseFloat(tr.getAttribute('data-' + k));
+                row.push(isNaN(v) ? 0 : v);
+            });
+
+            rows.push(row);
+        });
+
+        // Итоговая строка
+        var totals = XLS_KEYS.map(function (k) {
+            var sum = 0;
+            tbody.querySelectorAll('tr:not(.total-row)').forEach(function (tr) {
+                var v = parseFloat(tr.getAttribute('data-' + k));
+                if (!isNaN(v)) sum += v;
+            });
+            return Math.round(sum * 100) / 100;
+        });
+        rows.push(['ИТОГО', '', ''].concat(totals));
+
+        return rows;
+    }
+
+    function applySheetStyles(ws, rowsCount, colsCount) {
+        // Ширины колонок
+        ws['!cols'] = [
+            { wch: 50 }, // Наименование
+            { wch: 16 }, // Артикул
+            { wch: 16 }, // SKU
+            { wch: 12 }, { wch: 12 }, { wch: 12 }, // штуки
+            { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 14 }, // деньги
+            { wch: 20 }, { wch: 14 }, { wch: 16 }, { wch: 16 }, // доп.услуги, выплаты, ино
+            { wch: 16 }, { wch: 16 } // себест, прибыль
+        ];
+
+        // Форматы чисел: столбцы D..F — целые, G..Q — деньги
+        var moneyCols = ['G','H','I','J','K','L','M','N','O','P','Q'];
+        var countCols = ['D','E','F'];
+
+        for (var R = 2; R <= rowsCount; R++) {
+            countCols.forEach(function (c) {
+                var addr = c + R;
+                if (ws[addr]) ws[addr].z = '#,##0';
+            });
+            moneyCols.forEach(function (c) {
+                var addr = c + R;
+                if (ws[addr]) ws[addr].z = '#,##0.00';
+            });
+        }
+
+        // Жирная шапка (визуальный стиль ограничен — SheetJS CE не хранит стили,
+        // но начальные строки всё равно будут читаемыми)
+        ws['!freeze'] = { xSplit: 0, ySplit: 1 };
+        ws['!autofilter'] = { ref: 'A1:Q' + (rowsCount - 1) };
+    }
+
+    function safeFileName() {
+        // Ищем shop_name в URL
+        var params = new URLSearchParams(window.location.search);
+        var shop = params.get('ozon_shop') || 'export';
+        var d1 = params.get('dateFrom') || '';
+        var d2 = params.get('dateTo') || '';
+        var stamp = new Date().toISOString().slice(0, 10);
+        return 'unit_economika_' + shop + '_' + d1 + '_' + d2 + '_' + stamp + '.xlsx';
+    }
+
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function () {
+            if (typeof XLSX === 'undefined') {
+                if (exportHint) exportHint.textContent = 'Не удалось загрузить библиотеку XLSX. Проверьте интернет.';
+                return;
+            }
+
+            if (exportHint) exportHint.textContent = 'Готовим файл...';
+            exportBtn.disabled = true;
+
+            // Небольшая задержка, чтобы UI успел обновиться
+            setTimeout(function () {
+                try {
+                    var rows = buildExcelRows();
+
+                    if (rows.length <= 1) {
+                        if (exportHint) exportHint.textContent = 'Нет данных для экспорта.';
+                        exportBtn.disabled = false;
+                        return;
+                    }
+
+                    var ws = XLSX.utils.aoa_to_sheet(rows);
+                    applySheetStyles(ws, rows.length, XLS_HEADERS.length);
+
+                    var wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, 'Юнит-экономика');
+
+                    XLSX.writeFile(wb, safeFileName());
+
+                    if (exportHint) exportHint.textContent = 'Файл сохранён ✓';
+                } catch (e) {
+                    console.error(e);
+                    if (exportHint) exportHint.textContent = 'Ошибка экспорта: ' + e.message;
+                } finally {
+                    exportBtn.disabled = false;
+                    setTimeout(function () {
+                        if (exportHint) exportHint.textContent = '';
+                    }, 4000);
+                }
+            }, 20);
         });
     }
 })();

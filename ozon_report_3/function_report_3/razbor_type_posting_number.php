@@ -170,11 +170,9 @@ foreach ($item['item_fees'] as $fees) {
   @$arr_item_orders[$sku][$unit_number][$description_type] +=$amount_for_trat ;
 }
 
-
 //============================================================================================
 // разбираем все траты, где есть номер отправления,
 //===================================================================================
-
 
 foreach ($arr_item_orders[$sku_poisk] as $unit_numer=>&$item_c) {
         $temp_1 = explode('-', $unit_numer);
