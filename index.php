@@ -178,19 +178,19 @@ echo "<div class=\"container\">";
         print_one_block ('table_element_razbor', "wb_reports/wb_report_index.php?wb_shop=wb_ip_zel", 'ОТЧЕТЫ WB ИП Зел',
         'Формирование отчетов на основании недельных отчетов ВБ. Отчеты только по целым неделям', 'pics/main_screen/wb_report_ip.jpg');
 
-        print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
+        // print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
+        // 'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');
+
+        // print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
+        // 'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
+
+        // print_one_block ('table_element_razbor', "yandex_report/start_ya_razbor.php", 'ОТЧЕТЫ ЯМ АНМАКС',
+        // 'Формирование отчетов на основании ексель отчетов с ЯМ. Ссылка на скачивания отчетов внутри', 'pics/main_screen/razbor_yandex.jpg');
+
+        print_one_block ('table_element_razbor', "ozon_report_3/index_r_3.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
         'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');
 
-        print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
-        'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
-
-        print_one_block ('table_element_razbor', "yandex_report/start_ya_razbor.php", 'ОТЧЕТЫ ЯМ АНМАКС',
-        'Формирование отчетов на основании ексель отчетов с ЯМ. Ссылка на скачивания отчетов внутри', 'pics/main_screen/razbor_yandex.jpg');
-
-        print_one_block ('table_element_razbor', "ozon_report_2/ozon_report/index_report.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
-        'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');
-
-        print_one_block ('table_element_razbor', "ozon_report_2/ozon_report/index_report.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
+        print_one_block ('table_element_razbor', "ozon_report_3/index_r_3.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
         'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
 
 echo "</div>";//Конец контейнера ОТЧЕТЫ

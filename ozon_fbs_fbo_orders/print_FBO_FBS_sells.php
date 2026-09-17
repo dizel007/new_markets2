@@ -33,16 +33,19 @@ echo "</thead>";
 foreach ($arr_sort_ar as $atricle=>$number) {
 $all_count = 0;
 $all_summa = 0;
-$link_for_article = "get_FBO_FBS_orders_by_article.php?shopname=$shop_name&article=$atricle";
+
   
 echo "<tr>";
-echo "<td><a href=\"$link_for_article\">{$atricle}</a></td>";
+echo "<td>{$atricle}</td>";
 // *****************************************************************
 // Заказы ФБС 
 // *****************************************************************
 
 if (isset($arr_FBS_sells[$atricle]) ) {
-            echo "<td>{$arr_FBS_sells[$atricle]['count']}</td>";  
+    
+      $link_for_article_fbs = "get_FBO_FBS_orders_by_article.php?shopname=$shop_name&article=$atricle&delivery_schema=fbs";
+      echo "<td><a href=\"$link_for_article_fbs\" target=\"_blank\">{$arr_FBS_sells[$atricle]['count']}</a></td>";
+            // echo "<td>{$arr_FBS_sells[$atricle]['count']}</td>";  
             $summa_FBS = number_format($arr_FBS_sells[$atricle]['price'],0);
             echo "<td>{$summa_FBS}</td>"; 
             $summa_FBS_count += $arr_FBS_sells[$atricle]['count'];
@@ -56,7 +59,11 @@ if (isset($arr_FBS_sells[$atricle]) ) {
 // заказы ФБО
 // *****************************************************************
 if (isset($arr_FBO_sells[$atricle])) {
-            echo "<td>{$arr_FBO_sells[$atricle]['count']}</td>";  
+
+      $link_for_article_fbo = "get_FBO_FBS_orders_by_article.php?shopname=$shop_name&article=$atricle&delivery_schema=fbo";
+      echo "<td><a href=\"$link_for_article_fbo\"  target=\"_blank\">{$arr_FBO_sells[$atricle]['count']}</a></td>";
+
+            // echo "<td>{$arr_FBO_sells[$atricle]['count']}</td>";  
             $summa_FBO = number_format($arr_FBO_sells[$atricle]['price'],0);
             echo "<td>{$summa_FBO}</td>"; 
             $summa_FBO_count += $arr_FBO_sells[$atricle]['count'];
@@ -76,7 +83,12 @@ if (isset($arr_FBO_sells[$atricle]) OR isset($arr_FBS_sells[$atricle])) {
      $all_summa = @$arr_FBS_sells[$atricle]['price']  + @$arr_FBO_sells[$atricle]['price']; 
       $all_summa_count += $all_count;
       $all_summa_summa += $all_summa; 
-            echo "<td>{$all_count}</td>";  
+
+      $link_for_article_all = "get_FBO_FBS_orders_by_article.php?shopname=$shop_name&article=$atricle";
+      echo "<td><a href=\"$link_for_article_all\" target=\"_blank\">{$all_count}</a></td>";
+
+
+            // echo "<td>{$all_count}</td>";  
             $all_summa = number_format($all_summa,0);
             echo "<td>{$all_summa}</td>"; 
                        

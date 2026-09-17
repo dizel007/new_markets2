@@ -247,3 +247,70 @@ form input[type="submit"]:active {
   background: #f5e6b0 !important;
 }
 
+/* ---------- Кнопки фильтра ---------- */
+.filter-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px auto 25px;
+    max-width: 1200px;
+    flex-wrap: wrap;
+}
+
+.btn-filter {
+    display: inline-block;
+    padding: 10px 32px;
+    background: #f0f3f8;
+    color: #1f2a3a;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.btn-filter:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.btn-filter.active {
+    background: #005bff;
+    color: #ffffff;
+    border-color: #005bff;
+    box-shadow: 0 4px 12px rgba(0, 91, 255, 0.3);
+}
+
+.btn-filter.active:hover {
+    background: #0047cc;
+    border-color: #0047cc;
+}
+
+
+
+/* Блок фильтрации по статусу */
+.filter-status {
+    display: flex;
+    justify-content: center;
+    margin: 10px auto 20px;
+    max-width: 1200px;
+}
+.filter-status form {
+    background: #ffffff;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #e9edf2;
+}
+.filter-status select {
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.filter-status select:focus {
+    border-color: #005bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,91,255,0.15);
+}

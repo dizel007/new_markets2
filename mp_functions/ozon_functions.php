@@ -1,12 +1,86 @@
 <?php
 
 	
+
+/* *****************************************************************************************************
+Выводим список заказов ОЗОН на определенную дату 
+РАБОЧАЯ ВЕРСИЯ 
+******************************************************************************************************** */
+
+function get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
+    // awaiting_packaging - заказы ожидают сборку
+    // awaiting_deliver   - заказы ожидают отгрузку 
+// echo "<br>";
+// echo $token."<br>";
+// echo $client_id."<br>";
+// echo $date_query_ozon."<br>";
+// $send_status = 'awaiting_deliver';
+$temp_dop_day = "+".$dop_days_query.' day';
+$date_query_ozon_end = date('Y-m-d', strtotime($temp_dop_day, strtotime($date_query_ozon)));
+
+                        
+// echo "<br>";
+
+
+$send_data_array=  array(
+    "sort_dir" => "ASC",
+    "filter" => array(
+            "cutoff_from" => $date_query_ozon."T00:00:00Z",
+            "cutoff_to" =>   $date_query_ozon_end."T23:59:59Z",
+            "delivery_method_id" => [ ],
+             "statuses" => [$send_status],
+            "provider_id" => [ ],
+            "warehouse_id" => [ ]
+    ),
+   
+    "limit" => 100,
+    "cursor" => '',
+    "offset" => 0,
+    "translit" => false,
+    "with" => array(
+            "analytics_data"  => true,
+            "barcodes"  => true,
+            "financial_data" => true,
+            "legal_info" => true
+    )
+    );
+
+$send_data = json_encode($send_data_array, JSON_UNESCAPED_UNICODE)  ;  
+
+
+$ozon_dop_url = "v4/posting/fbs/unfulfilled/list";
+
+
+// запустили запрос на озона
+do {
+    
+    $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
+    $summ_data[]=$res['postings']; // положили первый массив и смотрим нужно ли еще искать
+    $send_data_array['cursor'] = $res['cursor'];
+    $send_data = json_encode($send_data_array, JSON_UNESCAPED_UNICODE)  ;  
+} while ($res['has_next']);
+
+// делаем сплошной массив с заказами
+foreach ($summ_data as $oneQueryData) {
+    foreach ($oneQueryData as $oneData) {
+        $ArrayOrders[]=$oneData;
+    }
+}
+
+// echo "<pre>";
+// print_r($ArrayOrders);
+// die();
+return $ArrayOrders;
+}
+
+
+
 /* * ******************************************************************************************************
 Выводим список заказов ОЗОН на определенную дату 
 РАБОЧАЯ ВЕРСИЯ 
 *** ожидает упаковки ****
 *************************************************************************************************************** */
-function get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
+function NOT_WORK_get_all_waiting_posts_for_need_date_($token, $client_id, $date_query_ozon, $send_status, $dop_days_query){
     // awaiting_packaging - заказы ожидают сборку
     // awaiting_deliver   - заказы ожидают отгрузку 
 
@@ -40,7 +114,7 @@ $send_data=  array(
 
 
 $ozon_dop_url = "v3/posting/fbs/unfulfilled/list";
-
+// $ozon_dop_url = "v4/posting/fbs/unfulfilled/list";
 
 // запустили запрос на озона
 $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
@@ -91,27 +165,23 @@ function get_new_zakazi_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
     $dop_days_query = 14; // захватывает 14 дней после сегодняшней даты
     
     //  Получаем фактические заказы с сайта озона (4 дня доо и 14 после сегодняшне йдаты)
-    $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, 'awaiting_packaging', $dop_days_query);
-    
-    // echo "<pre>";
-    
-    // print_r($res);
-    
+    $ArrayOrders = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, 'awaiting_packaging', $dop_days_query);
+    // $res = NOT_WORK_get_all_waiting_posts_for_need_date_($token_ozon, $client_id_ozon, $date_query_ozon, 'awaiting_packaging', $dop_days_query);
 
-    if ($res['result']['count'] <> 0 ) { // если нет заказов на озоне, то просто возвращаем массив товаров назад
-        foreach ($res['result']['postings'] as $items) {
-            foreach ($items['products'] as $product) {
-                
-                $arr_products[$product['offer_id']] = @$arr_products[$product['offer_id']] + $product['quantity'];
-                $arr_summa_sell_products[$product['offer_id']] = @$arr_summa_sell_products[$product['offer_id']] + $product['price']*$product['quantity'];
-                
 
-            }
+// die();
+    if ($ArrayOrders <> 0 ) { // если нет заказов на озоне, то просто возвращаем массив товаров назад
+      foreach ($ArrayOrders as $posts) {
+         foreach ($posts['products'] as $prods) 
+        {
+             @$arr_products[$prods['offer_id']] += $prods['quantity'];
+             @$arr_summa_sell_products[$prods['offer_id']] += $prods['price']['amount']*$prods['quantity'];
+           }
             
         }
 
     //  print_r ($arr_summa_sell_products);   
-
+// die();
 // добавляем в каталог данные о количестве проданного товара
         foreach ($arr_products as $key=>$prods) {
             foreach ($ozon_catalog as &$items_ozon) {

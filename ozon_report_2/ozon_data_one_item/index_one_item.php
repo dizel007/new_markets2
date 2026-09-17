@@ -71,7 +71,7 @@ if (isset($data_by_article['result'][0])) {
 
     echo "<br> Не удалось получить данные о размере с сайта озон";
 }
-
+// $volume = '46.8';
 // Запрашиваем массив из БД для этого объема с доставкой ФБС из Москвы
 $sql = "SELECT claster_get, cost_norm FROM ozon_logistika_price
         WHERE min_litr <= :volume AND max_litr >= :volume 
@@ -180,7 +180,7 @@ $array_clasters_fbo = [
 
 
 
-// у н ас товар в Мск
+// у нас товар в Мск
 $array_clasters_fbo['Москва, МО и Дальние регионы'] = 0;
 
 $sales_percent_fbo = $data['items'][0]['commissions']['sales_percent_fbo'];

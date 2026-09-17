@@ -119,6 +119,7 @@ if ($type_sort == '') {
 //*********************************************************************************************************************** */
 
 
+
 // Тянем данные по товаром проданным в страны ЕАЭС
 $arr_data_sell_in_srtani_eaes_temp = get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, $file_name_ozon_inostran_prodazhi);
 if (isset($arr_data_sell_in_srtani_eaes_temp['products'])) {
@@ -142,8 +143,8 @@ $prod_array = json_decode(file_get_contents($file_name_ozon) ,true);
 // print_r ($prod_array);
 // die();
 
-echo "<pre>";
-print_R($prod_array);
+// echo "<pre>";
+// print_R($prod_array);
 
 
 require_once "razbor_dannih.php";

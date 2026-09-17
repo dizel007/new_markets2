@@ -57,7 +57,8 @@
     <!-- Карточка с общей информацией о товаре (фиксированные данные) -->
     <div class="product-card">
         <div class="product-info">
-           <div class="product-info-item"><i class="fas fa-percent"></i> Комиссия Ozon FBS: <strong><?= number_format($commissionFBS, 2, '.', ' ') ?> ₽</strong></div>
+           
+           <div class="product-info-item"><i class="fas fa-percent"></i> Комиссия Ozon FBO (<?php echo $sales_percent_fbs ?>%): <strong><?= number_format($commissionFBS, 2, '.', ' ') ?> ₽</strong></div>
            <div class="product-info-item">
                 <i class="fas fa-box"></i> Доставка до места выдачи: <strong><?= number_format($fbs_deliv_to_customer_amount, 0, '.', ' ') ?> ₽ </strong>
                 <i class="fas fa-box"></i> Обработка отправления: <strong><?= number_format($fbs_first_mile_max_amount, 0, '.', ' ') ?> ₽ </strong>

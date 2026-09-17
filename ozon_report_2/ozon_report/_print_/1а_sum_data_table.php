@@ -94,7 +94,7 @@ $arr_for_tink_data['Основные расходы'] = $arr_for_tink_data['Ло
 $procent_osnov_prodaz = round($arr_for_tink_data['Основные расходы']/$one_sell_procent,1);
 
 // Итого Другие расходы
-$arr_for_tink_data['Другие расходы'] = $arr_for_tink_data['Прочее'] + $arr_for_tink_data['Реклама'] + $arr_for_tink_data['Услуги агентов'];
+$arr_for_tink_data['Другие расходы'] = @$arr_for_tink_data['Прочее'] + @$arr_for_tink_data['Реклама'] + @$arr_for_tink_data['Услуги агентов'];
 // Процент других услуг от стоимости продаж
 $procent_drugih_prodaz = round($arr_for_tink_data['Другие расходы']/$one_sell_procent,1);
 
@@ -203,7 +203,7 @@ $other_expenses = [
     'percent' => $procent_drugih_prodaz,
     'items'   => [
         'Услуги агентов'  => $arr_for_tink_data['Услуги агентов'],
-        'Реклама' =>  $arr_for_tink_data['Реклама'],
+        'Реклама' =>  @$arr_for_tink_data['Реклама'],
         'Прочее' => $arr_for_tink_data['Прочее']
     ]
 ];

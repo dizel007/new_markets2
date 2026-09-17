@@ -41,6 +41,7 @@ $orders_FBS_ooo = query_FBS_orders_from_ozon ($token_ozon, $client_id_ozon, $dat
 // сохраняем файл на диске, чтобы потом детелаьно ковырятся в нем и не запрашивать новый
 file_put_contents($dir_for_cache."json_fbsOrders_".$shop_name.".json", json_encode($orders_FBS_ooo, JSON_UNESCAPED_UNICODE));
 $orders_FBS_article_ooo = make_array_with_all_FBS_FBO_orders ($orders_FBS_ooo);
+
 // echo "<pre>";
 // print_r($orders_FBS_article_ooo);
 // die();

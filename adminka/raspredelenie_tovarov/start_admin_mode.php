@@ -16,9 +16,9 @@ $stmt = $pdo->prepare("SELECT * FROM `ostatki_po_skladam` WHERE `active_tovar` =
 $stmt->execute([]);
 $tovar_table_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// print_r($tovar_table_data[0]);
+print_r($tovar_table_data);
 // print_r($nomenclatura[0]);
-
+die();
 foreach ($nomenclatura as $item) {
    
     foreach ($tovar_table_data as &$item_2) {
