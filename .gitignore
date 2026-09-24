@@ -3,6 +3,7 @@ main_info.php
 connect_db.php
 login.php
 # 
+_arc/
 /!all_razbor/
 /!one_day_report/
 /!cache/

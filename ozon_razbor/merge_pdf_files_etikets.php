@@ -103,6 +103,7 @@ mergeTwoPdfs($outputFile, $filepath."barcode/".'label.pdf', $temp_file_name);
   $file_size= round((filesize($link_merge_file_name)/1000000),2)." Mb";
   $non_merge_file_link = mb_substr($array_dop_files['file_non_merge_archive'], 3);
 
+  $v = filemtime($link_merge_file_name); // время созажния файла
 
  
 
@@ -119,7 +120,7 @@ mergeTwoPdfs($outputFile, $filepath."barcode/".'label.pdf', $temp_file_name);
    <div class="container">
         <div class="block block-1">
             <h2> ОБъедененный вариант ЭТИКЕТОК</h2>
-            <p><a href="$link_merge_file_name">ОБЪЕДЕНЕННЫЕ ЭТИКЕТКИ</a></p>
+            <p><a href="$link_merge_file_name?v=$v>">ОБЪЕДЕНЕННЫЕ ЭТИКЕТКИ</a></p>
             <p class="bottom">$file_size</p>
       </div>
 
