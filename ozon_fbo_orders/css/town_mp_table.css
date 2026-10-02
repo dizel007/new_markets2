@@ -1,0 +1,148 @@
+/* =====================================================
+   Таблица продаж по городам
+   Левая и правая колонки зафиксированы при скролле.
+   ===================================================== */
+
+/* Обёртка — именно она скроллится по горизонтали.
+   НЕ ставьте overflow:hidden на саму таблицу — это ломает sticky. */
+.town_mp_table_wrap {
+  width: 90%;
+  max-width: 1600px;
+  margin: 20px auto 40px;
+  overflow-x: auto;                /* только по X, без overflow-y */
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #43474bc9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06),
+              0 2px 6px rgba(0, 0, 0, 0.03);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* -------- Сама таблица -------- */
+.town_mp_table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: separate;       /* обязательно: collapse ломает sticky */
+  border-spacing: 0;
+  background: #ffffff;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+/* -------- Заголовок -------- */
+.town_mp_table thead tr {
+  background: #375c0e;
+  color: #ffffff;
+}
+
+.town_mp_table thead th {
+  padding: 5px 6px;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  white-space: nowrap;
+  background: #375c0e;
+  color: #ffffff;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid #43474bc9;
+}
+
+/* =====================================================
+   ЛЕВАЯ КОЛОНКА (Артикул) — sticky left
+   ===================================================== */
+.town_mp_table thead th:first-child,
+.town_mp_table tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  text-align: left;
+  min-width: 120px;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #f7f9fc;
+  border-right: 1px solid #43474bc9;
+  box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.18);
+}
+
+.town_mp_table thead th:first-child {
+  background: #375c0e;
+  color: #ffffff;
+  z-index: 4;                      /* выше всех */
+  box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.4);
+}
+
+.town_mp_table tbody td:first-child {
+  font-weight: 600;
+  color: #0a1c3a;
+}
+
+/* =====================================================
+   ПРАВАЯ КОЛОНКА — sticky right
+   ===================================================== */
+/* .town_mp_table thead th:last-child,
+.town_mp_table tbody td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #ffffff;
+  border-left: 1px solid #43474bc9;
+  box-shadow: -4px 0 6px -4px rgba(0, 0, 0, 0.18);
+} */
+
+.town_mp_table thead th:last-child {
+  background: #375c0e;
+  color: #ffffff;
+  z-index: 4;
+  box-shadow: -4px 0 6px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* Если в таблице всего 1 колонка — sticky не нужен */
+.town_mp_table thead th:first-child:last-child,
+.town_mp_table tbody td:first-child:last-child {
+  position: static;
+  box-shadow: none;
+}
+
+/* -------- Обычные ячейки -------- */
+.town_mp_table td {
+  padding: 8px 10px;
+  text-align: center;
+  border-bottom: 1px solid #43474bc9;
+  border-right: 1px solid #43474bc9;
+
+  font-weight: 500;
+  color: #1f2a3a;
+  background: #ffffff;
+  transition: background 0.15s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------- Полосатость — фоны sticky-ячеек задаём явно -------- */
+.town_mp_table tbody tr:nth-child(even) td              { background: #fafbfc; }
+.town_mp_table tbody tr:nth-child(even) td:first-child  { background: #f2f5fa; }
+.town_mp_table tbody tr:nth-child(even) td:last-child   { background: #f2f5fa; }
+
+/* -------- Ховер — тоже явно для sticky -------- */
+.town_mp_table tbody tr:hover td              { background: #eaf1ff; }
+.town_mp_table tbody tr:hover td:first-child  { background: #dde8fb; color: #005bff; }
+.town_mp_table tbody tr:hover td:last-child   { background: #dde8fb; }
+
+/* -------- «0» и «-» приглушаем -------- */
+.town_mp_table td.zero,
+.town_mp_table td.dash {
+  color: #b6bec9;
+  font-weight: 400;
+}
+
+/* -------- Адаптив -------- */
+@media (max-width: 768px) {
+  .town_mp_table_wrap { width: 100%; border-radius: 12px; }
+  .town_mp_table      { font-size: 12px; }
+  .town_mp_table th,
+  .town_mp_table td   { padding: 6px 8px; }
+  .town_mp_table thead th:first-child,
+  .town_mp_table tbody td:first-child { min-width: 90px; max-width: 130px; }
+}

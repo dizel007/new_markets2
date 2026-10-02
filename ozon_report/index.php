@@ -1,19 +1,27 @@
 <?php
 
 require_once "../connect_db.php";
-
 require_once "../mp_functions/ozon_api_functions.php";
-
 require_once "../pdo_functions/pdo_functions.php";
+require_once '../vendor/autoload.php';
 
-require '../vendor/autoload.php';
+// require_once "../".__DIR__ . '/vendor/autoload.php'; // если это не точка входа, а отдельный скрипт
+
+
+use App\Ozon\OzonClient;
+use App\Ozon\Service\ProductService;
+use App\Ozon\Service\FinanceService;
+
+
+
+
 
 require_once "function_report/razbor_type_item.php";
 require_once "function_report/razbor_type_posting_number.php";
-require_once "function_report/get_sebestoimost.php";
-require_once "function_report/get_balance.php";
-require_once "function_report/get_prodazhi.php";
-require_once "function_report/get_token_by_shop.php";
+// require_once "function_report/get_sebestoimost.php";
+// require_once "function_report/get_balance.php";
+// require_once "function_report/get_prodazhi.php";
+require_once "../mp_functions/get_token_by_shop.php";
 
 
 /**********************************************************************************************************
@@ -29,9 +37,14 @@ $shop_name = $_GET['ozon_shop'];
 // получаем токен запрашиваемого магазина
 [$token , $client_id] = get_token_AND_idclient ($arr_tokens, $shop_name);
 
+$ozon    = new OzonClient($token, $client_id);
+$product = new ProductService($ozon);
+$finance = new FinanceService($ozon);
 
- //*********************************************************************************************************/
-$arr_article_products = get_sebestoimost_tovarov($token, $client_id);
+
+ //**** получаем себестоимость товараов *****************************************************************************************************/
+
+$arr_article_products  = $product->getSebestoimostTovarov();
 //******************************************************************************************************
 //******************************************************************************************************
 // Настраиваем дату начала отпроса
@@ -109,24 +122,39 @@ if (!isset($_GET['dateFrom'], $_GET['dateTo'])) {
 //===============   запрашиваем баланс с ОЗОНа ========================================
 // =================================================================================
 
-$ozon_array_balance = get_ozon_balance ($token, $client_id,  $date_from, $date_to);
+// $ozon_array_balance = get_ozon_balance ($token, $client_id,  $date_from, $date_to);
 
+$ozon_array_balance = $finance->getBalance($date_from, $date_to);
+
+
+// echo "<pre>";
+// print_r($ozon_array_balance);
+// print_r($ozon_array_balance_2);
 
 /******************************************************************************
  *  ЗАПРОС фин отчета по проанным товарам  С ОЗОНА (ВСЕ ДАТЫ)
  ******************************************************************************/
 
 //  Запрос товаров проданных в РФ
-$file_name_ozon_mainSell = '_cache/'.$client_id . "_main_data" . ".json";
+$dir = '../!cache/' . $userdata['user_login'];
+if (!is_dir($dir)) {
+    mkdir($dir, 0775, true);
+}
 
-get_data_sell_in_mainSEll ($token, $client_id, $date_from, $date_to, $file_name_ozon_mainSell);
+$file_name_ozon_mainSell = $dir . '/' . $client_id . '_main_data.json';
+$finance->getAccrualsByDay( $date_from,  $date_to, $file_name_ozon_mainSell);
+
+
+// get_data_sell_in_mainSEll ($token, $client_id, $date_from, $date_to, $file_name_ozon_mainSell);
 
 $data_by_days = json_decode(file_get_contents($file_name_ozon_mainSell), true);
 
 //  Запрос инстранных товаров
-$file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
-$arr_sell_v_strani_EAES = get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, $file_name_ozon_inostran_prodazhi);
+// $file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
+$file_name_ozon_inostran_prodazhi = $dir . '/' .$client_id . "_ino_main_data" . ".json";
+// $arr_sell_v_strani_EAES = get_data_sell_in_srtani_eaes($token, $client_id, $date_from, $date_to, $file_name_ozon_inostran_prodazhi);
 
+$arr_sell_v_strani_EAES =  $finance->getBuyoutEaes( $date_from,  $date_to, $file_name_ozon_inostran_prodazhi);
 /******************************************************************************
  * КОНЕЦ запроса данных с озона (ВСЕ ДАТЫ)
  ******************************************************************************/

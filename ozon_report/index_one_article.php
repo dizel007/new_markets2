@@ -8,8 +8,12 @@ require_once "../pdo_functions/pdo_functions.php";
 
 require_once "function_report/razbor_type_item.php";
 require_once "function_report/razbor_type_posting_number.php";
-require_once "function_report/get_sebestoimost.php";
-require_once "function_report/get_token_by_shop.php";
+// require_once "function_report/get_sebestoimost.php";
+require_once "../mp_functions/get_token_by_shop.php";
+
+use App\Ozon\OzonClient;
+use App\Ozon\Service\ProductService;
+
 /**********************************************************************************************************
  *     ***************    Получаем массив всех транзакций
  *********************************************************************************************************/
@@ -21,26 +25,37 @@ if (!isset($_GET['ozon_shop']) || $_GET['ozon_shop'] === '') {
 $shop_name = $_GET['ozon_shop'];
 }
 
-// $shop_name = 'ozon_ip_zel';
 // получаем токен запрашиваемого магазина
 [$token , $client_id] = get_token_AND_idclient ($arr_tokens, $shop_name);
 
 
 //*********************************************************************************************************/
-$arr_article_products = get_sebestoimost_tovarov($token, $client_id);
+
+$ozon    = new OzonClient($token, $client_id);
+$product = new ProductService($ozon);
+
+ //**** получаем себестоимость товараов *****************************************************************************************************/
+
+$arr_article_products  = $product->getSebestoimostTovarov();
+
 //****************************************************************************************************** 
 //****************************************************************************************************** 
 
 //****************************************************************************************************** 
 // ВЫчитываем основные продажи
 //****************************************************************************************************** 
-$file_name_ozon = '_cache/' . $client_id . "_main_data" . ".json";
+// $file_name_ozon = '_cache/' . $client_id . "_main_data" . ".json";
+
+$dir = '../!cache/' . $userdata['user_login'];
+$file_name_ozon = $dir . '/' . $client_id . '_main_data.json';
 $data_by_days = json_decode(file_get_contents($file_name_ozon), true);
 
 //****************************************************************************************************** 
 // ВЫчитываем иностранные  продажи
 //****************************************************************************************************** 
-$file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
+// $file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
+$file_name_ozon_inostran_prodazhi = $dir . '/' .$client_id . "_ino_main_data" . ".json";
+
 $ino_prodazhi = json_decode(file_get_contents($file_name_ozon_inostran_prodazhi), true);
 
 

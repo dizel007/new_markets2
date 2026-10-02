@@ -42,15 +42,10 @@ $send_data = array("dir"=> "ASC",
 // echo "<pre>";
 // print_r($send_data);
 // Получаем массив продаж и сортируем по количеству и месту
-$arr_ooo = make_array_for_print ($token_anmaks, $client_id_anmaks,$send_data);
+$arr_ooo = make_array_for_print ($token_ozon, $client_id_ozon,$send_data);
 $arr_article_ooo = $arr_ooo['art'];
 $arr_warehouse_ooo = $arr_ooo['warehouse'];
 $arr_for_art_report = $arr_ooo['warehouse_name'];
-
-// Получаем массив продаж и сортируем по количеству и месту для второй организации
-$arr_ip = make_array_for_print ($token_ip_zel, $client_id_ip_zel,$send_data);
-$arr_article_ip = $arr_ip['art'];
-$arr_warehouse_ip = $arr_ip['warehouse'];
 
 
 // формируем перечень артикулов которые были проданы
@@ -58,17 +53,12 @@ foreach ($arr_article_ooo as $key=>$z) {
    $art_ar[$key] = $key;
    $art_ar_ooo[$key] = $key;
 }
-foreach ($arr_article_ip as $key=>$z) {
-   $art_ar[$key] = $key;
-   $art_ar_ip[$key] = $key;
-}
 
 // Привем массив артикулов в порядок (согласно порядковому нормеру)
 
 foreach ($arr_poriadkovii_number as $key=>$z) {
   if (isset($art_ar[$key])){ $arr_sort_ar[$key] = $z;}
   if (isset($art_ar_ooo[$key])){ $arr_sort_ar_ooo[$key] = $z;}
-  if (isset($art_ar_ip[$key])){ $arr_sort_ar_ip[$key] = $z;}
 }
 
 // Сортировка по возрастанию с сохранением ключей
@@ -83,9 +73,6 @@ echo "<br><br>";
 // вставляем таблицу всех продаж c разбивкой по городам 
 
 print_sell_po_gorodam ($arr_warehouse_ooo , $arr_sort_ar_ooo);
-echo "<br><br>";
-print_sell_po_gorodam ($arr_warehouse_ip , $arr_sort_ar_ip);
-
 echo "<br><br>";
 
  print_article_from_clusters ($arr_for_art_report , $arr_sort_ar_ooo) ;

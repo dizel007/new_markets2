@@ -1,0 +1,334 @@
+<?php
+
+// require_once '../../connect_db.php';
+// require_once '../include_funcs.php';
+// require_once 'make_1c_file.php';
+// require_once '../../pdo_functions/pdo_functions.php'; // подключаем функцию записи в Таблицу действия пользователя
+// require_once '../../vendor/autoload.php';
+
+
+use App\Ozon\OzonClient;
+use App\Ozon\Service\OrderService;
+
+$ozon   = new OzonClient($token, $client_id);
+$orders = new OrderService($ozon);
+
+$file_name_OTLADKA = $path_excel_docs."/otladka.txt";
+$startTime = microtime(true);
+$text_otladka = $startTime." "."***************************   Зашли в файл make_t_etikets.. *************************"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+// Запись в таблицу Действия пользователя
+insert_in_table_user_action($pdo, $userdata['user_login'] , "RAZBOR_OZON Order№($number_order)");
+
+// трата на формирование этикеток
+sleep(4);
+
+
+
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Получаем данные по заказам awaiting_deliver "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+// Получаем списoк заказов готовых к отправлению ()
+// ***********************************************************************************************************************************
+$ozon   = new OzonClient($token, $client_id);
+$orders = new OrderService($ozon);
+
+$ArrayOrders_repeat = $orders->getUnfulfilledFbs($date_query_ozon, 'awaiting_deliver', $dop_days_query);
+
+// $ArrayOrders_repeat = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
+
+
+// echo "<pre>";
+// print_r($ArrayOrders_repeat);
+
+// die();
+
+
+// сохраняем JSON всех заказов 
+$string_json_all_order = json_encode($ArrayOrders_repeat, JSON_UNESCAPED_UNICODE);
+$temp_path_all_order = $path_excel_docs."/json_all_repeat_order.json";
+file_put_contents($temp_path_all_order, $string_json_all_order);
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Закончили получение данных по заказам awaiting_deliver "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
+// ***********************************************************************************************************************************
+
+$arr_reapeat_numbers[]=''; // массив куда добавляем номера записанных в новый массив заказов, чтобы избежать дублирования заказов
+/// выбираем из всей пачки только те заказы, которые мы запросили ранее
+foreach ($ArrayOrders as $old_order) {
+    foreach ($ArrayOrders_repeat as $new_order) {
+    $priz_reapeat = 0;
+  
+      if ($old_order['order_number'] == $new_order['order_number']) {
+
+        // проверяем нет ли уже этого отправлния яв новом массиве
+        foreach ($arr_reapeat_numbers as $post_number) {
+          if ($post_number == $new_order['posting_number']) {
+            $priz_reapeat = 1;
+          }
+        }
+        if ($priz_reapeat == 0) {
+          // Формируем новый массив, где все разбитые по грузоотправлениям заказы из нового запроса
+          $new_res[]=$new_order;
+          $arr_reapeat_numbers[] = $new_order['posting_number'];
+        }
+
+        
+      }
+  }
+}
+
+
+// echo "<pre>";
+// print_r( $new_res);
+// die();
+// сохраняем JSON всех заказов 
+$string_new_res_order = json_encode($new_res, JSON_UNESCAPED_UNICODE);
+$temp_path_all_order = $path_excel_docs."/json_new_res_new_res_order.json";
+file_put_contents($temp_path_all_order, $string_new_res_order);
+
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Начинаем формировать файл для 1с и лист подбора "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
+
+// формируем массив для 1с файла // тут же делаем подмену артикула
+$array_for_1C =  make_array_for_1c_file($new_res);
+// формируем массив для листа подборf
+$array_for_list_podbora = make_array_for_list_podbora($new_res);
+
+sleep(2);
+/******************************************************************************************************************
+******  формирование 1С файла 
+/******************************************************************************************************************/
+  $xls = new PHPExcel();
+  $file_name_1c_list = make_1c_file($array_for_1C, $date_query_ozon, $number_order, $path_excel_docs, $xls);
+/******************************************************************************************************************
+****** формирование листа подбора (из обработанного массива)
+/******************************************************************************************************************/
+$xls2 = new PHPExcel();
+$file_name_list_podbora = make_list_podbora_new ($array_for_list_podbora, $date_query_ozon, $number_order, $path_excel_docs, $xls2);
+
+// формируем массивы где заказы разбиты поартикульно 
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Начинаем формировать массивы где заказы разбиты поартикульно"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
+foreach ($new_res as $posts_z) {
+  $article = $posts_z['products'][0]['offer_id'];
+  $arr_article_tovar[$article][] = $posts_z;
+}
+
+
+// echo "<pre>";
+// print_r($arr_article_tovar);
+// die();
+
+/// НАчинаем долгие разбор 
+$realTime = microtime(true);
+$text_otladka = $realTime." "."Перешли в make_etiketki_for... "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+// echo "Время начала скрипта : {$startTime} <br>"; ; 
+
+set_time_limit(0); // неограниченное время ожидание ответа от сервера
+// ob_start(); // включить буфер
+if (!isset($startTime)) {
+  $startTime = microtime(true);
+}
+// перебираем поартикульный массив и формируем строку со списком заказов (поартикульно)
+$ippp = 0;
+foreach ($arr_article_tovar as $key=> $posts) {
+  $count_items_in_order = count($posts);
+
+  $realTime = microtime(true);
+  $deltaTime = $realTime - $startTime;
+  $text_otladka = $deltaTime." "."(Начало)_Создаем_строки_с_номерами_заказов_для_каждого_артикула"."\n";
+  file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+  
+  /// Фиксируем время выполенинея скрипта и смотрим сколько он длится
+  // если долго длится то выводим информацию на экран, чтобы не оборвалось соедиенние с сервером
+  $endTime = microtime(true);
+  $rezultTime = $endTime - $startTime;
+  if ($rezultTime > 90) {
+     echo " Время выполнения скрипта {$rezultTime} секунд. Processing...<br>";
+  }
+
+//========================================================================================================
+//формируем массив номеров отправлений с одним артикулом, и передаем его для формирования этикетов
+//========================================================================================================
+  unset($string_etiket);
+  foreach ($posts as $post) {
+    $string_etiket[] = $post['posting_number'];
+    $array_scanit[$key][$ippp]['posting_number'] = $post['posting_number'];
+    $array_scanit[$key][$ippp]['scanit'] = $post['scanit'];
+    $ippp++;
+  }
+  
+
+/*****************************************************************************************************************
+ ******  Формируем PDF файлы поартикульно
+ ******************************************************************************************************************/
+$good_key = make_rigth_file_name($key); // убираем все запрещенные символы в наименовании файла
+
+$pdf_file_name = $number_order." (".$good_key.") ".count($posts)."шт";
+
+// Задаем трату на формирование ПДФ этикеток в зависимости от количества товаров
+$wait_time_etikets = 3; // время ожидания этикеток в секундах
+  if ($count_items_in_order >= 40) {
+    $wait_time_etikets = 5;
+  } 
+  if ($count_items_in_order >= 80) {
+    $wait_time_etikets = 6;
+  } 
+  if ($count_items_in_order >= 120) {
+    $wait_time_etikets = 10;
+  } 
+  if ($count_items_in_order >= 140) {
+    $wait_time_etikets = 12;
+  } 
+  if ($count_items_in_order >= 170) {
+    $wait_time_etikets = 14;
+  } 
+  if ($count_items_in_order >= 200) {
+    $wait_time_etikets = 15;
+  } 
+
+$startTime = microtime(true);
+$text_otladka = $startTime." "."Время ожидания артикула : $wait_time_etikets"."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
+
+$orders->getPackageLabel($string_etiket, $pdf_file_name, $path_etiketki, $wait_time_etikets);
+
+
+// get_all_barcodes_for_all_sending ($token, $client_id,  $string_etiket, $pdf_file_name, $path_etiketki, $wait_time_etikets);
+
+
+$Arr_filenames_for_zip[$good_key] = $pdf_file_name; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
+
+$arr_for_merge_pdf[$good_key]['value'] = count($posts);
+
+$realTime = microtime(true);
+$deltaTime = $realTime - $startTime;
+$text_otladka = $deltaTime." "."(Конец-$good_key) ($count_items_in_order шт) ($wait_time_etikets сек)Создаем строки с номерами заказов для каждого артикула "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+}
+
+
+// echo "<pre>";
+// print_r($array_scanit);
+
+$scanit_fileName = 'array_scanit.json';
+$file_name_scanit = $path_excel_docs."/".$scanit_fileName;
+file_put_contents($file_name_scanit, json_encode($array_scanit, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
+// die('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+/*****************************************************************************************************************
+ ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
+ ******************************************************************************************************************/
+  $path_zip_archives = $path_etiketki;
+
+  $path_zip_archives = str_replace('etiketki', 'zip_archives',  $path_zip_archives);
+  $zip_new = new ZipArchive();
+  $zip_new->open($path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+
+  foreach ($Arr_filenames_for_zip as $zips) {
+    $zip_file_name = $zips.".pdf";
+    $zip_new->addFile($path_etiketki."/".$zips.".pdf", "$zip_file_name"); // Добавляем пдф файлы
+  }
+
+  $zip_new->addFile($path_excel_docs."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для НОВЫЙ 1С файл /// *****************
+// добавляем файл с scanit  и номером заказа, чтобы хоть както связать их можно было 
+  $zip_new->addFile($path_excel_docs."/".$scanit_fileName, "$scanit_fileName"); // добавляем для НОВЫЙ 1С файл /// *****************
+
+    if (isset($file_name_list_podbora)){ 
+      $zip_new->addFile($path_excel_docs."/".$file_name_list_podbora, "$file_name_list_podbora"); // добавляем лист подбора *****************
+    }
+  $zip_new->close();  
+
+  $link_path_zip2 = $path_zip_archives."/"."etikets_№".$number_order."_от_".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
+
+ 
+// 
+$realTime = microtime(true);
+$deltaTime = $realTime - $startTime;
+$text_otladka = $deltaTime." "."Создали архивы с этикетками по каждому артикулу "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+
+// Готовим информацию, чтобы сеодение файл с артикулом с файлом этикеток
+file_put_contents($path_etiketki."/art_etik.json", json_encode($Arr_filenames_for_zip, JSON_UNESCAPED_UNICODE));
+  $array_dop_files['number_order'] = $number_order;
+  $array_dop_files['filepath'] = "$path_etiketki/";
+  $array_dop_files['path_excel_docs'] = $path_excel_docs;
+  $array_dop_files['file_name_1c_list'] = $file_name_1c_list;
+  $array_dop_files['file_name_list_podbora'] = $file_name_list_podbora;
+  $array_dop_files['file_non_merge_archive'] = $link_path_zip2;
+  $array_dop_files['ozon_shop'] = $ozon_shop;
+
+file_put_contents($path_etiketki."/array_dop_info.json", json_encode($array_dop_files, JSON_UNESCAPED_UNICODE));
+
+
+/**************************************************************************************************************
+ **********************************     Запись о разборе в БД     ********************************************
+ ******************************************************************************************************************/
+$link_2_test = $path_etiketki."/merge_pdf/"."etikets_№".$number_order."_от_".date("Y-M-d")."_MERGE.zip";
+
+$link_2_ = str_replace('.zip','', $link_path_zip2)."_MERGE.zip";
+
+insert_info_in_table_razbor($pdo, $ozon_shop, $number_order, $now_date_razbora,  $link_path_zip2, $link_2_test);
+
+/// удаляем файл АВТОСКЛАДА, который сообщает о том, что нужно обновить данные об остатках с 1С
+$file_priznak_razbora = '../../autosklad/uploads/priznak_razbora_net.txt';
+  if (file_exists($file_priznak_razbora)) {
+unlink($file_priznak_razbora);
+$message_file_priznak ="";
+  }
+   else {
+    $message_file_priznak ="Файл признак разбора отсутствует";
+  }
+
+$realTime = microtime(true);
+$deltaTime = $realTime - $startTime;
+$text_otladka = $deltaTime." "."Закончили РАЗБОР уходим на объединение Этикеток "."\n";
+file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
+
+// header('Location: ../merge_ozon_etikets.php?filepath='."$path_etiketki/", true, 301);
+
+// укорачиваем передаваемую информацию
+$filepath = str_replace( '../../!all_razbor/ozon/', '' , $path_etiketki );
+$filepath = str_replace( "/etiketki", '' , $filepath );
+
+
+echo <<<HTML
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/merge_file.css">
+    
+  </head>
+<body>
+    <div class="container">
+        <h1>Выберите действие</h1>
+        <div class="button-container">
+            <a href="$link_path_zip2" class="btn btn-primary">скачать архив со стикерамии листом подбора</a>
+            <a href="../merge_pdf_files_etikets.php?date_razbora=$now_date_razbora&number_order=$number_order" class="btn btn-secondary">
+                ОБЪЕДЕНИТЬ !!!</a>
+        </div>
+        <br><br><br>
+        <div>$message_file_priznak</div>
+    </div>
+</body>
+HTML;

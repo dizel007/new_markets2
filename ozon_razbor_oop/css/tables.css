@@ -1,0 +1,354 @@
+/* =========================================================
+   Ozon-style таблицы
+   Без внутренней прокрутки — все строки выводятся сразу.
+   ========================================================= */
+
+
+   /* Для блокировки экрана */
+.LockOff { 
+    display: block; 
+    visibility: visible; 
+
+
+ } 
+ .LockOn { 
+    display: none; 
+    visibility: hidden; 
+ } 
+
+
+ 
+/* ===== Обёртка таблицы ===== */
+.table-scroll {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    margin: 16px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                 Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: #fff;
+    color: #333;
+    font-size: 12px;
+    line-height: 1.25;
+    border: 1px solid #eaeef2;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+}
+
+/* ===== Компактный режим (верхняя таблица) ===== */
+.table-scroll.compact {
+    width: auto;
+    max-width: 1100px;
+    height: auto;
+    max-height: none;
+    margin: 16px auto;
+    overflow: visible;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+}
+
+.table-scroll.compact .ozon-table {
+    width: 100%;
+    min-width: 0;
+}
+
+/* ===== Заголовок блока ===== */
+.table-title {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2d3d;
+    background: #fff;
+    border-bottom: 1px solid #eaeef2;
+}
+
+/* ===== Таблица ===== */
+.ozon-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #333;
+    background: #fff;
+    font-variant-numeric: tabular-nums;
+}
+
+.ozon-table th,
+.ozon-table td {
+    padding: 6px 8px;
+    font-size: 12px;
+    line-height: 1.25;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    border-bottom: 1px solid #eaeef2;
+    border-right: 1px solid #f4f4f4;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.ozon-table th:last-child,
+.ozon-table td:last-child { border-right: none; }
+
+.ozon-table th.text,
+.ozon-table td.text { text-align: left; }
+
+/* ===== Шапка (обычная, без sticky) ===== */
+.ozon-table thead th {
+    position: static;
+    background: #f5f7fa;
+    color: #555;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: inset 0 -2px 0 #dde3ea;
+}
+
+/* ===== Строки ===== */
+.ozon-table tbody tr td { background: #fff; }
+
+/* Зебра */
+.ozon-table tbody tr:nth-child(even) td { background: #fafbfd; }
+
+/* Ячейки rowspan (номер, отправление, дата, статус) — своя подложка */
+.ozon-table tbody tr td[rowspan] {
+    background: #f5f8fc;
+    font-weight: 500;
+}
+
+/* Ховер */
+.ozon-table tbody tr:hover td          { background: #eef5ff !important; }
+.ozon-table tbody tr:hover td[rowspan] { background: #e3eefc !important; }
+
+/* ===== Статус ===== */
+.ozon-table td.status {
+    font-weight: 600;
+    color: #005bff;
+}
+
+/* ===== Ссылка на отправление ===== */
+/* .shipment-link {
+    color: #005bff;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(0, 91, 255, .4);
+    transition: color .15s, border-color .15s;
+    word-break: break-all;
+}
+.shipment-link:hover {
+    color: #0045cc;
+    border-bottom-color: #0045cc;
+} */
+
+/* ===== Числа ===== */
+.ozon-table .num-pos  { color: #2e7d32; font-weight: 600; }
+.ozon-table .num-neg  { color: #d32f2f; font-weight: 600; }
+.ozon-table .num-zero { color: #888; }
+
+/* ===== Итоговая строка (обычная, без sticky) ===== */
+.ozon-table tfoot td {
+    position: static;
+    background: #f5f7fa;
+    color: #333;
+    font-weight: 600;
+    font-size: 12px;
+    border-bottom: none;
+    box-shadow: inset 0 2px 0 #dde3ea;
+}
+.ozon-table tfoot td.total-label {
+    color: #555;
+    font-weight: 700;
+}
+
+/* ===== Служебное ===== */
+.center_text {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px;
+}
+
+/* =========================================================
+   Адаптив
+   ========================================================= */
+@media (max-width: 900px) {
+    .ozon-table th,
+    .ozon-table td { font-size: 11px; padding: 4px 6px; }
+    .ozon-table thead th { font-size: 10px; }
+    .table-title { font-size: 13px; padding: 8px 10px; }
+}
+
+@media (max-width: 800px) {
+    .table-scroll.compact {
+        max-width: 100%;
+        margin: 12px 0;
+        border-radius: 0;
+    }
+}
+
+/* Скрытие колонок: повесьте класс .hide-lg / .hide-md / .hide-sm на th и td */
+@media (max-width: 1400px) { .hide-lg { display: none !important; } }
+@media (max-width: 1100px) { .hide-md { display: none !important; } }
+@media (max-width:  800px) { .hide-sm { display: none !important; } }
+
+
+
+
+/* =========================================================
+   Форма в стиле Ozon
+   ========================================================= */
+
+.ozon-form-wrapper {
+    max-width: 560px;
+    margin: 24px auto;
+    padding: 20px 22px;
+    background: #fff;
+    border: 1px solid #eaeef2;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                 Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #1f2d3d;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.ozon-form-title {
+    margin: 0 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2d3d;
+    letter-spacing: .2px;
+}
+
+.ozon-form-hint {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    background: #eef5ff;
+    border: 1px solid #d6e6ff;
+    border-radius: 8px;
+    color: #33445c;
+    font-size: 12.5px;
+    line-height: 1.45;
+}
+.ozon-form-hint b { color: #005bff; font-weight: 600; }
+
+/* ===== Поле ввода ===== */
+.ozon-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.ozon-field label {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5a6b82;
+    letter-spacing: .2px;
+}
+
+.ozon-field input[type="text"] {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 13px;
+    color: #1f2d3d;
+    background: #fff;
+    border: 1px solid #d6dde6;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+    font-family: inherit;
+}
+
+.ozon-field input[type="text"]::placeholder { color: #9aa7b8; }
+
+.ozon-field input[type="text"]:hover { border-color: #b8c4d3; }
+
+.ozon-field input[type="text"]:focus {
+    border-color: #005bff;
+    box-shadow: 0 0 0 3px rgba(0, 91, 255, .15);
+    background: #fff;
+}
+
+/* ===== Кнопка ===== */
+.ozon-form-actions {
+    margin-top: 4px;
+}
+
+.ozon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 11px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: #fff;
+    background: #005bff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s, transform .05s, box-shadow .15s;
+    font-family: inherit;
+}
+.ozon-btn:hover  { background: #0045cc; }
+.ozon-btn:active { transform: translateY(1px); background: #003da8; }
+.ozon-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 91, 255, .25);
+}
+
+/* ===== Панель «Обрабатываем запрос…» ===== */
+.ozon-lock-pane {
+    display: none;                /* показывается когда LockOn снимает скрытие */
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: #f5f7fa;
+    border: 1px solid #e0e6ee;
+    border-radius: 8px;
+    color: #5a6b82;
+    font-size: 12.5px;
+}
+
+/* Спиннер */
+.ozon-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(0, 91, 255, .25);
+    border-top-color: #005bff;
+    border-radius: 50%;
+    animation: ozon-spin .8s linear infinite;
+    flex: 0 0 auto;
+}
+@keyframes ozon-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   Хуки под ваши классы LockOff / LockOn
+   Если они уже управляют display — эти правила просто дублируют поведение.
+   ========================================================= */
+
+
+/* Уточнение: если .LockOn задаёт display:block, оставляем flex для спиннера */
+#OnLock_textLockPane.LockOn { display: flex; }
+
+@media (max-width: 640px) {
+    .ozon-form-wrapper {
+        margin: 12px;
+        padding: 16px;
+        border-radius: 8px;
+    }
+    .ozon-form-title { font-size: 16px; }
+    .ozon-btn { font-size: 12.5px; padding: 10px 14px; }
+}
+

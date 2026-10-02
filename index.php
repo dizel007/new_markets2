@@ -99,6 +99,34 @@ print_one_block ('table_element_razbor', "yandex_razbor/index_yandex.php", 'Yand
 print_one_block ('table_element_razbor', "leroy/", 'LEROY Анмакс',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_leroy.jpg');
 
+echo "</div>";// Конец контейнера ПО РАЗБОРУ МАРКЕТОВ
+
+
+//<!--**********************************************************************************************-->
+// <!--**************************** OOOOOZZZZZZZZZOOOOOOOOOOOONNNNNNNNNNN **********************************-->
+// <!--**********************************************************************************************-->
+echo "<div class=\"container\"><div class = \"zagolovok\">Разбор заказов на маркетах</div></div>";
+
+echo "<div class=\"container\">";
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_anmaks", 'NEW OZON Анмакс',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozon_shop=ozon_anmaks", 'ДОП OZON Анмакс',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+
+
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_part_ozon.php?ozon_shop=ozon_anmaks", 'ЧАСТЬ OZON ООО',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_part_ozon.php?ozon_shop=ozon_ip_zel", 'ЧАСТЬ OZON ИП',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
+
+
+
+
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_ip_zel", 'NEW OZON ИП Зел',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozon_shop=ozon_ip_zel", 'ДОП OZON ИП Зел',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
 
 
 
@@ -178,8 +206,8 @@ echo "<div class=\"container\">";
         print_one_block ('table_element_razbor', "wb_reports/wb_report_index.php?wb_shop=wb_ip_zel", 'ОТЧЕТЫ WB ИП Зел',
         'Формирование отчетов на основании недельных отчетов ВБ. Отчеты только по целым неделям', 'pics/main_screen/wb_report_ip.jpg');
 
-        // print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
-        // 'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');
+        print_one_block ('table_element_razbor', "ozon_report_order_article/getAllOrders.php", 'ОТЧЕТЫ по Артикулам OZON ',
+        'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/article_report.png');
 
         // print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
         // 'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
