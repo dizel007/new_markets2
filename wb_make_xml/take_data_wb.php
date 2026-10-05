@@ -113,14 +113,23 @@ if ($datediff != 6 )  {
 
 $dop_link = "?dateFrom=".$dateFrom."&limit=100000&dateTo=".$dateTo."&rrdid=0";
 $link_wb = "https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod".$dop_link;
+            
+$link_wb =  "https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed";
 
-$arr_result = light_query_without_data($token_wb, $link_wb);
+$data_wb['dateFrom'] = $dateFrom;
+$data_wb['dateTo'] = $dateTo;
+
+
+
+$arr_result = light_query_with_data($token_wb, $link_wb, $data_wb);
+
+// $arr_result = light_query_without_data($token_wb, $link_wb);
 
 // echo "<pre>";
 // print_r($arr_result);
 
 // Проверяем есть ли данные в массиве
-if (!isset($arr_result[0]['realizationreport_id'] )) {
+if (!isset($arr_result[0]['reportId'] )) {
     echo "<br>НЕ смогли считать данные с ВБ<br>";
     die('Die without Array WB');
 }
@@ -128,7 +137,7 @@ if (!isset($arr_result[0]['realizationreport_id'] )) {
 
 /// Оставляем только импортные продажи 
 foreach ($arr_result as $item) {
- if ($item['report_type'] == 2) {
+ if ($item['reportType'] == 2) {
             $ino_number = $item['realizationreport_id'];
             $arr_ino_items[] = $item;
         }
