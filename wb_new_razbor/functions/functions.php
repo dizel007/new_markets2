@@ -56,7 +56,10 @@ function light_query_with_data($token_wb, $link_wb, $data)
 	}
 
 	$res = json_decode($res, true);
+
+	// echo "<br>fff<br>";
 	// var_dump($res); // выводит результирующий массив
+	
 	return $res;
 }
 

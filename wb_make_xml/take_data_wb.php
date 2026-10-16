@@ -107,12 +107,12 @@ if (($dateFrom == false) or ($dateTo == false)) {
     } 
 
     echo "Delta Days=".$datediff;
-if ($datediff != 6 )  {
-    die ('<br> Промежуток времени должен быть неделя');
-}
+// if ($datediff != 6 )  {
+//     die ('<br> Промежуток времени должен быть неделя');
+// }
 
-$dop_link = "?dateFrom=".$dateFrom."&limit=100000&dateTo=".$dateTo."&rrdid=0";
-$link_wb = "https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod".$dop_link;
+// $dop_link = "?dateFrom=".$dateFrom."&limit=100000&dateTo=".$dateTo."&rrdid=0";
+// $link_wb = "https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod".$dop_link;
             
 $link_wb =  "https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed";
 
@@ -120,14 +120,65 @@ $data_wb['dateFrom'] = $dateFrom;
 $data_wb['dateTo'] = $dateTo;
 
 
+// $data_wb['dateFrom'] = '2026-08-31';
+// $data_wb['dateTo'] = '2026-09-27';
 
-$arr_result = light_query_with_data($token_wb, $link_wb, $data_wb);
 
-// $arr_result = light_query_without_data($token_wb, $link_wb);
+echo "<pre>";
+// print_r($data_wb);
 
-// echo "<pre>";
+
+
+// $arr_result = light_query_with_data__kkkkk ($token_wb, $link_wb, $data_wb);
+
+
+function light_query_with_data__kkkkk ($token_wb, $link_wb, $data)
+{
+	$ch = curl_init($link_wb);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		'Authorization:' . $token_wb,
+		'Content-Type:application/json'
+	));
+	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+
+	$res = curl_exec($ch);
+
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
+	curl_close($ch);
+
+	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
+		echo     '<br>Результат обмена(SELECT with Data): ' . $http_code ." link = ".$link_wb ."<br>";
+	}
+
+	$res = json_decode($res, true);
+ 	print_r($res); // выводит результирующий массив
+	
+	return $res;
+}
+
+
+
+$file_name = "../!cache/". $userdata['user_login']."/"."wb_report_week.json";
+// file_put_contents($file_name, json_encode($arr_result, JSON_UNESCAPED_UNICODE));
+
+$arr_result = json_decode(file_get_contents($file_name), true);
+
+
+// print_r($arr_result[228]);
 // print_r($arr_result);
 
+
+
+// foreach ($arr_result as $item) {
+// $gg[$item['docTypeName']] = $item['docTypeName'];
+// $jj[$item['sellerOperName']] = $item['sellerOperName'];
+// }
+// echo "<pre>";
+// print_r($jj);
+// die();
 // Проверяем есть ли данные в массиве
 if (!isset($arr_result[0]['reportId'] )) {
     echo "<br>НЕ смогли считать данные с ВБ<br>";
@@ -138,7 +189,7 @@ if (!isset($arr_result[0]['reportId'] )) {
 /// Оставляем только импортные продажи 
 foreach ($arr_result as $item) {
  if ($item['reportType'] == 2) {
-            $ino_number = $item['realizationreport_id'];
+            $ino_number = $item['reportId'];
             $arr_ino_items[] = $item;
         }
 }
@@ -159,8 +210,10 @@ echo "<br>Номер отчета заграничных поставок INO = 
 
 
  
-// echo "<pre>";
-// print_r($wb_catalog);
+echo "<pre>";
+print_r($arr_ino_items);
+
+// die();
 /*****************************************************************************************************************
  ************************************* Ищем все номера отчетов
  ******************************************************************************************************************/
@@ -171,117 +224,128 @@ if ((@$arr_result['code'] == 401)) {
 }
   // формируем массива с артикулами
   foreach ($arr_ino_items as $item) {
-    if ($item['realizationreport_id'] == $ino_number) { 
+    // if ($item['reportId'] == $ino_number) { 
    
 
-    $arr_key[] = $item['sa_name']; // массив артикулов
+    $arr_key[] = $item['vendorCode']; // массив артикулов
 foreach ($wb_catalog as $wb_item) {
-    if (mb_strtolower($item['sa_name']) == mb_strtolower($wb_item['mp_article']))
-    $arr_key_barcode[$item['sa_name']] = $wb_item['barcode'];
+    // echo "<br>".$wb_item['mp_article'] ;
+    // echo "---".$item['vendorCode'];
+    if (mb_strtolower($item['vendorCode']) === mb_strtolower($wb_item['mp_article']))
+
+         $arr_key_barcode[$item['vendorCode']] = $wb_item['barcode'];
+    // }
     }
-    }
+
   }
   $arr_key = array_unique($arr_key); //  оставляем только уникальные артикулы
 
 
 // echo "<pre>";
-// print_r($arr_result);
+print_r($arr_key_barcode);
 // die('5555555555555555555555555555555555');
 
 
 
 foreach ($arr_ino_items as $item) {
-    $article_new = $item['sa_name']; // Вычитываем  артикул
+    $article_new = $item['vendorCode']; // Вычитываем  артикул
 
-        if (($item['supplier_oper_name'] == 'Продажа') ) {
-            $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] + $item['ppvz_for_pay'];
+        if (($item['sellerOperName'] == 'Продажа') ) {
+            $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] + $item['forPay'];
             $ARR_all_data[$article_new]['count_sell'] = @$ARR_all_data[$article_new]['count_sell'] + $item['quantity'];
            
-        } elseif ( $item['supplier_oper_name'] == 'Компенсация потерянного товара') {
+        } elseif ( $item['sellerOperName'] == 'Компенсация потерянного товара') {
         // Компенсация потерянного товара
 
-        $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] + $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] + $item['ppvzSalesCommission'];
         $ARR_all_data[$article_new]['count_sell'] = @$ARR_all_data[$article_new]['count_sell'] - $item['quantity'];
 
  
-        } elseif ($item['supplier_oper_name'] == 'Авансовая оплата за товар без движения') { 
+        } elseif ($item['sellerOperName'] == 'Авансовая оплата за товар без движения') { 
         //************** Авансовая оплата за товар без движения ******************************
         
-        $ARR_all_data[$article_new]['summa_anavsa'] = @$ARR_all_data[$article_new]['summa_anavsa'] + $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_anavsa'] = @$ARR_all_data[$article_new]['summa_anavsa'] + $item['ppvzSalesCommission'];
 
-        } elseif (($item['supplier_oper_name'] == 'Частичная компенсация брака') || ($item['supplier_oper_name'] == 'Компенсация подмененного товара') ) {
+        } elseif (($item['sellerOperName'] == 'Частичная компенсация брака') || ($item['sellerOperName'] == 'Компенсация подмененного товара') ) {
         //  *********************Частичная компенсация брака  ИЛИ Компенсация подмененного товара
-        $ARR_all_data[$article_new]['summa_braka'] = @$ARR_all_data[$article_new]['summa_braka'] + $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_braka'] = @$ARR_all_data[$article_new]['summa_braka'] + $item['ppvzSalesCommission'];
         
-        }  elseif (($item['supplier_oper_name'] == 'Компенсация брака')) {
+        }  elseif (($item['sellerOperName'] == 'Компенсация брака')) {
            //  ********************* компенсация брака  ИЛИ Компенсация подмененного товара
-        $ARR_all_data[$article_new]['summa_braka'] = @$ARR_all_data[$article_new]['summa_braka'] + $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_braka'] = @$ARR_all_data[$article_new]['summa_braka'] + $item['ppvzSalesCommission'];
   
-        } elseif ($item['supplier_oper_name'] == 'Возврат') {
+        } elseif ($item['sellerOperName'] == 'Возврат') {
         // Сумма возвоатов ************************************************************************************************************
         
-        $ARR_all_data[$article_new]['summa_vozvratov'] = @$ARR_all_data[$article_new]['summa_vozvratov'] + $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_vozvratov'] = @$ARR_all_data[$article_new]['summa_vozvratov'] + $item['ppvzSalesCommission'];
         $ARR_all_data[$article_new]['count_sell'] = @$ARR_all_data[$article_new]['count_sell'] - 1;
         $ARR_all_data[$article_new]['count_vozvrat'] = @$ARR_all_data[$article_new]['count_vozvrat'] + 1;
       
-        } elseif (($item['supplier_oper_name'] == 'Корректная продажа') ) {
+        } elseif (($item['sellerOperName'] == 'Корректная продажа') ) {
         
         // Сумма к перечислению (Корректная продажа) ********************************************************************************************
-        $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] + $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] + $item['ppvzSalesCommission'];
         $ARR_all_data[$article_new]['count_sell'] = @$ARR_all_data[$article_new]['count_sell'] + $item['quantity'];
     
         
-        } elseif (($item['supplier_oper_name'] == 'Сторно продаж') ) {
+        } elseif (($item['sellerOperName'] == 'Сторно продаж') ) {
         // ********************Сторно продаж *****************************************************************************************
-        $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] - $item['ppvz_for_pay'];
+        $ARR_all_data[$article_new]['summa_k_perechisleniu'] = @$ARR_all_data[$article_new]['summa_k_perechisleniu'] - $item['ppvzSalesCommission'];
         $ARR_all_data[$article_new]['count_sell'] = @$ARR_all_data[$article_new]['count_sell'] - $item['quantity'];
       
-        } elseif ($item['supplier_oper_name'] == 'Логистика') {
+        } elseif (($item['sellerOperName'] == 'Логистика') OR ($item['sellerOperName'] == 'Доставка') ){
         // Сумма логистики ************************************************************************************************************
               // учитываем только прямую логистку 
-            if ($item['bonus_type_name'] =='К клиенту при продаже') {
-                $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] + $item['delivery_rub'];
+            if ($item['bonusTypeName'] =='К клиенту при продаже') {
+                $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] + $item['deliveryService'];
              
-            } elseif ($item['bonus_type_name'] =='К клиенту при отмене') {
-                $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] + $item['delivery_rub'];
+            } elseif ($item['bonusTypeName'] =='К клиенту при отмене') {
+                $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] + $item['deliveryService'];
                 
 
-            } elseif ($item['bonus_type_name'] =='От клиента при отмене') {
-                $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] + $item['delivery_rub'];
+            } elseif ($item['bonusTypeName'] =='От клиента при отмене') {
+                $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] + $item['deliveryService'];
             }
 
-        } elseif ($item['supplier_oper_name'] == 'Возмещение издержек по перевозке') {
+        } elseif ($item['sellerOperName'] == 'Возмещение издержек по перевозке') {
         // Сумма логистики ИПЕШНИКАМ ************************************************************************************************************
         // $summa_izderzhik_po_perevozke = $summa_izderzhik_po_perevozke + $item['rebill_logistic_cost'];
         //     $arr_sum_logistik[$article_new] = @$arr_sum_logistik[$article_new] + $item['rebill_logistic_cost'];
         //     $sum_logistiki = $sum_logistiki  + $item['rebill_logistic_cost'];
-        } elseif ($item['supplier_oper_name'] == 'Логистика сторно') {
+        } elseif ($item['sellerOperName'] == 'Логистика сторно') {
         
-        $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] - $item['delivery_rub'];
+        $ARR_all_data[$article_new]['logistika'] = @$ARR_all_data[$article_new]['logistika'] - $item['deliveryService'];
         
-        } elseif ($item['supplier_oper_name'] == 'Хранение') {
+        } elseif ($item['sellerOperName'] == 'Хранение') {
         // Стоимость ХРАНЕНИЯ  ****************************************************************************************************
-        $ARR_all_data[$article_new]['hranenie'] = @$ARR_all_data[$article_new]['hranenie'] + $item['storage_fee'];
+        $ARR_all_data[$article_new]['hranenie'] = @$ARR_all_data[$article_new]['hranenie'] + $item['paidStorageSum'];
   
         
-        } elseif ($item['supplier_oper_name'] == 'Корректировка хранения') {
+        } elseif ($item['sellerOperName'] == 'Корректировка хранения') {
         // Стоимость Корректировка ХРАНЕНИЯ  ****************************************************************************************************
-        $ARR_all_data[$article_new]['hranenie'] = @$ARR_all_data[$article_new]['hranenie'] + $item['storage_fee'];
+        $ARR_all_data[$article_new]['hranenie'] = @$ARR_all_data[$article_new]['hranenie'] + $item['paidStorageSum'];
                
-        }  elseif ($item['supplier_oper_name'] == 'Удержания') {
+        }  elseif ($item['sellerOperName'] == 'Удержания') {
         // Стоимость ПРОЧИЕЕ УДЕРЖАНИЯ ****************************************************************************************************
-        $ARR_all_data[$article_new]['uderzhaia'] = @$ARR_all_data[$article_new]['uderzhaia'] + $item['deduction'];
+        $ARR_all_data[$article_new]['uderzhaia'] = @$ARR_all_data[$article_new]['uderzhaia'] + $item['deductionSum'];
       
         
-        }  elseif ($item['supplier_oper_name'] == 'Штрафы и доплаты') {
+        }  elseif ($item['sellerOperName'] == 'Штрафы и доплаты') {
         // Стоимость ШТРАФЫ И ДОПЛАТЫ  ****************************************************************************************************
-        $ARR_all_data[$article_new]['straf_i_doplat'] = @$ARR_all_data[$article_new]['straf_i_doplat'] + $item['penalty'];
+        $ARR_all_data[$article_new]['straf_i_doplat'] = @$ARR_all_data[$article_new]['straf_i_doplat'] + $item['penaltySum'];
         
-        } elseif ($item['supplier_oper_name'] == 'Штрафы') {
+        } elseif ($item['sellerOperName'] == 'Штрафы') {
         // Сумма ШТРАФОв   ************************************************************************************************************
-        $ARR_all_data[$article_new]['straf_i_doplat'] = @$ARR_all_data[$article_new]['shrafi'] + $item['penalty'];
-
+        $ARR_all_data[$article_new]['straf_i_doplat'] = @$ARR_all_data[$article_new]['shrafi'] + $item['penaltySum'];
         $sum_shtraf = $sum_shtraf  + $item['penalty'];
+      
+       
+        } elseif ($item['sellerOperName'] == 'Штраф') {
+        // Сумма ШТРАФОв   ************************************************************************************************************
+        $ARR_all_data[$article_new]['straf_i_doplat'] = @$ARR_all_data[$article_new]['shrafi'] + $item['penaltySum'];
+        $sum_shtraf = $sum_shtraf  + $item['penalty'];
+
+
         } else {
         $array_neuchet[] = $item;
         }
@@ -293,7 +357,7 @@ foreach ($arr_ino_items as $item) {
 
 // Формируем сумму выкупа для каждого артикула
 foreach ( $ARR_all_data as &$temp_data) {
-    if (isset($temp_data['count_sell'])) {
+    // if (isset($temp_data['count_sell'])) {
     $temp_data['summa_vikupa'] = @$temp_data['summa_k_perechisleniu'] 
                                + @$temp_data['summa_anavsa'] 
                                - @$temp_data['logistika'] 
@@ -303,7 +367,7 @@ foreach ( $ARR_all_data as &$temp_data) {
                                - @$temp_data['hranenie'];
                                - @$temp_data['uderzhaia'];
  $summ_array_data['sum_nasha_viplata'] = @$summ_array_data['sum_nasha_viplata'] + $temp_data['summa_vikupa'];
-    }
+    // }
 }
 
 /// формируем массив общих суммм
@@ -323,7 +387,7 @@ foreach ( $ARR_all_data as $key=>$temp_data_2) {
 
 
 // print_r($arr_82400);
-// print_r($ARR_all_data);
+print_r($ARR_all_data);
 
 echo <<<HTML
 <table class="prod_table">
@@ -347,9 +411,6 @@ echo <<<HTML
 
 
 HTML;
-
-echo "<pre>";
-print_r($arr_key_barcode);
 
     foreach ($ARR_all_data as $key=>$item){
      echo "<tr>";

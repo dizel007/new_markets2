@@ -188,10 +188,9 @@
             var nameEl = tr.querySelector('.tovar_name');
             var name   = nameEl ? (nameEl.getAttribute('title') || nameEl.textContent).trim() : '';
 
-            var artTd  = tr.children[1];
-            var links  = artTd ? artTd.querySelectorAll('a') : [];
-            var article = links[0] ? links[0].textContent.trim() : '';
-            var sku     = links[1] ? links[1].textContent.trim() : '';
+            // Артикул и SKU берём из data-атрибутов — надёжно и без парсинга HTML
+            var article = tr.getAttribute('data-article') || '';
+            var sku     = tr.getAttribute('data-sku')     || '';
 
             var row = [name, article, sku];
 

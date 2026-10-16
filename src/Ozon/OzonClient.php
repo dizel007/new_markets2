@@ -15,12 +15,12 @@ class OzonClient
     /** Базовая пауза в микросекундах (для backoff) */
     private int $baseDelayUs;
 
-    public function __construct(string $token, string $clientId, int $maxRetries = 30, int $baseDelayUs = 200000)
+    public function __construct(string $token, string $clientId, int $maxRetries = 40, int $baseDelayUs = 300000)
     {
         $this->token       = $token;
         $this->clientId    = $clientId;
         $this->maxRetries  = $maxRetries;
-        $this->baseDelayUs = $baseDelayUs; // 100 000 мкс = 0.1 сек
+        $this->baseDelayUs = $baseDelayUs; // 300 000 мкс = 0.3 сек
     }
 /********************************************************************************************************** */
    /**

@@ -76,7 +76,7 @@ echo "</div>";// Конец контейнера
 // <!--**********************************************************************************************-->
 // <!--**************************** Контеукнер ПО РАЗБОРУ МАРКЕТОВ **********************************-->
 // <!--**********************************************************************************************-->
-echo "<div class=\"container\"><div class = \"zagolovok\">Разбор заказов на маркетах</div></div>";
+echo "<div class=\"container\"><div class = \"zagolovok\">Разбор заказов на маркетах ОЗОН </div></div>";
 
 echo "<div class=\"container\">";
 
@@ -84,14 +84,21 @@ echo "<div class=\"container\">";
 print_one_block ('table_element_razbor', "wb_new_razbor/index_wb.php", 'WB Анмакс',
 'Формирование QR кодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_wb.jpg');
 
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_anmaks", 'NEW OZON Анмакс',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+
+
 print_one_block ('table_element_razbor', "wb_new_razbor/index_wbip.php", 'WB ИП Зел',
 'Формирование QR кодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_wb_ip.jpg');
 
-print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks", 'OZON Анмакс',
-'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+// print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks", 'OZON Анмакс',
+// 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
 
-print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel", 'OZON ИП Зел',
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_ip_zel", 'NEW OZON ИП Зел',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
+
+// print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel", 'OZON ИП Зел',
+// 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
 
 print_one_block ('table_element_razbor', "yandex_razbor/index_yandex.php", 'Yandex Анмакс',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_yandex.jpg');
@@ -105,11 +112,10 @@ echo "</div>";// Конец контейнера ПО РАЗБОРУ МАРКЕ�
 //<!--**********************************************************************************************-->
 // <!--**************************** OOOOOZZZZZZZZZOOOOOOOOOOOONNNNNNNNNNN **********************************-->
 // <!--**********************************************************************************************-->
-echo "<div class=\"container\"><div class = \"zagolovok\">Разбор заказов на маркетах</div></div>";
+echo "<div class=\"container\"><div class = \"zagolovok\">ДОполнительный разбор озонов </div></div>";
 
 echo "<div class=\"container\">";
-print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_anmaks", 'NEW OZON Анмакс',
-'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
+
 print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozon_shop=ozon_anmaks", 'ДОП OZON Анмакс',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
 
@@ -117,15 +123,12 @@ print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozo
 print_one_block ('table_element_razbor', "ozon_razbor_oop/index_part_ozon.php?ozon_shop=ozon_anmaks", 'ЧАСТЬ OZON ООО',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
 
-print_one_block ('table_element_razbor', "ozon_razbor_oop/index_part_ozon.php?ozon_shop=ozon_ip_zel", 'ЧАСТЬ OZON ИП',
-'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
 
 
-
-
-print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_ip_zel", 'NEW OZON ИП Зел',
-'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
 print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozon_shop=ozon_ip_zel", 'ДОП OZON ИП Зел',
+'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
+
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_part_ozon.php?ozon_shop=ozon_ip_zel", 'ЧАСТЬ OZON ИП',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
 
 
@@ -175,7 +178,9 @@ echo "<div class=\"container\"><div class = \"zagolovok\">XML отчет</div></
 echo "<div class=\"container\">";
     print_one_block ('table_element', "wb_make_xml/take_data_wb.php", 'XML WB',
     'Формирование УПД файла в формате XML на ВБ ООО', 'pics/main_screen/xml.jpg');
-
+    
+    print_one_block ('table_element', "destroy_pdf/index.php", 'Разделение PDF',
+    'Убирается последний лист с PDF файла', 'pics/main_screen/destroy_pdf.jpg');
 
     print_one_block ('table_element_razbor', "vse_instrumenti/start.php", 'Все ИНСТР',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/vse_instrumrnti.jpg');
@@ -233,11 +238,11 @@ echo "<div class=\"container\"><div class = \"zagolovok\"> Вспомогате�
 echo "<div class=\"container\">";
 
 
-print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_anmaks", 'ПОЛУЧИТЬ этикетки ОЗОН ООО АНМАКС',
-'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/ozon_report_ooo_td.jpg');
+// print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_anmaks", 'ПОЛУЧИТЬ этикетки ОЗОН ООО АНМАКС',
+// 'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/ozon_report_ooo_td.jpg');
 
-print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_ip_zel", 'ПОЛУЧИТЬ этикетки ОЗОН ИП Зел',
-'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/ozon_report_ip.jpg');
+// print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_ip_zel", 'ПОЛУЧИТЬ этикетки ОЗОН ИП Зел',
+// 'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/ozon_report_ip.jpg');
 // ЯНДЕКС до сбор
 print_one_block ('table_element', "yandex_razbor/poluchenie_yarlikov_shiped.php", 'ПОЛУЧИТЬ этикетки ЯМ',
 'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/razbor_yandex.jpg');

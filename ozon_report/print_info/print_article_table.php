@@ -32,18 +32,18 @@ $columns = [
     'article' => [
         'label' => 'Артикул',
         'text'  => true,
-        'width' => '110px',
+        'width' => '90px',
     ],
     'order_id' => [
         'label' => 'Заказ',
         'text'  => true,
-        'width' => '90px',
-        'hide'  => 'sm',
+        'width' => '100px',
+        'hide'  => 'lg',
     ],
     'shipment_id' => [
         'label' => 'Отправление',
         'text'  => true,
-        'width' => '110px',
+        'width' => '120px',
         'hide'  => 'md',
         'link'  => [
             'fbs'      => 'https://seller.ozon.ru/app/postings/fbs/{id}',
@@ -55,7 +55,7 @@ $columns = [
         'label'    => 'Дата',
         'text'     => true,
         'sortable' => true,
-        'width'    => '80px',
+        'width'    => '70px',
         'hide'     => 'sm',
     ],
     'delivery_schema' => [
@@ -68,31 +68,31 @@ $columns = [
     'sale_price' => [
         'label'    => 'Цена прод',
         'sortable' => true,
-        'width'    => '80px',
-        'hide'     => 'sm',
+        'width'    => '70px',
+        'hide'     => 'md',
     ],
     'commission_ratio' => [
         'label'    => 'Ком-я %',
         'sortable' => true,
         'sum'      => false,   // проценты не суммируем
-        'width'    => '70px',
+        'width'    => '60px',
         'hide'     => 'lg',
     ],
     'seller_price' => [
         'label'    => 'Цена пр-ца',
         'sortable' => true,
-        'width'    => '80px',
-        'hide'     => 'md',
+        'width'    => '70px',
+      
     ],
     'commission' => [
         'label'    => 'Ком-я',
         'sortable' => true,
-        'width'    => '80px',
+        'width'    => '60px',
     ],
     'Логистика' => [
         'label'    => 'Лог-ка',
         'sortable' => true,
-        'width'    => '80px',
+        'width'    => '60px',
     ],
     'Обратная логистика' => [
         'label'    => 'Обр.лог',
@@ -116,13 +116,13 @@ $columns = [
         'label'    => 'Доп.лог',
         'sortable' => true,
         'width'    => '80px',
-        'hide'     => 'md',
+        'hide'     => 'lg',
     ],
     'dop_strafi' => [
         'label'    => 'Доп.штр',
         'sortable' => true,
         'width'    => '80px',
-        'hide'     => 'md',
+        'hide'     => 'lg',
     ],
     'deneg_na_rs' => [
         'label'    => 'на Р/С',
@@ -145,7 +145,7 @@ $columns = [
     'pribil' => [
         'label'    => 'Прибыль',
         'sortable' => true,
-        'width'    => '90px',
+        'width'    => '60px',
     ],
 ];
 

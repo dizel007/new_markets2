@@ -269,7 +269,9 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
         (string)$name_ozon . ' ' . (string)$article_ozon . ' ' . (string)$sku_ozon,
         'UTF-8'
     );
-    $search_blob_safe = htmlspecialchars($search_blob, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $search_blob_safe  = htmlspecialchars($search_blob, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $article_ozon_safe = htmlspecialchars((string)$article_ozon, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $sku_ozon_safe     = htmlspecialchars((string)$sku_ozon,     ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
     echo "<tr"
         . " data-count-direct=\"" . (float)$count_direct . "\""
@@ -286,7 +288,9 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
         . " data-ino_prodazhi=\"" . (float)$ino_prodazhi . "\""
         . " data-sebestoimost=\"" . (float)$article_sebestoimost . "\""
         . " data-profit=\"" . (float)$pribil . "\""
-        . " data-search=\"" . $search_blob_safe . "\""
+        . " data-article=\"" . $article_ozon_safe . "\""
+        . " data-sku=\""     . $sku_ozon_safe     . "\""
+        . " data-search=\""  . $search_blob_safe  . "\""
         . ">";
 
     // Название товара — обрезается до 2 строк, полное в title
@@ -295,12 +299,12 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
 
     // Артикул и СКУ
     echo "<td>"
-        
         . $article_ozon
-        . "</a> <hr>"
+        . " <hr>"
         . "<a href=\"index_one_article.php?ozon_shop=$shop_name&art=" . $article_ozon . "&sku_ozon=" . $sku_ozon ."&procent=$one_procent_no_sku_trati". "\" target=\"_blank\">"
         . $sku_ozon
-        . "</a> </td>";
+        . "</a>"
+        . "</td>";
 
     // Количество заказанных товаров (шт)
     echo "<td>" . colorNum($count_direct) . "</td>";
@@ -466,5 +470,12 @@ $compare_rows = [
 <!-- SheetJS для клиентского экспорта (никаких запросов к серверу) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
+
+
 <!-- Логика таблицы: сортировка, поиск, пересчёт итогов, экспорт в Excel -->
-<script src="js/sku_table.js" defer></script>
+<?php
+$jsFile = 'js/sku_table.js';
+$jsVer  = file_exists($jsFile) ? filemtime($jsFile) : time();
+?>
+<script src="js/sku_table.js?v=<?= $jsVer ?>" defer></script>
+

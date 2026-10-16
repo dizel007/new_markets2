@@ -228,8 +228,8 @@ file_put_contents($file_name_OTLADKA, $text_otladka, FILE_APPEND);
 set_time_limit(0);
 //// РАзбиваем каждое отправление на единичное отправление и переводим в статус awaiting_deliver
 foreach ($array_for_rabor as $one_post) {
-  echo "<br> ************************ one_post *******************************  ";
-  print_r($one_post);
+  // echo "<br> ************************ one_post *******************************  ";
+  // print_r($one_post);
     $result[] = make_packeges_for_one_post_2($token, $client_id, $one_post);
     usleep(120); // 
 
@@ -253,6 +253,8 @@ foreach ($array_for_rabor as $one_post) {
 // die('dddddddddddddddd');
 // было до 28.08.2025
 
+
+
 $link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$shop_name.
                                "&now_date_razbora=".$now_date_razbora.
                                "&date_query_ozon=".$date_query_ozon.
@@ -263,6 +265,10 @@ $link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$shop_name.
 
 // echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
 
+sleep(4);
+echo "<script>window.open('$link_for_make_etikets_for_all', '_blank');</script>";
+
+
  echo <<<HTML
  <a href="$link_for_make_etikets_for_all" target="_blank">Аварийный переход на формирование этикеток</a>
 
@@ -270,5 +276,5 @@ $link_for_make_etikets_for_all ="wait_file.php?ozon_shop=".$shop_name.
 
 
 
-die('Далее тпереходим на получение ПДФ этикеток');
+die('Далее переходим на получение ПДФ этикеток');
 
