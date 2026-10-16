@@ -86,6 +86,23 @@ class OrderService
             }
         } while (true);
 
+
+// получаем список складов FBS товаров
+    $data_warehauses = ['limit' => 100];
+    $warehouses = $this->ozon->post("v2/warehouse/list", $data_warehauses);
+    foreach ($warehouses['warehouses'] as $warehouse) {
+        if (($warehouse['is_rfbs'] !== true)) {
+            $warehouses_for_razbor[] = $warehouse['warehouse_id'];
+        }
+    }
+
+    foreach ($allPostings as $number_i => &$posts) {
+// перебираем товары только ко складов ФБС, остальные пропускаем 
+      if (!in_array($posts['delivery_method']['warehouse_id'], $warehouses_for_razbor, true)) {
+         unset($allPostings[$number_i]);
+      }
+     }
+
         return $allPostings;
     }
 

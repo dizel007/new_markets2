@@ -57,6 +57,14 @@ $ozon   = new OzonClient($token, $client_id);
 $orders = new OrderService($ozon);
 
 
+// получаем список складов FBS товаров
+// $data = ["limit" => 100];
+// $warehouses = $ozon->post("v2/warehouse/list", $data);
+// foreach ($warehouses['warehouses'] as $warehouse) {
+//     if (($warehouse['is_rfbs'] !== true)) {
+//         $warehouses_for_razbor[] = $warehouse['warehouse_id'];
+//     }
+// }
 
 
 if (isset($date_query_ozon)) {
@@ -64,14 +72,23 @@ if (isset($date_query_ozon)) {
         // получаем массив всех отправления на эту дату
 $ArrayOrders = $orders->getUnfulfilledFbs($date_query_ozon, 'awaiting_deliver', $dop_days_query);
 
-        // $ArrayOrders = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, "awaiting_deliver", $dop_days_query);
 
+
+//     foreach ($ArrayOrders as $number_i => &$posts) {
+// // перебираем товары только ко складов ФБС, остальные пропускаем 
+//       if (!in_array($posts['delivery_method']['warehouse_id'], $warehouses_for_razbor, true)) {
+//          unset($ArrayOrders[$number_i]);
+//       }
+//      }
+
+
+
+ foreach ($ArrayOrders as $posts) {
+// перебираем товары только ко складов ФБС, остальные пропускаем 
 
         // Из полученного массива формируем массив данных,$array_art   для создания Заказа в 1С.
         $kolvo_tovarov = 0;
         $summa_tovarov = 0;
-
-        foreach ($ArrayOrders as $posts) {
             foreach ($posts['products'] as $prods) {
                 $array_art[$prods['offer_id']] = @$array_art[$prods['offer_id']] + $prods['quantity'];
                 $kolvo_tovarov = $kolvo_tovarov + $prods['quantity'];
