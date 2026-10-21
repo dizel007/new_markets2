@@ -57,29 +57,10 @@ $ozon   = new OzonClient($token, $client_id);
 $orders = new OrderService($ozon);
 
 
-// получаем список складов FBS товаров
-// $data = ["limit" => 100];
-// $warehouses = $ozon->post("v2/warehouse/list", $data);
-// foreach ($warehouses['warehouses'] as $warehouse) {
-//     if (($warehouse['is_rfbs'] !== true)) {
-//         $warehouses_for_razbor[] = $warehouse['warehouse_id'];
-//     }
-// }
-
-
 if (isset($date_query_ozon)) {
     if ($date_query_ozon <> '') {
         // получаем массив всех отправления на эту дату
 $ArrayOrders = $orders->getUnfulfilledFbs($date_query_ozon, 'awaiting_deliver', $dop_days_query);
-
-
-
-//     foreach ($ArrayOrders as $number_i => &$posts) {
-// // перебираем товары только ко складов ФБС, остальные пропускаем 
-//       if (!in_array($posts['delivery_method']['warehouse_id'], $warehouses_for_razbor, true)) {
-//          unset($ArrayOrders[$number_i]);
-//       }
-//      }
 
 
 

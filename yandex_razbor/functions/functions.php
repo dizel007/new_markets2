@@ -26,6 +26,7 @@ function get_new_orders($ya_token, $campaignId, $substatus = 'substatus=STARTED'
 // $substatus = 'substatus=READY_TO_SHIP'; // Когда нужно обработатть товары которые уже готовы к отправке
 
 $page=1;
+            // https://api.partner.market.yandex.ru/v1/businesses/{businessId}/orders
 $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ;
 
 $orders = get_query_without_data($ya_token, $ya_link);
@@ -45,6 +46,75 @@ for ($page=1; $page <= $orders['pager']['pagesCount']; $page++) {
 // echo "КОЛИЧЕСТВО ЗАКАЗОВ ЗА ВСЕ ВРЕМЯ = ".count($result['orders'])." <br>";
 return $result;
 }
+
+
+/********************************************************************************************
+ * ****************** Вычитываем все новые заказы с ЯНДЕКСА
+ *************************************************************************************************/
+function get_new_orders_v1_method($ya_token, $campaignId) {
+$result =[];
+// $substatus = 'substatus=STARTED';
+// $substatus = 'substatus=READY_TO_SHIP'; // Когда нужно обработатть товары которые уже готовы к отправке
+
+// $page=1;
+
+$ya_data = array(
+//   "orderIds" => [0],
+//   "externalOrderIds" => ["example"],
+//   "programTypes" => ["FBY"],
+  "campaignIds"=> [$campaignId],
+  "statuses" => ["PROCESSING"],
+  "substatuses" => ["STARTED"],
+  "dates" => array(
+    "creationDateFrom"=> "2026-10-10",
+    // "creationDateTo"=> "2026-10-18",
+    // "shipmentDateFrom"=> "2026-10-01",
+    // "shipmentDateTo"=> "2026-10-25",
+    // "updateDateFrom"=> "2026-10-18T00:00:00Z",
+    // "updateDateTo"=> "2026-10-18T00:00:00Z"
+  ),
+  "fake" => false,
+//   "waitingForCancellationApprove"=> true,
+//   "sourcePlatforms"=> ["MARKET"]
+);
+
+// print_r($ya_data);
+
+do {
+// $ya_link = 'https://api.partner.market.yandex.ru/v1/businesses/'.'789064'.'/orders/?limit=5';
+if (isset($orders2['paging']['nextPageToken'])) {
+    $ya_link = 'https://api.partner.market.yandex.ru/v1/businesses/'.'789064'.'/orders/?limit=5&pageToken='.$orders2['paging']['nextPageToken'];
+} else {
+    $ya_link = 'https://api.partner.market.yandex.ru/v1/businesses/'.'789064'.'/orders/?limit=5';
+}
+$orders2 = yandex_post_query_with_data($ya_token, $ya_link, $ya_data);
+
+    foreach ($orders2['orders'] as $order ) {
+        $result['orders'][] = $order;
+    }
+
+} while(isset($orders2['paging']['nextPageToken']));
+
+
+
+
+
+// перебираем все страницы заказов
+// for ($page=1; $page <= $orders['pager']['pagesCount']; $page++) {
+
+//     $ya_link = 'https://api.partner.market.yandex.ru/campaigns/'.$campaignId.'/orders/?'.$substatus."&page=".$page ; 
+     
+//     $orders2 = get_query_without_data($ya_token, $ya_link);  
+//     foreach ($orders2['orders'] as $order ) {
+//         $result['orders'][] = $order;
+//     }
+
+// }
+
+// echo "КОЛИЧЕСТВО ЗАКАЗОВ ЗА ВСЕ ВРЕМЯ = ".count($result['orders'])." <br>";
+return $result;
+}
+
 
 
 

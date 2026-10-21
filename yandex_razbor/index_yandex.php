@@ -41,8 +41,17 @@ require_once "functions/functions.php";
 
 
 
+// echo "<pre>";
+
+
+            //     )
+
+
 
 $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
+
+// $arr_all_new_orders = get_new_orders_v1_method($ya_token, $campaignId);
+
 // echo "<pre>";
 // print_r($arr_all_new_orders);
 

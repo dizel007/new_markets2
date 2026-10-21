@@ -1,0 +1,26 @@
+table {
+	width: 80%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+
+}
+table th {
+	font-weight: bold;
+	padding: 5px;
+	background: #99cce0;
+	border: 1px solid #000000;
+
+
+}
+table td {
+	border: 1px solid #000000;
+	padding: 5px;
+	padding-left: 10px;
+	text-align: center;
+	
+
+}
+.next_tyep {
+	background-color: #b86565;
+}

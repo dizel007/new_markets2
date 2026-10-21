@@ -149,6 +149,10 @@ $finance->getAccrualsByDay( $date_from,  $date_to, $file_name_ozon_mainSell);
 
 $data_by_days = json_decode(file_get_contents($file_name_ozon_mainSell), true);
 
+
+echo "<pre>";
+print_r($data_by_days);
+
 //  Запрос инстранных товаров
 // $file_name_ozon_inostran_prodazhi = '_cache/'.$client_id . "_ino_main_data" . ".json";
 $file_name_ozon_inostran_prodazhi = $dir . '/' .$client_id . "_ino_main_data" . ".json";

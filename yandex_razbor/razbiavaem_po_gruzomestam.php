@@ -42,7 +42,9 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
 
 echo "* ЗАКАЗЫ ДЛЯ РАЗБИВКИ ПО ГРУЗОМЕСТАМ *";
 
-
+echo "<pre>";
+print_r($new_arr_select_date);
+die();
 foreach ($new_arr_select_date as $order) { // перебираем все новые заказы
 
     $orderId = $order['id']; // ID  выбранного заказа

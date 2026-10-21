@@ -19,6 +19,7 @@ class OrderService
      * @param string $dateQueryOzon  Начало периода 'Y-m-d' (фильтр по cutoff_from)
      * @param string $status         'awaiting_packaging' | 'awaiting_deliver'
      * @param int    $dopDaysQuery   На сколько дней вперёд от $dateQueryOzon смотреть (cutoff_to)
+     * @param int    $shema   FBS или realFBS 
      * @return array                 Плоский массив postings
      */
     public function getUnfulfilledFbs(string $dateQueryOzon, string $status, int $dopDaysQuery): array
@@ -88,20 +89,26 @@ class OrderService
 
 
 // получаем список складов FBS товаров
-    $data_warehauses = ['limit' => 100];
-    $warehouses = $this->ozon->post("v2/warehouse/list", $data_warehauses);
-    foreach ($warehouses['warehouses'] as $warehouse) {
-        if (($warehouse['is_rfbs'] !== true)) {
-            $warehouses_for_razbor[] = $warehouse['warehouse_id'];
-        }
+$warehouses_for_razbor = [];
+$warehouses = $this->ozon->post('v2/warehouse/list', ['limit' => 100]);
+foreach ($warehouses['warehouses'] ?? [] as $warehouse) {
+    if (empty($warehouse['is_rfbs'])) {
+        $warehouses_for_razbor[] = $warehouse['warehouse_id'];
+    }
+}
+
+$filtered = [];
+foreach ($allPostings as $post) {
+    $whId = $post['delivery_method']['warehouse_id'] ?? null;
+
+    // не наш склад — пропускаем
+    if ($whId === null || !in_array($whId, $warehouses_for_razbor, true)) {
+        continue;
     }
 
-    foreach ($allPostings as $number_i => &$posts) {
-// перебираем товары только ко складов ФБС, остальные пропускаем 
-      if (!in_array($posts['delivery_method']['warehouse_id'], $warehouses_for_razbor, true)) {
-         unset($allPostings[$number_i]);
-      }
-     }
+    $filtered[] = $post;
+}
+        $allPostings = $filtered;       
 
         return $allPostings;
     }
