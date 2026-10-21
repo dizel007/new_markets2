@@ -10,7 +10,7 @@ require_once "../mp_functions/get_token_by_shop.php";
 
 use App\Ozon\OzonClient;
 
-echo "<pre>";
+// echo "<pre>";
 // print_r($arr_tokens);
 
 $shop_name = 'ozon_ip_zel';

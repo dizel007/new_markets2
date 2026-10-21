@@ -152,8 +152,8 @@ echo "<div class=\"container\">";
         print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel", 'WB ИП Зел отзывы',
         'Автоматический ответ на положительные отзывы с оценкой 5', 'pics/main_screen/otziv_wb_ip.jpg');
 
-        print_one_block ('table_element', "ozon_feedbacks/get_feedback.php", 'ОЗОНЫ отзывы',
-        'Автоматический ответ на положительные отзывы с оценкой 4 и 5', 'pics/main_screen/ikon_skidka_ozon.jpg');
+        // print_one_block ('table_element', "ozon_feedbacks/get_feedback.php", 'ОЗОНЫ отзывы',
+        // 'Автоматический ответ на положительные отзывы с оценкой 4 и 5', 'pics/main_screen/ikon_skidka_ozon.jpg');
 
         print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks", 'OZON Анмакс скидка',
         'Одобрение скидки от 4 до 7 процентов (по возрастающей)', 'pics/main_screen/ikon_skidka_ozon.jpg');
