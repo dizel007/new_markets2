@@ -165,6 +165,52 @@ return $ya_fbs_catalog;
 }
 
 
+
+ /************************************************************************
+ * Получаем даннные о новых заказах и обновляем каталог Яндекса
+ ************************************************************************/       
+function get_new_zakazi_yandex_new ($ya_fbs_catalog,  $arr_all_new_orders){
+
+// echo "<pre>";
+//   print_r($arr_all_new_orders);
+
+// die();
+
+// формируем массив проданные заказов
+ if  (isset($arr_all_new_orders)) {
+    foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
+       foreach ($order['items'] as $items) { // перебираем все товары из выбранного заказа
+            unset ($items['subsidies']);
+                $arr_all_items[] = $items;
+              }
+          }
+
+}
+
+// print_r($arr_all_items);
+// перебираем массив и добавляем проданные товары в каталог яндекса
+if (isset($arr_all_items)){ // Проверяем если ли вообще заказы на эту дату
+    foreach ($ya_fbs_catalog as &$items) {
+        foreach ($arr_all_items as $orders) {
+            if ($orders['offerId'] == $items['sku']) {
+                $items['sell_count'] = @$items['sell_count'] + $orders['count'];
+                $items['sell_summa'] = @$items['sell_summa'] + $orders['prices']['payment']['value'];
+            }
+        }
+
+
+
+    }
+}
+
+return $ya_fbs_catalog;
+}
+
+
+
+
+
+
  /************************************************************************
  * Получаем даннные о новых заказах и обновляем каталог Яндекса
  ************************************************************************/       

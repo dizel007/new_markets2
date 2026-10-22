@@ -163,7 +163,7 @@ $res = put_query_with_data($ya_token, $ya_link, $arr_boxes_all) ;
 function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, $dir, $order_number) {
     // $campaignId = 22076999;
    
-  $count_items=0; 
+  $count_items = 0; 
 
 
     foreach ($arr_one_article as $items) {

@@ -83,7 +83,7 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
                 //   }
                     $id_box = $order['delivery']['boxesLayout'][$box_number]['boxId']; // берем порядковый номер грузоместа
                     // echo "<br>***********  id_box  =  $id_box = ********************************************************************************<br>";
-$price_for_1c = $items['prices']['payment']['value'] /  $items['count'];
+  $price_for_1c = $items['prices']['payment']['value'] /  $items['count'];
                     $arr_boxes_all[] =  
                         array ( "id_order" => $orderId,
                                 "offerId" => mb_strtolower($items['offerId']),

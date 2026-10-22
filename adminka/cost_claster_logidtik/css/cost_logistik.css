@@ -350,9 +350,10 @@ form input[type="submit"]:active {
 
 .calc-table th,
 .calc-table td {
-    padding: 10px;
+    padding: 5px;
+    padding-left: 20px;
     border-bottom: 1px solid #eee;
-    text-align: left;
+    text-align: center;
 }
 
 .calc-table th {
@@ -401,12 +402,12 @@ form input[type="submit"]:active {
     background: #2a7;
     color: #fff;
     border: none;
-    padding: 12px 24px;
+    padding: 12px 12px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 20px;
+    /* margin-bottom: 10px; */
     transition: background 0.2s;
 }
 .add-btn:hover {

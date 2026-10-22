@@ -154,6 +154,10 @@ function  get_ostatki_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
     return $ozon_catalog;
      }
 
+
+
+
+
 /*******************************************************************************************************
 ********      Достаем фактические заказанные товары и цепляем их к каталогу товаров*********************
 *******************************************************************************************************/
@@ -169,6 +173,56 @@ function get_new_zakazi_ozon ($token_ozon, $client_id_ozon, $ozon_catalog) {
     // $res = NOT_WORK_get_all_waiting_posts_for_need_date_($token_ozon, $client_id_ozon, $date_query_ozon, 'awaiting_packaging', $dop_days_query);
 
 
+// die();
+    if ($ArrayOrders <> 0 ) { // если нет заказов на озоне, то просто возвращаем массив товаров назад
+      foreach ($ArrayOrders as $posts) {
+         foreach ($posts['products'] as $prods) 
+        {
+             @$arr_products[$prods['offer_id']] += $prods['quantity'];
+             @$arr_summa_sell_products[$prods['offer_id']] += $prods['price']['amount']*$prods['quantity'];
+           }
+            
+        }
+
+    //  print_r ($arr_summa_sell_products);   
+// die();
+// добавляем в каталог данные о количестве проданного товара
+        foreach ($arr_products as $key=>$prods) {
+            foreach ($ozon_catalog as &$items_ozon) {
+
+                if ( mb_strtolower((string)$key) ==  mb_strtolower((string)$items_ozon['mp_article'])) {
+
+                    $items_ozon['sell_count'] = $prods;
+                } 
+            }
+        }
+  // добавляем в каталог данные о сумме проданного товара      
+        foreach ($arr_summa_sell_products as $key=>$Sell_summa) {
+            foreach ($ozon_catalog as &$items_ozon) {
+
+                if ( mb_strtolower((string)$key) ==  mb_strtolower((string)$items_ozon['mp_article'])) {
+
+                    $items_ozon['sell_summa'] = $Sell_summa;
+                } 
+            }
+        }
+
+    }
+    
+    return $ozon_catalog;
+    }
+
+
+
+
+
+
+
+/*******************************************************************************************************
+********      Достаем фактические заказанные товары и цепляем их к каталогу товаров*********************
+*******************************************************************************************************/
+
+function get_new_zakazi_ozon_new ($ozon_catalog, $ArrayOrders) {
 // die();
     if ($ArrayOrders <> 0 ) { // если нет заказов на озоне, то просто возвращаем массив товаров назад
       foreach ($ArrayOrders as $posts) {
