@@ -20,6 +20,7 @@ foreach ($posting_item_array as $posting_item) {
 
    foreach ($posting_item['posting']['products'] as $products) {
        $sku = $products['sku'];
+       $quantity = $products['quantity'];
 
        if (isset($products['delivery']))  {
         foreach ($products['delivery']['services'] as $delivery_serveces) {
@@ -28,6 +29,10 @@ foreach ($posting_item_array as $posting_item) {
             // если логистика отрицательная, то добавляем признак возврата
             if ($delivery_serveces['type_id'] == 59) {
                 @$arr_posting_orders[$sku][$order_number][$unit_number]['_return_'] = 1;
+                 @$arr_posting_orders[$sku][$order_number][$unit_number]['count'] = $quantity;
+            } elseif ($delivery_serveces['type_id'] == 32) {
+              @$arr_posting_orders[$sku][$order_number][$unit_number]['count'] = $quantity;
+
             }
             // запоняем массив доставкой
 
@@ -40,8 +45,9 @@ foreach ($posting_item_array as $posting_item) {
 
           foreach ($products['commission'] as $type_commission=> $delivery_commission) {
 
-          if (($type_commission == 'sale_amount') OR ($type_commission == 'sale_commission') OR 
-               ($type_commission == 'coinvestment') OR ($type_commission == 'bonus') ) { 
+        //   if (($type_commission == 'sale_amount') OR ($type_commission == 'sale_commission') OR 
+          if (($type_commission == 'sale_commission') OR 
+              ($type_commission == 'coinvestment') OR ($type_commission == 'bonus') ) { 
             continue;
           }
     // если есть отрицательные суммы продаж, то добавляем признак возвратта 

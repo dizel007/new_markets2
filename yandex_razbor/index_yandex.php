@@ -1,12 +1,19 @@
 <?php
 $offset = "../";
 require_once $offset."connect_db.php";
-require_once $offset."pdo_functions/pdo_functions.php";
-require_once $offset."mp_functions/yandex_api_functions.php";
-require_once $offset."mp_functions/yandex_functions.php";
-require_once "functions/functions_yandex.php";
+// require_once $offset."pdo_functions/pdo_functions.php";
 
 require_once "functions/functions.php";
+
+require_once $offset."vendor/autoload.php";
+use App\Yandex\YandexClient;
+use App\Yandex\Service\YandexOrderService;
+
+// require_once $offset."mp_functions/yandex_api_functions.php";
+// require_once $offset."mp_functions/yandex_functions.php";
+// require_once "functions/functions_yandex.php";
+
+// require_once "functions/functions.php";
 
 //  $ya_token =  get_token_yam($pdo);
 //  $campaignId =  get_id_company_yam($pdo);
@@ -20,12 +27,12 @@ require_once "functions/functions.php";
 // die();
     if (isset($_GET['select_date'])) {
         $need_date_temp = $_GET['select_date'];
-        $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
+        $need_date = date('Y-m-d' , strtotime($need_date_temp)); 
     
     }else {
         // $date_query_ozon =''; 
         $need_date_temp = date('Y-m-d'); 
-        $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
+        $need_date = date('Y-m-d' , strtotime($need_date_temp)); 
     }
     
     // echo $need_date."<br>"; 
@@ -40,20 +47,38 @@ require_once "functions/functions.php";
     HTML;
 
 
+// $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
 
-// echo "<pre>";
+$yandex = new YandexClient($ya_token, $campaignId);
+
+//=========================================================================================================================
+// находим business_id для нашего магазинаа
+//=========================================================================================================================
+$campaigns = $yandex->yandex_post('v2/campaigns');
+foreach ($campaigns['campaigns'] as $campaign) {
+    if ($campaignId == $campaign['id']) {
+        $business_id = $campaign['business']['id'];
+        break;
+    }
+
+}
+
+$orders = new YandexOrderService ($yandex, $campaignId, $business_id);
+
+//=========================================================================================================================
+// запрашваем все заказы со статусом PROCESSING -- STARTED //
+//=========================================================================================================================
+
+$arr_all_new_orders =$orders->YandexgetUnfulfilledFby($need_date_temp,  'PROCESSING',  'STARTED');
+
+//    [substatus] => READY_TO_SHIP 
 
 
-            //     )
+// print_r($arr_all_new_orders['orders'][0]);
 
+    // $return_arrays = make_array_sell_items ($arr_all_new_orders , $need_date);
+// print_r($return_arrays['arr_all_items']);
 
-
-$arr_all_new_orders = get_new_orders($ya_token, $campaignId);
-
-// $arr_all_new_orders = get_new_orders_v1_method($ya_token, $campaignId);
-
-// echo "<pre>";
-// print_r($arr_all_new_orders);
 
 // die();
 if  (isset($arr_all_new_orders)) {
@@ -69,7 +94,7 @@ isset($return_arrays['arr_all_items'])?$arr_all_items = $return_arrays['arr_all_
 /// Выводим все заказы на все даты 
 print_table_with_ALL_orders ($arr_mass_orders, '');
 
-
+// die();
 
 /// Выводим все на выбранную дату
 if (isset ($arr_mass_one_date_orders)) {

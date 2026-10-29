@@ -1,0 +1,359 @@
+/* ================= Базовое ================= */
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 24px 16px;
+    color: #1f2a3a;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pd-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ================= Заголовок ================= */
+.pd-header {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03);
+    border: 1px solid #e9edf2;
+    border-left: 6px solid #005bff;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.pd-header.status-cancelled  { border-left-color: #e53935; }
+.pd-header.status-delivered  { border-left-color: #2e7d32; }
+.pd-header.status-delivering { border-left-color: #f9a825; }
+.pd-header.status-awaiting   { border-left-color: #005bff; }
+
+.pd-header__schema {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #005bff;
+    background: #e6efff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.pd-header__title {
+    font-size: 22px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    line-height: 1.25;
+    word-break: break-all;
+}
+
+.pd-header__meta {
+    font-size: 13px;
+    color: #5a6679;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.pd-header__meta strong { color: #1f2a3a; }
+.pd-dot { color: #b0b8c5; }
+
+.pd-header__status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.pd-header__status-main {
+    font-size: 12px;
+    color: #7a8699;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ================= Бейдж статуса ================= */
+.pd-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.pd-badge.status-cancelled  { background: #fde8e8; color: #b71c1c; }
+.pd-badge.status-delivered  { background: #e6f7e6; color: #1b5e20; }
+.pd-badge.status-delivering { background: #fff8e6; color: #8a6d00; }
+.pd-badge.status-awaiting   { background: #e6efff; color: #003a99; }
+.pd-badge.status-other      { background: #eef1f5; color: #3a465a; }
+
+/* ================= Алерт ================= */
+.pd-alert {
+    display: flex;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: 1px solid;
+}
+.pd-alert--danger {
+    background: #fdf2f2;
+    border-color: #f5c2c2;
+    color: #8a1c1c;
+}
+.pd-alert__icon {
+    font-size: 20px;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e53935;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.pd-alert__title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.pd-alert__text { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.pd-alert__meta { font-size: 12px; color: #8a5a5a; }
+
+/* ================= Сетка карточек ================= */
+.pd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.pd-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03);
+    border: 1px solid #e9edf2;
+}
+.pd-card--wide { grid-column: 1 / -1; }
+
+.pd-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eef1f5;
+    gap: 10px;
+}
+.pd-card__head h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1f2a3a;
+}
+
+.pd-chip {
+    background: #eef3fb;
+    color: #005bff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+/* ================= Товар ================= */
+.pd-product {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.pd-product__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: #f0f4fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+.pd-product__body { flex: 1 1 220px; min-width: 200px; }
+.pd-product__name { font-size: 16px; font-weight: 600; margin-bottom: 6px; line-height: 1.35; }
+.pd-product__article { font-size: 13px; color: #5a6679; }
+.pd-product__prices {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 180px;
+}
+.pd-price-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+}
+.pd-price-row__label { color: #5a6679; }
+.pd-price-row__value { font-weight: 600; white-space: nowrap; }
+.pd-price-row--muted .pd-price-row__value { color: #9aa4b2; font-weight: 500; }
+
+/* ================= Список определений ================= */
+.pd-dl {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 8px 12px;
+    margin: 0;
+    font-size: 14px;
+}
+.pd-dl dt { color: #7a8699; }
+.pd-dl dd { margin: 0; text-align: right; color: #1f2a3a; font-weight: 500; word-break: break-word; }
+
+.pd-mono { font-family: 'SF Mono', Consolas, monospace; font-size: 13px; }
+.pd-muted { color: #9aa4b2 !important; font-weight: 500 !important; }
+.pd-positive { color: #2e7d32; }
+.pd-negative { color: #c62828; }
+
+/* ================= Маршрут ================= */
+.pd-route {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.pd-route__point {
+    flex: 1 1 0;
+    min-width: 120px;
+    background: #f6f9ff;
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+.pd-route__label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7a8699;
+    margin-bottom: 4px;
+}
+.pd-route__value { font-size: 14px; font-weight: 600; }
+.pd-route__arrow {
+    font-size: 22px;
+    color: #005bff;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ================= Таймлайн ================= */
+.pd-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+.pd-timeline__item {
+    background: #f6f9ff;
+    border-radius: 12px;
+    padding: 12px 14px;
+    border-left: 3px solid #005bff;
+}
+.pd-timeline__label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7a8699;
+    margin-bottom: 4px;
+}
+.pd-timeline__value { font-size: 14px; font-weight: 600; }
+
+/* ================= Флаги ================= */
+.pd-flags { display: flex; flex-wrap: wrap; gap: 8px; }
+.pd-flag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #e0e5ec;
+    background: #f6f8fb;
+    color: #5a6679;
+}
+.pd-flag--on  { background: #e6efff; color: #005bff; border-color: #b8d0ff; }
+.pd-flag--off { background: #f6f8fb; color: #9aa4b2; }
+.pd-flag--info { background: #fff8e6; color: #8a6d00; border-color: #f0e0a0; }
+
+/* ================= Details ================= */
+.pd-details {
+    margin-top: 14px;
+    border-top: 1px dashed #e0e5ec;
+    padding-top: 10px;
+}
+.pd-details summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #005bff;
+    user-select: none;
+}
+.pd-details summary::-webkit-details-marker { display: none; }
+.pd-details summary::before { content: '▸ '; }
+.pd-details[open] summary::before { content: '▾ '; }
+
+.pd-list { margin: 8px 0 0; padding-left: 20px; font-size: 13px; color: #3a465a; }
+.pd-list li { margin-bottom: 4px; }
+
+/* ================= Кнопки ================= */
+.pd-btn {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #f0f3f8;
+    color: #1f2a3a;
+    white-space: nowrap;
+}
+.pd-btn:hover { background: #e2e8f0; transform: translateY(-1px); }
+.pd-btn--primary {
+    background: #005bff;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,91,255,0.3);
+}
+.pd-btn--primary:hover { background: #0047cc; }
+
+/* ================= Футер ================= */
+.pd-footer {
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+
+/* ================= Мелкие подписи ================= */
+.pd-sub {
+    font-size: 11px;
+    color: #7a8699;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* ================= Адаптив ================= */
+@media (max-width: 640px) {
+    body { padding: 12px 8px; }
+    .pd-header { padding: 18px; flex-direction: column; }

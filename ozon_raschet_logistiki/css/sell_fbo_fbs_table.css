@@ -13,7 +13,7 @@ h1 {
 
 /* ---------- Стили для формы ---------- */
 form {
-  max-width: 900px;          /* чуть шире, чтобы всё помещалось */
+  max-width: 1200px; 
   margin: 0 auto 30px;
   padding: 20px 25px;
   background: #ffffff;
@@ -214,28 +214,6 @@ form input[type="submit"]:active {
   max-width: 1600px;
 }
 
-/* Статусные цвета для строк */
-.status-cancelled {
-  background-color: #fde8e8 !important; /* светло-красный */
-}
-.status-cancelled td {
-  background-color: #fde8e8 !important;
-}
-
-.status-delivered {
-  background-color: #e6f7e6 !important; /* светло-зелёный */
-}
-.status-delivered td {
-  background-color: #e6f7e6 !important;
-}
-
-.status-delivering {
-  background-color: #fff8e6 !important; /* светло-жёлтый */
-}
-.status-delivering td {
-  background-color: #fff8e6 !important;
-}
-
 /* Чтобы сохранить эффект ховера (если нужен), можно добавить */
 .sell_mp_table tbody tr.status-cancelled:hover td {
   background: #fccccc !important;
@@ -296,7 +274,7 @@ form input[type="submit"]:active {
     display: flex;
     justify-content: center;
     margin: 10px auto 20px;
-    max-width: 1200px;
+    /* max-width: 90%; */
 }
 .filter-status form {
     background: #ffffff;

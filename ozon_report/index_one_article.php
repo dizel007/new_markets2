@@ -130,10 +130,10 @@ foreach ($arr_by_accrued_category['NON_ITEM'] as $b) {
 
 $sum_array = razbor_POSTING_category($sum_array, $arr_by_accrued_category['POSTING'], $type_fees);
 foreach ($sum_array as $item_sku) {
-    @$all_summ_seller_price += $item_sku['seller_price'];
+    @$all_summ_sale_amount += $item_sku['sale_amount'];
 }
-$one_procent_ot_sum_seller_price = $all_summ_seller_price / 100;
-$porc_kotori_nuzhno_raspredelit = $sum_array[$sku_ozon]['seller_price'] /  $one_procent_ot_sum_seller_price;
+$one_procent_ot_sum_sale_amount = $all_summ_sale_amount / 100;
+$porc_kotori_nuzhno_raspredelit = $sum_array[$sku_ozon]['sale_amount'] /  $one_procent_ot_sum_sale_amount;
 // сумма рекламы и прочей херни, которую не привязвли к СКУ 
 $summa_non_item_dlia_sku = $summa_non_item_bez_viborki_po_postingam * $porc_kotori_nuzhno_raspredelit / 100;
 
@@ -206,7 +206,7 @@ foreach ($Arr as $sku => &$item_order) {
             }
 
 //// Посчитаем сколько денег должны нам перевести на Р/С (как вЛК ОЗОНЕ)
-            $posting['deneg_na_rs'] =  @$posting['seller_price'] +
+            $posting['deneg_na_rs'] =  @$posting['sale_amount'] +
                                        @$posting['commission']  +
                                        @$posting['Логистика'] +
                                        @$posting['Обратная логистика'] +
@@ -226,17 +226,17 @@ foreach ($Arr as $sku => &$item_order) {
 //================================================================================================
 //                            Добавляем иностанные продажи 
 //================================================================================================
-
+if (isset($ino_prodazhi['products'])) {
 foreach ($ino_prodazhi['products'] as $jh=>&$ino_items ) {
     if (($ino_items['posting_number'] == $post)) {
-        @$posting['seller_price'] += $ino_items['amount'];
+        @$posting['sale_amount'] += $ino_items['amount'];
         @$posting['article']  = $posting['article'].'(ino)';
         @$posting['ino']  = '_ino_';
         unset ($ino_prodazhi['products'][$jh]); // удаляем то ч 
     }
 
 }
-
+}
 //================================================================================================
 //                            Считаем прибыль на Р/С 
 //================================================================================================
@@ -246,7 +246,7 @@ foreach ($ino_prodazhi['products'] as $jh=>&$ino_items ) {
                            @$posting['sebestoimost']; 
 // если иностранные продажи и ЮЛ продажи, то добавляем сумму из отчета по иностранным продажам 
     if (isset($posting['ino'])) {
-        @$posting['pribil'] += $posting['seller_price'];
+        @$posting['pribil'] += $posting['sale_amount'];
      }
 
 

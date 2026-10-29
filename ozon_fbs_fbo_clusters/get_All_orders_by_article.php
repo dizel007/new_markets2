@@ -1,4 +1,3 @@
-
 <?php
 /**********************************************************************************************************
  *     ***************    Получаем массив всех транзакций
@@ -9,6 +8,8 @@ require_once "../pdo_functions/pdo_functions.php";
 // require_once "functions_orders_fbo_fbs.php";
 
 
+$shop_name = $_GET['shopname'];
+
 // доставем всю номенсклатуру
 $arr_all_nomenklatura = select_active_nomenklaturu($pdo);
 foreach ($arr_all_nomenklatura as $zzz) {
@@ -16,12 +17,12 @@ foreach ($arr_all_nomenklatura as $zzz) {
 }
 //// Проверяем и есть нет папки, то создаем ее, для каждого пользователя своя папка в !cache
  
-$dir_for_cache = "../!cache/".$userdata['user_login']."/";
-
-
+$dir_for_cache = "../!cache/".$userdata['user_login']."/ozon_fbs_fbo_clusters/";
+$filename_fbs_orders = $dir_for_cache."json_fbs_Orders_".$shop_name.".json";
+$filename_fbo_orders = $dir_for_cache."json_fbo_Orders_".$shop_name.".json";
 // echo "<pre>";
 
-$shop_name = $_GET['shopname'];
+
 
 
 $article = mb_strtolower($_GET['article']);
@@ -38,8 +39,7 @@ $schemaLower = strtolower($delivery_schema);
 
 if ($schemaLower === 'fbs') {
     // FBS
-    $filePathFBS = $dir_for_cache."json_fbsOrders_".$shop_name.".json";
-    $ordersFBS = json_decode(file_get_contents($filePathFBS),true);
+    $ordersFBS = json_decode(file_get_contents($filename_fbs_orders),true);
     // выбиираем товары только с нашим артикулом из ФБС
 foreach ($ordersFBS as $itemFbs) {
    foreach ($itemFbs['products'] as $product) {
@@ -56,8 +56,7 @@ unset($product);
 
 } elseif ($schemaLower === 'fbo') {
        // FBO
-$filePathFBO = $dir_for_cache."json_fboOrders_".$shop_name.".json";
-    $ordersFB0 = json_decode(file_get_contents($filePathFBO),true);
+    $ordersFB0 = json_decode(file_get_contents($filename_fbo_orders),true);
 // выбиираем товары только с нашим артикулом из ФБO
 foreach ($ordersFB0 as $itemFbo) {
    foreach ($itemFbo['products'] as $product) {
@@ -75,11 +74,8 @@ unset($product);
 
 } else {
     // Нет схемы
-$filePathFBS = $dir_for_cache."json_fbsOrders_".$shop_name.".json";
-$filePathFBO = $dir_for_cache."json_fboOrders_".$shop_name.".json";
-
-$ordersFBS = json_decode(file_get_contents($filePathFBS),true);
-$ordersFB0 = json_decode(file_get_contents($filePathFBO),true);
+$ordersFBS = json_decode(file_get_contents($filename_fbs_orders),true);
+$ordersFB0 = json_decode(file_get_contents($filename_fbo_orders),true);
 // выбиираем товары только с нашим артикулом из ФБС
 foreach ($ordersFBS as $itemFbs) {
    foreach ($itemFbs['products'] as $product) {
@@ -109,7 +105,6 @@ unset($itemFbo);
 unset($product);
 
 }
-
 
 
 
@@ -168,19 +163,82 @@ if (isset($array_for_print)) {
    usort($array_for_print, function($a, $b) {
     return strcmp($a['in_process_at'], $b['in_process_at']);
 });
-// 
-// 1. Собираем уникальные статусы из массива (до фильтрации по статусу)
+
+// ============================================================
+// 1. Собираем все уникальные статусы (не зависят от фильтров по кластерам)
+// ============================================================
 $all_statuses = [];
 foreach ($array_for_print as $item) {
-    $status = $item['substatus'] ?: $item['status']; // используем то же поле, что выводится в таблице
+    $status = $item['substatus'] ?: $item['status'];
     if ($status) {
         $all_statuses[$status] = $status;
     }
 }
-ksort($all_statuses); // для порядка
+ksort($all_statuses);
 
-// 2. Фильтр по статусу (если передан)
+// ============================================================
+// 2. Читаем все фильтры из GET
+// ============================================================
 $status_filter = $_GET['status_filter'] ?? '';
+
+// Накопительный фильтр по "Откуда"
+$cluster_from_filter = $_GET['cluster_from'] ?? [];
+if (!is_array($cluster_from_filter)) {
+    $cluster_from_filter = [$cluster_from_filter];
+}
+$cluster_from_filter = array_values(array_filter($cluster_from_filter, 'strlen'));
+
+// Накопительный фильтр по "Куда"
+$cluster_to_filter = $_GET['cluster_to'] ?? [];
+if (!is_array($cluster_to_filter)) {
+    $cluster_to_filter = [$cluster_to_filter];
+}
+$cluster_to_filter = array_values(array_filter($cluster_to_filter, 'strlen'));
+
+// ============================================================
+// 3. Собираем доступные варианты для каждого фильтра
+//    с учётом ВСЕХ ДРУГИХ активных фильтров (каскадное сужение)
+// ============================================================
+
+// 3a. Доступные "Откуда" — из строк, прошедших ВСЕ фильтры, КРОМЕ "Откуда"
+$all_clusters_from = [];
+foreach ($array_for_print as $item) {
+    // проверяем статус
+    if (!empty($status_filter)) {
+        $status = $item['substatus'] ?: $item['status'];
+        if ($status !== $status_filter) continue;
+    }
+    // проверяем "Куда"
+    if (!empty($cluster_to_filter)) {
+        if (!in_array($item['cluster_to'] ?? '', $cluster_to_filter, true)) continue;
+    }
+    if (!empty($item['cluster_from'])) {
+        $all_clusters_from[$item['cluster_from']] = $item['cluster_from'];
+    }
+}
+ksort($all_clusters_from);
+
+// 3b. Доступные "Куда" — из строк, прошедших ВСЕ фильтры, КРОМЕ "Куда"
+$all_clusters_to = [];
+foreach ($array_for_print as $item) {
+    // проверяем статус
+    if (!empty($status_filter)) {
+        $status = $item['substatus'] ?: $item['status'];
+        if ($status !== $status_filter) continue;
+    }
+    // проверяем "Откуда"
+    if (!empty($cluster_from_filter)) {
+        if (!in_array($item['cluster_from'] ?? '', $cluster_from_filter, true)) continue;
+    }
+    if (!empty($item['cluster_to'])) {
+        $all_clusters_to[$item['cluster_to']] = $item['cluster_to'];
+    }
+}
+ksort($all_clusters_to);
+
+// ============================================================
+// 4. Применяем фильтры к $array_for_print (для вывода таблицы)
+// ============================================================
 if (!empty($status_filter)) {
     $array_for_print = array_filter($array_for_print, function($item) use ($status_filter) {
         $status = $item['substatus'] ?: $item['status'];
@@ -188,7 +246,17 @@ if (!empty($status_filter)) {
     });
 }
 
+if (!empty($cluster_from_filter)) {
+    $array_for_print = array_filter($array_for_print, function($item) use ($cluster_from_filter) {
+        return in_array($item['cluster_from'] ?? '', $cluster_from_filter, true);
+    });
+}
 
+if (!empty($cluster_to_filter)) {
+    $array_for_print = array_filter($array_for_print, function($item) use ($cluster_to_filter) {
+        return in_array($item['cluster_to'] ?? '', $cluster_to_filter, true);
+    });
+}
 
 }
 // echo "<pre>";
@@ -210,6 +278,20 @@ if (!empty($status_filter)) {
     // Определяем активную схему
     $current_schema = $_GET['delivery_schema'] ?? '';
     $base_url = "?shopname=" . urlencode($shop_name) . "&article=" . urlencode($article);
+    // сохраняем текущие фильтры при переключении схемы
+    if (!empty($status_filter)) {
+        $base_url .= "&status_filter=" . urlencode($status_filter);
+    }
+    if (!empty($cluster_from_filter)) {
+        foreach ($cluster_from_filter as $cf) {
+            $base_url .= "&cluster_from[]=" . urlencode($cf);
+        }
+    }
+    if (!empty($cluster_to_filter)) {
+        foreach ($cluster_to_filter as $ct) {
+            $base_url .= "&cluster_to[]=" . urlencode($ct);
+        }
+    }
     ?>
     <a href="<?= $base_url ?>&delivery_schema=fbs" 
        class="btn-filter <?= ($current_schema === 'fbs') ? 'active' : '' ?>">FBS</a>
@@ -231,7 +313,7 @@ echo "</div>";
  ?>
 
 
-<!-- Блок фильтрации по статусу -->
+<!-- Блок фильтрации по статусу, Откуда и Куда -->
 <div class="filter-status">
     <form method="get" action="" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:transparent; border:none; padding:0; margin:0;">
         <!-- скрытые параметры, чтобы сохранить текущие фильтры -->
@@ -248,6 +330,48 @@ echo "</div>";
                 </option>
             <?php endforeach; ?>
         </select>
+
+        <!-- Фильтр Откуда (накопительный, только доступные варианты) -->
+        <label for="cluster_from"><strong>Откуда:</strong></label>
+        <select name="cluster_from[]" id="cluster_from" multiple size="1"
+                onchange="this.form.submit()"
+                title="Ctrl/Cmd + клик — выбрать несколько"
+                style="min-width:180px; padding:8px 14px; border-radius:8px; border:1px solid #d0d5dd; font-size:14px; background:#fafbfc;">
+            <?php if (empty($all_clusters_from)): ?>
+                <option value="" disabled>нет доступных</option>
+            <?php else: ?>
+                <?php foreach ($all_clusters_from as $cf): ?>
+                    <option value="<?= htmlspecialchars($cf) ?>"
+                        <?= in_array($cf, $cluster_from_filter, true) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($cf) ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+
+        <!-- Фильтр Куда (накопительный, только доступные варианты) -->
+        <label for="cluster_to"><strong>Куда:</strong></label>
+        <select name="cluster_to[]" id="cluster_to" multiple size="1"
+                onchange="this.form.submit()"
+                title="Ctrl/Cmd + клик — выбрать несколько"
+                style="min-width:180px; padding:8px 14px; border-radius:8px; border:1px solid #d0d5dd; font-size:14px; background:#fafbfc;">
+            <?php if (empty($all_clusters_to)): ?>
+                <option value="" disabled>нет доступных</option>
+            <?php else: ?>
+                <?php foreach ($all_clusters_to as $ct): ?>
+                    <option value="<?= htmlspecialchars($ct) ?>"
+                        <?= in_array($ct, $cluster_to_filter, true) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($ct) ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+
+        <!-- Сброс всех фильтров, кроме схемы/магазина/артикула -->
+        <a href="?shopname=<?= urlencode($shop_name) ?>&article=<?= urlencode($article) ?>&delivery_schema=<?= urlencode($delivery_schema) ?>"
+           class="btn-filter" style="padding:8px 14px; border-radius:8px; border:1px solid #d0d5dd; text-decoration:none; color:#333; background:#fff;">
+            Сбросить
+        </a>
     </form>
 </div>
 
@@ -259,8 +383,8 @@ echo "</div>";
     <tr>
        <th>пп</th>
       <th>Артикул</th>
-      <th>ozon</th>
       <th>№ заказа</th>
+      <th>Ссылка на ozon</th>
       <th>Дата</th>
       <th>Статус</th>
       <th>Схема</th>
@@ -302,7 +426,7 @@ $linkForPostingNumber = "get_data_posting_number.php?shopname=$shop_name&deliver
       <td><?= htmlspecialchars($i) ?></td>
       <td><?= htmlspecialchars($item['offer_id'] ?? '') ?></td>
       <td> <a href="<?=  $linkForPostingNumber ?>" target="_blank"><?= htmlspecialchars($item['posting_number'] ?? '') ?></a></td>
-      <td> <a href = "<?= $link_for_ozon_seller; ?>" target="_blank"  >OZ</a></td>
+      <td> <a href = "<?= $link_for_ozon_seller; ?>" target="_blank"  >OZON</a></td>
       <td><?= date('d.m.Y H:i', strtotime($item['in_process_at'] ?? '')) ?></td>
       <td><?= htmlspecialchars($substatus ?: $status) ?></td>
       <td><?= htmlspecialchars($item['delivery_schema'] ?? '') ?></td>

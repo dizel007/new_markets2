@@ -43,7 +43,7 @@ echo "<td>{$atricle}</td>";
 
 if (isset($arr_FBS_sells[$atricle]) ) {
     
-      $link_for_article_fbs = "get_FBO_FBS_orders_by_article.php?shopname=".$shop_name."&article=".urlencode($atricle)."&delivery_schema=fbs";
+      $link_for_article_fbs = "logistik_get_by_article.php?shopname=".$shop_name."&article=".urlencode($atricle)."&delivery_schema=fbs";
 
 
       echo "<td><a href=\"$link_for_article_fbs\" target=\"_blank\">{$arr_FBS_sells[$atricle]['count']}</a></td>";
@@ -62,7 +62,7 @@ if (isset($arr_FBS_sells[$atricle]) ) {
 // *****************************************************************
 if (isset($arr_FBO_sells[$atricle])) {
 
-      $link_for_article_fbo = "get_FBO_FBS_orders_by_article.php?shopname=".$shop_name."&article=".urlencode($atricle)."&delivery_schema=fbo";
+      $link_for_article_fbo = "logistik_get_by_article.php?shopname=".$shop_name."&article=".urlencode($atricle)."&delivery_schema=fbo";
 
       echo "<td><a href=\"$link_for_article_fbo\"  target=\"_blank\">{$arr_FBO_sells[$atricle]['count']}</a></td>";
 
@@ -87,7 +87,7 @@ if (isset($arr_FBO_sells[$atricle]) OR isset($arr_FBS_sells[$atricle])) {
       $all_summa_count += $all_count;
       $all_summa_summa += $all_summa; 
 
-      $link_for_article_all = "get_FBO_FBS_orders_by_article.php?shopname=".$shop_name."&article=".urlencode($atricle);
+      $link_for_article_all = "logistik_get_by_article.php?shopname=".$shop_name."&article=".urlencode($atricle);
 
       echo "<td><a href=\"$link_for_article_all\" target=\"_blank\">{$all_count}</a></td>";
 

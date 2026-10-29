@@ -78,7 +78,7 @@ $columns = [
         'width'    => '60px',
         'hide'     => 'lg',
     ],
-    'seller_price' => [
+    'sale_amount' => [
         'label'    => 'Цена пр-ца',
         'sortable' => true,
         'width'    => '70px',
@@ -87,7 +87,7 @@ $columns = [
     'commission' => [
         'label'    => 'Ком-я',
         'sortable' => true,
-        'width'    => '60px',
+        'width'    => '70px',
     ],
     'Логистика' => [
         'label'    => 'Лог-ка',

@@ -120,7 +120,7 @@ echo "<tbody id=\"filterable-table-body\">";
 $url_encoded = '#';
 
 // Денежные суммы
-$sum_seller_price                    = 0;
+$sum_sale_amount                    = 0;
 $sum_commission                      = 0;
 $sum_logistika                       = 0;
 $sum_price_without_comm_and_logist   = 0;
@@ -143,7 +143,7 @@ $one_procent_no_sku_trati = 0;
 
 // Нам нужна сумма продаж по цене продавца, чтобы найти 1% от суммы всех продаж
 foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
-    @$all_sum_seller += $item_for_print['seller_price'];
+    @$all_sum_seller += $item_for_print['sale_amount'];
 
     /// Обрабатываем массив NO_SKU
     if ($sku_ozon == 'NO_SKU') {
@@ -183,7 +183,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     // просто удаляем лишнее, чтобы посмотреть, что осталось
     getUnitNumber($item_for_print, "delivery_summa");
     getUnitNumber($item_for_print, "sale_price");
-    getUnitNumber($item_for_print, "sale_amount");
+    getUnitNumber($item_for_print, "seller_price");
     getUnitNumber($item_for_print, "coinvestment");
     getUnitNumber($item_for_print, "sale_commission");
     getUnitNumber($item_for_print, "bonus");
@@ -206,7 +206,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
 // ==========================================================================
 //***************************************************************************
 
-    $seller_price = getUnitNumber($item_for_print, "seller_price");
+    $sale_amount = getUnitNumber($item_for_print, "sale_amount");
     $commission   = getUnitNumber($item_for_print, "commission");
     $logistika    = getUnitNumber($item_for_print, "Логистика")
                   + getUnitNumber($item_for_print, "Обратная логистика")
@@ -221,12 +221,12 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     }
     unset($sum_array_to_redakt[$sku_ozon]);
 
-    $price_without_comm_and_logist = $seller_price + $commission + $logistika + $equairing + $service;
+    $price_without_comm_and_logist = $sale_amount + $commission + $logistika + $equairing + $service;
 
     ////////////////////////////////////////////////////////////////////////////
     // распределение суммы NO_SKU (реклама, штрафы и прочее)
     if ($all_sum_seller <> 0 ) {
-    $summa_raspredelenia_no_sku_trat = round(($seller_price / ($all_sum_seller * 0.01) * $one_procent_no_sku_trati), 2);
+    $summa_raspredelenia_no_sku_trat = round(($sale_amount / ($all_sum_seller * 0.01) * $one_procent_no_sku_trati), 2);
     } else {
        $summa_raspredelenia_no_sku_trat = 0; 
     }
@@ -247,7 +247,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     /////////////////////////////////////////
     // суммируем все цены и количества
     /////////////////////////////////////////
-    $sum_seller_price                  += $seller_price;
+    $sum_sale_amount                  += $sale_amount;
     $sum_commission                    += $commission;
     $sum_logistika                     += $logistika;
     $sum_equairing                     += $equairing;
@@ -277,7 +277,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
         . " data-count-direct=\"" . (float)$count_direct . "\""
         . " data-count-return=\"" . (float)$count_return . "\""
         . " data-count-buy=\"" . (float)$count_buy . "\""
-        . " data-seller-price=\"" . (float)$seller_price . "\""
+        . " data-seller-price=\"" . (float)$sale_amount . "\""
         . " data-commission=\"" . (float)$commission . "\""
         . " data-logistika=\"" . (float)$logistika . "\""
         . " data-service=\"" . (float)$service . "\""
@@ -316,7 +316,7 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     // ============ ДЕНЕЖНЫЕ СУММЫ — с разделителями разрядов ============
 
     // Цена для покупателя (стоимость товара в личном кабинете)
-    echo "<td>" . moneyNum($seller_price) . "</td>";
+    echo "<td>" . moneyNum($sale_amount) . "</td>";
 
     // Комиссия озона
     echo "<td>" . moneyNum($commission) . "</td>";
@@ -362,7 +362,7 @@ echo "<tr class=\"total-row\">";
     echo "<td data-total-key=\"count-direct\" data-total-type=\"count\"><b>" . colorNum($sum_count_direct) . "</b></td>";
     echo "<td data-total-key=\"count-return\" data-total-type=\"count\"><b>" . colorNum($sum_count_return) . "</b></td>";
     echo "<td data-total-key=\"count-buy\"    data-total-type=\"count\"><b>" . colorNum($sum_count_buy)    . "</b></td>";
-    echo "<td data-total-key=\"seller-price\"><b>"   . moneyNum($sum_seller_price) . "</b></td>";
+    echo "<td data-total-key=\"seller-price\"><b>"   . moneyNum($sum_sale_amount) . "</b></td>";
     echo "<td data-total-key=\"commission\"><b>"     . moneyNum($sum_commission) . "</b></td>";
     echo "<td data-total-key=\"logistika\"><b>"      . moneyNum($sum_logistika) . "</b></td>";
     echo "<td data-total-key=\"service\"><b>"        . moneyNum($sum_service) . "</b></td>";
@@ -403,7 +403,7 @@ $ozon_commision  = isset($ozon_array_balance['commision']) ? (float)$ozon_array_
 $compare_rows = [
     [
         'label' => 'Стоимость товара в ЛК',
-        'table' => $sum_seller_price,
+        'table' => $sum_sale_amount,
         'ozon'  => $ozon_cashflows,
     ],
     [

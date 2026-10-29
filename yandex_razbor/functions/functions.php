@@ -163,7 +163,7 @@ $res = put_query_with_data($ya_token, $ya_link, $arr_boxes_all) ;
 function get_yarliki_odnogo_artikula ($ya_token, $campaignId, $arr_one_article, $dir, $order_number) {
     // $campaignId = 22076999;
    
-  $count_items=0; 
+  $count_items = 0; 
 
 
     foreach ($arr_one_article as $items) {
@@ -254,7 +254,7 @@ function print_table_with_orders ($array_orders, $date_orders) {
 // print_r($array_orders);
 foreach ($array_orders as $items)  {
     $new_article = change_sku_for_1c_article($items['offerId']);
-    $new_array_orders[$new_article]['summa'] = round(@$new_array_orders[$new_article]['summa'] + ($items['buyerPrice'] + @$items['subsidy'])*$items['count'],0);
+    $new_array_orders[$new_article]['summa'] = round(@$new_array_orders[$new_article]['summa'] + ($items['prices']['payment']['value'] + @$items['subsidy']['payment']['value']));
     $new_array_orders[$new_article]['count'] = @$new_array_orders[$new_article]['count'] + $items['count'];
     $new_array_orders[$new_article]['offerName'] = $items['offerName'];
     $new_array_orders[$new_article]['buyerPrice'] =  round($new_array_orders[$new_article]['summa'] /  $new_array_orders[$new_article]['count'],0); 
@@ -396,7 +396,7 @@ function print_table_with_ALL_orders ($array_mass_orders, $date_orders) {
         echo "<td>".$prods['offerId']."</td>";
         echo "<td>".$prods['offerName']."</td>";
         echo "<td>".$prods['count']."</td>";
-        echo "<td>".number_format($prods['buyerPrice'],2)."</td>";
+        echo "<td>".number_format($prods['prices']['payment']['value'],2)."</td>";
         if ($j1 >1) {
             echo "</tr>"; 
          }
@@ -420,20 +420,15 @@ function make_array_sell_items_for_1c ($array_mass_orders) {
     foreach ($array_mass_orders as $key=>$items) {
         // print_r($items);
         foreach ($items['data'] as $prods) {
-                $sell_tovari[$prods['offerId']]['price'] =  @$sell_tovari[$prods['offerId']]['price'] + ($prods['price'] + @$prods['subsidy'])*$prods['count'];
-                $sell_tovari[$prods['offerId']]['count'] =  @$sell_tovari[$prods['offerId']]['count'] + $prods['count'];
+                @$sell_tovari[$prods['offerId']]['price'] += $prods['prices']['payment']['value'];
+                @$sell_tovari[$prods['offerId']]['count'] += $prods['count'];
         }
     }  
-// высчитываем среднюю цену продажи 
+    // высчитываем среднюю цену продажи 
 foreach ($sell_tovari as &$item) {
-
-$item['middle_price'] = round($item['price'] /$item['count'] ,0);
-
-
+   $item['middle_price'] = round($item['price'] /$item['count'] ,0);
 }
-    
-
-   return $sell_tovari ;
+  return $sell_tovari ;
 }
 
 
@@ -442,29 +437,24 @@ $item['middle_price'] = round($item['price'] /$item['count'] ,0);
  ********************************************************/
 function make_array_sell_items ($arr_all_new_orders , $need_date) {
     foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
-    
-        // формируем массиов товаров по заказам 
-        $arr_mass_orders[$order['id']]['data'] = $order['items'];
-        $arr_mass_orders[$order['id']]['date_delivery'] = $order['delivery']['shipments'][0]['shipmentDate'];
         
+       $orderId = $order['orderId']; // ID  выбранного заказа
+        // формируем массиов товаров по заказам 
+        $arr_mass_orders[$orderId]['data'] = $order['items'];
+        $arr_mass_orders[$orderId]['date_delivery'] = $order['delivery']['shipment']['shipmentDate'];
         
         // формируем массиов товаров общим переченем
+      $need_ship_date = $order['delivery']['shipment']['shipmentDate'];
         
-            $orderId = $order['id']; // ID  выбранного заказа
-            $item_number = 0; // порядквый номер товаров, если их несколько
-            $need_ship_date = $order['delivery']['shipments'][$item_number]['shipmentDate'];
-            $id_shipment = $order['delivery']['shipments'][$item_number]['id'];
-          
-                if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
+             
+      if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
         
         // формируем массиов товаров по заказам 
-        $arr_mass_one_date_orders[$order['id']]['data'] = $order['items'];
-        $arr_mass_one_date_orders[$order['id']]['date_delivery'] = $order['delivery']['shipments'][0]['shipmentDate'];
+        $arr_mass_one_date_orders[$orderId]['data'] = $order['items'];
+        $arr_mass_one_date_orders[$orderId]['date_delivery'] = $order['delivery']['shipment']['shipmentDate'];
         
-        
-                  
-                    foreach ($order['items'] as $items) { // перебираем все товары из выбранного заказа
-                       unset ($items['subsidies']);
+                 foreach ($order['items'] as $items) { // перебираем все товары из выбранного заказа
+                    //    unset ($items['subsidies']);
                         $arr_all_items[] = $items;
                     }
                 }
@@ -472,7 +462,7 @@ function make_array_sell_items ($arr_all_new_orders , $need_date) {
         }
 
 isset($arr_mass_orders)?$return_arrays['arr_mass_orders'] =  $arr_mass_orders:$x=0;
-isset($arr_mass_one_date_orders)?$return_arrays['arr_mass_one_date_orders'] =  $arr_mass_one_date_orders:$x=0;
+isset($arr_mass_one_date_orders)?$return_arrays['arr_mass_one_date_orders'] = $arr_mass_one_date_orders:$x=0;
 isset($arr_all_items)?$return_arrays['arr_all_items'] =  $arr_all_items:$x=0;
 
 

@@ -2,16 +2,14 @@
 require_once ("../connect_db.php"); // подключение к БД
 require_once "../pdo_functions/pdo_functions.php";
 
+// require_once '../libs/PDFMerger/PDFMerger.php';
 
-require_once '../libs/PDFMerger/PDFMerger.php';
-
-
-// require_once "token/ya_tok.php";
-// require_once "token/ya_const.php";
-require_once "functions/functions_yandex.php";
 require_once "functions/functions.php";
 
-require_once "../mp_functions/yandex_functions.php";
+require_once "../vendor/autoload.php";
+use App\Yandex\YandexClient;
+use App\Yandex\Service\YandexOrderService;
+
 // Получаем токены ЯМ
 $ya_token =  get_token_yam($pdo);
 $campaignId =  get_id_company_yam($pdo);
@@ -21,19 +19,38 @@ $campaignId =  get_id_company_yam($pdo);
 // получаем даты на которую нужно разобрать заказы по грузоместам
 if  (isset($_GET['select_date'])) {
     $need_date_temp = $_GET['select_date'];
-    $need_date = date('d-m-Y' , strtotime($need_date_temp)); 
+    $need_date = date('Y-m-d' , strtotime($need_date_temp)); 
     // echo $need_date."<br>"; 
 } else {
     echo "<br>NET DATE DIE<br>";
     die('die without date');
 }
  
- $arr_all_new_orders = get_new_orders($ya_token, $campaignId);
+//=========================================================================================================================
+// находим business_id для нашего магазинаа
+//=========================================================================================================================
+$yandex = new YandexClient($ya_token, $campaignId);
+$campaigns = $yandex->yandex_post('v2/campaigns');
+foreach ($campaigns['campaigns'] as $campaign) {
+    if ($campaignId == $campaign['id']) {
+        $business_id = $campaign['business']['id'];
+        break;
+    }
+
+}
+
+$orders = new YandexOrderService ($yandex, $campaignId, $business_id);
+
+//=========================================================================================================================
+// запрашваем все заказы со статусом PROCESSING -- STARTED //
+//=========================================================================================================================
+
+$arr_all_new_orders =$orders->YandexgetUnfulfilledFby($need_date_temp,  'PROCESSING',  'STARTED');
 
    
 // выбираем из массива только заказы на выбранную дату
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
-       $need_ship_date = $order['delivery']['shipments'][0]['shipmentDate'];
+       $need_ship_date = $order['delivery']['shipment']['shipmentDate'];
              if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
               $new_arr_select_date[] = $order;
             }
@@ -42,27 +59,50 @@ foreach ($arr_all_new_orders['orders'] as $order) { // перебираем вс
 
 echo "* ЗАКАЗЫ ДЛЯ РАЗБИВКИ ПО ГРУЗОМЕСТАМ *";
 
-echo "<pre>";
-print_r($new_arr_select_date);
-die();
+// echo "<pre>";
+// print_r($new_arr_select_date);
+// die();
 foreach ($new_arr_select_date as $order) { // перебираем все новые заказы
 
-    $orderId = $order['id']; // ID  выбранного заказа
+    $orderId = $order['orderId']; // ID  выбранного заказа
 
     echo "<br>* НОМЕР ЗАКАЗА = <b>$orderId </b> *";
         // print_r($items);
-        $res[] = razbivaev_zakazi_po_gruzomestam ($ya_token, $campaignId, $orderId, $order['items']);
+        // $res[] = razbivaev_zakazi_po_gruzomestam ($ya_token, $campaignId, $orderId, $order['items']);
+foreach ($order['items'] as $item_in_order){
+    for ($i = 0; $i < $item_in_order['count'] ; $i++) { // перебираем все количество этого артикула, и разбиваем по грузоместам
+    $arr_one_gruz_place['items'][0] =  
+    array ("id" => $item_in_order['id'],
+           "fullCount"=> 1,
+    );
 
+    $arr_boxes_all["boxes"][] = $arr_one_gruz_place;
+    }
 }
+
+$arr_boxes_all["allowRemove"] = false; // добавляем параметр, что мы ничего из поставки не удаляем.
+
+// echo "<br>************************ arr_boxes_all *********************************<br>";
+// print_r($arr_boxes_all);
+
+
+$ya_link = 'campaigns/'.$campaignId.'/orders/'.$orderId.'/boxes';
+$res[] = $yandex->yandex_put($ya_link, $arr_boxes_all) ;
+unset ($arr_boxes_all);
+
+// print_r($res); 
+    
+    }
+
 echo "<h3> Количество заказов в поставке =  ".count($new_arr_select_date)."</h3>";
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 foreach ($arr_all_new_orders['orders'] as $order) { // перебираем все новые заказы
     
-    $orderId = $order['id']; // ID  выбранного заказа
+    $orderId = $order['orderId']; // ID  выбранного заказа
     $item_number = 0; // порядквый номер товаров, если их несколько
-    $need_ship_date = $order['delivery']['shipments'][$item_number]['shipmentDate'];
-    $id_shipment = $order['delivery']['shipments'][$item_number]['id'];
+    $need_ship_date = $order['delivery']['shipment']['shipmentDate'];
+    $id_shipment = $order['delivery']['shipment']['id'];
   
         if ($need_date == $need_ship_date)  {    /// выбор даты дня отгрузки
           

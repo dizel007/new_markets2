@@ -57,7 +57,7 @@ print_one_block ('table_element', "all_sell/all_sell_index.php", 'ПРОДАЖИ
 print_one_block ('table_element', "ozon_fbo_orders/get_fbo_orders.php", 'ПРОДАЖИ FBO озон',
                 'Список товаров, которые были проданы за всё время', 'pics/main_screen/all_sells_fbo_ozon.jpg');
 
-print_one_block ('table_element', "ozon_fbs_fbo_orders/getFboFbsOrders.php", 'Заказы ФБС/ФБО',
+print_one_block ('table_element', "ozon_fbs_fbo_clusters/getAllOrders.php", 'Заказы ФБС/ФБО',
                 'Список заказов, за выбранный промежуток времени ', 'pics/main_screen/fbo_fbs_orders_100.png');
 
 print_one_block ('table_element', "z_data_for_fbo_ozon/get_data_from_db.php", 'СТАТИСТИКА ФБО',
@@ -81,17 +81,17 @@ echo "<div class=\"container\"><div class = \"zagolovok\">Разбор зака�
 echo "<div class=\"container\">";
 
 
-print_one_block ('table_element_razbor', "wb_new_razbor/index_wb.php", 'WB Анмакс',
+print_one_block ('table_element_razbor', "wb_new_razbor/index_wb.php", 'WB Амн',
 'Формирование QR кодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_wb.jpg');
 
-print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_anmaks", 'NEW OZON Анмакс',
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_anmaks", 'NEW OZON Анм',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
 
 
 print_one_block ('table_element_razbor', "wb_new_razbor/index_wbip.php", 'WB ИП Зел',
 'Формирование QR кодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_wb_ip.jpg');
 
-// print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks", 'OZON Анмакс',
+// print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_anmaks", 'OZON Анм',
 // 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
 
 print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_shop=ozon_ip_zel", 'NEW OZON ИП Зел',
@@ -100,10 +100,10 @@ print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon.php?ozon_sh
 // print_one_block ('table_element_razbor', "ozon_razbor/index_ozon.php?shop_name=ozon_ip_zel", 'OZON ИП Зел',
 // 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon_ip.jpg');
 
-print_one_block ('table_element_razbor', "yandex_razbor/index_yandex.php", 'Yandex Анмакс',
+print_one_block ('table_element_razbor', "yandex_razbor/index_yandex.php", 'Yandex Анм',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_yandex.jpg');
 
-print_one_block ('table_element_razbor', "leroy/", 'LEROY Анмакс',
+print_one_block ('table_element_razbor', "leroy/", 'LEROY Анм',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_leroy.jpg');
 
 echo "</div>";// Конец контейнера ПО РАЗБОРУ МАРКЕТОВ
@@ -116,7 +116,7 @@ echo "<div class=\"container\"><div class = \"zagolovok\">ДОполнитель
 
 echo "<div class=\"container\">";
 
-print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozon_shop=ozon_anmaks", 'ДОП OZON Анмакс',
+print_one_block ('table_element_razbor', "ozon_razbor_oop/index_ozon_dop.php?ozon_shop=ozon_anmaks", 'ДОП OZON Анм',
 'Формирование штрихкодов для склада (сбор по артикулам)', 'pics/main_screen/razbor_ozon.jpg');
 
 
@@ -146,7 +146,7 @@ echo "<div class=\"container\"><div class = \"zagolovok\">Вспомогател
 
 echo "<div class=\"container\">";
 
-        print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks", 'WB Анмакс отзывы',
+        print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_anmaks", 'WB Анм отзывы',
         'Автоматический ответ на положительные отзывы с оценкой 5', 'pics/main_screen/otziv_wb.jpg');
 
         print_one_block ('table_element', "wb_feedback/wb_feedback_start.php?wb_feedback=wb_ip_zel", 'WB ИП Зел отзывы',
@@ -155,7 +155,7 @@ echo "<div class=\"container\">";
         // print_one_block ('table_element', "ozon_feedbacks/get_feedback.php", 'ОЗОНЫ отзывы',
         // 'Автоматический ответ на положительные отзывы с оценкой 4 и 5', 'pics/main_screen/ikon_skidka_ozon.jpg');
 
-        print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks", 'OZON Анмакс скидка',
+        print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_anmaks", 'OZON Анм скидка',
         'Одобрение скидки от 4 до 7 процентов (по возрастающей)', 'pics/main_screen/ikon_skidka_ozon.jpg');
 
         print_one_block ('table_element', "ozon_skidka/index_ozon_skidka.php?ozon_shop=ozon_ip_zel", 'OZON ИП Зел скидка',
@@ -205,7 +205,7 @@ echo "<div class=\"container\"><div class = \"zagolovok\">ОТЧЕТЫ</div></di
 
 echo "<div class=\"container\">";
 
-        print_one_block ('table_element_razbor', "wb_reports/wb_report_index.php?wb_shop=wb_anmaks", 'ОТЧЕТЫ WB АНМАКС',
+        print_one_block ('table_element_razbor', "wb_reports/wb_report_index.php?wb_shop=wb_anmaks", 'ОТЧЕТЫ WB Анм',
         'Формирование отчетов на основании недельных отчетов ВБ. Отчеты только по целым неделям', 'pics/main_screen/wb_report_ooo.jpg');
 
         print_one_block ('table_element_razbor', "wb_reports/wb_report_index.php?wb_shop=wb_ip_zel", 'ОТЧЕТЫ WB ИП Зел',
@@ -217,10 +217,10 @@ echo "<div class=\"container\">";
         // print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
         // 'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
 
-        // print_one_block ('table_element_razbor', "yandex_report/start_ya_razbor.php", 'ОТЧЕТЫ ЯМ АНМАКС',
+        // print_one_block ('table_element_razbor', "yandex_report/start_ya_razbor.php", 'ОТЧЕТЫ ЯМ Анм',
         // 'Формирование отчетов на основании ексель отчетов с ЯМ. Ссылка на скачивания отчетов внутри', 'pics/main_screen/razbor_yandex.jpg');
 
-        print_one_block ('table_element_razbor', "ozon_report/index.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON АНМАКС',
+        print_one_block ('table_element_razbor', "ozon_report/index.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON Анм',
         'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');
 
         print_one_block ('table_element_razbor', "ozon_report/index.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
@@ -238,7 +238,7 @@ echo "<div class=\"container\"><div class = \"zagolovok\"> Вспомогате�
 echo "<div class=\"container\">";
 
 
-// print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_anmaks", 'ПОЛУЧИТЬ этикетки ОЗОН ООО АНМАКС',
+// print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_anmaks", 'ПОЛУЧИТЬ этикетки ОЗОН ООО Анм',
 // 'Если произошел сбой, при получении этикеток, то можно получить этикети из состояния отгужаются', 'pics/main_screen/ozon_report_ooo_td.jpg');
 
 // print_one_block ('table_element', "ozon_razbor/index_ozon_dop.php?shop_name=ozon_ip_zel", 'ПОЛУЧИТЬ этикетки ОЗОН ИП Зел',

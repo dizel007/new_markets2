@@ -13,17 +13,17 @@ require_once "print_FBO_FBS_sells.php";
 
 
 // доставем всю номенсклатуру
-$arr_all_nomenklatura = select_active_nomenklaturu($pdo);
-foreach ($arr_all_nomenklatura as $zzz) {
-   $arr_poriadkovii_number[mb_strtolower($zzz['main_article_1c'])] = $zzz['number_in_spisok'];
-}
+// $arr_all_nomenklatura = select_active_nomenklaturu($pdo);
+// foreach ($arr_all_nomenklatura as $zzz) {
+//    $arr_poriadkovii_number[mb_strtolower($zzz['main_article_1c'])] = $zzz['number_in_spisok'];
+// }
 
 // Вставляем форму для ввода даты
 require_once "start_form.php";
 
 //// Проверяем и есть нет папки, то создаем ее, для каждого пользователя своя папка в !cache
  
-$dir_for_cache = "../!cache/".$userdata['user_login']."/";
+$dir_for_cache = "../!cache/".$userdata['user_login']."/ozon_fbs_fbo_clusters/";
 if (!is_dir($dir_for_cache)) {
     if (mkdir($dir_for_cache, 0755, true)) {
         echo "Папка создана.";
@@ -32,28 +32,34 @@ if (!is_dir($dir_for_cache)) {
     }
 }
 
+$filename_fbs_orders = $dir_for_cache."json_fbs_Orders_".$shop_name.".json";
+$filename_fbo_orders = $dir_for_cache."json_fbo_Orders_".$shop_name.".json";
+
+
 
 /***************************************************************************************************************
  * Заказы для ООО Анм
  **************************************************************************************************************/
+
+//==============================================================
 // Получаем массив ФБС заказов 
+//==============================================================
 $orders_FBS_ooo = query_FBS_orders_from_ozon ($token_ozon, $client_id_ozon, $date_from, $date_to);
 // сохраняем файл на диске, чтобы потом детелаьно ковырятся в нем и не запрашивать новый
-file_put_contents($dir_for_cache."json_fbsOrders_".$shop_name.".json", json_encode($orders_FBS_ooo, JSON_UNESCAPED_UNICODE));
+file_put_contents($filename_fbs_orders, json_encode($orders_FBS_ooo, JSON_UNESCAPED_UNICODE));
 $orders_FBS_article_ooo = make_array_with_all_FBS_FBO_orders ($orders_FBS_ooo);
-
-// echo "<pre>";
-// print_r($orders_FBS_article_ooo);
-// die();
-
+//==============================================================
 // Получаем массив ФБO заказов 
+//==============================================================
 $orders_FBO_ooo = query_FBO_orders_from_ozon ($token_ozon, $client_id_ozon, $date_from, $date_to);
 // сохраняем файл на диске, чтобы потом детелаьно ковырятся в нем и не запрашивать новый
-file_put_contents($dir_for_cache."json_fboOrders_".$shop_name.".json",json_encode($orders_FBO_ooo, JSON_UNESCAPED_UNICODE));
-
-
+file_put_contents($filename_fbo_orders,json_encode($orders_FBO_ooo, JSON_UNESCAPED_UNICODE));
 $orders_FBO_article_ooo = make_array_with_all_FBS_FBO_orders ($orders_FBO_ooo);
+
+//==============================================================
 // формируем перечень артикулов которые были проданы
+//==============================================================
+
 foreach ($orders_FBS_article_ooo as $key=>$z) {
    $art_ar_ooo[$key] = $key;
  }
@@ -61,11 +67,12 @@ foreach ($orders_FBO_article_ooo as $key=>$z) {
    $art_ar_ooo[$key] = $key;
 }
 // Привем массив артикулов в порядок (согласно порядковому нормеру)
-foreach ($arr_poriadkovii_number as $key=>$number_position) {
-  if (isset($art_ar_ooo[$key])){ $arr_sort_ar_ooo[$key] = $number_position;}
-}
+// foreach ($arr_poriadkovii_number as $key=>$number_position) {
+//   if (isset($art_ar_ooo[$key])){ $arr_sort_ar_ooo[$key] = $number_position;}
+// }
 
 // Сортировка по возрастанию с сохранением ключей
+$arr_sort_ar_ooo = $art_ar_ooo;
 asort($arr_sort_ar_ooo);
 
 // echo "<pre>";
