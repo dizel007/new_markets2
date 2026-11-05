@@ -300,10 +300,16 @@ foreach ($array_for_print as $item) {
     $routes_summary[$key]['qty'] += $qty;
 }
 
-// сортируем по "Откуда", затем по "Куда"
+// сортируем по "Откуда", затем по количеству по убыванию (внутри кластера)
 usort($routes_summary, function($a, $b) {
     $cmp = strcmp($a['from'], $b['from']);
-    return $cmp !== 0 ? $cmp : strcmp($a['to'], $b['to']);
+    if ($cmp !== 0) {
+        return $cmp;
+    }
+    if ($a['qty'] === $b['qty']) {
+        return strcmp($a['to'], $b['to']);
+    }
+    return $b['qty'] <=> $a['qty'];
 });
 
 // вычисляем rowspan для каждого уникального "Откуда"

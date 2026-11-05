@@ -124,12 +124,12 @@ $data_wb['dateTo'] = $dateTo;
 // $data_wb['dateTo'] = '2026-09-27';
 
 
-echo "<pre>";
+// echo "<pre>";
 // print_r($data_wb);
 
 
 
-// $arr_result = light_query_with_data__kkkkk ($token_wb, $link_wb, $data_wb);
+$arr_result = light_query_with_data__kkkkk ($token_wb, $link_wb, $data_wb);
 
 
 function light_query_with_data__kkkkk ($token_wb, $link_wb, $data)
@@ -150,11 +150,13 @@ function light_query_with_data__kkkkk ($token_wb, $link_wb, $data)
 	curl_close($ch);
 
 	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
+        echo "<pre>";
 		echo     '<br>Результат обмена(SELECT with Data): ' . $http_code ." link = ".$link_wb ."<br>";
+        print_r($res);
 	}
 
 	$res = json_decode($res, true);
- 	print_r($res); // выводит результирующий массив
+ 	// print_r($res); // выводит результирующий массив
 	
 	return $res;
 }
@@ -162,7 +164,7 @@ function light_query_with_data__kkkkk ($token_wb, $link_wb, $data)
 
 
 $file_name = "../!cache/". $userdata['user_login']."/"."wb_report_week.json";
-// file_put_contents($file_name, json_encode($arr_result, JSON_UNESCAPED_UNICODE));
+file_put_contents($file_name, json_encode($arr_result, JSON_UNESCAPED_UNICODE));
 
 $arr_result = json_decode(file_get_contents($file_name), true);
 
@@ -210,8 +212,8 @@ echo "<br>Номер отчета заграничных поставок INO = 
 
 
  
-echo "<pre>";
-print_r($arr_ino_items);
+// echo "<pre>";
+// print_r($arr_ino_items);
 
 // die();
 /*****************************************************************************************************************
@@ -242,7 +244,7 @@ foreach ($wb_catalog as $wb_item) {
 
 
 // echo "<pre>";
-print_r($arr_key_barcode);
+// print_r($arr_key_barcode);
 // die('5555555555555555555555555555555555');
 
 
@@ -387,7 +389,7 @@ foreach ( $ARR_all_data as $key=>$temp_data_2) {
 
 
 // print_r($arr_82400);
-print_r($ARR_all_data);
+// print_r($ARR_all_data);
 
 echo <<<HTML
 <table class="prod_table">

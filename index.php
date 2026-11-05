@@ -214,11 +214,11 @@ echo "<div class=\"container\">";
         print_one_block ('table_element_razbor', "ozon_report_order_article/getAllOrders.php", 'ОТЧЕТЫ по Артикулам OZON ',
         'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/article_report.png');
 
-        // print_one_block ('table_element_razbor', "ozon_report/index_ozon_razbor.php?ozon_shop=ozon_ip_zel", 'ОТЧЕТЫ OZON ИП Зел',
-        // 'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ip_z.jpg');
+        print_one_block ('table_element_razbor', "ozon_raschet_logistiki/logistik_getAllOrders.php", 'РАСЧЕТ ЛОГИСТИКИ',
+        'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/logistika.png');
 
-        // print_one_block ('table_element_razbor', "yandex_report/start_ya_razbor.php", 'ОТЧЕТЫ ЯМ Анм',
-        // 'Формирование отчетов на основании ексель отчетов с ЯМ. Ссылка на скачивания отчетов внутри', 'pics/main_screen/razbor_yandex.jpg');
+        print_one_block ('table_element_razbor', "ozon_fake_buyer/fake_buyer_start.php", 'ПЛОХИЕ ПОКУПАТЕЛИ',
+        'Формирование отчетов на основании ексель отчетов с ЯМ. Ссылка на скачивания отчетов внутри', 'pics/main_screen/fake_buyer.png');
 
         print_one_block ('table_element_razbor', "ozon_report/index.php?ozon_shop=ozon_anmaks", 'ОТЧЕТЫ OZON Анм',
         'Формирование отчетов на основании данных с Озона. Отчеты можно делать за период не более месяца', 'pics/main_screen/ozon_report_ooo.jpg');

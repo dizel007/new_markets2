@@ -11,6 +11,16 @@ h1 {
   text-align: center;
 }
 
+.page-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 16px 0 12px 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
 /* ---------- Стили для формы ---------- */
 form {
   max-width: 1200px; 

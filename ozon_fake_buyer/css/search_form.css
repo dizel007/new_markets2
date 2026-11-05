@@ -1,0 +1,116 @@
+/* --- Верхняя панель с заголовком и кнопкой отчета --- */
+.top-panel {
+    max-width: 1000px;
+    margin: 20px auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.btn-report {
+    display: inline-block;
+    background: #ffffff;
+    color: #005bff;
+    padding: 10px 20px;
+    border: 1px solid #005bff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 91, 255, 0.1);
+}
+
+.btn-report:hover {
+    background: #005bff;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 91, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* --- Панель поиска (белая карточка) --- */
+.search-panel {
+    max-width: 1000px;
+    margin: 0 auto 30px;
+    padding: 20px 25px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e9edf2;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-form label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #1f2a3a;
+    flex-shrink: 0;
+}
+
+.search-form input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fafbfc;
+    color: #1f2a3a;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-form input[type="text"]:focus {
+    border-color: #005bff;
+    box-shadow: 0 0 0 3px rgba(0, 91, 255, 0.15);
+}
+
+.search-form input[type="submit"] {
+    background: #005bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0, 91, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.search-form input[type="submit"]:hover {
+    background: #0047cc;
+    transform: translateY(-1px);
+}
+
+.search-form input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .top-panel {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-form input[type="text"],
+    .search-form input[type="submit"] {
+        width: 100%;
+        max-width: none;
+    }
+}

@@ -7,6 +7,7 @@
 
 function razbor_POSTING_by_posting_numbers(&$arr_posting_orders,  $posting_item_array, $type_fees) {
 
+
 foreach ($posting_item_array as $posting_item) {
 /// Номер отправления и дата
     $unit_number = $posting_item['unit_number'];
@@ -179,7 +180,10 @@ foreach ($item['item_fees'] as $fees) {
 //============================================================================================
 // разбираем все траты, где есть номер отправления,
 //===================================================================================
-
+// print_r($sku_poisk);
+// echo "<pre>";
+// print_r($arr_item_orders);
+if (isset ($arr_item_orders[$sku_poisk])) {
 foreach ($arr_item_orders[$sku_poisk] as $unit_numer=>&$item_c) {
         $temp_1 = explode('-', $unit_numer);
         $order_number = implode('-', array_slice($temp_1, 0, 2));
@@ -216,7 +220,7 @@ foreach ($arr_item_orders[$sku_poisk] as $unit_numer=>&$item_c) {
     }
 }
 
-
+}
 /***
  * 
  * 

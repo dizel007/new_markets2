@@ -37,6 +37,8 @@ echo <<<HTML
 </head>
 <body>
 
+<h1 class="page-title">КОЛИЧЕСТВО ПРОДАЖ + РАСЧЕТ ЛОГИСТИКИ</h1>
+
 <form  action="#" method="get">
    <label>Магазин</label>
    <select required name="ozon_shop">

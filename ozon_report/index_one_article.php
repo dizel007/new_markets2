@@ -106,14 +106,18 @@ $arr_posting_orders = razbor_POSTING_by_posting_numbers($arr_posting_orders, $ar
 
 // $arr_item_orders  - массив без СКУ и номеров заказа
 // просто буем его суммировать и добавлять к расходам
+
+
+// print_r($arr_item_orders[$sku_ozon]);
 $summa_nerazobrannogo_iz_massiva_ITEM = 0;
+if (isset($arr_item_orders[$sku_ozon])) {
 foreach ($arr_item_orders[$sku_ozon] as $key => $amount_arr) {
     foreach ($amount_arr as $amount_z) {
         $summa_nerazobrannogo_iz_massiva_ITEM += $amount_z;
     }
 }
 unset($arr_item_orders[$sku_ozon]);
-
+}
 //==========================================================================================================
 
 $Arr[$sku_ozon] = $arr_posting_orders[$sku_ozon];
@@ -139,7 +143,11 @@ $summa_non_item_dlia_sku = $summa_non_item_bez_viborki_po_postingam * $porc_koto
 
 // находим количество отправлений 
 
+
+// echo "<pre>";
+// echo "$summa_nerazobrannogo_iz_massiva_ITEM";
 // print_R($Arr[$sku_ozon]);
+
 foreach ($Arr[$sku_ozon] as $g) {
     foreach ($g as $posting_number => $d) {
         @$j[$posting_number] = $posting_number;
@@ -150,6 +158,12 @@ $count_posting  = count($j);
 $summa_for_each_posting = round(($summa_non_item_dlia_sku + $summa_nerazobrannogo_iz_massiva_ITEM - $summa_unset_for_orders) / $count_posting, 2);
 
 // die();
+// echo "<br>";
+// echo "$summa_non_item_dlia_sku";
+// echo "<br>";
+// echo "$summa_non_item_bez_viborki_po_postingam";
+// echo "<br>";
+// echo "$porc_kotori_nuzhno_raspredelit";
 
 
 //==========================================================================================================
@@ -183,6 +197,7 @@ foreach ($Arr as $sku => &$item_order) {
                 
 
 ////  Все дополнительные расходы
+
             $posting['dop_rashod'] = $summa_for_each_posting;  //  добавляем стоимость усредненную рекламы++ для каждого товара
             //=================================================================================================================================
             // Oбъеденяем всю дополнительную логистику
