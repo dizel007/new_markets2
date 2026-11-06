@@ -302,3 +302,54 @@ form input[type="submit"]:active {
     outline: none;
     box-shadow: 0 0 0 3px rgba(0,91,255,0.15);
 }
+
+
+
+/* ============================================================
+   Кнопка перехода к расчету стоимости логистики
+   ============================================================ */
+.action-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px auto 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  background: #005bff;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 91, 255, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-action:hover {
+  background: #0047cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 91, 255, 0.4);
+  color: #ffffff;
+}
+
+.btn-action:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.3);
+}
+
+/* Иконка стрелочки (опционально) */
+.btn-action::after {
+  content: "→";
+  margin-left: 10px;
+  font-size: 18px;
+  line-height: 1;
+}
+

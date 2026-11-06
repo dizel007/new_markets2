@@ -10,6 +10,16 @@ $summa_FBO_count = 0;
 $summa_FBO_price = 0;
 $all_summa_count = 0;
 $all_summa_summa = 0;
+
+echo <<<HTML
+<!-- Кнопка перехода к расчету стоимости логистики -->
+<div class="action-button-container">
+    <a href="../adminka/cost_claster_logistik/index_cost.php" class="btn-action" target="_blank">
+        Перейти в расчет стоимость логистики
+    </a>
+</div>
+HTML;
+
 //подключение 
 echo '<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">';
 echo '<link rel="stylesheet" href="css/sell_fbo_fbs_table.css">';
