@@ -46,11 +46,24 @@ $columns = [
         'width' => '120px',
         'hide'  => 'md',
         'link'  => [
-            'fbs'      => 'https://seller.ozon.ru/app/postings/fbs/{id}',
-            'fbo'      => 'https://seller.ozon.ru/app/postings/fbo/{id}',
-            '_default' => null,
+            'fbs'       => 'https://seller.ozon.ru/app/postings/fbs/{id}',
+            'rfbs'      => 'https://seller.ozon.ru/app/postings/fbs/{id}',
+            'fbo'       => 'https://seller.ozon.ru/app/postings/fbo/{id}',
+            '_default'  => null,
         ],
     ],
+
+
+
+    'count' => [
+        'label'    => 'К-во',
+        'text'     => true,
+        'sortable' => true,
+        'width'    => '40px',
+        'hide'     => 'md',
+    ],
+
+
     'date_order' => [
         'label'    => 'Дата',
         'text'     => true,

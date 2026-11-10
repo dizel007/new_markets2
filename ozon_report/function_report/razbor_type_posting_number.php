@@ -41,6 +41,15 @@ foreach ($posting_item_array as $posting_item) {
             }
    //// закончили перебирать delivery
        }
+  //======================================================================
+  // т.к. delivery нет в FRBS то отдельно добавляем количество для этой доставки
+  //======================================================================
+
+        if ($delivery_schema == 'Rfbs') {
+          @$arr_posting_orders[$sku][$order_number][$unit_number]['count'] = $quantity;
+       }
+
+
        // перебираем commission 
        if (isset($products['commission']))  {
 

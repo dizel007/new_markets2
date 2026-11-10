@@ -51,6 +51,7 @@ foreach ($posting_item_array as $posting_item) {
     $unit_number = $posting_item['unit_number'];
     $delivery_schema = $posting_item['posting']['delivery_schema'];
 
+
    foreach ($posting_item['posting']['products'] as $products) {
        $sku = $products['sku'];
         $quantity = $products['quantity'];
@@ -80,15 +81,18 @@ foreach ($posting_item_array as $posting_item) {
            
         }
    //// закончили перебирать delivery
-     //======================================================================
+
+       }
+
+  //======================================================================
   // т.к. delivery нет в FRBS то отдельно добавляем количество для этой доставки
   //======================================================================
+
        if ($delivery_schema == 'Rfbs') {
                  @$sum_array[$sku]['count_direct'] += $quantity ; 
        }
 
 
-       }
        // перебираем commission 
        if (isset($products['commission']))  {
           foreach ($products['commission'] as $type_commission=> $delivery_commission) {

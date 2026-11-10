@@ -141,6 +141,9 @@ $sum_no_sku_trati         = 0;
 $all_sum_seller           = 0;
 $one_procent_no_sku_trati = 0;
 
+// Сюда сохраним разбивку NO_SKU (статья расхода => сумма)
+$no_sku_rows = [];
+
 // Нам нужна сумма продаж по цене продавца, чтобы найти 1% от суммы всех продаж
 foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     @$all_sum_seller += $item_for_print['sale_amount'];
@@ -149,6 +152,8 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     if ($sku_ozon == 'NO_SKU') {
         foreach ($item_for_print as $key_no_sku => $serv) {
             $sum_no_sku_trati += getUnitNumber($item_for_print, $key_no_sku);
+            $no_sku_rows[$key_no_sku] = (float)$serv;
+           
         }
         $one_procent_no_sku_trati = $sum_no_sku_trati / 100;
         unset($sum_array_to_redakt[$sku_ozon]);
@@ -206,18 +211,25 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
 // ==========================================================================
 //***************************************************************************
 
-    $sale_amount = getUnitNumber($item_for_print, "sale_amount");
-    $commission   = getUnitNumber($item_for_print, "commission");
-    $logistika    = getUnitNumber($item_for_print, "Логистика")
-                  + getUnitNumber($item_for_print, "Обратная логистика")
-                  + getUnitNumber($item_for_print, "Доставка до места выдачи силами Ozon");
-    $equairing    = getUnitNumber($item_for_print, "Эквайринг");
+    $sale_amount   = getUnitNumber($item_for_print, "sale_amount");
+    
+    $commission    = getUnitNumber($item_for_print, "commission");
+
+    $logistika     = getUnitNumber($item_for_print, "Логистика")
+                   + getUnitNumber($item_for_print, "Обратная логистика")
+                   + getUnitNumber($item_for_print, "Обработка отправления Drop-off")
+                   + getUnitNumber($item_for_print, "Доставка до места выдачи силами Ozon");
+
+    $equairing     = getUnitNumber($item_for_print, "Эквайринг");
+
     $ino_prodazhi  = getUnitNumber($item_for_print, "ino_prodazhi");
 
     // Считаем всё, что осталось из отчёта (СЕРВИСЫ)
     $service = 0;
     foreach ($item_for_print as $key_2 => $serv) {
         $service += getUnitNumber($item_for_print, $key_2);
+        @$arr_services[$sku_ozon][$key_2] += $serv;
+
     }
     unset($sum_array_to_redakt[$sku_ozon]);
 
@@ -234,6 +246,8 @@ foreach ($sum_array_to_redakt as $sku_ozon => &$item_for_print) {
     // получаем сумму за вычетом NO_SKU трат
     $viplata_na_rs = round($price_without_comm_and_logist + $summa_raspredelenia_no_sku_trat, 2);
 
+
+   
     $article_sebestoimost = $sebestoimost * $count_for_raschet;
 
     $pribil = round($viplata_na_rs - $article_sebestoimost + $ino_prodazhi, 2);
@@ -467,6 +481,52 @@ $compare_rows = [
     </a>
 </div>
 
+
+
+
+
+
+<!-- ================== ТАБЛИЦА РАСХОДОВ NO_SKU ================== -->
+<?php
+// $no_sku_rows заполняется выше при разборе массива NO_SKU
+// $sum_no_sku_trati — общая сумма этих расходов
+?>
+<div class="h100proc_artikul" style="margin-top: 10px;">
+    <h3 class="shapka_tabla">Расходы столбца Доп.услуги (реклама, штрафы, сервисы)</h3>
+
+    <?php if (empty($no_sku_rows)): ?>
+        <p class="no-sku-empty">Расходы NO_SKU отсутствуют.</p>
+    <?php else: ?>
+        <table class="real_money fl-table">
+            <thead>
+            <tr>
+                <th>Статья расхода</th>
+                <th>Сумма (руб)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($no_sku_rows as $label => $amount): ?>
+                <tr>
+                    <td><?= htmlspecialchars((string)$label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></td>
+                    <td><?= moneyNum($amount) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+            <tr class="total-row">
+                <td><b>ИТОГО</b></td>
+                <td><b><?= moneyNum($sum_no_sku_trati) ?></b></td>
+            </tr>
+            </tfoot>
+        </table>
+    <?php endif; ?>
+</div>
+
+
+
+
+
+
 <!-- SheetJS для клиентского экспорта (никаких запросов к серверу) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
@@ -476,6 +536,8 @@ $compare_rows = [
 <?php
 $jsFile = 'js/sku_table.js';
 $jsVer  = file_exists($jsFile) ? filemtime($jsFile) : time();
+
+// echo "<pre>";
+// print_r($arr_services);
 ?>
 <script src="js/sku_table.js?v=<?= $jsVer ?>" defer></script>
-

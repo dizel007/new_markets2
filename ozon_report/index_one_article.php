@@ -193,7 +193,7 @@ foreach ($Arr as $sku => &$item_order) {
     foreach ($item_order as $order => &$item_posting) {
         foreach ($item_posting as $post => &$posting) {
             $posting['article'] = $prod_arr[$sku];
-            $posting['sebestoimost'] = $sebes_arr[$sku];
+            $posting['sebestoimost'] = $sebes_arr[$sku]*$posting['count'];
                 
 
 ////  Все дополнительные расходы

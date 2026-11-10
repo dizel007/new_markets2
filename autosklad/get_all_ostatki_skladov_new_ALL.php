@@ -19,6 +19,12 @@ require_once "functions/add_info_in_all_catalog.php";
 require_once "functions/print_sum_information.php";
 require_once "functions/print_info_about_market.php";
 
+require_once '../vendor/autoload.php';
+use App\Ozon\OzonClient;
+use App\Ozon\Service\OrderService;
+use App\Yandex\YandexClient;
+use App\Yandex\Service\YandexOrderService;
+
 
 // echo "<pre>";
  
@@ -44,7 +50,7 @@ if ($return_after_update == 777) {
     }
     // echo "<pre >";
     // print_r ($arr_article_items);
-    // die();
+    // die('dddddddddddddddddddddddddddddd');
 
 } else {
 if (isset($_FILES['file_excel'])) {
@@ -84,6 +90,11 @@ $uploadfile = $uploaddir . basename( $_FILES['file_excel']['name']);
 
 }
 
+
+
+// echo "<pre>";
+// print_r($arr_new_ostatoki_MP);
+// die();
 
 
 // Доставем информацию по складам ****** АКТИВНЫМ СКЛАДАМ ******
@@ -138,21 +149,73 @@ $wbip_catalog = get_new_zakazi_wb ($token_wb_ip, $wbip_catalog);
 
 //***************************** Получаем Фактические остатки с OZON *****************************
 $ozon_catalog = get_ostatki_ozon ($token_ozon, $client_id_ozon, $ozon_catalog); // цепояем остатки
-//*****************************  Достаем фактически заказанные товары OZON *****************************
-$ozon_catalog = get_new_zakazi_ozon ($token_ozon, $client_id_ozon, $ozon_catalog); // цепляем продажи
 
-//***************************** Получаем Фактические остатки с OZON *****************************
-$ozon_ip_catalog = get_ostatki_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_ip_catalog); // цепояем остатки
 //*****************************  Достаем фактически заказанные товары OZON *****************************
-$ozon_ip_catalog = get_new_zakazi_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_ip_catalog); // цепляем продажи
+$date_query_ozon = date('Y-m-d', strtotime('-7 day', strtotime(date('Y-m-d')))); // начальную датк на 4 дня раньше берем
+$dop_days_query = 14; // захватывает 14 дней после сегодняшней даты
+
+$ozon_anmaks_obj = new OzonClient($token_ozon, $client_id_ozon);
+$orders_anmaks = new OrderService($ozon_anmaks_obj);
+$ArrayOrders_anmaks = $orders_anmaks->getUnfulfilledFbs($date_query_ozon, 'awaiting_packaging', $dop_days_query);
+// Проверяем пустой массив или нет
+if (!empty($ArrayOrders_anmaks)) {
+    $ozon_catalog = get_new_zakazi_ozon_new ($ozon_catalog, $ArrayOrders_anmaks ); // цепляем продажи
+}
+
+
+//***************************** Получаем Фактические остатки с OZON ИП *****************************
+$ozon_ip_catalog = get_ostatki_ozon ($token_ozon_ip, $client_id_ozon_ip, $ozon_ip_catalog); // цепояем остатки
+
+//*****************************  Достаем фактически заказанные товары OZON *****************************
+$ozon_ip_obj   = new OzonClient($token_ozon_ip, $client_id_ozon_ip);
+$orders_ip = new OrderService($ozon_ip_obj);
+$ArrayOrders_ip = $orders_ip->getUnfulfilledFbs($date_query_ozon, 'awaiting_packaging', $dop_days_query);
+
+// Проверяем пустой массив или нет
+if (!empty($ArrayOrders_ip)) {
+    $ozon_ip_catalog = get_new_zakazi_ozon_new ($ozon_ip_catalog, $ArrayOrders_ip ); // цепляем продажи
+}
 
 //***************************** Получаем Фактические остатки с ЯНДЕКС *****************************
 $ya_fbs_catalog = get_ostatki_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепояем остатки
 //*****************************  Достаем фактически заказанные товары YANDEX *****************************
-$ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепляем продажи
-// echo "<br>*****************************************************<br>";
+
 // echo "<pre>";
 // print_r ($ya_fbs_catalog);
+// die();
+
+// echo ($campaignId_FBS);
+// die('cc');
+$yandex_obj = new YandexClient($yam_token, $campaignId_FBS);
+// находим business_id для нашего магазинаа
+
+$campaigns = $yandex_obj->yandex_post('v2/campaigns');
+foreach ($campaigns['campaigns'] as $campaign) {
+    if ($campaignId_FBS == $campaign['id']) {
+        $business_id = $campaign['business']['id'];
+        break;
+    }
+
+}
+
+$orders_yandex = new YandexOrderService ($yandex_obj, $campaignId_FBS, $business_id);
+
+//=========================================================================================================================
+// запрашваем все заказы со статусом PROCESSING -- STARTED //
+//=========================================================================================================================
+
+$arr_all_new_orders =$orders_yandex->YandexgetUnfulfilledFby(date('Y-m-d'),  'PROCESSING',  'STARTED');
+
+if (!empty($arr_all_new_orders)) {
+    $ya_fbs_catalog = get_new_zakazi_yandex_new ($ya_fbs_catalog,  $arr_all_new_orders);
+}
+
+// echo "<pre>";
+// print_r ($ya_fbs_catalog);
+// die();
+// $ya_fbs_catalog = get_new_zakazi_yandex ($yam_token, $campaignId_FBS, $ya_fbs_catalog); // цепляем продажи
+// echo "<br>*****************************************************<br>";
+
 // die('jjjjjjjjjjjjjjjj');
 
 
@@ -162,8 +225,8 @@ $ozon_catalog    = get_db_procent_tovara_v_magazine ($ozon_catalog, $raspredelen
 $ozon_ip_catalog = get_db_procent_tovara_v_magazine ($ozon_ip_catalog, $raspredelenie_ostatkov, $ozon_ip, $arr_new_ostatoki_MP);
 $ya_fbs_catalog  = get_db_procent_tovara_v_magazine ($ya_fbs_catalog, $raspredelenie_ostatkov, $yandex_anmaks_fbs, $arr_new_ostatoki_MP);
 
-
-// print_r ($ozon_catalog);
+// echo "<pre>";
+// print_r ($ya_fbs_catalog);
 // die();
 //*****************************  Формируем массив из всех каталогов  *****************************
 
@@ -280,15 +343,14 @@ echo "<td>";
 show_update_part_table($arr_all_nomenklatura, $wbip_catalog,$wb_ip);
 echo "</td>";
 
-//******************************************* * WB IP ************************ 
+//******************************************* * OZON OOO ************************ 
 echo "<td>";
 show_update_part_table($arr_all_nomenklatura,  $ozon_catalog, $ozon_anmaks);
 echo "</td>";
 
-
-//******************************************* * WB IP ************************ 
+//******************************************* * OZON IP ************************ 
 echo "<td>";
-show_update_part_table($arr_all_nomenklatura,  $ozon_ip_catalog,$ozon_ip);
+show_update_part_table($arr_all_nomenklatura,  $ozon_ip_catalog, $ozon_ip);
 echo "</td>";
 
 //******************************************* * YANDEX ************************ 

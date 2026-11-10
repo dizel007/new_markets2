@@ -13,14 +13,8 @@ use App\Ozon\Service\ProductService;
 use App\Ozon\Service\FinanceService;
 
 
-
-
-
 require_once "function_report/razbor_type_item.php";
 require_once "function_report/razbor_type_posting_number.php";
-// require_once "function_report/get_sebestoimost.php";
-// require_once "function_report/get_balance.php";
-// require_once "function_report/get_prodazhi.php";
 require_once "../mp_functions/get_token_by_shop.php";
 
 
@@ -43,9 +37,9 @@ $finance = new FinanceService($ozon);
 
 
  //**** получаем себестоимость товараов *****************************************************************************************************/
-
 $arr_article_products  = $product->getSebestoimostTovarov();
 //******************************************************************************************************
+
 //******************************************************************************************************
 // Настраиваем дату начала отпроса
 if (isset($_GET['dateFrom'])) {
@@ -77,9 +71,6 @@ echo <<<HTML
     
     <link rel="stylesheet" href="css/form_dates.css?v=<?php echo filemtime('css/form_dates.css'); ?>">
     <link rel="stylesheet" href="css/sku_table.css?v=<?php echo filemtime('css/sku_table.css'); ?>">
-
-
-
 
     <title>OZON - аналитика</title>
 </head>
@@ -126,10 +117,8 @@ if (!isset($_GET['dateFrom'], $_GET['dateTo'])) {
 
 $ozon_array_balance = $finance->getBalance($date_from, $date_to);
 
-
 // echo "<pre>";
 // print_r($ozon_array_balance);
-// print_r($ozon_array_balance_2);
 
 /******************************************************************************
  *  ЗАПРОС фин отчета по проанным товарам  С ОЗОНА (ВСЕ ДАТЫ)
@@ -141,25 +130,20 @@ if (!is_dir($dir)) {
     mkdir($dir, 0775, true);
 }
 
-
-
 //  Запрос инстранных товаров
 $file_name_ozon_inostran_prodazhi = $dir . '/' .$client_id . "_ino_main_data" . ".json";
 $arr_sell_v_strani_EAES =  $finance->getBuyoutEaes( $date_from,  $date_to, $file_name_ozon_inostran_prodazhi);
 
 /// Запрос основных продаж 
 $file_name_ozon_mainSell = $dir . '/' . $client_id . '_main_data.json';
-$finance->getAccrualsByDay( $date_from,  $date_to, $file_name_ozon_mainSell);
-$data_by_days = json_decode(file_get_contents($file_name_ozon_mainSell), true);
-
+$data_by_days = $finance->getAccrualsByDay( $date_from,  $date_to, $file_name_ozon_mainSell);
+// $data_by_days = json_decode(file_get_contents($file_name_ozon_mainSell), true);
 
 // echo "<pre>";
 // print_r($data_by_days);
-
 /******************************************************************************
  * КОНЕЦ запроса данных с озона (ВСЕ ДАТЫ)
  ******************************************************************************/
-
 
  /// Разбиваем массив по категориям расходов ///////////////////////////////
 foreach ($data_by_days as $one_data) {
@@ -216,15 +200,20 @@ foreach ($arr_sell_v_strani_EAES['products'] as $ino_sku=>$ino_tovar) {
 
 }
 $sum_array_to_redakt = $sum_array;
-
+// удаляем, чтобы не занимать ОЗУ
+unset($sum_array);
 /******************************************************************************************
  * выводим на печать нашу таблицу
  * весь вывод сделал в отдельном файле
  * 
  ****************************************************************************************/
 // echo "<pre>";
-// print_r($ozon_array_balance );
-
+// print_r($sum_array_to_redakt);
+// die();
+//  $arr_dop_uslugi = [];
+// if (isset($sum_array_to_redakt['NO_SKU'])) {
+//     $arr_dop_uslugi = $sum_array_to_redakt['NO_SKU'];
+// } 
 require_once "print_info/print_sku_table.php";
 
 die();

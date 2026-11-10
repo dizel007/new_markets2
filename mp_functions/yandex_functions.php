@@ -60,34 +60,43 @@ if (isset($arr_all_stocks['result']['warehouses'][0]['offers'])) {
 // Формируем массив с остатками товаров
 if (isset($our_FBS_warehouse)) {
     foreach ($our_FBS_warehouse['offers'] as $stocks) {
+        $article = $stocks['offerId'];
         // $arr_stocks_by_artickle[$stocks['offerId']] = $stocks['offerId'];
         foreach ($stocks['stocks'] as $type_stock) {
             if ($type_stock['type'] == 'AVAILABLE') {
-                $arr_stocks_by_artickle[$stocks['offerId']] = $type_stock['count'];
-            } 
+                $arr_stocks_by_artickle[$article] = $type_stock['count'];
+            } else {
+                $arr_stocks_by_artickle[$article] = 0;
+            }
            
         }
         
     }
 }
 
+
+
 // Цепляем остатки товаров к каталогу яндекс
 if (isset($arr_stocks_by_artickle)) {
 foreach ($ya_fbs_catalog as &$items) {
     foreach ($arr_stocks_by_artickle as $key=>$znachenia) 
 
-    if ($key == $items['sku']) {
-        $items['quantity'] = $znachenia;
-        break 1;
-    } else {
-        $items['quantity'] = 0; // принулительно стави мноль т.к. если товара в яндексе нет, то он не возварщает его в остатках
-    }
+            if ((string)$key == (string)$items['sku']) {
+                $items['quantity'] = $znachenia;
+                break 1;
+            } else {
+                $items['quantity'] = 0; // принулительно стави мноль т.к. если товара в яндексе нет, то он не возварщает его в остатках
+            }
 
 }
 }
+
+
+// print_r ($ya_fbs_catalog);
+// die();
 
     return $ya_fbs_catalog;
-    }
+ }
     
 
 /************************************************************************
